@@ -22,20 +22,34 @@
 ### MA 02111-1307, USA
 
 read.spss <- function(file,use.value.labels=TRUE,to.data.frame=FALSE,
-                      max.value.labels=Inf) {
+                      max.value.labels=Inf, trim.factor.names=FALSE) {
+
+  
+    trim<-function(strings){
+      if (trim.factor.names)
+        gsub(" *$","",strings)
+      else
+        strings
+    }
+  
+  
     rval<-.Call("do_read_SPSS", file, PACKAGE = "foreign")
     
-    if (use.value.labels){
-      vl<-attr(rval,"label.table")
-      has.vl<-which(!sapply(vl,is.null))
-      for(v in has.vl){
-        nm<-names(vl)[[v]]
-        if (!is.finite(max.value.labels) || length(unique(rval[[nm]]))<=max.value.labels)
-            rval[[nm]]<-factor(rval[[nm]],levels=vl[[v]],labels=names(vl[[v]]))
-        else
-            attr(rval[[nm]],"value.labels")<-vl[[v]]
-      }
+    
+    vl<-attr(rval,"label.table")
+    has.vl<-which(!sapply(vl,is.null))
+    for(v in has.vl){
+      nm<-names(vl)[[v]]
+      nvalues<-length(na.omit(unique(rval[[nm]])))
+      nlabels<-length(vl[[v]])
+      if (use.value.labels &&
+          (!is.finite(max.value.labels) || nvalues<=max.value.labels) &&
+          nlabels>=nvalues)
+        rval[[nm]]<-factor(rval[[nm]], levels=vl[[v]], labels=trim(names(vl[[v]])))
+      else
+        attr(rval[[nm]],"value.labels")<-vl[[v]]
     }
+    
     
     if (to.data.frame) {
       varlab <- attr(rval, "variable.labels")

@@ -109,9 +109,11 @@ man/read.xport.Rd
 Saikat DebRoy
 
 
+R/read.ssd.R
 man/read.ssd.Rd
 
-VJ Carey
+(c) 2002 VJ Carey
+(c) 2004 R Development Core Team
 
 
 man/read.systat.Rd

@@ -1,3 +1,23 @@
+2004-11-17 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: New version is 0.8-1.
+
+        * read.ssd.{R,Rd}: Make work under Windows and tidy up.
+
+2004-11-8 Thomas Lumley <tlumley@u.washington.edu>
+
+	* spss.R:  Trim trailing spaces from SPSS value labels
+	  
+         Don't create a factor when there are fewer labels than
+	 non-missing levels
+	  
+	* read.spss.Rd: Mention the apparently harmless warning given for
+	 recent versions of SPSS files.
+
+2004-10-28 Brian Ripley <Brian.Ripley@R-project.org>
+
+        * DESCRIPTION: Mention read/write .dbf files
+
 2004-10-25 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: New version is 0.8-0.

@@ -1,33 +1,39 @@
 \name{read.ssd}
 \alias{read.ssd}
-\title{ obtain a data frame from a SAS permanent dataset, via read.xport }
+\title{Obtain a Data Frame from a SAS Permanent Dataset, via read.xport }
 \description{
-  generates a SAS program to convert the ssd contents to SAS transport format
-  and then uses \code{read.xport} to obtain a dataframe
+  Generates a SAS program to convert the ssd contents to SAS transport format
+  and then uses \code{read.xport} to obtain a dataframe.
 }
 \usage{
 read.ssd(libname, sectionnames, 
    tmpXport=tempfile(), tmpProgLoc=tempfile(), sascmd="sas")
 }
 \arguments{
-  \item{libname}{ string defining the SAS library (usually a directory reference)}
-  \item{sectionnames}{ vector of strings giving member names. These are
-files in the `libname' directory. They will usually have a `.ssd0x' or
-`.sas7bdat' extension, which should be omitted.}
-  \item{tmpXport}{ string: location where temporary xport format archive should reside --
-    defaults to a randomly named file in /tmp, which will be removed}
-  \item{tmpProgLoc}{ string: location where temporary conversion program should reside --
-    defaults to a randomly named file in /tmp, which will be removed}
-  \item{sascmd}{ string: defaults to "sas"}
+  \item{libname}{character string defining the SAS library (usually a
+    directory reference)}
+  \item{sectionnames}{character vector giving member names. These are
+    files in the \code{libname} directory. They will usually have a
+    \code{.ssd0x} or \code{.sas7bdat} extension, which should be omitted.}
+  \item{tmpXport}{character  string: location where temporary xport
+    format archive should reside -- defaults to a randomly named file
+    in the session temporary directory, which will be removed.}
+  \item{tmpProgLoc}{character  string: location where temporary
+    conversion SAS program should reside -- defaults to a randomly named
+    file in session temporary directory, which will be removed on
+    successful operation.}
+  \item{sascmd}{character string giving full path to SAS executable.}
 }
 \details{
-  creates a SAS program and runs it
+  Creates a SAS program and runs it.
 }
 \value{
-  a data frame if all goes well, or NULL with warnings and some
+  A data frame if all goes well, or NULL with warnings and some
   enduring side effects (log file for auditing)
 }
-\author{VJ Carey \email{<stvjc@channing.harvard.edu>}}
+\author{
+  For Unix: VJ Carey \email{<stvjc@channing.harvard.edu>}
+}
 \note{ error handling is primitive }
 \seealso{\code{\link{read.xport}}}
 \examples{
@@ -43,6 +49,11 @@ R> list.files("trialdata")
 [16] "form90.sas7bdat"   "form91.sas7bdat"  
 R> baseline<-read.ssd("trialdata","baseline")
 R> form90<-read.ssd("trialdata","form90")
+
+## Or for a Windows example
+sashome <- "/Program Files/SAS/SAS 9.1"
+read.ssd(file.path(sashome, "core", "sashelp"), "retail",
+         sascmd = file.path(sashome, "sas.exe"))
 }
 }
 \keyword{file}

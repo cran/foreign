@@ -3,6 +3,7 @@ read.ssd <- function(libname, sectionnames, tmpXport=tempfile(),
 {
     ##
     ## copyright 2002 VJ Carey <stvjc@channing.harvard.edu>
+    ##           2004 R Development Core Team
     ##
     ## read.ssd -- 'read' a SAS v6 ssd format file by converting
     ## the data to sas xport format and then using R foreign:read.xport
@@ -37,6 +38,8 @@ read.ssd <- function(libname, sectionnames, tmpXport=tempfile(),
     cat(st2, file=tmpProg, append=TRUE)
     cat(st3, file=tmpProg, append=TRUE)
     cat(st4, file=tmpProg, append=TRUE)
+    if(.Platform$OS.type == "windows")
+        sascmd <- paste(dQuote(sascmd), "-sysin")
     sasrun <- try(sysret <- system( paste( sascmd, tmpProg ) ))
     if (!inherits(sasrun, "try-error") & sysret == 0)
     {
@@ -47,8 +50,14 @@ read.ssd <- function(libname, sectionnames, tmpXport=tempfile(),
     else
     {
         cat("SAS failed.  SAS program at", tmpProg,"\n")
-        cat("a log and other error products should be in the vicinity\n")
-        system(paste("ls -l ", tmpProgLog))
+        if(.Platform$OS.type == "unix") {
+            cat("a log and other error products should be in the vicinity\n")
+            system(paste("ls -l ", tmpProgLog))
+        } else {
+            cat("The log file will be ",
+                paste(basename(tmpProgLoc), ".log", sep=""),
+                " in the current directory\n", sep="")
+        }
         warning(paste("SAS return code was", sysret))
         return(NULL)
     }
