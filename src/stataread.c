@@ -167,6 +167,7 @@ SEXP R_LoadStataData(FILE *fp)
     case VERSION_7SE:
 	version=-7;
 	varnamelength=32; 
+	break;
     default:
         error("Not a Stata version 5-7/SE .dta file");
     }
@@ -324,7 +325,7 @@ SEXP R_LoadStataData(FILE *fp)
     /** variable 'characteristics'  -- not yet implemented **/
 
     while(InByteBinary(fp,1)) {
-	if (version==7) /* manual is wrong here */
+	if (abs(version)==7) /* manual is wrong here */
 	    charlen= (InIntegerBinary(fp,1,swapends));
 	else
 	    charlen= (InShortIntBinary(fp,1,swapends));
@@ -373,7 +374,7 @@ SEXP R_LoadStataData(FILE *fp)
 		    }
 	    }
     }  else {
-
+	    for(i=0; i<nobs; i++){
 		    for(j=0;j<nvar;j++){
 			    switch (INTEGER(types)[j]) {
 			    case STATA_SE_FLOAT:
@@ -402,11 +403,12 @@ SEXP R_LoadStataData(FILE *fp)
 				    break;
 			    }
 		    }
+	    }
     }
 
 
     /** value labels **/
-    if (version>5){
+    if (abs(version)>5){
 	    PROTECT(labeltable=allocVector(VECSXP, nvar));
 	    PROTECT(tmp=allocVector(STRSXP,nvar));
 	    for(j=0;j<nvar;j++){

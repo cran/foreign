@@ -1,3 +1,10 @@
+2002-11-02 Thomas Lumley <tlumley@u.washington.edu>
+	
+	* Fixed src/stataread.c for version 7/SE (thanks to examples sent
+	by Jason Liao)
+
+	* version is 0.5-7
+
 2002-07-25 Brian Ripley <ripley@stats.ox.ac.uk>
 
 	* src/stataread.c: float NAs were being mapped to NaNs.

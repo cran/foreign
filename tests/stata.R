@@ -17,4 +17,7 @@ all.equal(as.character(esoph$alcgp),esoph2$alcgp)
 write.dta(esoph,esophile,convert.factors="code")
 esoph2<-read.dta(esophile)
 all.equal(as.numeric(esoph$alcgp),as.numeric(esoph2$alcgp))
+
+se<-read.dta("stata7se.dta")
+print(se)
 q()

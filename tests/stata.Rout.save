@@ -1,6 +1,6 @@
 
 R : Copyright 2002, The R Development Core Team
-Version 1.6.0 Under development (unstable) (2002-05-16)
+Version 1.6.1 Beta (2002-10-24)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -217,4 +217,15 @@ Abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "co
 > esoph2<-read.dta(esophile)
 > all.equal(as.numeric(esoph$alcgp),as.numeric(esoph2$alcgp))
 [1] TRUE
+> 
+> se<-read.dta("stata7se.dta")
+> print(se)
+      race number
+1    white      2
+2    asian      5
+3 hispanic      5
+4    white      4
+5    black      5
+6    white      6
+7    black      7
 > q()
