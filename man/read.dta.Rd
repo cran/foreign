@@ -2,10 +2,11 @@
 \alias{read.dta}
 \title{Read Stata binary files}
 \description{
-  Reads a file in Stata version 5-8 or 7/SE binary format into a dataframe. 
+  Reads a file in Stata version 5-8 or 7/SE binary format into a data frame. 
 }
 \usage{
-read.dta(file, convert.dates=TRUE, tz="GMT", convert.factors=TRUE,missing.type=FALSE)
+read.dta(file, convert.dates = TRUE, tz = "GMT",
+         convert.factors = TRUE, missing.type = FALSE)
 }
 \arguments{
   \item{file}{a filename as a character string.}

@@ -1,0 +1,168 @@
+Index: sfm-read.c
+===================================================================
+RCS file: /home/rdevel/CVS-ARCHIVE/R-packages/foreign/src/sfm-read.c,v
+retrieving revision 1.6
+retrieving revision 1.7
+diff -r1.6 -r1.7
+111,113c111,113
+<     flt64 sysmis;
+<     flt64 highest;
+<     flt64 lowest;
+---
+>     R_flt64 sysmis;
+>     R_flt64 highest;
+>     R_flt64 lowest;
+116,118c116,118
+<     flt64 *buf;			/* Buffer data. */
+<     flt64 *ptr;			/* Current location in buffer. */
+<     flt64 *end;			/* End of buffer data. */
+---
+>     R_flt64 *buf;			/* Buffer data. */
+>     R_flt64 *ptr;			/* Current location in buffer. */
+>     R_flt64 *end;			/* End of buffer data. */
+121c121
+<     unsigned char x[sizeof (flt64)];
+---
+>     unsigned char x[sizeof (R_flt64)];
+183c183
+< static int parse_format_spec (struct file_handle * h, int32 s,
+---
+> static int parse_format_spec (struct file_handle * h, R_int32 s,
+351c351
+<       int32 rec_type;
+---
+>       R_int32 rec_type;
+378,380c378,380
+< 		int32 subtype P;
+< 		int32 size P;
+< 		int32 count P;
+---
+> 		R_int32 subtype P;
+> 		R_int32 size P;
+> 		R_int32 count P;
+394c394
+< 	    /*if(data.size != sizeof(int32) && data.size != sizeof(flt64))
+---
+> 	    /*if(data.size != sizeof(R_int32) && data.size != sizeof(R_flt64))
+398c398
+< 	       h->fn, data.subtype, sizeof(int32), sizeof(flt64),
+---
+> 	       h->fn, data.subtype, sizeof(R_int32), sizeof(R_flt64),
+437c437
+< 	    int32 filler;
+---
+> 	    R_int32 filler;
+478c478
+<   int32 data[8];
+---
+>   R_int32 data[8];
+483c483
+<   if (size != sizeof (int32) || count != 8)
+---
+>   if (size != sizeof (R_int32) || count != 8)
+486c486
+< 	h->fn, size, count, sizeof (int32)));
+---
+> 	h->fn, size, count, sizeof (R_int32)));
+543c543
+<   flt64 data[3];
+---
+>   R_flt64 data[3];
+547c547
+<   if (size != sizeof (flt64) || count != 3)
+---
+>   if (size != sizeof (R_flt64) || count != 3)
+550c550
+< 	   h->fn, size, count, sizeof (flt64)));
+---
+> 	   h->fn, size, count, sizeof (R_flt64)));
+877c877
+< 	  vv->get.nv = DIV_RND_UP (vv->width, sizeof (flt64));
+---
+> 	  vv->get.nv = DIV_RND_UP (vv->width, sizeof (R_flt64));
+888c888
+< 	  int32 len;
+---
+> 	  R_int32 len;
+901c901
+< 	  vv->label = bufread (h, NULL, ROUND_UP (len, sizeof (int32)), len + 1);
+---
+> 	  vv->label = bufread (h, NULL, ROUND_UP (len, sizeof (R_int32)), len + 1);
+910c910
+< 	  flt64 mv[3];
+---
+> 	  R_flt64 mv[3];
+1009c1009
+< parse_format_spec (struct file_handle *h, int32 s, struct fmt_spec *v, struct variable *vv)
+---
+> parse_format_spec (struct file_handle *h, R_int32 s, struct fmt_spec *v, struct variable *vv)
+1044c1044
+<   flt64 *raw_label = NULL;	/* Array of raw label values. */
+---
+>   R_flt64 *raw_label = NULL;	/* Array of raw label values. */
+1046c1046
+<   int32 n_labels;		/* Number of labels. */
+---
+>   R_int32 n_labels;		/* Number of labels. */
+1049c1049
+<   int32 n_vars;			/* Number of associated variables. */
+---
+>   R_int32 n_vars;			/* Number of associated variables. */
+1063c1063
+<   raw_label = Calloc (n_labels, flt64);
+---
+>   raw_label = Calloc (n_labels, R_flt64);
+1071c1071
+<       flt64 value;
+---
+>       R_flt64 value;
+1088c1088
+<       rem = REM_RND_UP (label_len + 1, sizeof (flt64));
+---
+>       rem = REM_RND_UP (label_len + 1, sizeof (R_flt64));
+1098c1098
+<     int32 rec_type;
+---
+>     R_int32 rec_type;
+1125c1125
+<       int32 var_index;
+---
+>       R_int32 var_index;
+1166c1166
+< 	  const int copy_len = min (sizeof (flt64), MAX_SHORT_STRING);
+---
+> 	  const int copy_len = min (sizeof (R_flt64), MAX_SHORT_STRING);
+1256c1256
+<   int32 n_lines;
+---
+>   R_int32 n_lines;
+1372c1372
+<     ext->buf = Calloc (128, flt64);
+---
+>     ext->buf = Calloc (128, R_flt64);
+1393c1393
+< read_compressed_data (struct file_handle * h, flt64 * temp)
+---
+> read_compressed_data (struct file_handle * h, R_flt64 * temp)
+1397c1397
+<   const unsigned char *p_end = ext->x + sizeof (flt64);
+---
+>   const unsigned char *p_end = ext->x + sizeof (R_flt64);
+1400,1401c1400,1401
+<   const flt64 *temp_beg = temp;
+<   const flt64 *temp_end = &temp[ext->case_size];
+---
+>   const R_flt64 *temp_beg = temp;
+>   const R_flt64 *temp_end = &temp[ext->case_size];
+1497c1497
+<   flt64 *temp;
+---
+>   R_flt64 *temp;
+1509c1509
+<   temp = Calloc(ext->case_size, flt64);
+---
+>   temp = Calloc(ext->case_size, R_flt64);
+1538c1538
+< 	  flt64 src = temp[v->get.fv];
+---
+> 	  R_flt64 src = temp[v->get.fv];

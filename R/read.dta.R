@@ -48,8 +48,16 @@ read.dta <- function(file, convert.dates=TRUE,tz="GMT",
         ll<-attr(rval,"val.labels")
         tt<-attr(rval,"label.table")
         factors<-which(ll!="")
-        for(v in factors)
+        for(v in factors){
+            labels<-tt[[ll[v]]]
+            ## this shouldn't be able to happen, but does with
+            ## http://www.ats.ucla.edu/stat/stata/stat130/apipop.dta
+            if (is.null(labels)){
+                warning("Value labels (",ll[v],") for ",names(rval)[v]," are missing")
+                next
+            }
             rval[[v]]<-factor(rval[[v]],levels=tt[[ll[v]]],labels=names(tt[[ll[v]]]))
+        }
     }
 
 

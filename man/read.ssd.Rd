@@ -3,7 +3,7 @@
 \title{ obtain a data frame from a SAS permanent dataset, via read.xport }
 \description{
   generates a SAS program to convert the ssd contents to SAS transport format
-  and then uses read.xport to obtain a dataframe
+  and then uses \code{read.xport} to obtain a dataframe
 }
 \usage{
 read.ssd(libname, sectionnames, 
