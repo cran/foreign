@@ -1,3 +1,11 @@
+2001-07-17 Brian Ripley  <ripley@stats.ox.ac.uk>
+
+	* DESCRIPTION (Version): New version is 0.4-6.
+
+	* src/sfm-read.c Use Free not free consistently.
+
+	* src/spss.c (do_read_SPSS): Alwasy open in binary mode.
+
 2001-06-18  Kurt Hornik  <Kurt.Hornik@ci.tuwien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.4-5.

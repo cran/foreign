@@ -29,4 +29,5 @@ lookup.xport(file)
 \dontrun{
 lookup.xport("transport")
 }
+}
 \keyword{file}

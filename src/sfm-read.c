@@ -206,8 +206,8 @@ free_value_label (struct value_label * v)
   if (!(v->ref_count >= 1)) error("assert failed : v->ref_count >= 1");
   if (--v->ref_count == 0)
     {
-      free (v->s);
-      free (v);
+      Free (v->s);
+      Free (v);
     }
 }
 
@@ -226,7 +226,7 @@ free_dictionary (struct dictionary * d)
   int i;
 
   d->n_splits = 0;
-  free (d->splits);
+  Free (d->splits);
   d->splits = NULL;
   
   if (d->var_by_name)
@@ -243,17 +243,17 @@ free_dictionary (struct dictionary * d)
 	}
       if (v->label)
 	{
-	  free (v->label);
+	  Free (v->label);
 	  v->label = NULL;
 	}
-      free (d->var[i]);
+      Free (d->var[i]);
     }
-  free (d->var);
+  Free (d->var);
 
-  free (d->label);
-  free (d->documents);
+  Free (d->label);
+  Free (d->documents);
 
-  free (d);
+  Free (d);
 }
 
 /* Reads the dictionary from file with handle H, and returns it in a
