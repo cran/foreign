@@ -1,5 +1,5 @@
 /*
- *  $Id: minitab.c,v 1.2 1999/12/16 00:20:18 bates Exp $ 
+ *  $Id: minitab.c,v 1.3 2000/10/30 16:43:23 saikat Exp $ 
  *
  *  Read Minitab portable data set format
  *
@@ -27,8 +27,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include "R.h"
 #include "Rdefines.h"
 #include "Rinternals.h"
+
+#if R_VERSION < R_Version(1, 2, 0)
+#define STRING_ELT(x,i)		(STRING(x)[i])
+#define VECTOR_ELT(x,i)         (VECTOR(x)[i])
+#define SET_STRING_ELT(x,i,v)	(STRING(x)[i] = (v))
+#define SET_VECTOR_ELT(x,i,v)	(VECTOR(x)[i] = (v))
+#endif
 
 #define MTP_BUF_SIZE 85
 #define MTB_INITIAL_ENTRIES 10
@@ -61,19 +69,18 @@ static
 SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
 				     MTB's and Free the MTB storage */
 {
-    SEXP ans = PROTECT(NEW_LIST(len)),
-         names = PROTECT(NEW_CHARACTER(len));
-    int i, nprot = 2;
+    SEXP ans = PROTECT(NEW_LIST(len)), names = PROTECT(NEW_STRING(len));
+    int i;
     
     
     for (i = 0; i < len; i++) {
-	MTB this = mtb[i];
+	MTB thisRec = mtb[i];
 
-	STRING(names)[i] = PROTECT(COPY_TO_USER_STRING(this->name)); nprot++;
+	SET_STRING_ELT(names, i, mkChar(thisRec->name));
 	switch(mtb[i]->dtype) {
 	case 0:			/* numeric data */
-	    VECTOR(ans)[i] = PROTECT(NEW_NUMERIC(mtb[i]->len)); nprot++;
-	    Memcpy(NUMERIC_POINTER(VECTOR(ans)[i]), mtb[i]->dat.ndat,
+	    SET_VECTOR_ELT(ans, i, NEW_NUMERIC(mtb[i]->len));
+	    Memcpy(NUMERIC_POINTER(VECTOR_ELT(ans, i)), mtb[i]->dat.ndat,
 		   mtb[i]->len);
 	    Free(mtb[i]->dat.ndat);
 	    break;
@@ -84,7 +91,7 @@ SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
     }
     Free(mtb);
     setAttrib(ans, R_NamesSymbol, names);
-    UNPROTECT(nprot);
+    UNPROTECT(2);
     return(ans);
 }
     
@@ -93,21 +100,16 @@ read_mtp(SEXP fname)
 {
     FILE *f;
     char buf[MTP_BUF_SIZE], blank[1];
-    MTB  *mtb, this;
+    MTB  *mtb, thisRec;
     int i, j, nMTB = MTB_INITIAL_ENTRIES;
     
-    PROTECT(fname = AS_CHARACTER(fname));
-    if ((f = fopen(CHAR(STRING(fname)[0]), "r")) == NULL) {
-	PROBLEM "Unable to open file %s for reading", 
-	    CHAR(STRING(fname)[0])
-	    ERROR;
-    }
+    PROTECT(fname = asChar(fname));
+    if ((f = fopen(CHAR(fname), "r")) == NULL)
+	error("Unable to open file %s for reading", CHAR(fname));
     if ((fgets(buf, MTP_BUF_SIZE, f) == NULL) ||
-	strncmp(buf, "Minitab Portable Worksheet ", 27) != 0) {
-	PROBLEM "File %s is not in Minitab Portable Worksheet format",
-	    CHAR(STRING(fname)[0])
-	    ERROR;
-    }
+	strncmp(buf, "Minitab Portable Worksheet ", 27) != 0)
+	error("File %s is not in Minitab Portable Worksheet format",
+	      CHAR(fname));
     fgets(buf, MTP_BUF_SIZE, f);
     UNPROTECT(1);
     
@@ -117,22 +119,22 @@ read_mtp(SEXP fname)
 	    nMTB *= 2;
 	    mtb = Realloc(mtb, nMTB, MTB);
 	}
-	this = mtb[i] = Calloc(1, MTBDATC);
-	if (sscanf(buf, "%%%7d%7d%7d%7d%c%8c", &(this->type), &(this->cnum),
-		   &(this->len), &(this->dtype), blank, this->name) != 6) {
-	    PROBLEM "First record for entry %d is corrupt", i+1 ERROR;
-	}
-	this->name[8] = '\0';
-	strtrim(this->name);	/* trim trailing white space on name */
-	switch (this->dtype) {
+	thisRec = mtb[i] = Calloc(1, MTBDATC);
+	if (sscanf(buf, "%%%7d%7d%7d%7d%c%8c", &(thisRec->type),
+		   &(thisRec->cnum), &(thisRec->len),
+		   &(thisRec->dtype), blank, thisRec->name) != 6)
+	    error("First record for entry %d is corrupt", i+1);
+	thisRec->name[8] = '\0';
+	strtrim(thisRec->name);	/* trim trailing white space on name */
+	switch (thisRec->dtype) {
 	case 0:		/* numeric data */
-	    this->dat.ndat = Calloc(this->len, double);
-	    for (j = 0; j < this->len; j++) {
-		fscanf(f, "%lg", this->dat.ndat + j);
+	    thisRec->dat.ndat = Calloc(thisRec->len, double);
+	    for (j = 0; j < thisRec->len; j++) {
+		fscanf(f, "%lg", thisRec->dat.ndat + j);
 	    }
 	    break;
 	default:
-	    PROBLEM "Non-numeric data types are not yet implemented" ERROR;
+	    error("Non-numeric data types are not yet implemented");
 	} 
 	fgets(buf, MTP_BUF_SIZE, f); /* clear rest of current line */
 	fgets(buf, MTP_BUF_SIZE, f); /* load next line */

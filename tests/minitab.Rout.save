@@ -1,0 +1,35 @@
+
+R : Copyright 2000, The R Development Core Team
+Version 1.2.0 Under development (unstable) (2000-12-05)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type `license()' or `licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type `contributors()' for more information.
+
+Type `demo()' for some demos, `help()' for on-line help, or
+`help.start()' for a HTML browser interface to help.
+Type `q()' to quit R.
+
+> library(foreign)
+> ex1.51 <- read.mtp("ex1-51.mtp")
+> summary(ex1.51)
+        Length Class  Mode   
+control 26     -none- numeric
+seeded  26     -none- numeric
+> str(ex1.51)
+List of 2
+ $ control: num [1:26] 1203  830  372  346  321 ...
+ $ seeded : num [1:26] 2746 1698 1656  978  703 ...
+> ex1.51 <- data.frame(ex1.51)
+> summary(ex1.51)
+    control            seeded       
+ Min.   :   1.00   Min.   :   4.10  
+ 1st Qu.:  24.83   1st Qu.:  98.13  
+ Median :  44.20   Median : 221.60  
+ Mean   : 164.60   Mean   : 442.00  
+ 3rd Qu.: 159.20   3rd Qu.: 406.00  
+ Max.   :1203.00   Max.   :2746.00  
+> q()

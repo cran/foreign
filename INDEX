@@ -1,3 +1,6 @@
 lookup.xport             Lookup information on a SAS XPORT format library
+read.dta                 Read Stata binary files
 read.mtp                 Read a Minitab Portable Worksheet
+read.spss                Read an SPSS data file
 read.xport               Read a SAS XPORT format library
+write.dta                Write files in Stata binary format

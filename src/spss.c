@@ -1,0 +1,437 @@
+/*
+ *  $Id: spss.c,v 1.4 2000/12/13 17:04:00 saikat Exp $
+ *
+ *  Read SPSS files saved by SAVE and EXPORT commands
+ *
+ *  Copyright 2000-2000 Saikat DebRoy <saikat@stat.wisc.edu>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be
+ *  useful, but WITHOUT ANY WARRANTY; without even the implied
+ *  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ *  PURPOSE.  See the GNU General Public License for more
+ *  details.
+ *
+ *  You should have received a copy of the GNU General Public
+ *  License along with this program; if not, write to the Free
+ *  Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ *  MA 02111-1307, USA
+ *
+ */
+
+#include "assert.h"
+#include "foreign.h"
+#include "file-handle.h"
+#include "pfm.h"
+#include "sfm.h"
+#include "avl.h"
+#include "var.h"
+
+/* Divides nonnegative X by positive Y, rounding up. */
+#define DIV_RND_UP(X, Y) 			\
+	(((X) + ((Y) - 1)) / (Y))
+
+char *
+xstrdup(const char *s)
+{
+    int len = strlen(s);
+    char *c = Calloc(len + 1, char);
+    strcpy(c, s);
+    return c;
+}
+
+/* Returns a newly created empty dictionary. */
+struct dictionary *
+new_dictionary (int copy)
+{
+  struct dictionary *d = Calloc (1, struct dictionary);
+  
+  d->var = NULL;
+  d->var_by_name = avl_create (cmp_variable, NULL);
+  d->nvar = 0;
+
+  d->N = 0;
+
+  d->nval = 0;
+
+  d->n_splits = 0;
+  d->splits = NULL;
+
+  d->label = NULL;
+
+  d->n_documents = 0;
+  d->documents = NULL;
+  
+  d->weight_index = -1;
+  d->weight_var[0] = 0;
+
+  d->filter_var[0] = 0;
+
+  return d;
+}
+    
+/* Find and return the variable in dictionary D having name NAME, or
+   NULL if no such variable exists in D. */
+struct variable *
+find_dict_variable (const struct dictionary *d, const char *name)
+{
+  return avl_find (d->var_by_name, (struct variable *) name);
+}
+
+/* Initialize fields in variable V inside dictionary D with name NAME,
+   type TYPE, and width WIDTH.  Initializes some other fields too. */
+static inline void
+common_init_stuff (struct dictionary *dict, struct variable *v,
+		   const char *name, int type, int width)
+{
+  if (v->name != name)
+    /* Avoid problems with overlap. */
+    strcpy (v->name, name);
+
+  avl_force_insert (dict->var_by_name, v);
+
+  v->type = type;
+  v->left = name[0] == '#';
+  v->width = type == NUMERIC ? 0 : width;
+  v->miss_type = MISSING_NONE;
+  if (v->type == NUMERIC)
+    {
+      v->print.type = FMT_F;
+      v->print.w = 8;
+      v->print.d = 2;
+    }
+  else
+    {
+      v->print.type = FMT_A;
+      v->print.w = v->width;
+      v->print.d = 0;
+    }
+  v->write = v->print;
+}
+
+/* Initialize (for the first time) a variable V in dictionary DICT
+   with name NAME, type TYPE, and width WIDTH.  */
+void
+init_variable (struct dictionary *dict, struct variable *v, const char *name,
+	       int type, int width)
+{
+  common_init_stuff (dict, v, name, type, width);
+  v->nv = type == NUMERIC ? 1 : DIV_RND_UP (width, 8);
+  v->fv = dict->nval;
+  dict->nval += v->nv;
+  v->label = NULL;
+  v->val_lab = NULL;
+  v->get.fv = -1;
+}
+
+/* Creates a variable named NAME in dictionary DICT having type TYPE
+   (ALPHA or NUMERIC) and, if type==ALPHA, width WIDTH.  Returns a
+   pointer to the newly created variable if successful.  On failure
+   (which indicates that a variable having the specified name already
+   exists), returns NULL.  */
+struct variable *
+create_variable (struct dictionary *dict, const char *name,
+		 int type, int width)
+{
+  if (find_dict_variable (dict, name))
+    return NULL;
+  
+  {
+    struct variable *new_var;
+    
+    dict->var = Realloc (dict->var, dict->nvar + 1, struct variable *);
+    new_var = dict->var[dict->nvar] = Calloc (1, struct variable);
+    
+    new_var->index = dict->nvar;
+    dict->nvar++;
+    
+    init_variable (dict, new_var, name, type, width);
+    
+    return new_var;
+  }
+}
+
+/* Compares two value labels and returns a strcmp()-type result. */
+int
+val_lab_cmp (const void *a, const void *b, void *param)
+{
+  if ((int) param)
+    return strncmp (((struct value_label *) a)->v.s,
+		    ((struct value_label *) b)->v.s,
+		    (int) param);
+  else
+    {
+      int temp = (((struct value_label *) a)->v.f
+		  - ((struct value_label *) b)->v.f);
+      if (temp > 0)
+	return 1;
+      else if (temp < 0)
+	return -1;
+      else
+	return 0;
+    }
+}
+
+static SEXP
+read_SPSS_PORT(const char *filename)
+{
+    struct file_handle *fh = fh_get_handle_by_filename(filename);
+    struct pfm_read_info inf;
+    struct dictionary *dict = pfm_read_dictionary(fh, &inf);
+    SEXP ans = PROTECT(allocVector(VECSXP, dict->nvar));
+    SEXP ans_names = PROTECT(allocVector(STRSXP, dict->nvar));
+    union value *case_vals;
+    int i;
+    int ncases = 0;
+    int N = 10;
+    int nval = 0;
+
+    /* Set the fv and lv elements of all variables in the
+       dictionary. */
+    for (i = 0; i < dict->nvar; i++) {
+	struct variable *v = dict->var[i];
+
+	v->fv = nval;
+	nval += v->nv;
+    }
+    dict->nval = nval;
+    assert (nval);
+    case_vals = (union value *) R_alloc(dict->nval, sizeof(union value));
+
+    for (i = 0; i < dict->nvar; i++) {
+	struct variable *v = dict->var[i];
+
+	if (v->get.fv == -1)
+	    continue;
+
+	SET_STRING_ELT(ans_names, i, mkChar(dict->var[i]->name));
+	if (v->type == NUMERIC) {
+	    SET_VECTOR_ELT(ans, i, allocVector(REALSXP, N));
+	} else {
+	    SET_VECTOR_ELT(ans, i, allocVector(STRSXP, N));
+	    case_vals[v->fv].c =
+		(unsigned char *) R_alloc(v->width + 1, 1);
+	    ((char *) &case_vals[v->fv].c[0])[v->width] = '\0';
+	}
+    }
+
+    while(pfm_read_case(fh, case_vals, dict)) {
+	if (ncases == N) {
+	    N *= 2;
+	    for (i = 0; i < dict->nvar; i++) {
+		SEXP elt = VECTOR_ELT(ans, i);
+		elt = lengthgets(elt, N);
+		SET_VECTOR_ELT(ans, i, elt);
+	    }
+	}
+	for (i = 0; i < dict->nvar; i++) {
+	    struct variable *v = dict->var[i];
+
+	    if (v->get.fv == -1)
+		continue;
+
+	    if (v->type == NUMERIC) {
+		REAL(VECTOR_ELT(ans, i))[ncases] = case_vals[v->fv].f;
+	    } else {
+		SET_STRING_ELT(VECTOR_ELT(ans, i), ncases,
+			       mkChar(case_vals[v->fv].c));
+	    }
+	}
+	++ncases;
+    }
+    if (N != ncases) {
+	for (i = 0; i < dict->nvar; i++) {
+	    SEXP elt = VECTOR_ELT(ans, i);
+	    elt = lengthgets(elt, ncases);
+	    SET_VECTOR_ELT(ans, i, elt);
+	}
+    }
+
+    fh_close_handle(fh);
+
+    free_dictionary(dict);
+    setAttrib(ans, R_NamesSymbol, ans_names);
+    UNPROTECT(2);
+    return ans;
+}
+
+static SEXP
+read_SPSS_SAVE(const char *filename)
+{
+    struct file_handle *fh = fh_get_handle_by_filename(filename);
+    struct sfm_read_info inf;
+    struct dictionary *dict = sfm_read_dictionary(fh, &inf);
+    SEXP ans = PROTECT(allocVector(VECSXP, dict->nvar));
+    SEXP ans_names = PROTECT(allocVector(STRSXP, dict->nvar));
+    union value *case_vals;
+    int i;
+    int nval = 0;
+
+    /* Set the fv and lv elements of all variables in the
+       dictionary. */
+    for (i = 0; i < dict->nvar; i++) {
+	struct variable *v = dict->var[i];
+
+	v->fv = nval;
+	nval += v->nv;
+    }
+    dict->nval = nval;
+    assert (nval);
+    case_vals = (union value *) R_alloc(dict->nval, sizeof(union value));
+
+    for (i = 0; i < dict->nvar; i++) {
+	struct variable *v = dict->var[i];
+
+	if (v->get.fv == -1)
+	    continue;
+
+	SET_STRING_ELT(ans_names, i, mkChar(dict->var[i]->name));
+	if (v->type == NUMERIC) {
+	    SET_VECTOR_ELT(ans, i, allocVector(REALSXP, inf.ncases));
+	} else {
+	    SET_VECTOR_ELT(ans, i, allocVector(STRSXP, inf.ncases));
+	    case_vals[v->fv].c =
+		(unsigned char *) R_alloc(v->width + 1, 1);
+	    ((char *) &case_vals[v->fv].c[0])[v->width] = '\0';
+	}
+    }
+    for (i = 0; i < inf.ncases; i++) {
+	int j;
+	sfm_read_case(fh, case_vals, dict);
+	for (j = 0; j < dict->nvar; j++) {
+	    struct variable *v = dict->var[j];
+
+	    if (v->get.fv == -1)
+		continue;
+
+	    if (v->type == NUMERIC) {
+		REAL(VECTOR_ELT(ans, j))[i] = case_vals[v->fv].f;
+	    } else {
+		SET_STRING_ELT(VECTOR_ELT(ans, j), i,
+			       mkChar(case_vals[v->fv].c));
+	    }
+	}
+    }
+    sfm_maybe_close(fh);
+    free_dictionary(dict);
+    setAttrib(ans, R_NamesSymbol, ans_names);
+    UNPROTECT(2);
+    return ans;
+}
+
+extern int R_fgetc(FILE *stream);
+
+static size_t
+fread_pfm(void *ptr, size_t size, size_t nobj, FILE *stream)
+{
+    size_t nbytes = size * nobj;
+    size_t i;
+    char *c_ptr = ptr;
+
+    for (i = 0; i < nbytes; i++) {
+	int c = fgetc(stream);
+	if (c == '\r') {
+	    c = fgetc(stream);
+	    if ( c != '\n') {
+		ungetc(c, stream);
+		c = '\r';
+	    }
+	}
+	if (c == '\n')
+	    fgetc(stream);
+	if (c == EOF)
+	    break;
+	*c_ptr++ = c;
+    }
+    if (i % size != 0) {
+	i -= i % size;
+    }
+    return i/size;
+}
+
+static int
+is_PORT(FILE *fp)
+{
+    /* For now at least, just ignore the vanity splash strings. */
+    int trans_temp[256];
+
+    if (196 != fread_pfm(trans_temp, sizeof(char), 196, fp))
+	return 0;
+    {
+	unsigned char src[256];
+	int i;
+
+	if (256 != fread_pfm(src, sizeof(char), 256, fp))
+	    return 0;
+	for (i = 0; i < 256; i++)
+	    trans_temp[i] = -1;
+
+	/* 0 is used to mark untranslatable characters, so we have to mark
+	   it specially. */
+	trans_temp[src[64]] = 64;
+	for (i = 0; i < 256; i++) {
+	    if (trans_temp[src[i]] == -1)
+		trans_temp[src[i]] = i;
+	}
+    
+	for (i = 0; i < 256; i++) {
+	    if (trans_temp[i] == -1)
+		trans_temp[i] = 0;
+	}
+
+    }
+  
+    {
+	unsigned char sig[9] = {92, 89, 92, 92, 89, 88, 91, 93, '\0'};
+	unsigned char buf[9];
+	int i;
+
+	buf[8] = '\0';
+	if (8 != fread_pfm(buf, sizeof(char), 8, fp))
+	    return 0;
+	for (i = 0; i < 8; i++) {
+	    if (sig[i] != trans_temp[buf[i]])
+		return 0;
+	}
+    }
+    return 1;
+}
+
+SEXP
+do_read_SPSS(SEXP file)
+{
+    char *filename = CHAR(PROTECT(asChar(file)));
+    FILE *fp = fopen(filename, "r");
+    char buf[5];
+    SEXP ans;
+
+    if (fread_pfm(buf, sizeof(char), 4, fp) != 4) {
+	fclose(fp);
+	error("problem in reading file %s", filename);
+    }
+    buf[4] = '\0';
+
+    if (0 == strncmp("$FL2", buf, 4)) {
+	fclose(fp);
+	ans = read_SPSS_SAVE(filename);
+    } else {
+	if (!is_PORT(fp)) {
+	    fclose(fp);
+	    error("file %s is not in any supported SPSS format", filename);
+	}
+	fclose(fp);
+	ans = read_SPSS_PORT(filename);
+    }
+    UNPROTECT(1);
+    return ans;
+}
+
+void
+spss_init(void)
+{
+    fh_init_files();
+}

@@ -1,3 +1,17 @@
+2000-12-14  Douglas Bates  <bates@stat.wisc.edu>
+
+	* cleanup: Added the cleanup script.
+
+	* src/file-handle.h: Added declaration of fh_init_files to keep
+	-Wall happy.
+
+	* src/sfm-read.c (read_header): initialized skip_amt to keep -Wall
+	happy.
+
+	* tests/minitab.Rout.save: Added a missing blank line in this file
+	and in others so they do not produce error reports during R CMD
+	check.
+
 1999-12-15  Douglas Bates  <bates@stat.wisc.edu>
 
 	* src/minitab.c (strtrim): Corrected the character count.

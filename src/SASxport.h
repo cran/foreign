@@ -1,5 +1,5 @@
 /*
- *  $Id: SASxport.h,v 1.1 2000/02/07 00:26:22 bates Exp $
+ *  $Id: SASxport.h,v 1.4 2000/12/13 21:19:45 bates Exp $
  *
  *  This file is derived from code in the SAS Technical Support
  *  document TS-140 "The Record Layout of a Data Set in SAS Transport
@@ -7,16 +7,16 @@
  *       http://ftp.sas.com/techsup/download/technote/ts140.html
  */
 
+#ifndef SASEXPORT_H
+#define SASEXPORT_H
+
 #include <string.h>		/* for memcpy and memset */
+#include "foreign.h"
+#include "swap_bytes.h"
 
-#define CN_TYPE_NATIVE 0
-#define CN_TYPE_XPORT  1
-#define CN_TYPE_IEEEB  2 
-#define CN_TYPE_IEEEL  3 
+/* double cnxptiee(double from, int fromtype, int totype); */
 
-int cnxptiee(char *from, int fromtype, char *to, int totype);
-void xpt2ieee(char *xport, char *ieee);
-void ieee2xpt(char *ieee, char *xport);
+
 
 struct SAS_XPORT_header { 
   char sas_symbol[2][8];	/* should be "SAS     " */
@@ -55,3 +55,35 @@ struct SAS_XPORT_namestr {
     long    npos;               /* POSITION OF VALUE IN OBSERVATION    */
     char    rest[52];           /* remaining fields are irrelevant     */
 };
+
+#ifdef WORDS_BIGENDIAN
+
+#define char_to_short(from, to)			\
+    do { (to) = *((short *)(from)); } while (0)
+
+#define char_to_int(from, to)			\
+    do { (to) = *((int *)(from)); } while (0)
+
+#define char_to_uint(from, to)			\
+    do { (to) = *((unsigned int *)(from)); } while (0)
+
+#else
+
+#define char_to_short(from, to)			\
+do {						\
+    swap_bytes_short(*((short *)(from)), to);	\
+} while (0)
+
+#define char_to_int(from, to)			\
+do {						\
+    swap_bytes_int(*((int *)(from)), to);	\
+} while (0)
+
+#define char_to_uint(from, to)			\
+do {						\
+    swap_bytes_uint(*((unsigned int *)(from)), to);	\
+} while (0)
+
+#endif /* WORDS_BIGENDIAN */
+
+#endif /* SASEXPORT_H */

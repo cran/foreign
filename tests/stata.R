@@ -1,0 +1,8 @@
+library(foreign)
+pc5 <- read.dta("pc5.dta")
+summary(pc5)
+str(pc5)
+sun6 <- read.dta("sun6.dta")
+summary(sun6)
+str(sun6)
+q()

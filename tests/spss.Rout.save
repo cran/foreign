@@ -1,0 +1,370 @@
+
+R : Copyright 2000, The R Development Core Team
+Version 1.2.0 Under development (unstable) (2000-12-12)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type `license()' or `licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type `contributors()' for more information.
+
+Type `demo()' for some demos, `help()' for on-line help, or
+`help.start()' for a HTML browser interface to help.
+Type `q()' to quit R.
+
+Loading required package: ctest 
+> library(foreign)
+> sample100 <- read.spss("sample100.sav")
+> summary(sample100)
+         Length Class  Mode     
+YEAR     100    -none- numeric  
+DISTRICT 100    -none- numeric  
+CAMPUS   100    -none- numeric  
+DNAME    100    -none- character
+CNAME    100    -none- character
+SEX      100    -none- character
+DISADVG  100    -none- character
+ETHNICTY 100    -none- character
+STUID    100    -none- character
+TLIMTH   100    -none- numeric  
+GRADE    100    -none- numeric  
+> str(sample100)
+List of 11
+ $ YEAR    : num [1:100] 99 94 94 95 96 97 98 99 94 95 ...
+ $ DISTRICT: num [1:100] 57914 57914 57914 57914 57914 ...
+ $ CAMPUS  : num [1:100] 57914045 57914106 57914110 57914123 57914117 ...
+ $ DNAME   : chr [1:100] "MESQUITE ISD   " "MESQUITE ISD   " "MESQUITE ISD   " "MESQUITE ISD   " ...
+ $ CNAME   : chr [1:100] "A C NEW MIDDLE " "MCWHORTER EL   " "RUTHERFORD EL  " "JOEY M PIRRUNG " ...
+ $ SEX     : chr [1:100] "F" "F" " " "F" ...
+ $ DISADVG : chr [1:100] "NO " "NO " "   " "NO " ...
+ $ ETHNICTY: chr [1:100] "WHITE   " "WHITE   " "        " "HISPANIC" ...
+ $ STUID   : chr [1:100] "00614371S" "00614372S" "00614373S" "00614373S" ...
+ $ TLIMTH  : num [1:100] 90 86 67 77 77 79 86 87 89 85 ...
+ $ GRADE   : num [1:100] 8 3 3 4 5 6 7 8 3 4 ...
+> sample100 <- data.frame(sample100)
+> summary(sample100)
+      YEAR           DISTRICT          CAMPUS                      DNAME   
+ Min.   :  94.0   Min.   : 57910   Min.   : 57910000   DALLAS ISD     : 1  
+ 1st Qu.:  95.0   1st Qu.: 57910   1st Qu.: 57910000   HARMONY ISD    : 1  
+ Median :  96.0   Median : 57910   Median : 57910000   MESQUITE ISD   :96  
+ Mean   : 115.4   Mean   : 59640   Mean   : 59640000   SUNNYVALE ISD  : 2  
+ 3rd Qu.:  98.0   3rd Qu.: 57910   3rd Qu.: 57910000                       
+ Max.   :2000.0   Max.   :230900   Max.   :230900000                       
+                                                                           
+             CNAME    SEX    DISADVG      ETHNICTY        STUID   
+ J C AUSTIN EL  :23    : 4      : 4           : 4   00614421S: 6  
+ R S KIMBROUGH M:12   F:62   NO :90   HISPANIC: 3   00614420S: 6  
+ WILKINSON MIDDL: 9   M:34   YES: 6   OTHER   : 2   00614417S: 6  
+ VERNON PRICE EL: 7                   WHITE   :91   00614416S: 6  
+ TISINGER EL    : 6                                 00614414S: 6  
+ THOMPSON EL    : 5                                 00614406S: 6  
+ (Other)        :38                                 (Other)  :64  
+     TLIMTH          GRADE     
+ Min.   :54.00   Min.   :3.00  
+ 1st Qu.:74.00   1st Qu.:4.00  
+ Median :84.00   Median :5.00  
+ Mean   :80.16   Mean   :5.37  
+ 3rd Qu.:87.00   3rd Qu.:7.00  
+ Max.   :93.00   Max.   :8.00  
+                               
+> sample100 <- read.spss("sample100.por")
+> summary(sample100)
+         Length Class  Mode     
+YEAR     100    -none- numeric  
+DISTRICT 100    -none- numeric  
+CAMPUS   100    -none- numeric  
+DNAME    100    -none- character
+CNAME    100    -none- character
+SEX      100    -none- character
+DISADVG  100    -none- character
+ETHNICTY 100    -none- character
+STUID    100    -none- character
+TLIMTH   100    -none- numeric  
+GRADE    100    -none- numeric  
+> str(sample100)
+List of 11
+ $ YEAR    : num [1:100] 99 94 94 95 96 97 98 99 94 95 ...
+ $ DISTRICT: num [1:100] 57914 57914 57914 57914 57914 ...
+ $ CAMPUS  : num [1:100] 57914045 57914106 57914110 57914123 57914117 ...
+ $ DNAME   : chr [1:100] "MESQUITE ISD   " "MESQUITE ISD   " "MESQUITE ISD   " "MESQUITE ISD   " ...
+ $ CNAME   : chr [1:100] "A C NEW MIDDLE " "MCWHORTER EL   " "RUTHERFORD EL  " "JOEY M PIRRUNG " ...
+ $ SEX     : chr [1:100] "F" "F" " " "F" ...
+ $ DISADVG : chr [1:100] "NO " "NO " "   " "NO " ...
+ $ ETHNICTY: chr [1:100] "WHITE   " "WHITE   " "        " "HISPANIC" ...
+ $ STUID   : chr [1:100] "00614371S" "00614372S" "00614373S" "00614373S" ...
+ $ TLIMTH  : num [1:100] 90 86 67 77 77 79 86 87 89 85 ...
+ $ GRADE   : num [1:100] 8 3 3 4 5 6 7 8 3 4 ...
+> sample100 <- data.frame(sample100)
+> summary(sample100)
+      YEAR           DISTRICT          CAMPUS                      DNAME   
+ Min.   :  94.0   Min.   : 57910   Min.   : 57910000   DALLAS ISD     : 1  
+ 1st Qu.:  95.0   1st Qu.: 57910   1st Qu.: 57910000   HARMONY ISD    : 1  
+ Median :  96.0   Median : 57910   Median : 57910000   MESQUITE ISD   :96  
+ Mean   : 115.4   Mean   : 59640   Mean   : 59640000   SUNNYVALE ISD  : 2  
+ 3rd Qu.:  98.0   3rd Qu.: 57910   3rd Qu.: 57910000                       
+ Max.   :2000.0   Max.   :230900   Max.   :230900000                       
+                                                                           
+             CNAME    SEX    DISADVG      ETHNICTY        STUID   
+ J C AUSTIN EL  :23    : 4      : 4           : 4   00614421S: 6  
+ R S KIMBROUGH M:12   F:62   NO :90   HISPANIC: 3   00614420S: 6  
+ WILKINSON MIDDL: 9   M:34   YES: 6   OTHER   : 2   00614417S: 6  
+ VERNON PRICE EL: 7                   WHITE   :91   00614416S: 6  
+ TISINGER EL    : 6                                 00614414S: 6  
+ THOMPSON EL    : 5                                 00614406S: 6  
+ (Other)        :38                                 (Other)  :64  
+     TLIMTH          GRADE     
+ Min.   :54.00   Min.   :3.00  
+ 1st Qu.:74.00   1st Qu.:4.00  
+ Median :84.00   Median :5.00  
+ Mean   :80.16   Mean   :5.37  
+ 3rd Qu.:87.00   3rd Qu.:7.00  
+ Max.   :93.00   Max.   :8.00  
+                               
+> pbc <- read.spss("pbc.sav")
+> summary(pbc)
+         Length Class  Mode   
+AGE      418    -none- numeric
+ALB      418    -none- numeric
+ALKPHOS  418    -none- numeric
+ASCITES  418    -none- numeric
+BILI     418    -none- numeric
+CHOL     418    -none- numeric
+EDEMA    418    -none- numeric
+EDTRT    418    -none- numeric
+HEPMEG   418    -none- numeric
+TIME     418    -none- numeric
+PLATELET 418    -none- numeric
+PROTIME  418    -none- numeric
+SEX      418    -none- numeric
+SGOT     418    -none- numeric
+SPIDERS  418    -none- numeric
+STAGE    418    -none- numeric
+STATUS   418    -none- numeric
+TRT      418    -none- numeric
+TRIG     418    -none- numeric
+COPPER   418    -none- numeric
+> str(pbc)
+List of 20
+ $ AGE     : num [1:418] 58.8 56.4 70.1 54.7 38.1 ...
+ $ ALB     : num [1:418] 2.6 4.14 3.48 2.54 3.53 3.98 4.09 4 3.08 2.74 ...
+ $ ALKPHOS : num [1:418] 1718 7395  516 6122  671 ...
+ $ ASCITES : num [1:418] 1 0 0 0 0 0 0 0 0 1 ...
+ $ BILI    : num [1:418] 14.5 1.1 1.4 1.8 3.4 0.8 1 0.3 3.2 12.6 ...
+ $ CHOL    : num [1:418] 261 302 176 244 279 248 322 280 562 200 ...
+ $ EDEMA   : num [1:418] 1 0 1 1 0 0 0 0 0 1 ...
+ $ EDTRT   : num [1:418] 1 0 0.5 0.5 0 0 0 0 0 1 ...
+ $ HEPMEG  : num [1:418] 1 1 0 1 1 1 1 0 0 0 ...
+ $ TIME    : num [1:418]  400 4500 1012 1925 1504 ...
+ $ PLATELET: num [1:418] 190 221 151 183 136 -9 204 373 251 302 ...
+ $ PROTIME : num [1:418] 12.2 10.6 12 10.3 10.9 11 9.7 11 11 11.5 ...
+ $ SEX     : num [1:418] 1 1 0 1 1 1 1 1 1 1 ...
+ $ SGOT    : num [1:418] 137.9 113.5  96.1  60.6 113.2 ...
+ $ SPIDERS : num [1:418] 1 1 0 1 1 0 0 0 1 1 ...
+ $ STAGE   : num [1:418] 4 3 4 4 3 3 3 3 2 4 ...
+ $ STATUS  : num [1:418] 1 0 1 1 0 1 0 1 1 1 ...
+ $ TRT     : num [1:418] 1 1 1 1 2 2 2 2 1 2 ...
+ $ TRIG    : num [1:418] 172 88 55 92 72 63 213 189 88 143 ...
+ $ COPPER  : num [1:418] 156 54 210 64 143 50 52 52 79 140 ...
+> pbc <- data.frame(pbc)
+> summary(pbc)
+      AGE             ALB           ALKPHOS         ASCITES      
+ Min.   :26.28   Min.   :1.960   Min.   :   -9   Min.   :-9.000  
+ 1st Qu.:42.83   1st Qu.:3.243   1st Qu.:   -9   1st Qu.:-9.000  
+ Median :51.00   Median :3.530   Median : 1009   Median : 0.000  
+ Mean   :50.74   Mean   :3.497   Mean   : 1478   Mean   :-2.225  
+ 3rd Qu.:58.24   3rd Qu.:3.770   3rd Qu.: 1708   3rd Qu.: 0.000  
+ Max.   :78.44   Max.   :4.640   Max.   :13860   Max.   : 1.000  
+      BILI             CHOL            EDEMA            EDTRT       
+ Min.   : 0.300   Min.   :  -9.0   Min.   :0.0000   Min.   :0.0000  
+ 1st Qu.: 0.800   1st Qu.:  -9.0   1st Qu.:0.0000   1st Qu.:0.0000  
+ Median : 1.400   Median : 252.5   Median :0.0000   Median :0.0000  
+ Mean   : 3.221   Mean   : 248.2   Mean   :0.1196   Mean   :0.1005  
+ 3rd Qu.: 3.400   3rd Qu.: 347.8   3rd Qu.:0.0000   3rd Qu.:0.0000  
+ Max.   :28.000   Max.   :1775.0   Max.   :1.0000   Max.   :1.0000  
+     HEPMEG          TIME         PLATELET        PROTIME           SEX        
+ Min.   :-9.0   Min.   :  41   Min.   : -9.0   Min.   : 9.00   Min.   :-9.000  
+ 1st Qu.:-9.0   1st Qu.:1093   1st Qu.:181.0   1st Qu.:10.00   1st Qu.:-9.000  
+ Median : 0.0   Median :1730   Median :248.0   Median :10.60   Median : 1.000  
+ Mean   :-1.9   Mean   :1918   Mean   :250.0   Mean   :10.73   Mean   :-1.622  
+ 3rd Qu.: 1.0   3rd Qu.:2614   3rd Qu.:315.5   3rd Qu.:11.10   3rd Qu.: 1.000  
+ Max.   : 1.0   Max.   :4795   Max.   :721.0   Max.   :18.00   Max.   : 1.000  
+      SGOT           SPIDERS           STAGE              STATUS      
+ Min.   : -9.00   Min.   :-9.000   Min.   :-9.00000   Min.   :0.0000  
+ 1st Qu.: -9.00   1st Qu.:-9.000   1st Qu.:-9.00000   1st Qu.:0.0000  
+ Median : 90.45   Median : 0.000   Median : 3.00000   Median :0.0000  
+ Mean   : 89.20   Mean   :-2.067   Mean   :-0.01914   Mean   :0.3852  
+ 3rd Qu.:135.80   3rd Qu.: 0.000   3rd Qu.: 4.00000   3rd Qu.:1.0000  
+ Max.   :457.30   Max.   : 1.000   Max.   : 4.00000   Max.   :1.0000  
+      TRT              TRIG           COPPER      
+ Min.   :-9.000   Min.   : -9.0   Min.   : -9.00  
+ 1st Qu.:-9.000   1st Qu.: -9.0   1st Qu.: -9.00  
+ Median : 1.000   Median : 85.0   Median : 50.50  
+ Mean   :-1.167   Mean   : 81.2   Mean   : 70.09  
+ 3rd Qu.: 2.000   3rd Qu.:127.8   3rd Qu.:100.80  
+ Max.   : 2.000   Max.   :598.0   Max.   :588.00  
+> pbc <- read.spss("pbcold.sav")
+> summary(pbc)
+         Length Class  Mode   
+AGE      418    -none- numeric
+ALB      418    -none- numeric
+ALKPHOS  418    -none- numeric
+ASCITES  418    -none- numeric
+BILI     418    -none- numeric
+CHOL     418    -none- numeric
+EDEMA    418    -none- numeric
+EDTRT    418    -none- numeric
+HEPMEG   418    -none- numeric
+TIME     418    -none- numeric
+PLATELET 418    -none- numeric
+PROTIME  418    -none- numeric
+SEX      418    -none- numeric
+SGOT     418    -none- numeric
+SPIDERS  418    -none- numeric
+STAGE    418    -none- numeric
+STATUS   418    -none- numeric
+TRT      418    -none- numeric
+TRIG     418    -none- numeric
+COPPER   418    -none- numeric
+> str(pbc)
+List of 20
+ $ AGE     : num [1:418] 58.8 56.4 70.1 54.7 38.1 ...
+ $ ALB     : num [1:418] 2.6 4.14 3.48 2.54 3.53 3.98 4.09 4 3.08 2.74 ...
+ $ ALKPHOS : num [1:418] 1718 7395  516 6122  671 ...
+ $ ASCITES : num [1:418] 1 0 0 0 0 0 0 0 0 1 ...
+ $ BILI    : num [1:418] 14.5 1.1 1.4 1.8 3.4 0.8 1 0.3 3.2 12.6 ...
+ $ CHOL    : num [1:418] 261 302 176 244 279 248 322 280 562 200 ...
+ $ EDEMA   : num [1:418] 1 0 1 1 0 0 0 0 0 1 ...
+ $ EDTRT   : num [1:418] 1 0 0.5 0.5 0 0 0 0 0 1 ...
+ $ HEPMEG  : num [1:418] 1 1 0 1 1 1 1 0 0 0 ...
+ $ TIME    : num [1:418]  400 4500 1012 1925 1504 ...
+ $ PLATELET: num [1:418] 190 221 151 183 136 -9 204 373 251 302 ...
+ $ PROTIME : num [1:418] 12.2 10.6 12 10.3 10.9 11 9.7 11 11 11.5 ...
+ $ SEX     : num [1:418] 1 1 0 1 1 1 1 1 1 1 ...
+ $ SGOT    : num [1:418] 137.9 113.5  96.1  60.6 113.2 ...
+ $ SPIDERS : num [1:418] 1 1 0 1 1 0 0 0 1 1 ...
+ $ STAGE   : num [1:418] 4 3 4 4 3 3 3 3 2 4 ...
+ $ STATUS  : num [1:418] 1 0 1 1 0 1 0 1 1 1 ...
+ $ TRT     : num [1:418] 1 1 1 1 2 2 2 2 1 2 ...
+ $ TRIG    : num [1:418] 172 88 55 92 72 63 213 189 88 143 ...
+ $ COPPER  : num [1:418] 156 54 210 64 143 50 52 52 79 140 ...
+> pbc <- data.frame(pbc)
+> summary(pbc)
+      AGE             ALB           ALKPHOS         ASCITES      
+ Min.   :26.28   Min.   :1.960   Min.   :   -9   Min.   :-9.000  
+ 1st Qu.:42.83   1st Qu.:3.243   1st Qu.:   -9   1st Qu.:-9.000  
+ Median :51.00   Median :3.530   Median : 1009   Median : 0.000  
+ Mean   :50.74   Mean   :3.497   Mean   : 1478   Mean   :-2.225  
+ 3rd Qu.:58.24   3rd Qu.:3.770   3rd Qu.: 1708   3rd Qu.: 0.000  
+ Max.   :78.44   Max.   :4.640   Max.   :13860   Max.   : 1.000  
+      BILI             CHOL            EDEMA            EDTRT       
+ Min.   : 0.300   Min.   :  -9.0   Min.   :0.0000   Min.   :0.0000  
+ 1st Qu.: 0.800   1st Qu.:  -9.0   1st Qu.:0.0000   1st Qu.:0.0000  
+ Median : 1.400   Median : 252.5   Median :0.0000   Median :0.0000  
+ Mean   : 3.221   Mean   : 248.2   Mean   :0.1196   Mean   :0.1005  
+ 3rd Qu.: 3.400   3rd Qu.: 347.8   3rd Qu.:0.0000   3rd Qu.:0.0000  
+ Max.   :28.000   Max.   :1775.0   Max.   :1.0000   Max.   :1.0000  
+     HEPMEG          TIME         PLATELET        PROTIME           SEX        
+ Min.   :-9.0   Min.   :  41   Min.   : -9.0   Min.   : 9.00   Min.   :-9.000  
+ 1st Qu.:-9.0   1st Qu.:1093   1st Qu.:181.0   1st Qu.:10.00   1st Qu.:-9.000  
+ Median : 0.0   Median :1730   Median :248.0   Median :10.60   Median : 1.000  
+ Mean   :-1.9   Mean   :1918   Mean   :250.0   Mean   :10.73   Mean   :-1.622  
+ 3rd Qu.: 1.0   3rd Qu.:2614   3rd Qu.:315.5   3rd Qu.:11.10   3rd Qu.: 1.000  
+ Max.   : 1.0   Max.   :4795   Max.   :721.0   Max.   :18.00   Max.   : 1.000  
+      SGOT           SPIDERS           STAGE              STATUS      
+ Min.   : -9.00   Min.   :-9.000   Min.   :-9.00000   Min.   :0.0000  
+ 1st Qu.: -9.00   1st Qu.:-9.000   1st Qu.:-9.00000   1st Qu.:0.0000  
+ Median : 90.45   Median : 0.000   Median : 3.00000   Median :0.0000  
+ Mean   : 89.20   Mean   :-2.067   Mean   :-0.01914   Mean   :0.3852  
+ 3rd Qu.:135.80   3rd Qu.: 0.000   3rd Qu.: 4.00000   3rd Qu.:1.0000  
+ Max.   :457.30   Max.   : 1.000   Max.   : 4.00000   Max.   :1.0000  
+      TRT              TRIG           COPPER      
+ Min.   :-9.000   Min.   : -9.0   Min.   : -9.00  
+ 1st Qu.:-9.000   1st Qu.: -9.0   1st Qu.: -9.00  
+ Median : 1.000   Median : 85.0   Median : 50.50  
+ Mean   :-1.167   Mean   : 81.2   Mean   : 70.09  
+ 3rd Qu.: 2.000   3rd Qu.:127.8   3rd Qu.:100.80  
+ Max.   : 2.000   Max.   :598.0   Max.   :588.00  
+> pbc <- read.spss("pbc.por")
+> summary(pbc)
+         Length Class  Mode   
+AGE      418    -none- numeric
+ALB      418    -none- numeric
+ALKPHOS  418    -none- numeric
+ASCITES  418    -none- numeric
+BILI     418    -none- numeric
+CHOL     418    -none- numeric
+EDEMA    418    -none- numeric
+EDTRT    418    -none- numeric
+HEPMEG   418    -none- numeric
+TIME     418    -none- numeric
+PLATELET 418    -none- numeric
+PROTIME  418    -none- numeric
+SEX      418    -none- numeric
+SGOT     418    -none- numeric
+SPIDERS  418    -none- numeric
+STAGE    418    -none- numeric
+STATUS   418    -none- numeric
+TRT      418    -none- numeric
+TRIG     418    -none- numeric
+COPPER   418    -none- numeric
+> str(pbc)
+List of 20
+ $ AGE     : num [1:418] 58.8 56.4 70.1 54.7 38.1 ...
+ $ ALB     : num [1:418] 2.6 4.14 3.48 2.54 3.53 3.98 4.09 4 3.08 2.74 ...
+ $ ALKPHOS : num [1:418] 1718 7395  516 6122  671 ...
+ $ ASCITES : num [1:418] 1 0 0 0 0 0 0 0 0 1 ...
+ $ BILI    : num [1:418] 14.5 1.1 1.4 1.8 3.4 0.8 1 0.3 3.2 12.6 ...
+ $ CHOL    : num [1:418] 261 302 176 244 279 248 322 280 562 200 ...
+ $ EDEMA   : num [1:418] 1 0 1 1 0 0 0 0 0 1 ...
+ $ EDTRT   : num [1:418] 1 0 0.5 0.5 0 0 0 0 0 1 ...
+ $ HEPMEG  : num [1:418] 1 1 0 1 1 1 1 0 0 0 ...
+ $ TIME    : num [1:418]  400 4500 1012 1925 1504 ...
+ $ PLATELET: num [1:418] 190 221 151 183 136 -9 204 373 251 302 ...
+ $ PROTIME : num [1:418] 12.2 10.6 12 10.3 10.9 11 9.7 11 11 11.5 ...
+ $ SEX     : num [1:418] 1 1 0 1 1 1 1 1 1 1 ...
+ $ SGOT    : num [1:418] 137.9 113.5  96.1  60.6 113.2 ...
+ $ SPIDERS : num [1:418] 1 1 0 1 1 0 0 0 1 1 ...
+ $ STAGE   : num [1:418] 4 3 4 4 3 3 3 3 2 4 ...
+ $ STATUS  : num [1:418] 1 0 1 1 0 1 0 1 1 1 ...
+ $ TRT     : num [1:418] 1 1 1 1 2 2 2 2 1 2 ...
+ $ TRIG    : num [1:418] 172 88 55 92 72 63 213 189 88 143 ...
+ $ COPPER  : num [1:418] 156 54 210 64 143 50 52 52 79 140 ...
+> pbc <- data.frame(pbc)
+> summary(pbc)
+      AGE             ALB           ALKPHOS         ASCITES      
+ Min.   :26.28   Min.   :1.960   Min.   :   -9   Min.   :-9.000  
+ 1st Qu.:42.83   1st Qu.:3.243   1st Qu.:   -9   1st Qu.:-9.000  
+ Median :51.00   Median :3.530   Median : 1009   Median : 0.000  
+ Mean   :50.74   Mean   :3.497   Mean   : 1478   Mean   :-2.225  
+ 3rd Qu.:58.24   3rd Qu.:3.770   3rd Qu.: 1708   3rd Qu.: 0.000  
+ Max.   :78.44   Max.   :4.640   Max.   :13860   Max.   : 1.000  
+      BILI             CHOL            EDEMA            EDTRT       
+ Min.   : 0.300   Min.   :  -9.0   Min.   :0.0000   Min.   :0.0000  
+ 1st Qu.: 0.800   1st Qu.:  -9.0   1st Qu.:0.0000   1st Qu.:0.0000  
+ Median : 1.400   Median : 252.5   Median :0.0000   Median :0.0000  
+ Mean   : 3.221   Mean   : 248.2   Mean   :0.1196   Mean   :0.1005  
+ 3rd Qu.: 3.400   3rd Qu.: 347.8   3rd Qu.:0.0000   3rd Qu.:0.0000  
+ Max.   :28.000   Max.   :1775.0   Max.   :1.0000   Max.   :1.0000  
+     HEPMEG          TIME         PLATELET        PROTIME           SEX        
+ Min.   :-9.0   Min.   :  41   Min.   : -9.0   Min.   : 9.00   Min.   :-9.000  
+ 1st Qu.:-9.0   1st Qu.:1093   1st Qu.:181.0   1st Qu.:10.00   1st Qu.:-9.000  
+ Median : 0.0   Median :1730   Median :248.0   Median :10.60   Median : 1.000  
+ Mean   :-1.9   Mean   :1918   Mean   :250.0   Mean   :10.73   Mean   :-1.622  
+ 3rd Qu.: 1.0   3rd Qu.:2614   3rd Qu.:315.5   3rd Qu.:11.10   3rd Qu.: 1.000  
+ Max.   : 1.0   Max.   :4795   Max.   :721.0   Max.   :18.00   Max.   : 1.000  
+      SGOT           SPIDERS           STAGE              STATUS      
+ Min.   : -9.00   Min.   :-9.000   Min.   :-9.00000   Min.   :0.0000  
+ 1st Qu.: -9.00   1st Qu.:-9.000   1st Qu.:-9.00000   1st Qu.:0.0000  
+ Median : 90.45   Median : 0.000   Median : 3.00000   Median :0.0000  
+ Mean   : 89.20   Mean   :-2.067   Mean   :-0.01914   Mean   :0.3852  
+ 3rd Qu.:135.80   3rd Qu.: 0.000   3rd Qu.: 4.00000   3rd Qu.:1.0000  
+ Max.   :457.30   Max.   : 1.000   Max.   : 4.00000   Max.   :1.0000  
+      TRT              TRIG           COPPER      
+ Min.   :-9.000   Min.   : -9.0   Min.   : -9.00  
+ 1st Qu.:-9.000   1st Qu.: -9.0   1st Qu.: -9.00  
+ Median : 1.000   Median : 85.0   Median : 50.50  
+ Mean   :-1.167   Mean   : 81.2   Mean   : 70.09  
+ 3rd Qu.: 2.000   3rd Qu.:127.8   3rd Qu.:100.80  
+ Max.   : 2.000   Max.   :598.0   Max.   :588.00  
+> q()

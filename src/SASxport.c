@@ -1,5 +1,5 @@
 /*
- *  $Id: SASxport.c,v 1.4 2000/01/17 00:02:06 bates Exp $
+ *  $Id: SASxport.c,v 1.10 2000/12/13 21:32:39 saikat Exp $
  *
  *  Read SAS transport data set format
  *
@@ -26,10 +26,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "S.h"
+#include "R.h"
 #include "Rinternals.h"
 #include "SASxport.h"
-
 
 #define HEADER_BEG "HEADER RECORD*******"
 #define HEADER_TYPE_LIBRARY "LIBRARY "
@@ -58,47 +57,47 @@
 #define NULL ((void *) 0)
 #endif
 
-static double
-get_ieee64(char *record)
-{
-    union {
-	double d;
-	char c[8];
-    } u;
-    cnxptiee(record, CN_TYPE_XPORT, u.c, CN_TYPE_NATIVE);
-    return u.d;
-}
+/* #define get_ieee64(c) cnxptiee(*((double *)(c)), CN_TYPE_XPORT, CN_TYPE_NATIVE) */
 
-static short
-get_int16(const char *record)
-{
-    short sval = 0;
-#ifdef WORDS_BIGENDIAN
-    ((char *)&sval)[sizeof(short) - 2] = record[0];
-    ((char *)&sval)[sizeof(short) - 1] = record[1];
-#else
-    ((char *)&sval)[1] = record[0];
-    ((char *)&sval)[0] = record[1];
-#endif
-    return (short) sval;
-}
+static double Two32 = 0.;
 
-static long
-get_int32(const char *record)
+static double get_IBM_double(char* c)
 {
-    long lval = 0;
-#ifdef WORDS_BIGENDIAN
-    ((char *)&lval)[sizeof(long) - 4] = record[0];
-    ((char *)&lval)[sizeof(long) - 3] = record[1];
-    ((char *)&lval)[sizeof(long) - 2] = record[2];
-    ((char *)&lval)[sizeof(long) - 1] = record[3];
-#else
-    ((char *)&lval)[3] = record[0];
-    ((char *)&lval)[2] = record[1];
-    ((char *)&lval)[1] = record[2];
-    ((char *)&lval)[0] = record[3];
-#endif
-    return lval;
+				/* Conversion from IBM 360 format to double */
+/*
+ * IBM format:
+ * 6       5                 0
+ * 3       1                 0
+ *
+ * SEEEEEEEMMMM ......... MMMM
+ *
+ * Sign bit, 7 bit exponent, 56 bit fraction. Exponent is
+ * excess 64. The fraction is multiplied by a power of 16 of
+ * the actual exponent. Normalized floating point numbers are
+ * represented with the radix point immediately to the left of
+ * the high order hex fraction digit.
+ */
+    unsigned int i, upper, lower;
+				/* exponent is expressed here as
+				   excess 70 (=64+6) to accomodate
+				   integer conversion of c[1] to c[4] */
+    char negative = c[0] & 0x80, exponent = (c[0] & 0x7f) - 70, buf[4];
+    double value; 
+				/* check for missing value */
+    if (c[1] == '\0' && c[0] != '\0') return R_NaReal;
+				/* convert c[1] to c[3] to an int */
+    buf[0] = '\0';
+    for (i = 1; i < 4; i++) buf[i] = c[i];
+    char_to_uint(&buf[0], upper);
+				/* convert c[4] to c[7] to an int */
+    for (i = 0; i < 4; i++) buf[i] = c[i + 4];
+    char_to_uint(&buf[0], lower);
+				/* initialize the constant if needed */
+    if (Two32 == 0.) Two32 = pow(2., 32.);
+    value = ((double) upper + ((double) lower)/Two32) *
+	pow(16., (double) exponent);
+    if (negative) value = -value;
+    return value;
 }
 
 static int
@@ -112,21 +111,21 @@ get_nam_header(FILE *fp, struct SAS_XPORT_namestr *namestr, int length)
     if(n != length)
 	return 0;
 
-    namestr->ntype = get_int16(record);
-    namestr->nhfun = get_int16(record + 2);
-    namestr->nlng  = get_int16(record + 4);
-    namestr->nvar0 = get_int16(record + 6);
+    char_to_short(record, namestr->ntype);
+    char_to_short(record+2, namestr->nhfun);
+    char_to_short(record+4, namestr->nlng);
+    char_to_short(record+6, namestr->nvar0);
     Memcpy(namestr->nname, record + 8, 8);
     Memcpy(namestr->nlabel, record + 16, 40);
     Memcpy(namestr->nform, record + 56, 8);
-    namestr->nfl   = get_int16(record + 64);
-    namestr->nfd   = get_int16(record + 66);
-    namestr->nfj   = get_int16(record + 68);
+    char_to_short(record+64, namestr->nfl);
+    char_to_short(record+66, namestr->nfd);
+    char_to_short(record+68, namestr->nfj);
     Memcpy(namestr->nfill, record + 70, 2);
     Memcpy(namestr->niform, record + 72, 8);
-    namestr->nifl  = get_int16(record + 80);
-    namestr->nifd  = get_int16(record + 82);
-    namestr->npos  = get_int32(record + 84);
+    char_to_short(record+80, namestr->nifl);
+    char_to_short(record+82, namestr->nifd);
+    char_to_int(record+84, namestr->npos);
     return 1;
 }
 
@@ -260,7 +259,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 {
     char *tmp;
     char record[81];
-    int i, n, nbytes, totwidth;
+    int i, n, nbytes, totwidth, nlength;
     int *nname_len;
     struct SAS_XPORT_namestr *nam_head;
 
@@ -280,8 +279,10 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
     }
     
     n = GET_RECORD(record, fp, 80);
-    if(n != 80 || strncmp(OBS_HEADER, record, 80) != 0)
+    if(n != 80 || strncmp(OBS_HEADER, record, 80) != 0) {
+	Free(nam_head);
 	error("File not in SAS transfer format");
+    }
   
     nname_len = Calloc(nvars, int);
 
@@ -302,34 +303,55 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
     Free(nname_len);
     Free(nam_head);
 
-    nbytes = 0;
-
-    while(!feof(fp)) {
-	n = GET_RECORD(record, fp, 80);
-	if(n == 80 && strncmp(MEM_HEADER, record, 75) == 0 &&
-	   strncmp("  ", record+78, 2) == 0) {
-	    record[78] = '\0';
-	    sscanf(record+75, "%d", &namestr_length);
-	    fseek(fp, -160, SEEK_CUR);
-	    n = GET_RECORD(record, fp, 80);
-	    fseek(fp, 80, SEEK_CUR);
-	    break;
-	}
-	nbytes += n;
-    }
-
     totwidth = 0;
     for(i = 0; i < nvars; i++)
 	totwidth += nlng[i];
 
-    i = n - 1;
-    while(i >= (n - nbytes)%totwidth) {
-	if(record[i--] != ' ')
-	    break;
-    }
+    nbytes = 0;
+    nlength = 0;
+    tmp = R_alloc(totwidth+1, sizeof (char));
+    while(!feof(fp)) {
+	int restOfCard = 80 - (ftell(fp) % 80);
+	int allSpace = 1;
+	fpos_t currentPos;
 
-    *length = ((nbytes - n) + i + totwidth)/totwidth;
-    *tailpad = nbytes - *length * totwidth;
+	if (fgetpos(fp, &currentPos))
+	    error("problem accessing SAS XPORT file");
+
+	n = GET_RECORD(tmp, fp, restOfCard);
+	if (n != restOfCard) {
+	    allSpace = 0;
+	} else {
+	    for (i = 0; i < restOfCard; i++) {
+		if (tmp[i] != ' ') {
+		    allSpace = 0;
+		    break;
+		}
+	    }
+	}
+	if (allSpace) {
+	    n = GET_RECORD(tmp, fp, 80);
+	    if(n == 80 && strncmp(MEM_HEADER, record, 75) == 0 &&
+	       strncmp("  ", record+78, 2) == 0) {
+		*tailpad = restOfCard;
+		record[78] = '\0';
+		sscanf(record+75, "%d", &namestr_length);
+		break;
+	    }
+	}
+	if (fsetpos(fp, &currentPos))
+	    error("problem accessing SAS XPORT file");
+
+	n = GET_RECORD(tmp, fp, totwidth);
+	if (n != totwidth) {
+	    if (!feof(fp))
+		error("problem accessing SAS XPORT file");
+	    *tailpad = n;
+	    break;
+	}
+	nlength++;
+    }
+    *length = nlength;
 
     return (feof(fp)?-1:namestr_length);
 }
@@ -348,9 +370,9 @@ getListElement(SEXP list, char *str) {
     names = getAttrib(list, R_NamesSymbol);
 
     for (i = 0; i < LENGTH(list); i++) {
-	tempChar = CHAR(STRING(names)[i]);
+	tempChar = CHAR(STRING_ELT(names, i));
 	if( strcmp(tempChar,str) == 0) {
-	    elmt = VECTOR(list)[i];
+	    elmt = VECTOR_ELT(list, i);
 	    break;
 	}
     }
@@ -371,15 +393,25 @@ const char *cVarInfoNames[] = {
     "length"
 };
 
-#define XPORT_VAR_HEADPAD(varinfo)   VECTOR(varinfo)[0]
-#define XPORT_VAR_TYPE(varinfo)      VECTOR(varinfo)[1]
-#define XPORT_VAR_WIDTH(varinfo)     VECTOR(varinfo)[2]
-#define XPORT_VAR_INDEX(varinfo)     VECTOR(varinfo)[3]
-#define XPORT_VAR_POSITION(varinfo)  VECTOR(varinfo)[4]
-#define XPORT_VAR_NAME(varinfo)      VECTOR(varinfo)[5]
-#define XPORT_VAR_SEXPTYPE(varinfo)  VECTOR(varinfo)[6]
-#define XPORT_VAR_TAILPAD(varinfo)   VECTOR(varinfo)[7]
-#define XPORT_VAR_LENGTH(varinfo)    VECTOR(varinfo)[8]
+#define XPORT_VAR_HEADPAD(varinfo)   VECTOR_ELT(varinfo, 0)
+#define XPORT_VAR_TYPE(varinfo)      VECTOR_ELT(varinfo, 1)
+#define XPORT_VAR_WIDTH(varinfo)     VECTOR_ELT(varinfo, 2)
+#define XPORT_VAR_INDEX(varinfo)     VECTOR_ELT(varinfo, 3)
+#define XPORT_VAR_POSITION(varinfo)  VECTOR_ELT(varinfo, 4)
+#define XPORT_VAR_NAME(varinfo)      VECTOR_ELT(varinfo, 5)
+#define XPORT_VAR_SEXPTYPE(varinfo)  VECTOR_ELT(varinfo, 6)
+#define XPORT_VAR_TAILPAD(varinfo)   VECTOR_ELT(varinfo, 7)
+#define XPORT_VAR_LENGTH(varinfo)    VECTOR_ELT(varinfo, 8)
+
+#define SET_XPORT_VAR_HEADPAD(varinfo, val)   SET_VECTOR_ELT(varinfo, 0, val)
+#define SET_XPORT_VAR_TYPE(varinfo, val)      SET_VECTOR_ELT(varinfo, 1, val)
+#define SET_XPORT_VAR_WIDTH(varinfo, val)     SET_VECTOR_ELT(varinfo, 2, val)
+#define SET_XPORT_VAR_INDEX(varinfo, val)     SET_VECTOR_ELT(varinfo, 3, val)
+#define SET_XPORT_VAR_POSITION(varinfo, val)  SET_VECTOR_ELT(varinfo, 4, val)
+#define SET_XPORT_VAR_NAME(varinfo, val)      SET_VECTOR_ELT(varinfo, 5, val)
+#define SET_XPORT_VAR_SEXPTYPE(varinfo, val)  SET_VECTOR_ELT(varinfo, 6, val)
+#define SET_XPORT_VAR_TAILPAD(varinfo, val)   SET_VECTOR_ELT(varinfo, 7, val)
+#define SET_XPORT_VAR_LENGTH(varinfo, val)    SET_VECTOR_ELT(varinfo, 8, val)
 
 SEXP
 xport_info(SEXP xportFile)
@@ -394,13 +426,13 @@ xport_info(SEXP xportFile)
 
     PROTECT(varInfoNames = allocVector(STRSXP, VAR_INFO_LENGTH));
     for(i = 0; i < VAR_INFO_LENGTH; i++)
-	STRING(varInfoNames)[i] = mkChar(cVarInfoNames[i]);
+	SET_STRING_ELT(varInfoNames, i, mkChar(cVarInfoNames[i]));
 
     PROTECT(char_numeric   = mkChar("numeric"));
     PROTECT(char_character = mkChar("character"));
 
     dsname = Calloc(9, char);
-    fp = fopen(CHAR(STRING(xportFile)[0]), "rb");
+    fp = fopen(CHAR(STRING_ELT(xportFile, 0)), "rb");
     namestrLength = init_xport_info(fp);
 
     ansLength = 0;
@@ -412,15 +444,15 @@ xport_info(SEXP xportFile)
 	PROTECT(varInfo = allocVector(VECSXP, VAR_INFO_LENGTH));
 	setAttrib(varInfo, R_NamesSymbol, varInfoNames);
 
-	XPORT_VAR_TYPE(varInfo)     = allocVector(STRSXP, memLength);
-	XPORT_VAR_WIDTH(varInfo)    = allocVector(INTSXP, memLength);
-	XPORT_VAR_INDEX(varInfo)    = allocVector(INTSXP, memLength);
-	XPORT_VAR_POSITION(varInfo) = allocVector(INTSXP, memLength);
-	XPORT_VAR_NAME(varInfo)     = allocVector(STRSXP, memLength);
-	XPORT_VAR_SEXPTYPE(varInfo) = allocVector(INTSXP, memLength);
-	XPORT_VAR_HEADPAD(varInfo)  = allocVector(INTSXP, 1);
-	XPORT_VAR_TAILPAD(varInfo)  = allocVector(INTSXP, 1);
-	XPORT_VAR_LENGTH(varInfo)   = allocVector(INTSXP, 1);
+	SET_XPORT_VAR_TYPE(varInfo, allocVector(STRSXP, memLength));
+	SET_XPORT_VAR_WIDTH(varInfo, allocVector(INTSXP, memLength));
+	SET_XPORT_VAR_INDEX(varInfo, allocVector(INTSXP, memLength));
+	SET_XPORT_VAR_POSITION(varInfo, allocVector(INTSXP, memLength));
+	SET_XPORT_VAR_NAME(varInfo, allocVector(STRSXP, memLength));
+	SET_XPORT_VAR_SEXPTYPE(varInfo, allocVector(INTSXP, memLength));
+	SET_XPORT_VAR_HEADPAD(varInfo, allocVector(INTSXP, 1));
+	SET_XPORT_VAR_TAILPAD(varInfo, allocVector(INTSXP, 1));
+	SET_XPORT_VAR_LENGTH(varInfo, allocVector(INTSXP, 1));
 
 	ntype     = Calloc(memLength, int);
 	nnames    = Calloc(memLength, char *);
@@ -438,24 +470,24 @@ xport_info(SEXP xportFile)
 			    INTEGER(XPORT_VAR_POSITION(varInfo)));
 
 	for(i = 0; i < memLength; i++) {
-	    STRING(XPORT_VAR_TYPE(varInfo))[i] =
-		(ntype[i] == 1) ? char_numeric : char_character;
+	    SET_STRING_ELT(XPORT_VAR_TYPE(varInfo), i,
+			   (ntype[i] == 1) ? char_numeric : char_character);
 	    INTEGER(XPORT_VAR_SEXPTYPE(varInfo))[i] =
 		(int) ((ntype[i] == 1) ? REALSXP : STRSXP);
-	    STRING(XPORT_VAR_NAME(varInfo))[i] = mkChar(nnames[i]);
+	    SET_STRING_ELT(XPORT_VAR_NAME(varInfo), i, mkChar(nnames[i]));
 	}
 	PROTECT(newAns = allocVector(VECSXP, ansLength+1));
 	PROTECT(newAnsNames = allocVector(STRSXP, ansLength+1));
 
 	for(i = 0; i < ansLength; i++) {
-	    VECTOR(newAns)[i] = VECTOR(ans)[i];
-	    STRING(newAnsNames)[i] = STRING(ansNames)[i];
+	    SET_VECTOR_ELT(newAns, i, VECTOR_ELT(ans, i));
+	    SET_STRING_ELT(newAnsNames, i, STRING_ELT(ansNames, i));
 	}
 	ans = newAns;
 	ansNames = newAnsNames;
 
-	STRING(ansNames)[ansLength] = mkChar(dsname);
-	VECTOR(ans)[ansLength] = varInfo;
+	SET_STRING_ELT(ansNames, ansLength, mkChar(dsname));
+	SET_VECTOR_ELT(ans, ansLength, varInfo);
 	ansLength++;
  
 	Free(ntype);
@@ -492,19 +524,19 @@ xport_read(SEXP xportFile, SEXP xportInfo)
     names = getAttrib(xportInfo, R_NamesSymbol);
     setAttrib(ans, R_NamesSymbol, names);
 
-    fp = fopen(CHAR(STRING(xportFile)[0]), "rb");
+    fp = fopen(CHAR(STRING_ELT(xportFile, 0)), "rb");
     fseek(fp, 240, SEEK_SET);
 
     for(i = 0; i < ansLength; i++) {
-	dataInfo = VECTOR(xportInfo)[i];
+	dataInfo = VECTOR_ELT(xportInfo, i);
 	dataName = getListElement(dataInfo, "name");
 	nvar = LENGTH(dataName);
 	dataLength = asInteger(getListElement(dataInfo, "length"));
-	data = VECTOR(ans)[i] = allocVector(VECSXP, nvar);
+	SET_VECTOR_ELT(ans, i, data = allocVector(VECSXP, nvar));
 	setAttrib(data, R_NamesSymbol, dataName);
 	dataType = (SEXPTYPE *) INTEGER(getListElement(dataInfo, "sexptype"));
 	for(j = 0; j < nvar; j++)
-	    VECTOR(data)[j] = allocVector(dataType[j], dataLength);
+	    SET_VECTOR_ELT(data, j, allocVector(dataType[j], dataLength));
 
 	dataWidth = INTEGER(getListElement(dataInfo, "width"));
 	dataPosition = INTEGER(getListElement(dataInfo, "position"));
@@ -512,7 +544,7 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 	totalWidth = 0;
 	for(j = 0; j < nvar; j++)
 	    totalWidth += dataWidth[j];
-	record = Calloc(totalWidth + 1, char);
+	record = (char *) R_alloc(totalWidth + 1, sizeof (char));
 
 	dataHeadPad = asInteger(getListElement(dataInfo, "headpad"));
 	dataTailPad = asInteger(getListElement(dataInfo, "tailpad"));
@@ -520,22 +552,24 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 
 	for(j = 0; j < dataLength; j++) {
 	    n = GET_RECORD(record, fp, totalWidth);
-	    if(n != totalWidth)
+	    if(n != totalWidth) {
 		error("Problem reading SAS transport file");
+	    }
 
 	    for(k = nvar-1; k >= 0; k--) {
 		tmpchar = record + dataPosition[k];
 		if(dataType[k] == REALSXP) {
-		    REAL(VECTOR(data)[k])[j] = get_ieee64(tmpchar);
+		    REAL(VECTOR_ELT(data, k))[j] = get_IBM_double(tmpchar);
 		} else {
 		    tmpchar[dataWidth[k]] = '\0';
 		    if(strlen(tmpchar) == 1 && IS_SASNA_CHAR(tmpchar[0])) {
-			STRING(VECTOR(data)[k])[j] = R_NaString;
+			SET_STRING_ELT(VECTOR_ELT(data, k), j, R_NaString);
 		    } else {
 			c = strchr(tmpchar, ' ');
 			*c = '\0';
-			STRING(VECTOR(data)[k])[j] = 
-			    (c == tmpchar) ? R_BlankString : mkChar(tmpchar);
+			SET_STRING_ELT(VECTOR_ELT(data, k), j,
+				       (c == tmpchar) ? R_BlankString :
+				       mkChar(tmpchar));
 		    }
 		}
 	    }
@@ -543,7 +577,6 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 
 	fseek(fp, dataTailPad, SEEK_CUR);
 
-	Free(record);
     }
     UNPROTECT(1);
     fclose(fp);
