@@ -1,3 +1,8 @@
+2001-01-24  Douglas Bates  <bates@stat.wisc.edu>
+
+	* src/SASxport.c (next_xport_info): Adding yet another rule to try
+	to detect the number of rows in a SAS data set.
+
 2000-12-14  Douglas Bates  <bates@stat.wisc.edu>
 
 	* cleanup: Added the cleanup script.

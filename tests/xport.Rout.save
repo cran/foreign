@@ -60,4 +60,44 @@ $SPEC$length
  Mean   :167.1  
  3rd Qu.:179.6  
  Max.   :235.3  
+> ## test data provided by FRohde@birchdavis.com
+> lookup.xport("test.xpt")
+$TEST
+$TEST$headpad
+[1] 800
+
+$TEST$type
+[1] "numeric" "numeric"
+
+$TEST$width
+[1] 8 8
+
+$TEST$index
+[1] 1 2
+
+$TEST$position
+[1] 0 8
+
+$TEST$name
+[1] "I" "K"
+
+$TEST$sexptype
+[1] 14 14
+
+$TEST$tailpad
+[1] 0
+
+$TEST$length
+[1] 12
+
+
+> testdata <- read.xport("test.xpt")
+> summary(testdata)
+       I              K    
+ Min.   :1.00   Min.   :1  
+ 1st Qu.:1.75   1st Qu.:1  
+ Median :2.50   Median :2  
+ Mean   :2.50   Mean   :2  
+ 3rd Qu.:3.25   3rd Qu.:3  
+ Max.   :4.00   Max.   :3  
 > q()

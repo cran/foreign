@@ -15,9 +15,6 @@ read.xport(file)
 \value{
     A list with one component for each dataset in the XPORT format library.
 }
-\section{Warning}{
-    The value returned is wrong on big endian machines.
-}
 \references{SAS Technical Support document TS-140 :
     "The Record Layout of a Data Set in SAS Transport (XPORT) Format"
     available as http://ftp.sas.com/techsup/download/technote/ts140.html}

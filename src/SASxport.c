@@ -1,5 +1,5 @@
 /*
- *  $Id: SASxport.c,v 1.10 2000/12/13 21:32:39 saikat Exp $
+ *  $Id: SASxport.c,v 1.12 2001/02/06 20:55:58 saikat Exp $
  *
  *  Read SAS transport data set format
  *
@@ -57,7 +57,6 @@
 #define NULL ((void *) 0)
 #endif
 
-/* #define get_ieee64(c) cnxptiee(*((double *)(c)), CN_TYPE_XPORT, CN_TYPE_NATIVE) */
 
 static double Two32 = 0.;
 
@@ -293,6 +292,8 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	npos[i]  = nam_head[i].npos;
 	tmp = strchr(nam_head[i].nname, ' ');
 	nname_len[i] = tmp - nam_head[i].nname;
+	if (nname_len[i] > 8)
+	    nname_len[i] = 8;
     }
 
     for(i = 0; i < nvars; i++) {
@@ -331,6 +332,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	}
 	if (allSpace) {
 	    n = GET_RECORD(tmp, fp, 80);
+	    if (n < 1) break;
 	    if(n == 80 && strncmp(MEM_HEADER, record, 75) == 0 &&
 	       strncmp("  ", record+78, 2) == 0) {
 		*tailpad = restOfCard;
