@@ -178,7 +178,10 @@ data.restore <-
             else if (code %in% c("break", "if", "for", "return", "S.call",
                                  "while", "<-", "<<-", "(", "{"))
                 value <- as.call(c(as.name(code), value))
-            else if (code == "NULL") value <- as.name(name)
+            else if (code == "NULL") {
+				if (name == "") value <- NULL
+				else value <- as.name(name)
+			}
             else if (code == "call(...)")# these aren't special in R
                 value <- value[[1]]
             else if (code == "comment") # ignore comments
