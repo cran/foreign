@@ -1,0 +1,52 @@
+\name{read.epiinfo}
+\alias{read.epiinfo}
+%- Also NEED an `\alias' for EACH other topic documented here.
+\title{Read Epi Info data files}
+\description{
+  Reads data files in the \code{.REC} format used by Epi Info versions 6
+  and earlier. Epi Info is a public domain database and statistics
+  package  produced by the US Centers for Disease Control.
+  }
+\usage{
+read.epiinfo(file, read.deleted=FALSE, guess.broken.dates=FALSE, thisyear=NULL)
+}
+%- maybe also `usage' for other objects documented here.
+\arguments{
+  \item{file}{A filename, URL, or connnection }
+  \item{read.deleted}{Deleted records are read if \code{TRUE}, omitted
+    if \code{FALSE} or replaced with \code{NA} if \code{NA} }
+  \item{guess.broken.dates}{Attempt to convert dates with 0 or 2 digit
+    year information (see Details below)}
+  \item{thisyear}{A 4-digit year to use for dates with no year. Defaults
+  to the current year}
+}
+\details{
+  Epi Info allows dates to be specified with no year or with a 2 or 4
+  digits.  Dates with four-digit years are always converted to
+  \code{POSIXct}. With the \code{guess.broken.dates} option the function
+  will attempt to convert two-digit years using the operating system's
+  default method (see \link{DateTimeClasses}) and will use the current
+  year or the \code{thisyear} argument for dates with no year
+  information.
+
+  If \code{read.deleted} is \code{TRUE} the \code{"deleted"} attribute
+  of the data frame indicates the deleted records.
+}
+\note{  Epi Info 2000, the current version, uses the Microsoft Access file
+  format to store data. This may be readable with the \code{RODBC} or
+  \code{RDCOM} packages.
+}
+\value{
+  A data frame.
+}
+\references{\url{http://www.cdc.gov/epiinfo/}}
+
+\seealso{\link{DateTimeClasses} }
+
+\examples{
+\dontrun{
+data<-read.epiinfo("oswego.rec",guess.broken.dates=TRUE,thisyear="1972")
+}
+}
+\keyword{ file }% at least one, from doc/KEYWORDS
+

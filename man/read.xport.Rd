@@ -21,7 +21,7 @@ read.xport(file)
   available as
   \url{http://ftp.sas.com/techsup/download/technote/ts140.html}.
 }
-\author{Saikat DebRoy}
+\author{Saikat DebRoy \email{<saikat@stat.wisc.edu>}}
 \seealso{
   \code{\link{read.xport}}
 }

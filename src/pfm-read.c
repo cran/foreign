@@ -447,7 +447,7 @@ static unsigned char *
 read_string (struct file_handle *h)
 {
   struct pfm_fhuser_ext *ext = h->ext;
-  static char *buf;
+  static unsigned char *buf;
   int n;
   
   if (h == NULL)
@@ -457,7 +457,7 @@ read_string (struct file_handle *h)
       return NULL;
     }
   else if (buf == NULL)
-    buf = Calloc (256, char);
+    buf = Calloc (256, unsigned char);
 
   n = read_int (h);
   if (n == NOT_INT)
@@ -517,7 +517,7 @@ read_header (struct file_handle *h)
       if (trans_temp[src[i]] == -1)
 	trans_temp[src[i]] = i;
     
-    ext->trans = Calloc (256, char);
+    ext->trans = Calloc (256, unsigned char);
     for (i = 0; i < 256; i++)
       ext->trans[i] = trans_temp[i] == -1 ? 0 : trans_temp[i];
 
@@ -556,7 +556,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
   /* Date. */
   {
     static const int map[] = {6, 7, 8, 9, 3, 4, 0, 1};
-    char *date = read_string (h);
+    char *date = (char *) read_string (h);
     int i;
     
     if (!date)
@@ -583,7 +583,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
   /* Time. */
   {
     static const int map[] = {0, 1, 3, 4, 6, 7};
-    char *time = read_string (h);
+    char *time = (char *) read_string (h);
     int i;
 
     if (!time)
@@ -612,7 +612,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
     {
       char *product;
       
-      product = read_string (h);
+      product = (char *) read_string (h);
       if (product == NULL)
 	return 0;
       if (inf)
@@ -626,7 +626,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
     {
       char *subproduct;
 
-      subproduct = read_string (h);
+      subproduct = (char *) read_string (h);
       if (subproduct == NULL)
 	return 0;
       if (inf)
@@ -719,7 +719,7 @@ read_variables (struct file_handle *h)
 
   if (match (70 /* 6 */))
     {
-      char *name = read_string (h);
+      char *name = (char *) read_string (h);
       if (!name)
 	goto lossage;
 
@@ -759,9 +759,9 @@ read_variables (struct file_handle *h)
 
 	 Weirdly enough, there is no # character in the SPSS portable
 	 character set, so we can't check for it. */
-      if (strlen (name) > 8)
+      if (strlen ((char *) name) > 8)
 	lose (("position %d: Variable name has %u characters.",
-	       i, strlen (name)));
+	       i, strlen ((char *) name)));
       if ((name[0] < 74 /* A */ || name[0] > 125 /* Z */)
 	  && name[0] != 152 /* @ */)
 	lose (("position %d: Variable name begins with invalid "
@@ -775,7 +775,7 @@ read_variables (struct file_handle *h)
 	}
 
       /* Verify remaining characters of variable name. */
-      for (j = 1; j < (int) strlen (name); j++)
+      for (j = 1; j < (int) strlen ((char *) name); j++)
 	{
 	  int c = name[j];
 
@@ -795,11 +795,12 @@ read_variables (struct file_handle *h)
 			"valid in a variable name.", i, c));
 	}
 
-      asciify (name);
+      asciify ((char *) name);
       if (width < 0 || width > 255)
 	lose (("Bad width %d for variable %s.", width, name));
 
-      v = create_variable (ext->dict, name, width ? ALPHA : NUMERIC, width);
+      v = create_variable (ext->dict, (char *) name, 
+			   width ? ALPHA : NUMERIC, width);
       v->get.fv = v->fv;
       if (v == NULL)
 	lose (("Duplicate variable name %s.", name));
@@ -856,7 +857,7 @@ read_variables (struct file_handle *h)
 
       if (match (76 /* C */))
 	{
-	  char *label = read_string (h);
+	  char *label = (char *) read_string (h);
 	  
 	  if (label == NULL)
 	    goto lossage;
@@ -884,13 +885,13 @@ parse_value (struct file_handle *h, union value *v, struct variable *vv)
 {
   if (vv->type == ALPHA)
     {
-      char *mv = read_string (h);
+      char *mv = (char *) read_string (h);
       int j;
       
       if (mv == NULL)
 	return 0;
 
-      strncpy (v->s, mv, 8);
+      strncpy ((char *) v->s, mv, 8);
       for (j = 0; j < 8; j++)
 	if (v->s[j])
 	  v->s[j] = spss2ascii[v->s[j]];
@@ -930,7 +931,7 @@ read_value_label (struct file_handle *h)
   v = Calloc (nv, struct variable *);
   for (i = 0; i < nv; i++)
     {
-      char *name = read_string (h);
+      char *name = (char *) read_string (h);
       if (name == NULL)
 	goto lossage;
       asciify (name);
@@ -960,7 +961,7 @@ read_value_label (struct file_handle *h)
       if (!parse_value (h, &val, v[0]))
 	goto lossage;
       
-      label = read_string (h);
+      label = (char *) read_string (h);
       if (label == NULL)
 	goto lossage;
       asciify (label);
@@ -1050,12 +1051,12 @@ pfm_read_case (struct file_handle *h, union value *perm, struct dictionary *dict
       }
     else
       {
-	char *s = read_string (h);
+	char *s = (char *) read_string (h);
 	if (s == NULL)
 	  goto unexpected_eof;
 	asciify (s);
 	  
-	st_bare_pad_copy (tp->s, s, ext->vars[i]);
+	st_bare_pad_copy ((char *) tp->s, s, ext->vars[i]);
 	tp += DIV_RND_UP (ext->vars[i], MAX_SHORT_STRING);
       }
 

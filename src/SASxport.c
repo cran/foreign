@@ -1,5 +1,5 @@
 /*
- *  $Id: SASxport.c,v 1.6 2001/10/12 10:34:56 pd Exp $
+ *  $Id: SASxport.c,v 1.8 2002/03/28 00:24:22 bates Exp $
  *
  *  Read SAS transport data set format
  *
@@ -50,8 +50,8 @@
 #define GET_RECORD(rec, fp, len) \
           fread((rec), sizeof(char), (size_t) (len), (fp))
 
-#define IS_SASNA_CHAR(c) ((c) == 0x5f || (c) == 0x2e || (0x4l <= (c) \
-							 && (c) <= 0x5a))
+#define IS_SASNA_CHAR(c) ((c) == 0x5f || (c) == 0x2e || \
+                          (0x41 <= (c) && (c) <= 0x5a))
 
 #ifndef NULL
 #define NULL ((void *) 0)
@@ -594,7 +594,7 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 			    *c ='\0';
 
 			SET_STRING_ELT(VECTOR_ELT(data, k), j,
-				       (c == tmpchar) ? R_BlankString :
+				       (c < tmpchar) ? R_BlankString :
 				       mkChar(tmpchar));
 		    }
 		}

@@ -1,5 +1,5 @@
 /*
- *  $Id: minitab.c,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $ 
+ *  $Id: minitab.c,v 1.2 2002/03/04 07:41:55 ripley Exp $ 
  *
  *  Read Minitab portable data set format
  *
@@ -61,7 +61,8 @@ static				/* trim white space from end of string */
 char *strtrim(char *str)
 {
     int i;
-    for (i = strlen(str) - 1; i >= 0 && isspace(str[i]); i--) str[i] = '\0';
+    for (i = strlen(str) - 1; i >= 0 && isspace((int)str[i]); i--) 
+	str[i] = '\0';
     return str;
 }
 

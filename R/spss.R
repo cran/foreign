@@ -1,4 +1,4 @@
-### $Id: spss.R,v 1.3 2002/01/12 02:10:26 tlumley Exp $
+### $Id: spss.R,v 1.4 2002/03/08 21:15:56 tlumley Exp $
 ###
 ###             Read SPSS system data files
 ###
@@ -21,7 +21,8 @@
 ### Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 ### MA 02111-1307, USA
 
-read.spss <- function(file,use.value.labels=TRUE,to.data.frame=FALSE) {
+read.spss <- function(file,use.value.labels=TRUE,to.data.frame=FALSE,
+                      max.value.labels=Inf) {
     rval<-.Call("do_read_SPSS", file, PACKAGE = "foreign")
     
     if (use.value.labels){
@@ -29,7 +30,10 @@ read.spss <- function(file,use.value.labels=TRUE,to.data.frame=FALSE) {
       has.vl<-which(!sapply(vl,is.null))
       for(v in has.vl){
         nm<-names(vl)[[v]]
-        rval[[nm]]<-factor(rval[[nm]],levels=vl[[v]],labels=names(vl[[v]]))
+        if (!is.finite(max.value.labels) || length(unique(rval[[nm]]))<=max.value.labels)
+            rval[[nm]]<-factor(rval[[nm]],levels=vl[[v]],labels=names(vl[[v]]))
+        else
+            attr(rval[[nm]],"value.labels")<-vl[[v]]
       }
     }
     

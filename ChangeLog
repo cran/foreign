@@ -1,3 +1,25 @@
+2002-03-27  Douglas Bates  <bates@stat.wisc.edu>
+
+	* src/SASxport.c (IS_SASNA_CHAR): Silly typo (0x4l, not 0x41)
+	caught by Peter.
+
+2002-03-08 Thomas Lumley <tlumley@u.washington.edu>
+
+	* Update stataread.c to read version 7/SE
+
+	* Add support for Epi Info
+
+	* SPSS: convert only some value labels to factor levels
+
+2002-03-08 Brian Ripley  <ripley@stats.ox.ac.uk>
+
+	* DESCRIPTION (Version): New version is 0.4-10.
+
+	* minitab.c, pfm-read.c, spss.c: add casts as required.
+
+	* add configure.win to allow no-intervention
+	  installation on Windows.
+
 2002-01-24  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.4-9.
@@ -45,7 +67,7 @@
 
 	* src/sfm-read.c Use Free not free consistently.
 
-	* src/spss.c (do_read_SPSS): Alwasy open in binary mode.
+	* src/spss.c (do_read_SPSS): Always open in binary mode.
 
 2001-06-18  Kurt Hornik  <Kurt.Hornik@ci.tuwien.ac.at>
 

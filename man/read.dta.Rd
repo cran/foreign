@@ -2,7 +2,7 @@
 \alias{read.dta}
 \title{Read Stata binary files}
 \description{
-  Reads a file in Stata version 5-7 binary format into a dataframe. 
+  Reads a file in Stata version 5-7 or 7/SE binary format into a dataframe. 
 }
 \usage{
 read.dta(file, convert.dates=TRUE,tz="GMT",convert.factors=TRUE)
@@ -33,6 +33,7 @@ read.dta(file, convert.dates=TRUE,tz="GMT",convert.factors=TRUE)
   Stata Users Manual (versions 5 & 6) and Programming manual (version 7)
   describe the format of the files
 }
+
 \author{Thomas Lumley}
 \seealso{
   \code{\link{write.dta}},

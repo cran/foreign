@@ -1,0 +1,2 @@
+cp src/var.h.in src/var.h
+cp src/swap_bytes.h.in src/swap_bytes.h

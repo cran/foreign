@@ -1,5 +1,5 @@
 /*
- *  $Id: spss.c,v 1.5 2002/01/12 02:10:26 tlumley Exp $
+ *  $Id: spss.c,v 1.6 2002/03/04 07:41:55 ripley Exp $
  *
  *  Read SPSS files saved by SAVE and EXPORT commands
  *
@@ -163,8 +163,8 @@ int
 val_lab_cmp (const void *a, const void *b, void *param)
 {
   if ((int) param)
-    return strncmp (((struct value_label *) a)->v.s,
-		    ((struct value_label *) b)->v.s,
+    return strncmp ((char *)((struct value_label *) a)->v.s,
+		    (char *)((struct value_label *) b)->v.s,
 		    (int) param);
   else
     {
@@ -255,9 +255,9 @@ static SEXP getSPSSvaluelabels(struct dictionary *dict){
       PROTECT(somevalues=allocVector(STRSXP, nlabels));
       for(j=0;j<nlabels;j++){
 	SET_STRING_ELT(somelabels,j,mkChar(flattened_labels[j]->s));
-	memcpy(tmp,flattened_labels[j]->v.s,MAX_SHORT_STRING);
+	memcpy(tmp,flattened_labels[j]->v.s, MAX_SHORT_STRING);
 	tmp[MAX_SHORT_STRING]='\0';
-	SET_STRING_ELT(somevalues,j,mkChar(tmp));
+	SET_STRING_ELT(somevalues, j, mkChar((char *)tmp));
       }  
     }
     Free(flattened_labels);
@@ -335,7 +335,7 @@ read_SPSS_PORT(const char *filename)
 		REAL(VECTOR_ELT(ans, i))[ncases] = case_vals[v->fv].f;
 	    } else {
 		SET_STRING_ELT(VECTOR_ELT(ans, i), ncases,
-			       mkChar(case_vals[v->fv].c));
+			       mkChar((char *)case_vals[v->fv].c));
 	    }
 	}
 	++ncases;
@@ -417,7 +417,7 @@ read_SPSS_SAVE(const char *filename)
 		REAL(VECTOR_ELT(ans, j))[i] = case_vals[v->fv].f;
 	    } else {
 		SET_STRING_ELT(VECTOR_ELT(ans, j), i,
-			       mkChar(case_vals[v->fv].c));
+			       mkChar((char *)case_vals[v->fv].c));
 	    }
 	}
     }

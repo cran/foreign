@@ -1,8 +1,8 @@
 /**
- * $Id: stataread.c,v 1.6 2002/01/12 02:10:26 tlumley Exp $
-  Read  Stata version 7.0, 6.0 and 5.0 .dta files, write version 7.0, 6.0.
+ * $Id: stataread.c,v 1.7 2002/03/08 21:15:57 tlumley Exp $
+  Read  Stata version 7.0, 7/SE, 6.0 and 5.0 .dta files, write version 7.0, 6.0.
   
-  (c) 1999, 2000, 2001 Thomas Lumley. 
+  (c) 1999, 2000, 2001, 2002 Thomas Lumley. 
   2000 Saikat DebRoy
 
   The format of Stata files is documented under 'file formats' 
@@ -27,6 +27,7 @@
 #define VERSION_5 0x69
 #define VERSION_6 'l'
 #define VERSION_7 0x6e
+#define VERSION_7SE 111
 
 /* Stata format constants */
 #define STATA_FLOAT  'f'
@@ -34,6 +35,13 @@
 #define STATA_INT    'l'
 #define STATA_SHORTINT 'i'
 #define STATA_BYTE  'b'
+
+#define STATA_SE_STRINGOFFSET 0
+#define STATA_SE_FLOAT  254
+#define STATA_SE_DOUBLE 255
+#define STATA_SE_INT    253
+#define STATA_SE_SHORTINT 252
+#define STATA_SE_BYTE  251
 
 #define STATA_STRINGOFFSET 0x7f
 
@@ -154,8 +162,11 @@ SEXP R_LoadStataData(FILE *fp)
 	version=7;
 	varnamelength=32;
 	break;
+    case VERSION_7SE:
+	version=-7;
+	varnamelength=32; 
     default:
-        error("Not a Stata version 5-7 .dta file");
+        error("Not a Stata version 5-7/SE .dta file");
     }
     stata_endian=(int) InByteBinary(fp,1);     /* byte ordering */
     swapends = stata_endian != CN_TYPE_NATIVE;
@@ -165,7 +176,7 @@ SEXP R_LoadStataData(FILE *fp)
     nvar =  (InShortIntBinary(fp,1,swapends)); /* number of variables */
     nobs =(InIntegerBinary(fp,1,swapends));  /* number of cases */
     /* data label - zero terminated string */
-    switch (version) {         
+    switch (abs(version)) {         
     case 5:
 	InStringBinary(fp,32,datalabel);
 	break;
@@ -199,25 +210,48 @@ SEXP R_LoadStataData(FILE *fp)
     /** types **/
     
     PROTECT(types=allocVector(INTSXP,nvar));
-    for(i=0;i<nvar;i++){
-        abyte = InByteBinary(fp,1);
-	INTEGER(types)[i]= abyte;
-        switch (abyte) {
-	case STATA_FLOAT:
-	case STATA_DOUBLE:
-	    SET_VECTOR_ELT(df,i,allocVector(REALSXP,nobs));
-	    break;
-	case STATA_INT:
-	case STATA_SHORTINT:
-	case STATA_BYTE:
-	    SET_VECTOR_ELT(df,i,allocVector(INTSXP,nobs));
-	    break;
-	default:
-	    if (abyte<STATA_STRINGOFFSET)
-	      error("Unknown data type");
-	    SET_VECTOR_ELT(df,i,allocVector(STRSXP,nobs));
-	    break;
-	}
+    if (version>0){
+	    for(i=0;i<nvar;i++){
+		    abyte = InByteBinary(fp,1);
+		    INTEGER(types)[i]= abyte;
+		    switch (abyte) {
+		    case STATA_FLOAT:
+		    case STATA_DOUBLE:
+			    SET_VECTOR_ELT(df,i,allocVector(REALSXP,nobs));
+			    break;
+		    case STATA_INT:
+		    case STATA_SHORTINT:
+		    case STATA_BYTE:
+			    SET_VECTOR_ELT(df,i,allocVector(INTSXP,nobs));
+			    break;
+		    default:
+			    if (abyte<STATA_STRINGOFFSET)
+				    error("Unknown data type");
+			    SET_VECTOR_ELT(df,i,allocVector(STRSXP,nobs));
+			    break;
+		    }
+	    }
+    } else {
+	    for(i=0;i<nvar;i++){
+		    abyte = InByteBinary(fp,1);
+		    INTEGER(types)[i]= abyte;
+		    switch (abyte) {
+		    case STATA_SE_FLOAT:
+		    case STATA_SE_DOUBLE:
+			    SET_VECTOR_ELT(df,i,allocVector(REALSXP,nobs));
+			    break;
+		    case STATA_SE_INT:
+		    case STATA_SE_SHORTINT:
+		    case STATA_SE_BYTE:
+			    SET_VECTOR_ELT(df,i,allocVector(INTSXP,nobs));
+			    break;
+		    default:
+			    if (abyte>244)
+				    error("Unknown data type");
+			    SET_VECTOR_ELT(df,i,allocVector(STRSXP,nobs));
+			    break;
+		    }
+	    }
     }
 
     /** names **/
@@ -267,7 +301,7 @@ SEXP R_LoadStataData(FILE *fp)
     
     PROTECT(varlabels=allocVector(STRSXP,nvar));
 
-    switch(version){
+    switch(abs(version)){
     case 5:
         for(i=0;i<nvar;i++) {
             InStringBinary(fp,32,datalabel);
@@ -295,7 +329,7 @@ SEXP R_LoadStataData(FILE *fp)
 	for (i=0;i<charlen;i++)
 	  InByteBinary(fp,1);
     }
-    if (version==7)
+    if (abs(version)==7)
         charlen= (InIntegerBinary(fp,1,swapends));
     else
 	charlen=(InShortIntBinary(fp,1,swapends));
@@ -305,37 +339,69 @@ SEXP R_LoadStataData(FILE *fp)
 
     /** The Data **/
 
-
-    for(i=0;i<nobs;i++){
-        for(j=0;j<nvar;j++){
-	    switch (INTEGER(types)[j]) {
-	    case STATA_FLOAT:
-		REAL(VECTOR_ELT(df,j))[i]=(InFloatBinary(fp,0,swapends));
-		break;
-	    case STATA_DOUBLE:
-	        REAL(VECTOR_ELT(df,j))[i]=(InDoubleBinary(fp,0,swapends));
-		break;
-	    case STATA_INT:
-	        INTEGER(VECTOR_ELT(df,j))[i]=(InIntegerBinary(fp,0,swapends));
-		break;
-	    case STATA_SHORTINT:
-	        INTEGER(VECTOR_ELT(df,j))[i]=(InShortIntBinary(fp,0,swapends));
-		break;
-	    case STATA_BYTE:
-	        INTEGER(VECTOR_ELT(df,j))[i]=(int) InByteBinary(fp,0);
-		break;
-	    default:
-	        charlen=INTEGER(types)[j]-STATA_STRINGOFFSET;
-		InStringBinary(fp,charlen,stringbuffer);
-		stringbuffer[charlen]=0;
-	        PROTECT(tmp=allocString(strlen(stringbuffer)));
-		strcpy(CHAR(tmp),stringbuffer); /*we know strcpy is safe here*/
-		SET_STRING_ELT(VECTOR_ELT(df,j),i,tmp);
-		UNPROTECT(1);
-	      break;
+    if (version>0) { /* not Stata/SE */
+	    for(i=0;i<nobs;i++){
+		    for(j=0;j<nvar;j++){
+			    switch (INTEGER(types)[j]) {
+			    case STATA_FLOAT:
+				    REAL(VECTOR_ELT(df,j))[i]=(InFloatBinary(fp,0,swapends));
+				    break;
+			    case STATA_DOUBLE:
+				    REAL(VECTOR_ELT(df,j))[i]=(InDoubleBinary(fp,0,swapends));
+				    break;
+			    case STATA_INT:
+				    INTEGER(VECTOR_ELT(df,j))[i]=(InIntegerBinary(fp,0,swapends));
+				    break;
+			    case STATA_SHORTINT:
+				    INTEGER(VECTOR_ELT(df,j))[i]=(InShortIntBinary(fp,0,swapends));
+				    break;
+			    case STATA_BYTE:
+				    INTEGER(VECTOR_ELT(df,j))[i]=(int) InByteBinary(fp,0);
+				    break;
+			    default:
+				    charlen=INTEGER(types)[j]-STATA_STRINGOFFSET;
+				    InStringBinary(fp,charlen,stringbuffer);
+				    stringbuffer[charlen]=0;
+				    PROTECT(tmp=allocString(strlen(stringbuffer)));
+				    strcpy(CHAR(tmp),stringbuffer); /*we know strcpy is safe here*/
+				    SET_STRING_ELT(VECTOR_ELT(df,j),i,tmp);
+				    UNPROTECT(1);
+				    break;
+			    }
+		    }
 	    }
-	}
-    }  
+    }  else {
+
+		    for(j=0;j<nvar;j++){
+			    switch (INTEGER(types)[j]) {
+			    case STATA_SE_FLOAT:
+				    REAL(VECTOR_ELT(df,j))[i]=(InFloatBinary(fp,0,swapends));
+				    break;
+			    case STATA_SE_DOUBLE:
+				    REAL(VECTOR_ELT(df,j))[i]=(InDoubleBinary(fp,0,swapends));
+				    break;
+			    case STATA_SE_INT:
+				    INTEGER(VECTOR_ELT(df,j))[i]=(InIntegerBinary(fp,0,swapends));
+				    break;
+			    case STATA_SE_SHORTINT:
+				    INTEGER(VECTOR_ELT(df,j))[i]=(InShortIntBinary(fp,0,swapends));
+				    break;
+			    case STATA_SE_BYTE:
+				    INTEGER(VECTOR_ELT(df,j))[i]=(int) InByteBinary(fp,0);
+				    break;
+			    default:
+				    charlen=INTEGER(types)[j]-STATA_SE_STRINGOFFSET;
+				    InStringBinary(fp,charlen,stringbuffer);
+				    stringbuffer[charlen]=0;
+				    PROTECT(tmp=allocString(strlen(stringbuffer)));
+				    strcpy(CHAR(tmp),stringbuffer); /*we know strcpy is safe here*/
+				    SET_STRING_ELT(VECTOR_ELT(df,j),i,tmp);
+				    UNPROTECT(1);
+				    break;
+			    }
+		    }
+    }
+
 
     /** value labels **/
     if (version>5){
@@ -386,7 +452,7 @@ SEXP R_LoadStataData(FILE *fp)
     setAttrib(df, R_RowNamesSymbol, row_names);
     UNPROTECT(1);     
 
-    if (version>5){
+    if (abs(version)>5){
 	    setAttrib(df, install("label.table"), labeltable);
 	    UNPROTECT(1); /*labeltable*/;
     }
