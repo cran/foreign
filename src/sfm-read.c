@@ -29,7 +29,7 @@
 #include "sfm.h"
 #include "sfmP.h"
 #include "var.h"
-#include "R.h"
+#include <R.h>
 
 /* Clamps A to be between B and C. */
 #define range(A, B, C)				\

@@ -26,8 +26,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "R.h"
-#include "Rinternals.h"
+#include <R.h>
+#include <Rinternals.h>
 #include "SASxport.h"
 
 #define HEADER_BEG "HEADER RECORD*******"

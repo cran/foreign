@@ -25,7 +25,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "R.h"
+#include <R.h>
 #include "avl.h"
 
 #if !PSPP && !__GCC__

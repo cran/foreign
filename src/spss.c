@@ -1,5 +1,5 @@
 /*
- *  $Id: spss.c,v 1.6 2002/03/04 07:41:55 ripley Exp $
+ *  $Id: spss.c,v 1.7 2002/04/29 19:48:37 saikat Exp $
  *
  *  Read SPSS files saved by SAVE and EXPORT commands
  *
@@ -284,7 +284,9 @@ read_SPSS_PORT(const char *filename)
     int ncases = 0;
     int N = 10;
     int nval = 0;
+    int nvar_label;
     SEXP val_labels;
+    SEXP variable_labels;
 
     /* Set the fv and lv elements of all variables in the
        dictionary. */
@@ -356,6 +358,22 @@ read_SPSS_PORT(const char *filename)
     setAttrib(ans,install("label.table"), val_labels);
     UNPROTECT(1);
 
+    /* get SPSS variable labels */
+    PROTECT(variable_labels=allocVector(STRSXP, dict->nvar));
+    nvar_label = 0;
+    for (i = 0; i < dict->nvar; i++) {
+        char *lab = dict->var[i]->label;
+        if (lab != NULL) {
+            nvar_label++;
+            SET_STRING_ELT(variable_labels, i, mkChar(lab));
+        }
+    }
+    if (nvar_label > 0) {
+        namesgets(variable_labels, ans_names);
+        setAttrib(ans,install("variable.labels"), variable_labels);
+    }
+    UNPROTECT(1);
+
     free_dictionary(dict);
     setAttrib(ans, R_NamesSymbol, ans_names);
     UNPROTECT(2);
@@ -372,8 +390,10 @@ read_SPSS_SAVE(const char *filename)
     SEXP ans_names = PROTECT(allocVector(STRSXP, dict->nvar));
     union value *case_vals;
     int i;
+    int nvar_label;
     int nval = 0;
     SEXP val_labels;
+    SEXP variable_labels;
 
     /* Set the fv and lv elements of all variables in the
        dictionary. */
@@ -427,6 +447,22 @@ read_SPSS_SAVE(const char *filename)
     PROTECT(val_labels=getSPSSvaluelabels(dict));
     namesgets(val_labels, duplicate(ans_names));
     setAttrib(ans,install("label.table"), val_labels);
+    UNPROTECT(1);
+
+    /* get SPSS variable labels */
+    PROTECT(variable_labels=allocVector(STRSXP, dict->nvar));
+    nvar_label = 0;
+    for (i = 0; i < dict->nvar; i++) {
+        char *lab = dict->var[i]->label;
+        if (lab != NULL) {
+            nvar_label++;
+            SET_STRING_ELT(variable_labels, i, mkChar(lab));
+        }
+    }
+    if (nvar_label > 0) {
+        namesgets(variable_labels, ans_names);
+        setAttrib(ans,install("variable.labels"), variable_labels);
+    }
     UNPROTECT(1);
 
     free_dictionary(dict);

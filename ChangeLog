@@ -1,3 +1,25 @@
+2002-05-01  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+
+	* DESCRIPTION (Version): New version is 0.5-4.
+
+	* src/minitab.c: remove compatibility definitions for pre-1.2.0
+	as otherwise Rversion.h needs to be included explicitly for R
+	1.6.0.
+
+2002-05-01  Brian Ripley  <ripley@stats.ox.ac.uk>
+
+	* src/foreign.h: remove compatibility definitions for pre-1.2.0
+	as otherwise Rversion.h needs to be included explicitly for R
+	1.6.0.
+
+	* DESCRIPTION: R >= 1.2.0 given the above change.
+
+2002-04-29  Saikat DebRoy  <saikat@stat.wisc.edu>
+
+	* src/spss.c, R/spss.R, man/read.spss.Rd: read.spss adds a
+	"variable.labels" attribute to the result if any variable labels
+	are present in the SPSS file.
+
 2002-03-27  Douglas Bates  <bates@stat.wisc.edu>
 
 	* src/SASxport.c (IS_SASNA_CHAR): Silly typo (0x4l, not 0x41)
@@ -17,7 +39,7 @@
 
 	* minitab.c, pfm-read.c, spss.c: add casts as required.
 
-	* add configure.win to allow no-intervention
+	* configure.win: added to allow no-intervention
 	  installation on Windows.
 
 2002-01-24  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>

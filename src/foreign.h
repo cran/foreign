@@ -1,5 +1,5 @@
 /*
- *  $Id: foreign.h,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
+ *  $Id: foreign.h,v 1.2 2002/05/01 14:31:45 ripley Exp $
  *
  *  Common header file for the foreign package for R
  *
@@ -27,16 +27,8 @@
 #ifndef FOREIGN_H
 #define FOREIGN_H
 
-#include "R.h"
-#include "Rinternals.h"
-
-/** R 1.2 compatibility definitions **/
-#if R_VERSION < R_Version(1, 2, 0)
-#define STRING_ELT(x,i)		(STRING(x)[i])
-#define VECTOR_ELT(x,i)         (VECTOR(x)[i])
-#define SET_STRING_ELT(x,i,v)	(STRING(x)[i] = (v))
-#define SET_VECTOR_ELT(x,i,v)	(VECTOR(x)[i] = (v))
-#endif /* R_VERSION */
+#include <R.h>
+#include <Rinternals.h>
 
 #define CN_TYPE_BIG     1
 #define CN_TYPE_LITTLE  2 
@@ -49,12 +41,12 @@
 #define UNKNOWN 0000
 
 #ifdef WORDS_BIGENDIAN
-#define CN_TYPE_NATIVE CN_TYPE_IEEEB
-#define endian BIG
+# define CN_TYPE_NATIVE CN_TYPE_IEEEB
+# define endian BIG
 #else
-#define CN_TYPE_NATIVE CN_TYPE_IEEEL
-#define endian LITTLE
-#endif /* WORDS_BIGENDIAN */
+# define CN_TYPE_NATIVE CN_TYPE_IEEEL
+# define endian LITTLE
+#endif /* not WORDS_BIGENDIAN */
 
 typedef int int32;
 typedef short int16;
@@ -66,10 +58,10 @@ typedef float flt32;
 #define FPREP FPREP_IEEE754
 
 #ifdef max
-#undef max
+# undef max
 #endif
 #ifdef min
-#undef min
+# undef min
 #endif
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define min(a,b) ((a) <= (b) ? (a) : (b))

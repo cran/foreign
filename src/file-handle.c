@@ -20,7 +20,7 @@
 
 #include <errno.h>
 #include <stdlib.h>
-#include "R.h"
+#include <R.h>
 #include "avl.h"
 #include "file-handle.h"
 #include "var.h"

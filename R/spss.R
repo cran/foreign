@@ -1,4 +1,4 @@
-### $Id: spss.R,v 1.4 2002/03/08 21:15:56 tlumley Exp $
+### $Id: spss.R,v 1.5 2002/04/29 19:48:37 saikat Exp $
 ###
 ###             Read SPSS system data files
 ###
@@ -37,9 +37,10 @@ read.spss <- function(file,use.value.labels=TRUE,to.data.frame=FALSE,
       }
     }
     
-    if (to.data.frame)
-      as.data.frame(rval)
-    else
-      rval
-    
+    if (to.data.frame) {
+      varlab <- attr(rval, "variable.labels")
+      rval <- as.data.frame(rval)
+      attr(rval, "variable.labels") <- varlab
+    }
+    rval
 }

@@ -27,16 +27,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-#include "R.h"
-#include "Rdefines.h"
-#include "Rinternals.h"
-
-#if R_VERSION < R_Version(1, 2, 0)
-#define STRING_ELT(x,i)		(STRING(x)[i])
-#define VECTOR_ELT(x,i)         (VECTOR(x)[i])
-#define SET_STRING_ELT(x,i,v)	(STRING(x)[i] = (v))
-#define SET_VECTOR_ELT(x,i,v)	(VECTOR(x)[i] = (v))
-#endif
+#include <R.h>
+#include <Rdefines.h>
+#include <Rinternals.h>
 
 #define MTP_BUF_SIZE 85
 #define MTB_INITIAL_ENTRIES 10

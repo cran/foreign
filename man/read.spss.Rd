@@ -31,6 +31,8 @@ read.spss(file, use.value.labels=TRUE, to.data.frame=FALSE, max.value.labels=Inf
   even if they have value labels. The value labels are then returned in
   the \code{"value.labels"} attribute of the variable.
   
+  If SPSS variable labels are present, they are returned as the
+  \code{"variable.labels"} attribute of the answer.
 }
 \author{Saikat DebRoy}
 \examples{
