@@ -6,7 +6,8 @@
 }
 \usage{
 read.dta(file, convert.dates = TRUE, tz = "GMT",
-         convert.factors = TRUE, missing.type = FALSE)
+         convert.factors = TRUE, missing.type = FALSE,
+         convert.underscore=TRUE)
 }
 \arguments{
   \item{file}{a filename as a character string.}
@@ -16,6 +17,8 @@ read.dta(file, convert.dates = TRUE, tz = "GMT",
     (version 6.0 or later)}
   \item{missing.type}{For version 8 only, store information about
     different types of missing data?}
+  \item{convert.underscore}{Convert \code{"_"} in Stata variable names
+    to \code{"."} in R names?}
 }
 \details{
   The variables in the Stata data set become the columns of the data
@@ -34,7 +37,10 @@ read.dta(file, convert.dates = TRUE, tz = "GMT",
   \code{NULL}. For other variables the value is \code{NA} where the
   observation is not missing and 0-26 when the observation is
   missing. This is attached as the code{"missing"} attribute of the
-  returned value. 
+  returned value.
+  
+  The option to allow underscores in variable names may become the
+  default in future versions now that R supports their use.
 }
 \value{
   a data frame

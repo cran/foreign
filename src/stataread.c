@@ -1,5 +1,5 @@
 /**
- * $Id: stataread.c,v 1.12 2003/12/20 07:24:28 hornik Exp $
+ * $Id: stataread.c,v 1.13 2004/04/22 21:27:09 tlumley Exp $
   Read  Stata version 8.0, 7.0, 7/SE, 6.0 and 5.0 .dta files, write version 7.0, 6.0.
   
   (c) 1999, 2000, 2001, 2002 Thomas Lumley. 
@@ -67,8 +67,16 @@ static int InIntegerBinary(FILE * fp, int naok, int swapends)
 	reverse_int(i);
     return ((i==STATA_INT_NA) & !naok ? NA_INTEGER : i);
 }
-
+/* read a 1-byte signed integer */
 static int InByteBinary(FILE * fp, int naok)
+{ 
+    signed char i;
+    if (fread(&i, sizeof(char), 1, fp) != 1)
+	error("a binary read error occured");
+    return  ((i==STATA_BYTE_NA) & !naok ? NA_INTEGER : (int) i);
+}
+/* read a single byte  */
+static int RawByteBinary(FILE * fp, int naok)
 { 
     unsigned char i;
     if (fread(&i, sizeof(char), 1, fp) != 1)
@@ -81,8 +89,8 @@ static int InShortIntBinary(FILE * fp, int naok,int swapends)
 	unsigned first,second;
 	int result;
 	
-  first = InByteBinary(fp,1);
-  second = InByteBinary(fp,1);
+  first = RawByteBinary(fp,1);
+  second = RawByteBinary(fp,1);
   if (stata_endian == CN_TYPE_BIG){
     result= (first<<8) | second;
   } else {
@@ -119,13 +127,17 @@ static void InStringBinary(FILE * fp, int nchar, char* buffer)
 	error("a binary read error occured");
 }
 
+/** now optional and done at R level **/
 static char* nameMangle(char *stataname, int len){
+  return stataname;
+}
+/**static char* nameMangle(char *stataname, int len){
     int i;
     for(i=0;i<len;i++)
       if (stataname[i]=='_') stataname[i]='.';
     return stataname;
 }
-
+**/
 
 /*****
       Turn a .dta file into a data frame
@@ -150,7 +162,7 @@ SEXP R_LoadStataData(FILE *fp)
     
     /** first read the header **/
     
-    abyte=InByteBinary(fp,1);   /* release version */
+    abyte=RawByteBinary(fp,1);   /* release version */
     version=0;			/* -Wall */
     varnamelength=0;		/* -Wall */
     labeltable = R_NilValue;	/* -Wall */
@@ -178,11 +190,11 @@ SEXP R_LoadStataData(FILE *fp)
     default:
         error("Not a Stata version 5-8 .dta file");
     }
-    stata_endian=(int) InByteBinary(fp,1);     /* byte ordering */
+    stata_endian=(int) RawByteBinary(fp,1);     /* byte ordering */
     swapends = stata_endian != CN_TYPE_NATIVE;
 
-    InByteBinary(fp,1);            /* filetype -- junk */
-    InByteBinary(fp,1);            /* padding */
+    RawByteBinary(fp,1);            /* filetype -- junk */
+    RawByteBinary(fp,1);            /* padding */
     nvar =  (InShortIntBinary(fp,1,swapends)); /* number of variables */
     nobs =(InIntegerBinary(fp,1,swapends));  /* number of cases */
     /* data label - zero terminated string */
@@ -223,7 +235,7 @@ SEXP R_LoadStataData(FILE *fp)
     PROTECT(types=allocVector(INTSXP,nvar));
     if (version>0){
 	    for(i=0;i<nvar;i++){
-		    abyte = InByteBinary(fp,1);
+		    abyte = RawByteBinary(fp,1);
 		    INTEGER(types)[i]= abyte;
 		    switch (abyte) {
 		    case STATA_FLOAT:
@@ -244,7 +256,7 @@ SEXP R_LoadStataData(FILE *fp)
 	    }
     } else {
 	    for(i=0;i<nvar;i++){
-		    abyte = InByteBinary(fp,1);
+		    abyte = RawByteBinary(fp,1);
 		    INTEGER(types)[i]= abyte;
 		    switch (abyte) {
 		    case STATA_SE_FLOAT:
@@ -279,7 +291,7 @@ SEXP R_LoadStataData(FILE *fp)
     /** sortlist -- not relevant **/
 
     for (i=0;i<2*(nvar+1);i++)
-        InByteBinary(fp,1);
+        RawByteBinary(fp,1);
     
     /** format list
 	passed back to R as attributes.
@@ -335,7 +347,7 @@ SEXP R_LoadStataData(FILE *fp)
 
     /** variable 'characteristics'  -- not yet implemented **/
 
-    while(InByteBinary(fp,1)) {
+    while(RawByteBinary(fp,1)) {
 	if (abs(version)>=7) /* manual is wrong here */
 	    charlen= (InIntegerBinary(fp,1,swapends));
 	else
@@ -429,7 +441,7 @@ SEXP R_LoadStataData(FILE *fp)
 			    break;
 		    InStringBinary(fp,varnamelength+1,aname);
 		    SET_STRING_ELT(tmp,j,mkChar(aname));
-		    InByteBinary(fp,1);InByteBinary(fp,1);InByteBinary(fp,1); /*padding*/
+		    RawByteBinary(fp,1);RawByteBinary(fp,1);RawByteBinary(fp,1); /*padding*/
 		    nlabels=InIntegerBinary(fp,1,swapends);
 		    totlen=InIntegerBinary(fp,1,swapends);
 		    off= Calloc((size_t) nlabels, int);

@@ -1,3 +1,19 @@
+2004-04-28 Thomas Lumley <tlumley@u.washington.edu>
+
+	* DESCRIPTION: version 0.6-8
+	
+	* read.dta: 1-byte type was coming through unsigned
+	
+	* tests/: test file with 1-byte type
+
+2004-04-22 Thomas Lumley <tlumley@u.washington.edu>
+
+	* DESCRIPTION: version 0.6-7
+
+	* read.dta: add option to not convert _ to . in variable names
+
+	* tests/  tests of the new option and more tests for stata 8.
+
 2003-12-20  Brian Ripley  <ripley@stats.ox.ac.uk>
 
 	* DESCRIPTION (Version): New version is 0.6-6.

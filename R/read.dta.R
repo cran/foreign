@@ -1,8 +1,11 @@
 
 read.dta <- function(file, convert.dates=TRUE,tz="GMT",
-                      convert.factors=TRUE,missing.type=FALSE){
-    rval<-.External("do_readStata", file, PACKAGE = "foreign")
+                      convert.factors=TRUE,missing.type=FALSE,
+                     convert.underscore=TRUE){
+    rval<-.External("do_readStata", file,  PACKAGE = "foreign")
 
+    if(convert.underscore)
+      names(rval)<-gsub("_",".",names(rval))
 
     types<-attr(rval,"types")    
     stata.na<-data.frame(type=251:255,
@@ -45,25 +48,27 @@ read.dta <- function(file, convert.dates=TRUE,tz="GMT",
             rval[[v]]<-ISOdate(1960,1,1,tz=tz)+24*60*60*rval[[v]]
     }
     if (convert.factors){
-        ll<-attr(rval,"val.labels")
-        tt<-attr(rval,"label.table")
-        factors<-which(ll!="")
-        for(v in factors){
+        if (attr(rval, "version")==5)
+          warning("Can't read factor labels from Stata 5 files.")
+        else {
+          ll<-attr(rval,"val.labels")
+          tt<-attr(rval,"label.table") 
+          factors<-which(ll!="")
+          for(v in factors){
             labels<-tt[[ll[v]]]
-            ## this shouldn't be able to happen, but does with
-            ## http://www.ats.ucla.edu/stat/stata/stat130/apipop.dta
             if (is.null(labels)){
-                warning("Value labels (",ll[v],") for ",names(rval)[v]," are missing")
-                next
+              warning("Value labels (",ll[v],") for ",names(rval)[v]," are missing")
+              next
             }
             rval[[v]]<-factor(rval[[v]],levels=tt[[ll[v]]],labels=names(tt[[ll[v]]]))
+          }
         }
-    }
-
+      }
+    
 
     rval
     
-}
+  }
 
 write.dta <- function(dataframe, file, version = 6,convert.dates=TRUE,tz="GMT",
                       convert.factors=c("labels","string","numeric","codes"))
