@@ -1,7 +1,10 @@
+2003-04-04 Duncan Murdoch <murdoch@stats.uwo.ca>
+
+ 	* bug fix for data.restore (bad error message)
+
 2003-03-01 Duncan Murdoch <murdoch@stats.uwo.ca>
 
 	* bug fix for data.restore (wasn't reading NULL properly)
-
 
 2002-11-04 Brian Ripley <ripley@stats.ox.ac.uk>
 

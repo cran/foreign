@@ -195,7 +195,7 @@ data.restore <-
         }
         else {
             stop(paste("S mode \"", code, "\" (near byte offset ",
-                       seek(s), ") not supported", sep = ""))
+                       seek(dump), ") not supported", sep = ""))
         }
         list(name = name, value = value)
     }

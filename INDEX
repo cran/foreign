@@ -6,6 +6,6 @@ read.epiinfo            Read Epi Info data files
 read.mtp                Read a Minitab Portable Worksheet
 read.spss               Read an SPSS data file
 read.ssd                obtain a data frame from a SAS permanent
-                        dataset, via read.xport 
+                        dataset, via read.xport
 read.xport              Read a SAS XPORT format library
 write.dta               Write files in Stata binary format
