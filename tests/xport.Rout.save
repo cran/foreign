@@ -1,6 +1,6 @@
 
 R : Copyright 2003, The R Development Core Team
-Version 1.7.0 Patched (2003-05-08)
+Version 1.7.0 Patched (2003-04-24)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -33,6 +33,12 @@ $SPEC$position
 
 $SPEC$name
 [1] "POP"    "SAMPLE" "REP"    "SEEDWT" "HARV1"  "HARV2" 
+
+$SPEC$label
+[1] "" "" "" "" "" ""
+
+$SPEC$format
+[1] "" "" "" "" "" ""
 
 $SPEC$sexptype
 [1] 16 14 14 14 14 14
@@ -80,6 +86,12 @@ $TEST$position
 
 $TEST$name
 [1] "I" "K"
+
+$TEST$label
+[1] "" ""
+
+$TEST$format
+[1] "" ""
 
 $TEST$sexptype
 [1] 14 14

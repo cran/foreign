@@ -1,3 +1,11 @@
+2003-05-21  Peter Dalgaard BSA  <p.dalgaard@biostat.ku.dk>
+
+	* lookup.xport return SAS variable label and format. Slight change
+	  of logic for getting variable name (avoid strchr on things that
+	  aren't zero-terminated).
+
+	* version is 0.6-1
+
 2003-05-20 Thomas Lumley <tlumley@u.washington.edu>
 	
 	* read.dta/write.dta handle Stata 8.0

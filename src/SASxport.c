@@ -1,5 +1,5 @@
 /*
- *  $Id: SASxport.c,v 1.10 2003/04/19 14:16:06 pd Exp $
+ *  $Id: SASxport.c,v 1.11 2003/05/21 18:38:26 pd Exp $
  *
  *  Read SAS transport data set format
  *
@@ -270,7 +270,7 @@ init_mem_info(FILE *fp, char *name)
 static int
 next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 		int *tailpad, int *length, int *ntype, int *nlng,
-		int *nvar0, SEXP nname, int *npos)
+		int *nvar0, SEXP nname, SEXP nlabel, SEXP nform, int *npos)
 {
     char *tmp;
     char record[81];
@@ -304,20 +304,37 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
     }
   
     for(i = 0; i < nvars; i++) {
-	int nname_len = 0;
-	char tmpname[9];
+	int nname_len = 0, nlabel_len = 0, nform_len = 0;
+	char tmpname[41];
 
 	ntype[i] = (int) ((nam_head[i].ntype == 1) ? REALSXP : STRSXP);
 	nlng[i]  = nam_head[i].nlng;
 	nvar0[i] = nam_head[i].nvar0;
 	npos[i]  = nam_head[i].npos;
-	tmp = strchr(nam_head[i].nname, ' ');
-	nname_len = tmp - nam_head[i].nname;
-	if (nname_len > 8)
-	    nname_len = 8;
+
+	/* Variable name */
+	nname_len = 8;
+	while (nname_len && nam_head[i].nname[nname_len-1] == ' ')
+	    nname_len--;
 	strncpy(tmpname, nam_head[i].nname, nname_len);
 	tmpname[nname_len] = '\0';
 	SET_STRING_ELT(nname, i, mkChar(tmpname));
+
+	/* Variable label */
+	nlabel_len = 40;
+	while (nlabel_len && nam_head[i].nlabel[nlabel_len-1] == ' ')
+	    nlabel_len--;
+	strncpy(tmpname, nam_head[i].nlabel, nlabel_len);
+	tmpname[nlabel_len] = '\0';
+	SET_STRING_ELT(nlabel, i, mkChar(tmpname));
+
+	/* Variable format name */
+	nform_len = 8;
+	while (nform_len && nam_head[i].nform[nform_len-1] == ' ')
+	    nform_len--;
+	strncpy(tmpname, nam_head[i].nform, nform_len);
+	tmpname[nform_len] = '\0';
+	SET_STRING_ELT(nform, i, mkChar(tmpname));
     }
 
     Free(nam_head);
@@ -413,7 +430,7 @@ getListElement(SEXP list, char *str) {
     return elmt;
 }
 
-#define VAR_INFO_LENGTH 9
+#define VAR_INFO_LENGTH 11
 
 const char *cVarInfoNames[] = {
     "headpad",
@@ -422,6 +439,8 @@ const char *cVarInfoNames[] = {
     "index",
     "position",
     "name",
+    "label",
+    "format",
     "sexptype",
     "tailpad",
     "length"
@@ -433,9 +452,11 @@ const char *cVarInfoNames[] = {
 #define XPORT_VAR_INDEX(varinfo)     VECTOR_ELT(varinfo, 3)
 #define XPORT_VAR_POSITION(varinfo)  VECTOR_ELT(varinfo, 4)
 #define XPORT_VAR_NAME(varinfo)      VECTOR_ELT(varinfo, 5)
-#define XPORT_VAR_SEXPTYPE(varinfo)  VECTOR_ELT(varinfo, 6)
-#define XPORT_VAR_TAILPAD(varinfo)   VECTOR_ELT(varinfo, 7)
-#define XPORT_VAR_LENGTH(varinfo)    VECTOR_ELT(varinfo, 8)
+#define XPORT_VAR_LABEL(varinfo)     VECTOR_ELT(varinfo, 6)
+#define XPORT_VAR_FORM(varinfo)      VECTOR_ELT(varinfo, 7)
+#define XPORT_VAR_SEXPTYPE(varinfo)  VECTOR_ELT(varinfo, 8)
+#define XPORT_VAR_TAILPAD(varinfo)   VECTOR_ELT(varinfo, 9)
+#define XPORT_VAR_LENGTH(varinfo)    VECTOR_ELT(varinfo, 10)
 
 #define SET_XPORT_VAR_HEADPAD(varinfo, val)   SET_VECTOR_ELT(varinfo, 0, val)
 #define SET_XPORT_VAR_TYPE(varinfo, val)      SET_VECTOR_ELT(varinfo, 1, val)
@@ -443,9 +464,11 @@ const char *cVarInfoNames[] = {
 #define SET_XPORT_VAR_INDEX(varinfo, val)     SET_VECTOR_ELT(varinfo, 3, val)
 #define SET_XPORT_VAR_POSITION(varinfo, val)  SET_VECTOR_ELT(varinfo, 4, val)
 #define SET_XPORT_VAR_NAME(varinfo, val)      SET_VECTOR_ELT(varinfo, 5, val)
-#define SET_XPORT_VAR_SEXPTYPE(varinfo, val)  SET_VECTOR_ELT(varinfo, 6, val)
-#define SET_XPORT_VAR_TAILPAD(varinfo, val)   SET_VECTOR_ELT(varinfo, 7, val)
-#define SET_XPORT_VAR_LENGTH(varinfo, val)    SET_VECTOR_ELT(varinfo, 8, val)
+#define SET_XPORT_VAR_LABEL(varinfo, val)     SET_VECTOR_ELT(varinfo, 6, val)
+#define SET_XPORT_VAR_FORM(varinfo, val)      SET_VECTOR_ELT(varinfo, 7, val)
+#define SET_XPORT_VAR_SEXPTYPE(varinfo, val)  SET_VECTOR_ELT(varinfo, 8, val)
+#define SET_XPORT_VAR_TAILPAD(varinfo, val)   SET_VECTOR_ELT(varinfo, 9, val)
+#define SET_XPORT_VAR_LENGTH(varinfo, val)    SET_VECTOR_ELT(varinfo, 10, val)
 
 SEXP
 xport_info(SEXP xportFile)
@@ -482,6 +505,8 @@ xport_info(SEXP xportFile)
 	SET_XPORT_VAR_INDEX(varInfo, allocVector(INTSXP, memLength));
 	SET_XPORT_VAR_POSITION(varInfo, allocVector(INTSXP, memLength));
 	SET_XPORT_VAR_NAME(varInfo, allocVector(STRSXP, memLength));
+	SET_XPORT_VAR_LABEL(varInfo, allocVector(STRSXP, memLength));
+	SET_XPORT_VAR_FORM(varInfo, allocVector(STRSXP, memLength));
 	SET_XPORT_VAR_SEXPTYPE(varInfo, allocVector(INTSXP, memLength));
 	SET_XPORT_VAR_HEADPAD(varInfo, allocVector(INTSXP, 1));
 	SET_XPORT_VAR_TAILPAD(varInfo, allocVector(INTSXP, 1));
@@ -496,6 +521,8 @@ xport_info(SEXP xportFile)
 			    INTEGER(XPORT_VAR_WIDTH(varInfo)),
 			    INTEGER(XPORT_VAR_INDEX(varInfo)),
 			    XPORT_VAR_NAME(varInfo),
+			    XPORT_VAR_LABEL(varInfo),
+			    XPORT_VAR_FORM(varInfo),
 			    INTEGER(XPORT_VAR_POSITION(varInfo)));
 
 	for(i = 0; i < memLength; i++) {
