@@ -1,9 +1,9 @@
 Package: foreign
 Priority: recommended
-Version: 0.5-10
-Date: 2003-03-01
+Version: 0.5-11
+Date: 2003-04-14
 Title: Read data stored by Minitab, S, SAS, SPSS, Stata, ...
-Depends: R (>= 1.2.0)
+Depends: R (>= 1.7.0)
 Maintainer: R-core <R-core@r-project.org>
 Author: Thomas Lumley <thomas@biostat.washington.edu>,
         Saikat DebRoy <saikat@stat.wisc.edu>,
