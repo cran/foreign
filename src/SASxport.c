@@ -92,6 +92,7 @@ static double get_IBM_double(char* c, size_t len)
     memcpy(ibuf, c, len);
     c = ibuf;
 				/* check for missing value */
+    /* This isn't really right: NAs are ' ',  '.', A-Z plus zero fill */
     if (c[1] == '\0' && c[0] != '\0') return R_NaReal;
 				/* convert c[1] to c[3] to an int */
     buf[0] = '\0';
@@ -623,21 +624,17 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 		tmpchar = record + dataPosition[k];
 		if(dataType[k] == REALSXP) {
 		    REAL(VECTOR_ELT(data, k))[j] = 
-			    get_IBM_double(tmpchar, dataWidth[k]);
+			get_IBM_double(tmpchar, dataWidth[k]);
 		} else {
 		    tmpchar[dataWidth[k]] = '\0';
-		    if(strlen(tmpchar) == 1 && IS_SASNA_CHAR(tmpchar[0])) {
-			SET_STRING_ELT(VECTOR_ELT(data, k), j, R_NaString);
-		    } else {
-		        /* strip trailing blanks */
-			c = tmpchar + dataWidth[k];
-			while (c-- > tmpchar && *c == ' ')
-			    *c ='\0';
+		    /* strip trailing blanks */
+		    c = tmpchar + dataWidth[k];
+		    while (c-- > tmpchar && *c == ' ')
+			*c ='\0';
 
-			SET_STRING_ELT(VECTOR_ELT(data, k), j,
-				       (c < tmpchar) ? R_BlankString :
-				       mkChar(tmpchar));
-		    }
+		    SET_STRING_ELT(VECTOR_ELT(data, k), j,
+				   (c < tmpchar) ? R_BlankString :
+				   mkChar(tmpchar));
 		}
 	    }
 	}

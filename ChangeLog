@@ -1,22 +1,46 @@
+2004-12-02  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* tests/dumpdata: enhanced {logical; NA}
+	* tests/create-dumpdata.S: new {only internal documentation}
+
+	* tests/S3.R: add verbose=TRUE
+
+	* DESCRIPTION (Imports): stats, methods
+
+	* R/Sread.R (data.restore): handle "logical"s (with NAs!)
+	correctly; handle NAs better in general, getting rid of extraneous
+	coercion warning.
+
+2004-12-01  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* R/Sread.R (data.restore): handle `ts()' objects properly
+
+2004-11-24 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: New version is 0.8-2.
+
+	* src/SASxport.c Definition of numerical missing values was
+	applied to character fields. (PR#7389)
+
 2004-11-17 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: New version is 0.8-1.
 
-        * read.ssd.{R,Rd}: Make work under Windows and tidy up.
+	* read.ssd.{R,Rd}: Make work under Windows and tidy up.
 
 2004-11-8 Thomas Lumley <tlumley@u.washington.edu>
 
 	* spss.R:  Trim trailing spaces from SPSS value labels
-	  
-         Don't create a factor when there are fewer labels than
+
+	 Don't create a factor when there are fewer labels than
 	 non-missing levels
-	  
+
 	* read.spss.Rd: Mention the apparently harmless warning given for
 	 recent versions of SPSS files.
 
 2004-10-28 Brian Ripley <Brian.Ripley@R-project.org>
 
-        * DESCRIPTION: Mention read/write .dbf files
+	* DESCRIPTION: Mention read/write .dbf files
 
 2004-10-25 Brian Ripley <Brian.Ripley@R-project.org>
 
@@ -33,7 +57,7 @@
 	* Add write.foreign for writing to foreign packages
 
 	* use Date rather than POSIXt for read.dta
-	
+
 	* Update tests/stata.Rout.save for using Date rather than POSIXt
 
 	* DESCRIPTION: New version is 0.7
@@ -41,19 +65,19 @@
 2004-07-29  Thomas Lumley <tlumley@u.washington.edu>
 
 	* DESCRIPTION: New version is 0.6-11
-	
+
 	* Fix US-style dates in read.epiinfo
 
 	* Add option to turn off some warnings in read.dta
-	
-2004-07-15  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+
+2004-07-15  Kurt Hornik	 <Kurt.Hornik@wu-wien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.6-10.
 
 	* configure.ac: Protect against possible whitespace in R_HOME when
 	calling R CMD config.
 
-2004-05-22  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+2004-05-22  Kurt Hornik	 <Kurt.Hornik@wu-wien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.6-9.
 
@@ -65,9 +89,9 @@
 2004-04-28 Thomas Lumley <tlumley@u.washington.edu>
 
 	* DESCRIPTION: version 0.6-8
-	
+
 	* read.dta: 1-byte type was coming through unsigned
-	
+
 	* tests/: test file with 1-byte type
 
 2004-04-22 Thomas Lumley <tlumley@u.washington.edu>
@@ -89,7 +113,7 @@
 	* src/zzz.R: Define .onLoad as well as .First.lib (the latter left
 	in case NAMESPACE is removed for debugging).
 
-2003-12-20  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+2003-12-20  Kurt Hornik	 <Kurt.Hornik@wu-wien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.6-5.
 
@@ -119,16 +143,16 @@
 	when using gcc. Use suitable replacement when using another compiler
 	like icc.
 
-2003-09-25  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+2003-09-25  Kurt Hornik	 <Kurt.Hornik@wu-wien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.6-3.
 
 	* man/read.epiinfo.Rd: Codoc mismatch.
 
 2003-08-28  Thomas Lumley <tlumley@u.washington.edu>
-	
+
 	* read.spss.Rd: note that strings are padded on the right with
-	spaces. 
+	spaces.
 
 	* version is 0.6-2
 
@@ -138,8 +162,8 @@
 	but doesn't.
 
 	* version is 0.6-2
-	
-2003-05-21  Peter Dalgaard BSA  <p.dalgaard@biostat.ku.dk>
+
+2003-05-21  Peter Dalgaard BSA	<p.dalgaard@biostat.ku.dk>
 
 	* lookup.xport return SAS variable label and format. Slight change
 	  of logic for getting variable name (avoid strchr on things that
@@ -148,21 +172,21 @@
 	* version is 0.6-1
 
 2003-05-20 Thomas Lumley <tlumley@u.washington.edu>
-	
+
 	* read.dta/write.dta handle Stata 8.0
 
 	* version is 0.6
 
 2003-05-08 Brian Ripley <ripley@stats.ox.ac.uk>
 
- 	* src/* rename int32, flt64 and comment out int16 and flt32,
+	* src/* rename int32, flt64 and comment out int16 and flt32,
 	  to avoid conflicts on AIX 5.1.
 
 	* DESCRIPTION: version is 0.5-13
 
 2003-04-04 Duncan Murdoch <murdoch@stats.uwo.ca>
 
- 	* bug fix for data.restore (bad error message)
+	* bug fix for data.restore (bad error message)
 
 2003-03-01 Duncan Murdoch <murdoch@stats.uwo.ca>
 
@@ -175,7 +199,7 @@
 	* DESCRIPTION: version is 0.5-8
 
 2002-11-02 Thomas Lumley <tlumley@u.washington.edu>
-	
+
 	* Fixed src/stataread.c for version 7/SE (thanks to examples sent
 	by Jason Liao)
 
@@ -190,17 +214,17 @@
 
 2002-05-17 Thomas Lumley <tlumley@u.washington.edu>
 
-	* Stata short ints were coming through unsigned 
+	* Stata short ints were coming through unsigned
 
-        * updated SPSS output in tests to follow 2002-04-29 changes
+	* updated SPSS output in tests to follow 2002-04-29 changes
 
 	* version is 0.5-5
 
 2002-05-14 Thomas Lumley <tlumley@u.washington.edu>
-   
+
 	* Mark Myatt's fixes and extensions for read.epiinfo
 
-2002-05-01  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+2002-05-01  Kurt Hornik	 <Kurt.Hornik@wu-wien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.5-4.
 
@@ -235,7 +259,7 @@
 
 	* SPSS: convert only some value labels to factor levels
 
-2002-03-08 Brian Ripley  <ripley@stats.ox.ac.uk>
+2002-03-08 Brian Ripley	 <ripley@stats.ox.ac.uk>
 
 	* DESCRIPTION (Version): New version is 0.4-10.
 
@@ -244,21 +268,21 @@
 	* configure.win: added to allow no-intervention
 	  installation on Windows.
 
-2002-01-24  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+2002-01-24  Kurt Hornik	 <Kurt.Hornik@wu-wien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.4-9.
 
 2002-01-11 Thomas Lumley <tlumley@u.washington.edu>
 	read.spss reads factor levels, optionally coerces to data.frame
 
-2001-12-13  Thomas Lumley  <tlumley@u.washington.edu>. 
+2001-12-13  Thomas Lumley  <tlumley@u.washington.edu>.
 	Typo in Stata date-handling provoked by gctorture()
 
-2001-12-13  Kurt Hornik  <Kurt.Hornik@ci.tuwien.ac.at>
+2001-12-13  Kurt Hornik	 <Kurt.Hornik@ci.tuwien.ac.at>
 
 	* src/sfm-read.c (bufread): Do not read in 0 bytes [fix by PD].
 
-2001-12-04  Kurt Hornik  <Kurt.Hornik@ci.tuwien.ac.at>
+2001-12-04  Kurt Hornik	 <Kurt.Hornik@ci.tuwien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.4-8.
 
@@ -274,8 +298,8 @@
 	read and write dates in Stata.
 
 2001-10-11 Thomas Lumley <tlumley@u.washington.edu>
-	
-	* src/stataread.c: use strlen(), not the field width, as the 
+
+	* src/stataread.c: use strlen(), not the field width, as the
 	argument to allocString().
 
 2001-07-23  Saikat DebRoy  <saikat@stat.wisc.edu>
@@ -285,7 +309,7 @@
 	* src/sfmP.h: Don not use the __atribute__ keyword on non-gcc
 	compilers.
 
-2001-07-17 Brian Ripley  <ripley@stats.ox.ac.uk>
+2001-07-17 Brian Ripley	 <ripley@stats.ox.ac.uk>
 
 	* DESCRIPTION (Version): New version is 0.4-6.
 
@@ -293,7 +317,7 @@
 
 	* src/spss.c (do_read_SPSS): Always open in binary mode.
 
-2001-06-18  Kurt Hornik  <Kurt.Hornik@ci.tuwien.ac.at>
+2001-06-18  Kurt Hornik	 <Kurt.Hornik@ci.tuwien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.4-5.
 
@@ -305,9 +329,9 @@
 
 	* src/spss.c (do_read_SPSS): Check for null file pointer.
 
-2001-06-09  Kurt Hornik  <Kurt.Hornik@ci.tuwien.ac.at>
+2001-06-09  Kurt Hornik	 <Kurt.Hornik@ci.tuwien.ac.at>
 
-	* tests/*.R, tests/*.Rout.save:  Remove `gctorture(TRUE)'.
+	* tests/*.R, tests/*.Rout.save:	 Remove `gctorture(TRUE)'.
 
 	* R/*.R: Change name of filename argument to `file'.  Add
 	`PACKAGE' arg in FF calls where missing.  Remove .First.lib() from
@@ -396,12 +420,12 @@
 
 	* src/minitab.c (strtrim): Corrected the character count.
 	(MTB2SEXP): Added the names of the columns, if they are given.
-	
+
 
 1999-12-16  Douglas Bates  <bates@stat.wisc.edu>
 
 	* DESCRIPTION (Package): Created a 0.1-1 release under the package
 	name "foreign".
-	
+
 	* R/zzz.R: Added the copyright stuff.
-	
+

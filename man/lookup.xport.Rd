@@ -1,6 +1,6 @@
 \name{lookup.xport}
 \alias{lookup.xport}
-\title{Lookup information on a SAS XPORT format library}
+\title{Lookup Information on a SAS XPORT Format Library}
 \description{
   Scans a file as a SAS XPORT format library and returns a list
   containing information about the SAS library.
@@ -17,7 +17,7 @@ lookup.xport(file)
 }
 \references{
   SAS Technical Support document TS-140:
-  ``The Record Layout of a Data Set in SAS Transport (XPORT) Format''
+  \dQuote{The Record Layout of a Data Set in SAS Transport (XPORT) Format}
   available as
   \url{http://ftp.sas.com/techsup/download/technote/ts140.html}.
 } 

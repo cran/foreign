@@ -26,15 +26,17 @@
 \details{
   \code{read.S} can read the binary files produced in most recent
   versions of S-PLUS on either Windows (versions 3.x, 4.x, 2000) or Unix
-  (version 3.x with 4 byte integers). It automatically detects whether
+  (version 3.x with 4 byte integers).  It automatically detects whether
   the file was produced on a big- or little-endian machine and adapts
-  itself accordingly.  \code{data.restore} can read a similar range of
-  files produced by \code{data.dump}.
+  itself accordingly.\cr
+  \code{data.restore} can read a similar range of files produced by
+  \code{data.dump}, for newer versions of S-PLUS, those from
+  \code{data.dump(....., oldStyle=TRUE)}.
 
   Not all S3 objects can be handled in the current version.  The most
   frequently encountered exceptions are functions and expressions; you
-  will also have trouble with objects that contain model formulas.  In 
-  particular, comments will be lost from function bodies, and the 
+  will also have trouble with objects that contain model formulas.  In
+  particular, comments will be lost from function bodies, and the
   argument lists of functions will often be changed.
 
 %  The \code{SModeNames} variable contains a list of the modes of
