@@ -1,5 +1,5 @@
 /**
- * $Id: stataread.c,v 1.9 2002/06/21 10:05:06 martyn Exp $
+ * $Id: stataread.c,v 1.10 2002/11/03 02:35:57 tlumley Exp $
   Read  Stata version 7.0, 7/SE, 6.0 and 5.0 .dta files, write version 7.0, 6.0.
   
   (c) 1999, 2000, 2001, 2002 Thomas Lumley. 

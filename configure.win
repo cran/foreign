@@ -1,2 +1,2 @@
-cp -q src/var.h.in src/var.h
-cp -q src/swap_bytes.h.in src/swap_bytes.h
+cp -p src/var.h.in src/var.h
+cp -p src/swap_bytes.h.in src/swap_bytes.h
