@@ -410,7 +410,9 @@ do_read_SPSS(SEXP file)
     char buf[5];
     SEXP ans;
 
-    if (fread_pfm(buf, sizeof(char), 4, fp) != 4) {
+    if(!fp)
+	error("unable to open file");    
+    if(fread_pfm(buf, sizeof(char), 4, fp) != 4) {
 	fclose(fp);
 	error("problem in reading file %s", filename);
     }

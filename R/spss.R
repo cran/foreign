@@ -1,4 +1,4 @@
-### $Id: spss.R,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
+### $Id: spss.R,v 1.2 2001/06/09 14:40:20 hornik Exp $
 ###
 ###             Read SPSS system data files
 ###
@@ -21,6 +21,6 @@
 ### Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 ### MA 02111-1307, USA
 
-read.spss <- function(filename) {
-    .Call("do_read_SPSS", filename, PACKAGE = "foreign")
+read.spss <- function(file) {
+    .Call("do_read_SPSS", file, PACKAGE = "foreign")
 }

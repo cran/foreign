@@ -1,4 +1,4 @@
-### $Id: zzz.R,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
+### $Id: zzz.R,v 1.2 2001/06/09 14:40:20 hornik Exp $
 ###
 ###             Read stored Minitab worksheets
 ###
@@ -22,7 +22,6 @@
 ### MA 02111-1307, USA
 
 .First.lib <- function(lib, pkg) {
-  library.dynam("foreign", pkg, lib)
-  .C("spss_init", PACKAGE = "foreign");
+    library.dynam("foreign", pkg, lib)
+    .C("spss_init", PACKAGE = "foreign")
 }
-

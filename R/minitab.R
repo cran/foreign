@@ -1,4 +1,4 @@
-### $Id: minitab.R,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
+### $Id: minitab.R,v 1.2 2001/06/09 14:40:20 hornik Exp $
 ###
 ###             Read stored Minitab worksheets
 ###
@@ -27,8 +27,8 @@
 ## signif to remove the inaccuracies in the representation in the files.
 
 "read.mtp" <-
-function (fname) {
-  clean <- function(x) if(is.numeric(x)) signif(x, 6) else x
-  val <- .Call("read_mtp", fname, PACKAGE = "foreign")
-  lapply(val, clean)
+function (file) {
+    clean <- function(x) if(is.numeric(x)) signif(x, 6) else x
+    val <- .Call("read_mtp", file, PACKAGE = "foreign")
+    lapply(val, clean)
 }

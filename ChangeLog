@@ -1,16 +1,39 @@
+2001-06-18  Kurt Hornik  <Kurt.Hornik@ci.tuwien.ac.at>
+
+	* DESCRIPTION (Version): New version is 0.4-5.
+
+	* src/pfm-read.c (pfm_read_dictionary): Use Calloc() instead of
+	R_alloc().
+
+	* src/sfm-read.c (sfm_read_dictionary): Use Calloc() instead of
+	R_alloc().
+
+	* src/spss.c (do_read_SPSS): Check for null file pointer.
+
+2001-06-09  Kurt Hornik  <Kurt.Hornik@ci.tuwien.ac.at>
+
+	* tests/*.R, tests/*.Rout.save:  Remove `gctorture(TRUE)'.
+
+	* R/*.R: Change name of filename argument to `file'.  Add
+	`PACKAGE' arg in FF calls where missing.  Remove .First.lib() from
+	stataread.
+
+	* man/*.Rd: Change name of filename argument to `file', and be
+	consistent about using keyword `file'.
+
+2001-05-16  Saikat DebRoy  <saikat@stat.wisc.edu>
+
+	* src/SASxport.c (next_xport_info): changed size of allocated
+	array tmp - it must be at least 81.
+
 2001-05-14  Saikat DebRoy  <saikat@stat.wisc.edu>
 
 	* R/read.dta.R, src/stataread.c, man/read.dta.Rd, man/write.dta.Rd:
 	Added Stata Version 7 support from Thomas Lumley
 
-2001-05-14  Saikat DebRoy  <saikat@stat.wisc.edu>
-
-	* /home/rdevel/CVS-ARCHIVE/R-packages/foreign/src/stataread.c:
-	Stata Version 7 support from Thomas Lumley
-
 2001-04-09  Saikat DebRoy  <saikat@stat.wisc.edu>
 
-	* /home/rdevel/CVS-ARCHIVE/R-packages/foreign/src/SASxport.c (next_xport_info):
+	* src/SASxport.c (next_xport_info):
 	initialized *tailpad to 0. Fixed value of *tailpad
 	when end of file occurs while trying to get a new record (line
 	350). Fixed possible memory leaks in case of call to error.
@@ -20,9 +43,9 @@
 
 2001-04-03  Saikat DebRoy  <saikat@stat.wisc.edu>
 
-	* src/SASxport.c (next_xport_info): fixed computation of
-	tailpad when restOfCard != 0. The earlier method used ftell which
-	can give wrong results for long files.
+	* src/SASxport.c (next_xport_info): fixed computation of tailpad
+	when restOfCard != 0. The earlier method used ftell which can give
+	wrong results for long files.
 
 2001-03-31  Brian Ripley <ripley@stats.ox.ac.uk>
 
@@ -31,28 +54,29 @@
 
 2001-02-22  Saikat DebRoy  <saikat@stat.wisc.edu>
 
-	* /home/CVS/src/Rlibs/foreign/src/pfm-read.c:
+	* src/pfm-read.c:
 	In read_version_data, added check for date and time with the first
 	character of the field ' '.
 
-	Removed check for second integer field in the Variable Count Record.
+	Removed check for second integer field in the Variable Count
+	Record.
 
 	Both of these changes are based on bug report by Akio Sone.
 
 2001-02-06  Saikat DebRoy  <saikat@stat.wisc.edu>
 
-	* /home/CVS/src/Rlibs/foreign/src/SASxport.c:
+	* src/SASxport.c:
 	fixed problem with 8 character names in SAS XPORT format
 
 2001-02-06  Saikat DebRoy  <saikat@stat.wisc.edu>
 
-	* /home/CVS/src/Rlibs/foreign/src/SASxport.c:
+	* src/SASxport.c:
 	fixed problem with 8 character names in SAS XPORT format
 
 2001-01-24  Douglas Bates  <bates@verdi>
 
-	* /home/CVS/src/Rlibs/foreign/src/SASxport.c:
-	Fixing problem with calculation of the number of rows in SAS XPORT data sets when the rows are short
+	* src/SASxport.c: Fixing problem with calculation of the number of
+	rows in SAS XPORT data sets when the rows are short
 
 2001-01-24  Douglas Bates  <bates@stat.wisc.edu>
 

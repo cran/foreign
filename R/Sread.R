@@ -10,10 +10,10 @@ c("name", "string", "literal", "compiled", "(", ")", "[", "]",
 "S.call", "S.data", "comment", "comment(leftover)",
 "evaluation.frame", "destination")
 
-read.S <- function (filename)
+read.S <- function (file)
 {
     endian <- .Platform$endian
-    s <- file(filename, open = "rb")
+    s <- file(file, open = "rb")
     on.exit(close(s))
 
     readheader <- function(s)
@@ -117,9 +117,9 @@ read.S <- function (filename)
 }
 
 data.restore <-
-    function (filename, print = FALSE, verbose = FALSE, env = .GlobalEnv)
+    function (file, print = FALSE, verbose = FALSE, env = .GlobalEnv)
 {
-    dump <- file(filename, open="rt")
+    dump <- file(file, open="rt")
     on.exit(close(dump))
 
     ReadSdump <- function(top = FALSE, prefix) {
@@ -201,5 +201,5 @@ data.restore <-
         if(is.null(temp)) break
         assign(temp$name, temp$value, env = env)
     }
-    filename
+    file
 }

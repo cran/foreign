@@ -1,4 +1,4 @@
-### $Id: xport.R,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
+### $Id: xport.R,v 1.2 2001/06/09 14:40:20 hornik Exp $
 ###
 ###             Read SAS xport format libraries
 ###
@@ -22,13 +22,13 @@
 ### MA 02111-1307, USA
 
 lookup.xport <- function(file) {
-  .Call("xport_info", file, PACKAGE = "foreign")
+    .Call("xport_info", file, PACKAGE = "foreign")
 }
 
 read.xport <- function(file) {
-  data.info <- lookup.xport(file)
-  ans <- .Call("xport_read", file, data.info, PACKAGE = "foreign")
-  if (length(ans) == 1)
-    as.data.frame(ans[[1]])
-  else lapply(ans, as.data.frame)
+    data.info <- lookup.xport(file)
+    ans <- .Call("xport_read", file, data.info, PACKAGE = "foreign")
+    if (length(ans) == 1)
+        as.data.frame(ans[[1]])
+    else lapply(ans, as.data.frame)
 }

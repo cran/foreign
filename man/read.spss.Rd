@@ -1,28 +1,27 @@
 \name{read.spss}
 \alias{read.spss}
 \title{Read an SPSS data file}
+\description{
+  \code{read.spss} reads a file stored by the SPSS \code{save} and
+  \code{export} commands and returns a list.
+}
 \usage{
 read.spss(file)
-}
-\description{
-    \code{read.spss} reads a file stored by the SPSS \code{save} and
-    \code{export} commands and returns a list.
 }
 \arguments{
   \item{file}{ character variable with the name of the file to read.}
 }
 \value{
-    A list with one component for each variable in the saved data set.
+  A list with one component for each variable in the saved data set.
 }
 \details{
-    This uses modified code from the PSPP project for reading the
-    SPSS formats.
+  This uses modified code from the PSPP project for reading the SPSS
+  formats.
 }
-%\references{ ~put references to the literature/web site here ~ }
-\author{ Saikat DebRoy }
+\author{Saikat DebRoy}
 \examples{
 \dontrun{
 read.spss("datafile")
 }
 }
-\keyword{data}%-- one or more ...
+\keyword{file}

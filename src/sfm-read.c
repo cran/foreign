@@ -288,7 +288,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 #endif
   
   /* Open the physical disk file. */
-  ext = (struct sfm_fhuser_ext *) R_alloc (1, sizeof(struct sfm_fhuser_ext));
+  ext = (struct sfm_fhuser_ext *) Calloc(1, struct sfm_fhuser_ext);
   ext->file = fopen (R_ExpandFileName(h->norm_fn), "rb");
   if (ext->file == NULL)
     {

@@ -1,4 +1,3 @@
-gctorture(TRUE)
 library(foreign)
 sample100 <- read.spss("sample100.sav")
 summary(sample100)

@@ -1,12 +1,10 @@
-.First.lib<-function(libname,pkgname){
-  library.dynam("stataread",pkgname,libname)
+read.dta <- function(file){
+    .External("do_readStata", file, PACKAGE = "foreign")
 }
-read.dta<-function(filename){
-    .External("do_readStata",filename)
-  }
 
-write.dta<-function(dataframe,filename,version=6){
-    if (any(sapply(dataframe,function(x) !is.null(dim(x)))))
-      stop("Can't handle multicolumn columns")
-    invisible( .External("do_writeStata",filename,dataframe,version))
-  }
+write.dta <- function(dataframe, file, version = 6) {
+    if (any(sapply(dataframe, function(x) !is.null(dim(x)))))
+        stop("Can't handle multicolumn columns")
+    invisible(.External("do_writeStata", file, dataframe, version,
+                        PACKAGE = "foreign"))
+}

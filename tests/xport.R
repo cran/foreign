@@ -1,4 +1,3 @@
-gctorture(TRUE)
 library(foreign)
 lookup.xport("Alfalfa.xpt")
 Alfalfa <- read.xport("Alfalfa.xpt")
