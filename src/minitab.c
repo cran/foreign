@@ -30,6 +30,7 @@
 #include <R.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
+#include "foreign.h"
 
 #define MTP_BUF_SIZE 85
 #define MTB_INITIAL_ENTRIES 10
@@ -91,7 +92,7 @@ SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
                 Free(mtb[i]->dat.ndat);
                 UNPROTECT(1);
             } else {
-                PROBLEM "Non-numeric data types are not yet implemented" ERROR;
+                error(_("non-numeric data types are not yet implemented"));
             }
 	}
 	Free(mtb[i]);
@@ -112,10 +113,10 @@ read_mtp(SEXP fname)
     
     PROTECT(fname = asChar(fname));
     if ((f = fopen(R_ExpandFileName(CHAR(fname)), "r")) == NULL)
-	error("Unable to open file %s for reading", CHAR(fname));
+	error(_("unable to open file '%s' for reading"), CHAR(fname));
     if ((fgets(buf, MTP_BUF_SIZE, f) == NULL) ||
 	strncmp(buf, "Minitab Portable Worksheet ", 27) != 0)
-	error("File %s is not in Minitab Portable Worksheet format",
+	error(_("file '%s' is not in Minitab Portable Worksheet format"),
 	      CHAR(fname));
     fgets(buf, MTP_BUF_SIZE, f);
     UNPROTECT(1);
@@ -130,7 +131,7 @@ read_mtp(SEXP fname)
 	if (sscanf(buf, "%%%7d%7d%7d%7d%c%8c", &(thisRec->type),
 		   &(thisRec->cnum), &(thisRec->len),
 		   &(thisRec->dtype), blank, thisRec->name) != 6)
-	    error("First record for entry %d is corrupt", i+1);
+	    error(_("first record for entry %d is corrupt"), i+1);
 	thisRec->name[8] = '\0';
 	strtrim(thisRec->name);	/* trim trailing white space on name */
 	switch (thisRec->dtype) {
@@ -147,7 +148,7 @@ read_mtp(SEXP fname)
                     fscanf(f, "%lg", thisRec->dat.ndat + j);
                 }
             } else {
-                error("Non-numeric data types are not yet implemented");
+                error(_("non-numeric data types are not yet implemented"));
             }
         } 
 	fgets(buf, MTP_BUF_SIZE, f); /* clear rest of current line */

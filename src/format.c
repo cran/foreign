@@ -105,28 +105,25 @@ check_input_specifier (const struct fmt_spec *spec)
     return 1;
   if (f->cat & FCAT_OUTPUT_ONLY)
     {
-      error("Format %s may not be used as an input format.", f->name);
+      error(_("format %s may not be used as an input format"), f->name);
       return 0;
     }
   if (spec->w < f->Imin_w || spec->w > f->Imax_w)
     {
-      error("Input format %s specifies a bad width %d.  "
-		 "Format %s requires a width between %d and %d.",
+      error(_("input format %s specifies a bad width %d.  Format %s requires a width between %d and %d"),
 	   str, spec->w, f->name, f->Imin_w, f->Imax_w);
       return 0;
     }
   if ((f->cat & FCAT_EVEN_WIDTH) && spec->w % 2)
     {
-      error ("Input format %s specifies an odd width %d, but "
-		 "format %s requires an even width between %d and "
-		 "%d.", str, spec->w, f->name, f->Imin_w, f->Imax_w);
+      error (_("input format %s specifies an odd width %d, but format %s requires an even width between %d and %d"), 
+	     str, spec->w, f->name, f->Imin_w, f->Imax_w);
       return 0;
     }
   if (f->n_args > 1 && (spec->d < 0 || spec->d > 16))
     {
-      error ("Input format %s specifies a bad number of "
-		 "implied decimal places %d.  Input format %s allows "
-		 "up to 16 implied decimal places.", str, spec->d, f->name);
+      error (_("Input format %s specifies a bad number of implied decimal places %d.  Input format %s allows up to 16 implied decimal places"), 
+	     str, spec->d, f->name);
       return 0;
     }
   return 1;
@@ -144,8 +141,7 @@ check_output_specifier (const struct fmt_spec *spec)
     return 1;
   if (spec->w < f->Omin_w || spec->w > f->Omax_w)
     {
-      error ("Output format %s specifies a bad width %d.  "
-		 "Format %s requires a width between %d and %d.",
+      error (_("output format %s specifies a bad width %d.  Format %s requires a width between %d and %d"),
 	   str, spec->w, f->name, f->Omin_w, f->Omax_w);
       return 0;
     }
@@ -154,25 +150,21 @@ check_output_specifier (const struct fmt_spec *spec)
 	  || spec->type == FMT_DOLLAR)
       && spec->w < f->Omin_w + 1 + spec->d)
     {
-      error ("Output format %s requires minimum width %d to allow "
-		 "%d decimal places.  Try %s%d.%d instead of %s.",
+      error (_("output format %s requires minimum width %d to allow %d decimal places.  Try %s%d.%d instead of %s"),
 	   f->name, f->Omin_w + 1 + spec->d, spec->d, f->name,
 	   f->Omin_w + 1 + spec->d, spec->d, str);
       return 0;
     }
   if ((f->cat & FCAT_EVEN_WIDTH) && spec->w % 2)
     {
-      error ("Output format %s specifies an odd width %d, but "
-		 "output format %s requires an even width between %d and "
-		 "%d.", str, spec->w, f->name, f->Omin_w, f->Omax_w);
+      error (_("output format %s specifies an odd width %d, but output format %s requires an even width between %d and %d"), 
+	     str, spec->w, f->name, f->Omin_w, f->Omax_w);
       return 0;
     }
   if (f->n_args > 1 && (spec->d < 0 || spec->d > 16))
     {
-      error ("Output format %s specifies a bad number of "
-		 "implied decimal places %d.  Output format %s allows "
-		 "a number of implied decimal places between 1 "
-		 "and 16.", str, spec->d, f->name);
+      error (_("Output format %s specifies a bad number of implied decimal places %d.  Output format %s allows a number of implied decimal places between 1 and 16"),
+	  str, spec->d, f->name);
       return 0;
     }
   return 1;
@@ -186,8 +178,8 @@ check_string_specifier (const struct fmt_spec *f, int min_len)
   if ((f->type == FMT_A && min_len > f->w)
       || (f->type == FMT_AHEX && min_len * 2 > f->w))
     {
-      error ("Can't display a string variable of width %d with "
-		 "format specifier %s.", min_len, fmt_to_string (f));
+      error (_("cannot display a string variable of width %d with format specifier %s"),
+	     min_len, fmt_to_string (f));
       return 0;
     }
   return 1;
@@ -298,7 +290,7 @@ parse_format_specifier (struct fmt_spec *input, int allow_xt)
 
   if (token != T_ID)
     {
-      error ("Format specifier expected."));
+      error ("format specifier expected");
       return 0;
     }
   type = parse_format_specifier_name (&cp, allow_xt);

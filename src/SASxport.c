@@ -28,6 +28,7 @@
 #include <string.h>
 #include <R.h>
 #include <Rinternals.h>
+#include "foreign.h"
 #include "SASxport.h"
 
 #define HEADER_BEG "HEADER RECORD*******"
@@ -85,7 +86,7 @@ static double get_IBM_double(char* c, size_t len)
     char ibuf[8];
 
     if (len < 2 || len > 8) 
-      error("invalid field length in numeric variable");
+      error(_("invalid field length in numeric variable"));
 
     /* this effectively zero-pads c: */
     memset(ibuf, 0, (size_t) 8);
@@ -145,7 +146,7 @@ get_lib_header(FILE *fp, struct SAS_XPORT_header *head)
 
     n = GET_RECORD(record, fp, 80);
     if(n == 80 && strncmp(LIB_HEADER, record, 80) != 0)
-	error("File not in SAS transfer format");
+	error(_("file not in SAS transfer format"));
   
     n = GET_RECORD(record, fp, 80);
     if(n != 80)
@@ -178,7 +179,7 @@ get_mem_header(FILE *fp, struct SAS_XPORT_member *member)
 
     n = GET_RECORD(record, fp, 80);
     if(n != 80 || strncmp(DSC_HEADER, record, 80) != 0)
-	error("File not in SAS transfer format");
+	error(_("file not in SAS transfer format"));
   
     n = GET_RECORD(record, fp, 80);
     if(n != 80)
@@ -215,7 +216,7 @@ init_xport_info(FILE *fp)
 
     if(!get_lib_header(fp, lib_head)) {
 	Free(lib_head);
-	error("SAS transfer file has incorrect library header");
+	error(_("SAS transfer file has incorrect library header"));
     }
 
     Free(lib_head);
@@ -223,7 +224,7 @@ init_xport_info(FILE *fp)
     n = GET_RECORD(record, fp, 80);
     if(n != 80 || strncmp(MEM_HEADER, record, 75) != 0 ||
        strncmp("  ", record+78, 2) != 0)
-	error("File not in SAS transfer format");
+	error(_("file not in SAS transfer format"));
     record[78] = '\0';
     sscanf(record+75, "%d", &namestr_length);
 
@@ -241,7 +242,7 @@ init_mem_info(FILE *fp, char *name)
     mem_head = Calloc(1, struct SAS_XPORT_member);
     if(!get_mem_header(fp, mem_head)) {
 	Free(mem_head);
-	error("SAS transfer file has incorrect member header");
+	error(_("SAS transfer file has incorrect member header"));
     }
 
     n = GET_RECORD(record, fp, 80);
@@ -249,7 +250,7 @@ init_mem_info(FILE *fp, char *name)
     if(n != 80 || strncmp(NAM_HEADER, record, 54) != 0 ||
        (strrchr(record+58, ' ') - record) != 79) {
 	Free(mem_head);
-	error("File not in SAS transfer format");
+	error(_("file not in SAS transfer format"));
     }
     record[58] = '\0';
     sscanf(record+54, "%d", &length);
@@ -283,7 +284,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
     for(i = 0; i < nvars; i++) {
 	if(!get_nam_header(fp, nam_head+i, namestr_length)) {
 	    Free(nam_head);
-	    error("SAS transfer file has incorrect library header");
+	    error(_("SAS transfer file has incorrect library header"));
 	}
     }
 
@@ -293,7 +294,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	i = 80 - i;
 	if (fseek(fp, i, SEEK_CUR) != 0) {
 	    Free(nam_head);
-	    error("File not in SAS transfer format");
+	    error(_("file not in SAS transfer format"));
 	}
 	(*headpad) += i;
     }
@@ -301,7 +302,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
     n = GET_RECORD(record, fp, 80);
     if(n != 80 || strncmp(OBS_HEADER, record, 80) != 0) {
 	Free(nam_head);
-	error("File not in SAS transfer format");
+	error(_("file not in SAS transfer format"));
     }
   
     for(i = 0; i < nvars; i++) {
@@ -357,7 +358,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 
 /*  	restOfCard = 80 - (ftell(fp) % 80); */
 	if (fgetpos(fp, &currentPos)) {
-	    error("problem accessing SAS XPORT file");
+	    error(_("problem accessing SAS XPORT file"));
 	}
 
 	n = GET_RECORD(tmp, fp, restOfCard);
@@ -386,13 +387,13 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	    }
 	}
 	if (fsetpos(fp, &currentPos)) {
-	    error("problem accessing SAS XPORT file");
+	    error(_("problem accessing SAS XPORT file"));
 	}
 
 	n = GET_RECORD(tmp, fp, totwidth);
 	if (n != totwidth) {
 	    if (!feof(fp)) {
-		error("problem accessing SAS XPORT file");
+		error(_("problem accessing SAS XPORT file"));
 	    }
 	    *tailpad = n;
 	    break;
@@ -488,10 +489,10 @@ xport_info(SEXP xportFile)
     PROTECT(char_character = mkChar("character"));
 
     if(!isValidString(xportFile))
-	error("first argument must be a file name\n");
+	error(_("first argument must be a file name"));
     fp = fopen(R_ExpandFileName(CHAR(STRING_ELT(xportFile, 0))), "rb");
     if (!fp)
-	error("unable to open file");
+	error(_("unable to open file"));
     namestrLength = init_xport_info(fp);
 
     ansLength = 0;
@@ -581,12 +582,12 @@ xport_read(SEXP xportFile, SEXP xportInfo)
     setAttrib(ans, R_NamesSymbol, names);
 
     if(!isValidString(xportFile))
-	error("first argument must be a file name\n");
+	error(_("first argument must be a file name"));
     fp = fopen(R_ExpandFileName(CHAR(STRING_ELT(xportFile, 0))), "rb");
     if (!fp)
-	error("unable to open file");
+	error(_("unable to open file"));
     if (fseek(fp, 240, SEEK_SET) != 0)
-	error("problem reading SAS XPORT file %s",
+	error(_("problem reading SAS XPORT file '%s'"),
 	      CHAR(STRING_ELT(xportFile, 0)));
 
     for(i = 0; i < ansLength; i++) {
@@ -617,7 +618,7 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 	for(j = 0; j < dataLength; j++) {
 	    n = GET_RECORD(record, fp, totalWidth);
 	    if(n != totalWidth) {
-		error("Problem reading SAS transport file");
+		error(_("problem reading SAS transport file"));
 	    }
 
 	    for(k = nvar-1; k >= 0; k--) {

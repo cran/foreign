@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include "foreign.h"
 
 #define MAXVARS	      8192	/* maximum number of variables */
 #define MAXLINES	50	/* number of history lines */
@@ -112,13 +113,13 @@ SEXP readSystat(SEXP file)
     init_use(use);
     getuse(CHAR(STRING_ELT(file, 0)), use);
     if (!(getmtype(use) == 1)) {
-	sprintf(msg, "Not a rectangular data file (%s mtype is %d)",
+	sprintf(msg, _("not a rectangular data file (%s mtype is %d)"),
 		CHAR(STRING_ELT(file, 0)), getmtype(use));
 	error(msg);
     }
 
     if ((getnd(use) + getnk(use)) != getnv(use))
-	error("mismatch in numbers of variables");
+	error(_("mismatch in numbers of variables"));
     PROTECT(res = allocVector(VECSXP, getnv(use))); pc++;
     for (i = 0; i < getnv(use); i++) {
 	if (isdb(i, use) == 0)
@@ -154,7 +155,7 @@ SEXP readSystat(SEXP file)
 			 use->pos + 1L + (use->offset *  j)
 			 + use->local_offset[i],
 			 SEEK_SET) != 0)
-		    error("File access error");
+		    error(_("file access error"));
 
 		getsvar(use->h.fd, str,
 			use->str_offset[use->ithstr[i]]);
@@ -217,7 +218,7 @@ static void getuse(char *fname, struct SysFilev3 *u)
 
     /* open systat file */
     if ((u->h.fd = fopen(fname,  "rb")) == NULL)
-	error("Cannot open file %s", fname);
+	error(_("cannot open file '%s'"), fname);
 
     strcpy(u->h.fname, fname);
 
@@ -237,9 +238,9 @@ static void getuse(char *fname, struct SysFilev3 *u)
     }
 
     if (u->h.nd != j || u->h.nk != k)
-	error("getuse: Failure in variable unpacking");
+	error(_("getuse: Failure in variable unpacking"));
 
-    if(getoctal(&k, u->h.fd) != 1) error("getuse: File access error");
+    if(getoctal(&k, u->h.fd) != 1) error(_("getuse: File access error"));
     /* get the byte at the front of the first data record/packet */
     if (k < 0201)
 	u->offset = (int) k + 2;	/* if less than octal 201 then
@@ -251,10 +252,10 @@ static void getuse(char *fname, struct SysFilev3 *u)
 					   k stops being octal 201 at
 					   the last packet */
 	    if(fseek(u->h.fd, (1 + FORTBUF), SEEK_CUR) != 0)
-		error("getuse: File access error");
+		error(_("getuse: File access error"));
 	    /* seek to beginning of next packet */
 	    if(getoctal(&k, u->h.fd) != 1)
-		error("getuse: File access error");
+		error(_("getuse: File access error"));
 	    /* read k */
 	}
 	u->offset = (int) k + 2 + (i*(FORTBUF+2));
@@ -300,17 +301,17 @@ static void getuse(char *fname, struct SysFilev3 *u)
 	}	/* if there were string variables */
     }	/* k == 0201 */
     else {
-	sprintf(tmp, "Getuse: byte counter %o octal", k);
+	sprintf(tmp, _("getuse: byte counter %o octal"), k);
 	error(tmp);
     }
     if(fseek(u->h.fd, 0L, SEEK_END) != 0)
-	error("getuse: File access error");
+	error(_("getuse: File access error"));
     /* seek to end of file */
     end = ftell(u->h.fd);			/* and find value (int) */
 
     i = 0;
     if(fseek(u->h.fd, -1L, SEEK_CUR) != 0)
-	error("getuse: File access error");
+	error(_("getuse: File access error"));
     do {
 	end--;
 	i++;
@@ -319,9 +320,9 @@ static void getuse(char *fname, struct SysFilev3 *u)
 	    error(tmp);
 	}
 	if(fseek(u->h.fd, -2L, SEEK_CUR) != 0)
-	    error("getuse: File access error");
+	    error(_("getuse: File access error"));
     } while (i < 512 && k == 000);
-    if (i >= 512) error("getuse: terminal null block");
+    if (i >= 512) error(_("getuse: terminal null block"));
     /* Backtrack from end of file over null bytes which
        the operating system may have inserted VMS in particular,
        but not more than a VAX block - normally just does loop once */
@@ -333,7 +334,7 @@ static void getuse(char *fname, struct SysFilev3 *u)
     /* seek back one byte and check k == 0202 */
 
     if (((end - (u->pos)) % u->offset) != (int) 0)
-	error("getuse: non-integer number of observations");
+	error(_("getuse: non-integer number of observations"));
     /* Check data integrity */
 
     u->nobs = (end - (u->pos))/u->offset;
@@ -394,31 +395,31 @@ static void getlab(struct SysFilev3 *u)
     char var[30];
     int i, j, o, len, isDollar;
 
-    strcpy(mes, "getlab: File format unknown");
+    strcpy(mes, _("getlab: File format unknown"));
     u->h.nd = 0;
     u->h.nk = 0;
     if((fseek(u->h.fd, 0L, SEEK_SET)) != 0)
-	error("getlab: File access error");
+	error(_("getlab: File access error"));
     /* move to file beginning */
 
     if(getoctal(&o, u->h.fd) != 1 || o != 0113) {
-	sprintf(tmp1, "getlab: byte 0 = %o octal", o);
+	sprintf(tmp1, _("getlab: byte 0 = %o octal"), o);
 	error(tmp1); }	/* read and throw away zeroth byte=0113 */
 
     if(getoctal(&o, u->h.fd) != 1 || o != 006) {
-	sprintf(tmp1, "getlab: byte 1 = %o octal", o);
+	sprintf(tmp1, _("getlab: byte 1 = %o octal"), o);
 	error(tmp1); }
     /* read and throw away front of package
        byte=006, i.e. 3 shorts */
 /*	fread((short *) &u->h.nv, sizeof(short), 1, u->h.fd); */
     if(getshort(&u->h.nv, u->h.fd) != 1)
-	error("getlab: File access error");
+	error(_("getlab: File access error"));
     if(getshort(&u->h.mtype, u->h.fd) != 1)
-	error("getlab: File access error");
+	error(_("getlab: File access error"));
     if(getshort(&u->h.ntype, u->h.fd) != 1)
-	error("getlab: File access error");
+	error(_("getlab: File access error"));
     if(getoctal(&o, u->h.fd) != 1 || o != 006) {
-	sprintf(tmp1, "getlab: byte 9 = %o octal", o);
+	sprintf(tmp1, _("getlab: byte 9 = %o octal"), o);
 	error(tmp1);}
     /* read and throw away end of package
        byte=006, i.e. 3 shorts */
@@ -429,13 +430,13 @@ static void getlab(struct SysFilev3 *u)
 	do {
 	    isDollar = 0;
 	    if(getoctal(&o, u->h.fd) != 1 || o != 0110) {
-		sprintf(tmp1, "getlab: comment begin byte = %o", o);
+		sprintf(tmp1, _("getlab: comment begin byte = %o"), o);
 		error(tmp1); }
 	    /* read and throw away
 	       front of package byte=0110, i.e. 72 chars */
 	    for (j = 0; j < 72; j++, len++) {
 		if(getoctal(&o, u->h.fd) != 1) {
-		    sprintf(tmp1, "getlab: comment = %c", o);
+		    sprintf(tmp1, _("getlab: comment = %c"), o);
 		    error(tmp1); }
 		if(len < MYBUFSIZ) combuf[len] = o;
 		if (j == 0) isDollar = (o == '$');
@@ -443,7 +444,7 @@ static void getlab(struct SysFilev3 *u)
 	    /* read the comment into combuf */
 
 	    if(getoctal(&o, u->h.fd) != 1 || o != 0110) {
-		sprintf(tmp1, "getlab: comment end byte = %o", o);
+		sprintf(tmp1, _("getlab: comment end byte = %o"), o);
 		error(tmp1); }
 	    /* read and throw away
 	       end of package byte=0110, i.e. 72 chars */
@@ -459,18 +460,18 @@ static void getlab(struct SysFilev3 *u)
 	   with a $, allocate space and squirrel away */
 
 	if(getoctal(&o, u->h.fd) != 1 || o != 006) {
-	    sprintf(tmp1, "getlab: byte nv0 = %o octal", o);
+	    sprintf(tmp1, _("getlab: byte nv0 = %o octal"), o);
 	    error(tmp1); }
 	/* read and throw away front of package
 	   byte=006, i.e. 3 shorts */
 	if(getshort(&u->h.nv, u->h.fd) != 1)
-	    error("getlab: File access error");
+	    error(_("getlab: File access error"));
 	if(getshort(&u->h.mtype, u->h.fd) != 1)
-	    error("getlab: File access error");
+	    error(_("getlab: File access error"));
 	if(getshort(&u->h.ntype, u->h.fd) != 1)
-	    error("getlab: File access error");
+	    error(_("getlab: File access error"));
 	if(getoctal(&o, u->h.fd) != 1 || o != 006) {
-	    sprintf(tmp1, "getlab: byte nv$ = %o octal", o);
+	    sprintf(tmp1, _("getlab: byte nv$ = %o octal"), o);
 	    error(tmp1); }
 	/* read and throw away end of package
 	   byte=006, i.e. 3 shorts */
@@ -478,27 +479,27 @@ static void getlab(struct SysFilev3 *u)
     }	/* i.e. version later than 2 */
 /* RSB 2004-10-22 */
     if (u->h.nv > MAXVARS)
-	error("file has more variables than this function can read");
+	error(_("file has more variables than this function can read"));
 
     for (j=0; j<u->h.nv; j++) {	/* since the number of variables is now
 				   known, read in their labels, allocating
 				   memory on the go */
 
 	if(getoctal(&o, u->h.fd) != 1 || o != 014) {
-	    sprintf(tmp1, "getlab: byte lab[%d]0 = %o, nv=%d",
+	    sprintf(tmp1, _("getlab: byte lab[%d]0 = %o, nv=%d"),
 		    j, o, u->h.nv);
 	    error(tmp1); }
 	/* read and throw away front of package
 	   byte=014, i.e. LABELSIZ chars */
 	if(fread(label, 1, LABELSIZ, u->h.fd) != LABELSIZ)
-	    error("getlab: File access error");
+	    error(_("getlab: File access error"));
 	/* read LABELSIZ chars into label */
 	label[LABELSIZ] = '\0';	/* terminate the string */
 
 	if(label[8] == '$') u->h.nk++;
 	else if (strrchr(label, '$') != NULL) {
 	    u->h.nk++;
-	    sprintf(mes, "$ not in variable label column 9: %s", label);
+	    sprintf(mes, _("$ not in variable label column 9: %s"), label);
 	    warning(mes);
 	} else u->h.nd++;	/* if the ninth char in label is '$',
 				   it is a string variable, else a real
@@ -518,7 +519,7 @@ static void getlab(struct SysFilev3 *u)
 	/* allocate memory for the label,
 	   move it and point lab[j] at it */
 	if(getoctal(&o, u->h.fd) != 1 || o != 014) {
-	    sprintf(tmp1, "getlab: byte lab[%d]$ = %o octal", j, o);
+	    sprintf(tmp1, _("getlab: byte lab[%d]$ = %o octal"), j, o);
 	    error(tmp1); }
 	/* read and throw away end of package
 	   byte=014, i.e. LABELSIZ chars */
@@ -666,21 +667,21 @@ static void getsvar(FILE *fd, char *svalue, short packet_bound)
     if (packet_bound <= 0) {	/* string value not split */
 
 	if((fread(svalue, 1, LABELSIZ, fd)) != LABELSIZ)
-	    error("File access error");/* read LABELSIZ chars */
+	    error(_("file access error"));/* read LABELSIZ chars */
 	svalue[LABELSIZ] = '\0';
     }
     else {
 	if((fread(tmp_str, 1, (LABELSIZ - packet_bound), fd)) !=
-	   (LABELSIZ - packet_bound)) error("File access error");
+	   (LABELSIZ - packet_bound)) error(_("file access error"));
 	/* read the LABELSIZ - packet_bound chars in this record */
 
 	tmp_str[LABELSIZ - packet_bound] = '\0';
 	strcpy(svalue, tmp_str);	/* store in svalue */
 
-	if((fseek(fd, 2L, SEEK_CUR)) != 0) error("File access error");			/* hop over the packet boundary */
+	if((fseek(fd, 2L, SEEK_CUR)) != 0) error(_("file access error"));			/* hop over the packet boundary */
 
 	if((fread(tmp_str, 1, packet_bound, fd)) !=
-	   packet_bound) error("File access error");
+	   packet_bound) error(_("file access error"));
 	/* read the remaining packet_bound chars */
 
 	tmp_str[packet_bound] = '\0';
@@ -696,10 +697,10 @@ static void getdbvar(int varno, double *db, struct SysFilev3 *use)
     int j, k;
     double x;
 
-    if (use->ithdb[varno] < 0) error("String variable");
+    if (use->ithdb[varno] < 0) error(_("string variable"));
 
     if((j = fseek(use->h.fd, use->pos+use->local_offset[varno]+1L, SEEK_SET))
-       != 0) error("File access error");
+       != 0) error(_("file access error"));
 
     /* seek to first byte of this variable in first observation,
        pos is at beginning of record, thus we need pos + local
@@ -719,7 +720,7 @@ static void getdbvar(int varno, double *db, struct SysFilev3 *use)
     /* seek forward offset to next observation minus
        length of real just read until all observations read */
 
-    if (j != 0) error("File access error");
+    if (j != 0) error(_("file access error"));
 }	/* getdbvar */
 
 /*

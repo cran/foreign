@@ -7,7 +7,7 @@ write.foreign<-function(df, datafile, codefile, package=c("SPSS","Stata"),...){
 }
 
 writeForeignSPSS<-function(df,datafile,codefile,varnames=NULL){
-  
+
   dfn<-lapply(df, function(x) if (is.factor(x)) as.numeric(x) else x)
   write.table(dfn, file=datafile,row=FALSE,col=FALSE)
 
@@ -15,11 +15,11 @@ writeForeignSPSS<-function(df,datafile,codefile,varnames=NULL){
   if (is.null(varnames)){
     varnames<-abbreviate(names(df),8)
     if (any(sapply(varnames,nchar)>8))
-      stop("I can't abbreviate the variable names to eight or fewer letters")
+      stop("I cannot abbreviate the variable names to eight or fewer letters")
     if (any(varnames!=varlabels))
-      warning("Some variable names were abbreviated")
+      warning("some variable names were abbreviated")
   }
-  
+
   cat("DATA LIST FILE=",datafile," free\n",file=codefile)
   cat("/", varnames,"\n\n",file=codefile,append=TRUE)
   cat("VARIABLE LABELS\n",file=codefile,append=TRUE)
@@ -39,14 +39,14 @@ writeForeignSPSS<-function(df,datafile,codefile,varnames=NULL){
 
 
 writeForeignStata<-function(df,datafile,codefile){
-  
+
   write.table(df, file=datafile, row=FALSE, col=FALSE, sep=",", quote=FALSE, na=".")
 
   nms<-names(df)
   factors<-sapply(df,is.factor) | sapply(df, is.character)
   formats<-paste(nms,"fmt",sep="_")
   nms<-ifelse(factors,paste(nms,formats,sep=":"),nms)
-  
+
   cat("infile",nms," using ",datafile,", automatic\n", file=codefile)
-  
+
 }

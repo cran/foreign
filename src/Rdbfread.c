@@ -12,6 +12,7 @@
 #include "shapefil.h"
 #include <R.h>
 #include <Rinternals.h>
+#include "foreign.h"
 
 SEXP Rdbfread(SEXP dbfnm)
 {
@@ -36,7 +37,7 @@ SEXP Rdbfread(SEXP dbfnm)
 /*      Open the file.                                                  */
 /* -------------------------------------------------------------------- */
     hDBF = DBFOpen(pszFilename, "rb" );
-    if( hDBF == NULL ) error("unable to open DBF file");
+    if( hDBF == NULL ) error(_("unable to open DBF file"));
 
 /* -------------------------------------------------------------------- */
 /*	If there is no data in this file let the user know.		*/
@@ -44,7 +45,7 @@ SEXP Rdbfread(SEXP dbfnm)
     if( DBFGetFieldCount(hDBF) == 0 )
     {
     	DBFClose( hDBF );
-	error("No fields in DBF table");
+	error(_("no fields in DBF table"));
     }
 
     nRvar = 0;
@@ -157,7 +158,7 @@ SEXP Rdbfread(SEXP dbfnm)
 			val = NA_LOGICAL;
 			break;
 		    default:
-			warning("value |%d| found in logical field", *p);
+			warning(_("value |%d| found in logical field"), *p);
 			val = NA_LOGICAL;
 			break;
 		    }

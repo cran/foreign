@@ -19,7 +19,7 @@ read.epiinfo <- function (file, read.deleted = FALSE,
     line <- readLines(file, 1, ok = TRUE)
     headerlength <- na.omit(sapply(strsplit(line, " ")[[1]], as.numeric))[1]
     if (headerlength <= 0)
-        stop(paste("file has zero or fewer variables: probably not an EpiInfo file"))
+        stop("file has zero or fewer variables: probably not an EpiInfo file")
     headerlines <- readLines(file, n = headerlength)
     pushBack(headerlines, file)
     comments <- sapply(headerlines, function(s) substring(s, 46, 46 + 80))

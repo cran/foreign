@@ -137,7 +137,7 @@ pfm_close (struct file_handle * h)
   Free (ext->vars);
   Free (ext->trans);
   if (EOF == fclose (ext->file))
-    error("%s: Closing portable file: %s.", h->fn, strerror (errno));
+    error(_("%s: Closing portable file: %s"), h->fn, strerror (errno));
 }
 
 /* Displays the message X with corrupt_msg, then jumps to the lossage
@@ -158,7 +158,7 @@ fill_buf (struct file_handle *h)
   struct pfm_fhuser_ext *ext = h->ext;
 
   if (80 != fread (ext->buf, 1, 80, ext->file))
-    lose (("Unexpected end of file."));
+    lose ((_("Unexpected end of file")));
 
   /* PORTME: line ends. */
   {
@@ -166,7 +166,7 @@ fill_buf (struct file_handle *h)
     
     c = getc (ext->file);
     if (c != '\n' && c != '\r')
-      lose (("Bad line end."));
+      lose ((_("Bad line end")));
 
     c = getc (ext->file);
     if (c != '\n' && c != '\r')
@@ -247,14 +247,13 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
     }
   else if (h->class != NULL)
     {
-      error("Cannot read file %s as portable file: already opened "
-		 "for %s.",
+      error(_("cannot read file %s as portable file: already opened for %s"),
 	   fh_handle_name (h), h->class->name);
       return NULL;
     }
 
 #if 0
-  msg (VM (1), ("%s: Opening portable-file handle %s for reading."),
+  msg (VM (1), ("%s: Opening portable-file handle %s for reading"),
        fh_handle_filename (h), fh_handle_name (h));
 #endif
 
@@ -264,8 +263,8 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
   if (ext->file == NULL)
     {
       Free (ext);
-      error("An error occurred while opening \"%s\" for reading "
-	   "as a portable file: %s.", h->fn, strerror (errno));
+      error(_("an error occurred while opening \"%s\" for reading as a portable file: %s"), 
+	    h->fn, strerror (errno));
       return NULL;
     }
 
@@ -296,10 +295,10 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
       goto lossage;
 
   if (!match (79 /* F */))
-    lose (("Data record expected."));
+    lose ((_("Data record expected")));
 
 #if 0
-  msg (VM (2), ("Read portable-file dictionary successfully."));
+  msg (VM (2), ("Read portable-file dictionary successfully"));
 #endif
 
 #if DEBUGGING
@@ -316,7 +315,7 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
   Free (ext);
   h->class = NULL;
   h->ext = NULL;
-  error("Error reading portable-file dictionary.");
+  error(_("error reading portable-file dictionary"));
   return NULL;
 }
 
@@ -379,7 +378,7 @@ read_float (struct file_handle *h)
     }
 
   if (!got_digit)
-    lose (("Number expected."));
+    lose ((_("Number expected")));
       
   if (ext->cc == 130 /* + */ || ext->cc == 141 /* - */)
     {
@@ -407,7 +406,7 @@ read_float (struct file_handle *h)
     }
   
   if (!match (142 /* / */))
-    lose (("Missing numeric terminator."));
+    lose ((_("Missing numeric terminator")));
 
   /* Multiply NUM by 30 to the EXPONENT power, checking for overflow.  */
 
@@ -444,7 +443,7 @@ read_int (struct file_handle *h)
   if (f == SECOND_LOWEST_VALUE)
     goto lossage;
   if (floor (f) != f || f >= INT_MAX || f <= INT_MIN)
-    lose (("Bad integer format."));
+    lose ((_("Bad integer format")));
   return f;
 
  lossage:
@@ -474,7 +473,7 @@ read_string (struct file_handle *h)
   if (n == NOT_INT)
     return NULL;
   if (n < 0 || n > 255)
-    lose (("Bad string length %d.", n));
+    lose ((_("Bad string length %d"), n));
   
   {
     int i;
@@ -544,7 +543,7 @@ read_header (struct file_handle *h)
 
     for (i = 0; i < 8; i++)
       if (!match (sig[i]))
-	lose (("Missing SPSSPORT signature."));
+	lose ((_("Missing SPSSPORT signature")));
   }
 
   return 1;
@@ -562,7 +561,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
 
   /* Version. */
   if (!match (74 /* A */))
-    lose (("Unrecognized version code %d.", ext->cc));
+    lose ((_("Unrecognized version code %d"), ext->cc));
 
   /* Date. */
   {
@@ -573,14 +572,14 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
     if (!date)
       return 0;
     if (strlen (date) != 8)
-      lose (("Bad date string length %d.", strlen (date)));
+      lose ((_("Bad date string length %d"), strlen (date)));
     if (date[0] == ' ') /* the first field of date can be ' ' in some
 			   windows versions of SPSS */
 	date[0] = '0';
     for (i = 0; i < 8; i++)
       {
 	if (date[i] < 64 /* 0 */ || date[i] > 73 /* 9 */)
-	  lose (("Bad character in date."));
+	  lose ((_("Bad character in date")));
 	if (inf)
 	  inf->creation_date[map[i]] = date[i] - 64 /* 0 */ + '0';
       }
@@ -600,14 +599,14 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
     if (!time)
       return 0;
     if (strlen (time) != 6)
-      lose (("Bad time string length %d.", strlen (time)));
+      lose ((_("Bad time string length %d"), strlen (time)));
     if (time[0] == ' ') /* the first field of date can be ' ' in some
 			   windows versions of SPSS */
 	time[0] = '0';
     for (i = 0; i < 6; i++)
       {
 	if (time[i] < 64 /* 0 */ || time[i] > 73 /* 9 */)
-	  lose (("Bad character in time."));
+	  lose ((_("Bad character in time")));
 	if (inf)
 	  inf->creation_time[map[i]] = time[i] - 64 /* 0 */ + '0';
       }
@@ -657,7 +656,7 @@ convert_format (struct file_handle *h, int fmt[3], struct fmt_spec *v,
 {
   if (fmt[0] < 0
       || (size_t) fmt[0] >= sizeof translate_fmt / sizeof *translate_fmt)
-    lose (("%s: Bad format specifier byte %d.", vv->name, fmt[0]));
+    lose ((_("%s: Bad format specifier byte %d"), vv->name, fmt[0]));
 
   v->type = translate_fmt[fmt[0]];
   v->w = fmt[1];
@@ -666,9 +665,9 @@ convert_format (struct file_handle *h, int fmt[3], struct fmt_spec *v,
   /* FIXME?  Should verify the resulting specifier more thoroughly. */
 
   if (v->type == -1)
-    lose (("%s: Bad format specifier byte (%d).", vv->name, fmt[0]));
+    lose ((_("%s: Bad format specifier byte (%d)"), vv->name, fmt[0]));
   if ((vv->type == ALPHA) ^ ((formats[v->type].cat & FCAT_STRING) != 0))
-    lose (("%s variable %s has %s format specifier %s.",
+    lose ((_("%s variable %s has %s format specifier %s"),
 	   vv->type == ALPHA ? "String" : "Numeric",
 	   vv->name,
 	   formats[v->type].cat & FCAT_STRING ? "string" : "numeric",
@@ -707,11 +706,11 @@ read_variables (struct file_handle *h)
   int i;
   
   if (!match (68 /* 4 */))
-    lose (("Expected variable count record."));
+    lose ((_("Expected variable count record")));
   
   ext->nvars = read_int (h);
   if (ext->nvars <= 0 || ext->nvars == NOT_INT)
-    lose (("Invalid number of variables %d.", ext->nvars));
+    lose ((_("Invalid number of variables %d"), ext->nvars));
   ext->vars = Calloc (ext->nvars, int);
 
   /* Purpose of this value is unknown.  It is typically 161. */
@@ -747,13 +746,13 @@ read_variables (struct file_handle *h)
       int j;
 
       if (!match (71 /* 7 */))
-	lose (("Expected variable record."));
+	lose ((_("Expected variable record")));
 
       width = read_int (h);
       if (width == NOT_INT)
 	goto lossage;
       if (width < 0)
-	lose (("Invalid variable width %d.", width));
+	lose ((_("Invalid variable width %d"), width));
       ext->vars[i] = width;
       
       name = read_string (h);
@@ -771,16 +770,15 @@ read_variables (struct file_handle *h)
 	 Weirdly enough, there is no # character in the SPSS portable
 	 character set, so we can't check for it. */
       if (strlen ((char *) name) > 8)
-	lose (("position %d: Variable name has %u characters.",
+	lose ((_("position %d: Variable name has %u characters"),
 	       i, strlen ((char *) name)));
       if ((name[0] < 74 /* A */ || name[0] > 125 /* Z */)
 	  && name[0] != 152 /* @ */)
-	lose (("position %d: Variable name begins with invalid "
-	       "character.", i));
+	lose ((_("position %d: Variable name begins with invalid character"), 
+	       i));
       if (name[0] >= 100 /* a */ && name[0] <= 125 /* z */)
 	{
-	  warning("position %d: Variable name begins with "
-		  "lowercase letter %c.",
+	  warning(_("position %d: Variable name begins with lowercase letter %c"),
 		  i, name[0] - 100 + 'a');
 	  name[0] -= 26 /* a - A */;
 	}
@@ -792,8 +790,7 @@ read_variables (struct file_handle *h)
 
 	  if (c >= 100 /* a */ && c <= 125 /* z */)
 	    {
-	      warning("position %d: Variable name character %d "
-		      "is lowercase letter %c.",
+	      warning(_("position %d: Variable name character %d is lowercase letter %c"),
 		      i, j + 1, c - 100 + 'a');
 	      name[j] -= 26 /* z - Z */;
 	    }
@@ -802,19 +799,19 @@ read_variables (struct file_handle *h)
 		   || c == 136 /* $ */ || c == 146 /* _ */)
 	    name[j] = c;
 	  else
-	    lose (("position %d: character `\\%03o' is not "
-			"valid in a variable name.", i, c));
+	    lose ((_("position %d: character `\\%03o' is not valid in a variable name"), 
+		   i, c));
 	}
 
       asciify ((char *) name);
       if (width < 0 || width > 255)
-	lose (("Bad width %d for variable %s.", width, name));
+	lose ((_("Bad width %d for variable %s"), width, name));
 
       v = create_variable (ext->dict, (char *) name, 
 			   width ? ALPHA : NUMERIC, width);
       v->get.fv = v->fv;
       if (v == NULL)
-	lose (("Duplicate variable name %s.", name));
+	lose ((_("Duplicate variable name %s"), name));
       if (!convert_format (h, &fmt[0], &v->print, v))
 	goto lossage;
       if (!convert_format (h, &fmt[3], &v->write, v))
@@ -858,7 +855,7 @@ read_variables (struct file_handle *h)
 
 	  v->miss_type = map_next[v->miss_type];
 	  if (v->miss_type == -1)
-	    lose (("Bad missing values for %s.", v->name));
+	    lose ((_("Bad missing values for %s"), v->name));
 	  
 	  if (map_ofs[v->miss_type] == -1)
 	      error("read_variables : map_ofs[v->miss_type] == -1");
@@ -881,7 +878,7 @@ read_variables (struct file_handle *h)
 
   if (ext->dict->weight_var[0] != 0
       && !find_dict_variable (ext->dict, ext->dict->weight_var))
-    lose (("Weighting variable %s not present in dictionary.",
+    lose ((_("Weighting variable %s not present in dictionary"),
 	   ext->dict->weight_var));
 
   return 1;
@@ -949,11 +946,10 @@ read_value_label (struct file_handle *h)
 
       v[i] = find_dict_variable (ext->dict, name);
       if (v[i] == NULL)
-	lose (("Unknown variable %s while parsing value labels.", name));
+	lose ((_("Unknown variable %s while parsing value labels"), name));
 
       if (v[0]->width != v[i]->width)
-	lose (("Cannot assign value labels to %s and %s, which "
-		    "have different variable types or widths.",
+	lose ((_("Cannot assign value labels to %s and %s, which have different variable types or widths"),
 	       v[0]->name, v[i]->name));
     }
 
@@ -999,10 +995,10 @@ read_value_label (struct file_handle *h)
 	    continue;
 
 	  if (var->type == NUMERIC)
-	    lose (("Duplicate label for value %g for variable %s.",
+	    lose ((_("Duplicate label for value %g for variable %s"),
 		   vl->v.f, var->name));
 	  else
-	    lose (("Duplicate label for value `%.*s' for variable %s.",
+	    lose ((_("Duplicate label for value `%.*s' for variable %s"),
 		   var->width, vl->v.s, var->name));
 
 	  free_value_label (old);
@@ -1090,7 +1086,7 @@ pfm_read_case (struct file_handle *h, union value *perm, struct dictionary *dict
   return 1;
 
  unexpected_eof:
-  lose (("End of file midway through case."));
+  lose ((_("End of file midway through case")));
 
  lossage:
   Free (temp);

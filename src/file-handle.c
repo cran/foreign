@@ -24,6 +24,7 @@
 #include "avl.h"
 #include "file-handle.h"
 #include "var.h"
+#include "foreign.h"
 /* (headers) */
 
 #undef DEBUGGING
@@ -110,8 +111,7 @@ fh_get_handle_by_name (const char name[9])
   fp = avl_find (files, &f);
 
   if (!fp)
-    error ("File handle `%s' has not been previously declared on "
-	 "FILE HANDLE.", name);
+    error (_("file handle `%s' has not been previously declared on FILE HANDLE"), name);
   return fp;
 }
 

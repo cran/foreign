@@ -106,7 +106,7 @@ read.S <- function (file)
 	    seek(s,  seek(s, NA) -4)
 	    code <- readBin(s, "int", endian = endian)
 	    if (code < 0 | code > 65535)
-		stop("Internal error - illegal S code value\n")
+		stop("internal error - illegal S code value")
 	}
 	len <- readBin(s, "int", endian = endian)
 	return(ReadSObj(code, len))
@@ -145,7 +145,8 @@ data.restore <-
 		    else if (code == "missing")
 			## Workaround:	should be value <- as.name("")
 			call("stop",
-			     paste("Argument `", name, "' is missing", sep=""))
+			     paste("Argument ", sQuote(name), " is missing",
+                                   sep=""))
 	}
 	else if (code %in% c("list", "structure", "NULL", SModeNames)) {
 	    value <- list()
@@ -188,7 +189,7 @@ data.restore <-
 	    else try(mode(value) <- code)
 	}
 	else {
-	    stop("S mode \"", code, "\" (near byte offset ",
+	    stop("S mode ", dQuote(code), " (near byte offset ",
                  seek(dump), ") not supported")
 	}
 	list(name = name, value = value)

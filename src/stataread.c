@@ -62,7 +62,7 @@ static int InIntegerBinary(FILE * fp, int naok, int swapends)
 {
     int i;
     if (fread(&i, sizeof(int), 1, fp) != 1)
-	error("a binary read error occured");
+	error(_("a binary read error occurred"));
     if (swapends)
 	reverse_int(i);
     return ((i==STATA_INT_NA) & !naok ? NA_INTEGER : i);
@@ -72,7 +72,7 @@ static int InByteBinary(FILE * fp, int naok)
 { 
     signed char i;
     if (fread(&i, sizeof(char), 1, fp) != 1)
-	error("a binary read error occured");
+	error(_("a binary read error occurred"));
     return  ((i==STATA_BYTE_NA) & !naok ? NA_INTEGER : (int) i);
 }
 /* read a single byte  */
@@ -80,7 +80,7 @@ static int RawByteBinary(FILE * fp, int naok)
 { 
     unsigned char i;
     if (fread(&i, sizeof(char), 1, fp) != 1)
-	error("a binary read error occured");
+	error(_("a binary read error occurred"));
     return  ((i==STATA_BYTE_NA) & !naok ? NA_INTEGER : (int) i);
 }
 
@@ -105,7 +105,7 @@ static double InDoubleBinary(FILE * fp, int naok, int swapends)
 {
     double i;
     if (fread(&i, sizeof(double), 1, fp) != 1)
-	error("a binary read error occured");
+	error(_("a binary read error occurred"));
     if (swapends)
 	reverse_double(i);
     return ((i==STATA_DOUBLE_NA) & !naok ? NA_REAL : i);
@@ -115,7 +115,7 @@ static double InFloatBinary(FILE * fp, int naok, int swapends)
 {
     float i;
     if (fread(&i, sizeof(float), 1, fp) != 1)
-	error("a binary read error occured");
+	error(_("a binary read error occurred"));
     if (swapends)
 	reverse_float(i);
     return ((i==STATA_FLOAT_NA) & !naok ? NA_REAL :  (double) i);
@@ -124,7 +124,7 @@ static double InFloatBinary(FILE * fp, int naok, int swapends)
 static void InStringBinary(FILE * fp, int nchar, char* buffer)
 {
     if (fread(buffer, nchar, 1, fp) != 1)
-	error("a binary read error occured");
+	error(_("a binary read error occurred"));
 }
 
 /** now optional and done at R level **/
@@ -188,7 +188,7 @@ SEXP R_LoadStataData(FILE *fp)
 	varnamelength=32; 
 	break;
     default:
-        error("Not a Stata version 5-8 .dta file");
+        error(_("not a Stata version 5-8 .dta file"));
     }
     stata_endian=(int) RawByteBinary(fp,1);     /* byte ordering */
     swapends = stata_endian != CN_TYPE_NATIVE;
@@ -249,7 +249,7 @@ SEXP R_LoadStataData(FILE *fp)
 			    break;
 		    default:
 			    if (abyte<STATA_STRINGOFFSET)
-				    error("Unknown data type");
+				    error(_("unknown data type"));
 			    SET_VECTOR_ELT(df,i,allocVector(STRSXP,nobs));
 			    break;
 		    }
@@ -270,7 +270,7 @@ SEXP R_LoadStataData(FILE *fp)
 			    break;
 		    default:
 			    if (abyte>244)
-				    error("Unknown data type");
+				    error(_("unknown data type"));
 			    SET_VECTOR_ELT(df,i,allocVector(STRSXP,nobs));
 			    break;
 		    }
@@ -360,7 +360,7 @@ SEXP R_LoadStataData(FILE *fp)
     else
 	charlen=(InShortIntBinary(fp,1,swapends));
     if (charlen!=0)
-      error("Something strange in the file\n (Type 0 characteristic of nonzero length)");
+      error(_("something strange in the file\n (Type 0 characteristic of nonzero length)"));
 
 
     /** The Data **/
@@ -499,15 +499,15 @@ SEXP do_readStata(SEXP call)
     FILE *fp;
 
     if ((sizeof(double)!=8) | (sizeof(int)!=4) | (sizeof(float)!=4))
-      error("can't yet read Stata .dta on this platform");
+      error(_("can not yet read Stata .dta on this platform"));
 
 
     if (!isValidString(fname = CADR(call)))
-	error("first argument must be a file name\n");
+	error(_("first argument must be a file name\n"));
 
     fp = fopen(R_ExpandFileName(CHAR(STRING_ELT(fname,0))), "rb");
     if (!fp)
-	error("unable to open file");
+	error(_("unable to open file"));
 
     result = R_LoadStataData(fp);
     fclose(fp);
@@ -521,20 +521,20 @@ static void OutIntegerBinary(int i, FILE * fp, int naok)
 {
     i=((i==NA_INTEGER) & !naok ? STATA_INT_NA : i);
     if (fwrite(&i, sizeof(int), 1, fp) != 1)
-	error("a binary write error occured");
+	error(_("a binary write error occurred"));
 
 }
 
 static void OutByteBinary(unsigned char i, FILE * fp)
 { 
     if (fwrite(&i, sizeof(char), 1, fp) != 1)
-	error("a binary write error occured");
+	error(_("a binary write error occurred"));
 }
 static void OutDataByteBinary(int i, FILE * fp)
 { 
     i=(unsigned char) ((i==NA_INTEGER) ? STATA_BYTE_NA : i);
     if (fwrite(&i, sizeof(char), 1, fp) != 1)
-	error("a binary write error occured");
+	error(_("a binary write error occurred"));
 }
 
 static void OutShortIntBinary(int i,FILE * fp)
@@ -549,9 +549,9 @@ static void OutShortIntBinary(int i,FILE * fp)
     second=i>>8;
 #endif
   if (fwrite(&first, sizeof(char), 1, fp) != 1)
-    error("a binary write error occured");
+    error(_("a binary write error occurred"));
   if (fwrite(&second, sizeof(char), 1, fp) != 1)
-    error("a binary write error occured");
+    error(_("a binary write error occurred"));
 }
 
 
@@ -559,14 +559,14 @@ static void  OutDoubleBinary(double d, FILE * fp, int naok)
 {
     d=(R_FINITE(d) ? d : STATA_DOUBLE_NA);
     if (fwrite(&d, sizeof(double), 1, fp) != 1)
-	error("a binary write error occured");
+	error(_("a binary write error occurred"));
 }
 
 
 static void OutStringBinary(char *buffer, FILE * fp, int nchar)
 {
     if (fwrite(buffer, nchar, 1, fp) != 1)
-	error("a binary write error occured");
+	error(_("a binary write error occurred"));
 }
 
 static char* nameMangleOut(char *stataname, int len){
@@ -645,7 +645,7 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 	    INTEGER(types)[i]=charlen;
 	    break;
 	  default:
-	    error("Unknown data type");
+	    error(_("unknown data type"));
 	    break;
         }
       }
@@ -672,7 +672,7 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 	    INTEGER(types)[i]=charlen;
 	    break;
 	  default:
-	    error("Unknown data type");
+	    error(_("unknown data type"));
 	    break;
         }
       }
@@ -767,7 +767,7 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 		    OutByteBinary(0,fp);
 	        break;
 	    default:
-	        error("This can't happen.");
+	        error(_("this should not happen."));
 	        break;
 	    }
 	}
@@ -809,9 +809,9 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 			    OutStringBinary(CHAR(STRING_ELT(theselabels,j)),fp,len);
 			    OutByteBinary(0,fp);
 			    txtlen-=len+1;
-			    if (txtlen<0) error("This can't happen: overrun.");
+			    if (txtlen<0) error(_("this should happen: overrun"));
 		    }
-		    if (txtlen>0) error("This can't happen: underrun");
+		    if (txtlen>0) error(_("this should happen: underrun"));
 	    }
     }
     
@@ -830,24 +830,24 @@ SEXP do_writeStata(SEXP call)
     int version;
 
     if ((sizeof(double)!=8) | (sizeof(int)!=4) | (sizeof(float)!=4))
-      error("can't yet read write .dta on this platform");
+      error(_("cannot yet read write .dta on this platform"));
 
 
     if (!isValidString(fname = CADR(call)))
-	error("first argument must be a file name\n");
+	error(_("first argument must be a file name\n"));
 
 
     fp = fopen(R_ExpandFileName(CHAR(STRING_ELT(fname,0))), "wb");
     if (!fp)
-	error("unable to open file");
+	error(_("unable to open file"));
  
     df=CADDR(call);
     if (!inherits(df,"data.frame"))
-        error("data to be saved must be in a data frame.");
+        error(_("data to be saved must be in a data frame"));
  
     version=INTEGER(coerceVector(CADDDR(call),INTSXP))[0];
     if ((version<6) || (version>8))
-	error("can only write version 6-8 formats.");
+	error(_("can only write version 6-8 formats"));
     leveltable=CAD4R(call);
 
     R_SaveStataData(fp,df,version,leveltable);

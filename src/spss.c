@@ -298,7 +298,7 @@ read_SPSS_PORT(const char *filename)
     }
     dict->nval = nval;
     if (!nval)
-	error("nval is 0");
+	error(_("nval is 0"));
     case_vals = (union value *) R_alloc(dict->nval, sizeof(union value));
 
     for (i = 0; i < dict->nvar; i++) {
@@ -405,7 +405,7 @@ read_SPSS_SAVE(const char *filename)
     }
     dict->nval = nval;
     if (!nval)
-	error("nval is 0");
+	error(_("nval is 0"));
     case_vals = (union value *) R_alloc(dict->nval, sizeof(union value));
 
     for (i = 0; i < dict->nvar; i++) {
@@ -558,10 +558,10 @@ do_read_SPSS(SEXP file)
     SEXP ans;
 
     if(!fp)
-	error("unable to open file");    
+	error(_("unable to open file"));    
     if(fread_pfm(buf, sizeof(char), 4, fp) != 4) {
 	fclose(fp);
-	error("problem in reading file %s", filename);
+	error(_("problem in reading file '%s'"), filename);
     }
     buf[4] = '\0';
 
@@ -571,7 +571,8 @@ do_read_SPSS(SEXP file)
     } else {
 	if (!is_PORT(fp)) {
 	    fclose(fp);
-	    error("file %s is not in any supported SPSS format", filename);
+	    error(_("file '%s' is not in any supported SPSS format"),
+		  filename);
 	}
 	fclose(fp);
 	ans = read_SPSS_PORT(filename);

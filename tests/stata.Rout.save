@@ -1,10 +1,12 @@
 
-R : Copyright 2004, The R Foundation for Statistical Computing
-Version 2.1.0 Under development (unstable) (2004-12-27), ISBN 3-900051-07-0
+R : Copyright 2005, The R Foundation for Statistical Computing
+Version 2.1.0 Under development (unstable) (2005-01-31), ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
+
+  Internationalized test version in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -17,7 +19,7 @@ Type 'q()' to quit R.
 > library(foreign)
 > pc5 <- read.dta("pc5.dta")
 Warning message:
-Can't read factor labels from Stata 5 files. in: read.dta("pc5.dta") 
+cannot read factor labels from Stata 5 files in: read.dta("pc5.dta") 
 > summary(pc5)
       age             alb           alkphos         ascites      
  Min.   :26.28   Min.   :1.960   Min.   :   -9   Min.   :-9.000  
@@ -256,19 +258,19 @@ Can't read factor labels from Stata 5 files. in: read.dta("pc5.dta")
 > data(esoph)
 > write.dta(esoph,esophile<-tempfile())
 Warning message:
-Abbreviating variable names in: write.dta(esoph, esophile <- tempfile()) 
+abbreviating variable names in: write.dta(esoph, esophile <- tempfile()) 
 > esoph2<-read.dta(esophile)
 > all.equal(ordered(esoph2$alcgp),esoph$alcgp)
 [1] TRUE
 > write.dta(esoph,esophile,convert.factors="string")
 Warning message:
-Abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "string") 
+abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "string") 
 > esoph2<-read.dta(esophile)
 > all.equal(as.character(esoph$alcgp),esoph2$alcgp)
 [1] TRUE
 > write.dta(esoph,esophile,convert.factors="code")
 Warning message:
-Abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "code") 
+abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "code") 
 > esoph2<-read.dta(esophile)
 > all.equal(as.numeric(esoph$alcgp),as.numeric(esoph2$alcgp))
 [1] TRUE

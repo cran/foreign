@@ -33,12 +33,12 @@ write.dbf <- function(dataframe, file, factor2char = TRUE)
 
     if (!is.data.frame(dataframe)) dataframe <- as.data.frame(dataframe)
     if (any(sapply(dataframe, function(x) !is.null(dim(x)))))
-        stop("Can't handle matrix/array columns")
+        stop("cannot handle matrix/array columns")
     cl <- sapply(dataframe, function(x) class(x[1]))
     asis <- cl == "AsIs"
     cl[asis & sapply(dataframe, mode) == "character"] <- "character"
     if(length(cl0 <- setdiff(cl, allowed_classes)))
-        stop("dataframe contains columns of unsupported class(es) ",
+        stop("data frame contains columns of unsupported class(es) ",
              paste(cl0, collapse = ","))
     m <- ncol(dataframe)
     DataTypes <- c(logical="L", integer="N", numeric="F", character="C",

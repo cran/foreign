@@ -8,11 +8,11 @@ function(file)
     ## successfully read, along with information on read failures.
 
     ## E.g., create two variables in Octave
-    
+
     ## octave> ident_mat = eye(3);
     ## octave> twopi = 2 * pi;
     ## octave> save -ascii 'octfile.dat'
-  
+
     ## then load this file into R:
     ## > o <- read.octave("octfile.dat")
     ## > o
@@ -26,7 +26,7 @@ function(file)
 
     skip_lines_to_next_item <- function(con) {
         ## Read in data from the connection until we hit the next
-        ## variable (assuming "# name" is the first line for a new 
+        ## variable (assuming "# name" is the first line for a new
         ## variable).  We need to also handle the special case when this
         ## gets us to the end of the connection.
         looking <- TRUE
@@ -148,7 +148,7 @@ function(file)
         ## warning, and try reading until the next variable.
         ## This only works for unknown atomic types, so let us hope we
         ## have code for all recursive ones ...
-        warning(paste("Cannot handle unknown type", sQuote(type)))
+        warning("cannot handle unknown type ", sQuote(type))
         skip_lines_to_next_item(con)
         NULL
     }
@@ -231,10 +231,10 @@ function(file)
                "bool matrix" = read_octave_bool_matrix(con),
                read_octave_unknown(con, type))
     }
-    
+
     zz <- file(file, "r")
     on.exit(close(zz))
-    
+
     readLines(zz, n = 1)                # Skip over the header line.
 
     ## Build up a return list of items -- separately store the return

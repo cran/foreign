@@ -58,7 +58,7 @@ read.ssd <- function(libname, sectionnames, tmpXport=tempfile(),
                 paste(basename(tmpProgLoc), ".log", sep=""),
                 " in the current directory\n", sep="")
         }
-        warning(paste("SAS return code was", sysret))
+        warning("SAS return code was ", sysret)
         return(NULL)
     }
 }

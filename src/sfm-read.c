@@ -160,7 +160,7 @@ sfm_close (struct file_handle * h)
   if (!(ext->opened == 0)) error("assert failed : ext->opened == 0");
   Free (ext->buf);
   if (EOF == fclose (ext->file))
-    error("%s: Closing system file: %s.", h->fn, strerror (errno));
+    error(_("%s: Closing system file: %s"), h->fn, strerror (errno));
 }
 
 /* Closes a system file if we're done with it. */
@@ -289,7 +289,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
     }
   else if (h->class != NULL)
     {
-      error("Cannot read file %s as system file: already opened for %s.",
+      error(_("cannot read file %s as system file: already opened for %s"),
 	    fh_handle_name (h), h->class->name);
     }
 
@@ -304,8 +304,8 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
   if (ext->file == NULL)
     {
       Free (ext);
-      error("An error occurred while opening \"%s\" for reading "
-	    "as a system file: %s.", h->fn, strerror (errno));
+      error(_("An error occurred while opening '%s' for reading as a system file: %s"),
+	    h->fn, strerror (errno));
     }
 
   /* Initialize the sfm_fhuser_ext structure. */
@@ -335,10 +335,9 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
       struct variable *wv = var_by_index[ext->weight_index];
 
       if (wv == NULL)
-	lose (("%s: Weighting variable may not be a continuation of "
-	       "a long string variable.", h->fn));
+	lose ((_("%s: Weighting variable may not be a continuation of a long string variable"), h->fn));
       else if (wv->type == ALPHA)
-	lose (("%s: Weighting variable may not be a string variable.",
+	lose ((_("%s: Weighting variable may not be a string variable"),
 	       h->fn));
 
       strcpy (ext->dict->weight_var, wv->name);
@@ -363,8 +362,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 	  break;
 
 	case 4:
-	  lose (("%s: Orphaned variable index record (type 4).  Type 4 "
-		 "records must always immediately follow type 3 records.",
+	  lose ((_("%s: Orphaned variable index record (type 4).  Type 4 records must always immediately follow type 3 records"),
 		 h->fn));
 
 	case 6:
@@ -418,8 +416,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 		break;
 
 	      default:
-		warning("%s: Unrecognized record type 7, subtype %d "
-			"encountered in system file.", h->fn, data.subtype);
+		warning(_("%s: Unrecognized record type 7, subtype %d encountered in system file"), h->fn, data.subtype);
 		skip = 1;
 	      }
 
@@ -442,7 +439,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 	  }
 
 	default:
-	  lose (("%s: Unrecognized record type %d.", h->fn, rec_type));
+	  lose ((_("%s: Unrecognized record type %d"), h->fn, rec_type));
 	}
     }
 
@@ -450,7 +447,7 @@ break_out_of_loop:
   /* Come here on successful completion. */
 
 #if DEBUGGING
-  warning ("Read system-file dictionary successfully.");
+  warning ("Read system-file dictionary successfully");
   dump_dictionary (ext->dict);
 #endif
   Free (var_by_index);
@@ -466,7 +463,7 @@ lossage:
   Free (ext);
   h->class = NULL;
   h->ext = NULL;
-  error("Error reading system-file header.");
+  error(_("error reading system-file header"));
   return NULL;
 }
 
@@ -482,8 +479,7 @@ read_machine_int32_info (struct file_handle * h, int size, int count)
   int i;
 
   if (size != sizeof (R_int32) || count != 8)
-    lose (("%s: Bad size (%d) or count (%d) field on record type 7, "
-    "subtype 3.	Expected size %d, count 8.",
+    lose ((_("%s: Bad size (%d) or count (%d) field on record type 7, subtype 3.	Expected size %d, count 8"),
 	h->fn, size, count, sizeof (R_int32)));
 
   assertive_bufread(h, data, sizeof data, 0);
@@ -496,9 +492,7 @@ read_machine_int32_info (struct file_handle * h, int size, int count)
     {
     case FPREP_IEEE754:
       if (data[4] != 1)
-	lose (("%s: Floating-point representation in system file is not "
-	       "IEEE-754.  PSPP cannot convert between floating-point "
-	       "formats.", h->fn));
+	lose ((_("%s: Floating-point representation in system file is not IEEE-754.  PSPP cannot convert between floating-point formats"), h->fn));
       break;
     default:
       if (!(0)) error("assert failed : 0");
@@ -517,16 +511,14 @@ read_machine_int32_info (struct file_handle * h, int size, int count)
 	if (!(0)) error("assert failed : 0");
     }
   if ((file_endian == BIG) ^ (data[6] == 1))
-    lose (("%s: File-indicated endianness (%s) does not match endianness "
-	   "intuited from file header (%s).",
+    lose ((_("%s: File-indicated endianness (%s) does not match endianness intuited from file header (%s)"),
 	   h->fn, file_endian == BIG ? "big-endian" : "little-endian",
 	   data[6] == 1 ? "big-endian" : (data[6] == 2 ? "little-endian"
 					  : "unknown")));
 
   /* PORTME: Character representation code. */
   if (data[7] != 2 && data[7] != 3)
-    lose (("%s: File-indicated character representation code (%s) is not "
-	   "ASCII.", h->fn,
+    lose ((_("%s: File-indicated character representation code (%s) is not ASCII"), h->fn,
        data[7] == 1 ? "EBCDIC" : (data[7] == 4 ? "DEC Kanji" : "Unknown")));
 
   return 1;
@@ -546,8 +538,7 @@ read_machine_flt64_info (struct file_handle * h, int size, int count)
   int i;
 
   if (size != sizeof (R_flt64) || count != 3)
-    lose (("%s: Bad size (%d) or count (%d) field on record type 7, "
-	   "subtype 4.	Expected size %d, count 8.",
+    lose ((_("%s: Bad size (%d) or count (%d) field on record type 7, subtype 4.	Expected size %d, count 8"),
 	   h->fn, size, count, sizeof (R_flt64)));
 
   assertive_bufread(h, data, sizeof data, 0);
@@ -561,10 +552,7 @@ read_machine_flt64_info (struct file_handle * h, int size, int count)
       ext->sysmis = data[0];
       ext->highest = data[1];
       ext->lowest = data[2];
-      warning("%s: File-indicated value is different from internal value "
-	      "for at least one of the three system values.  SYSMIS: "
-	      "indicated %g, expected %g; HIGHEST: %g, %g; LOWEST: "
-	      "%g, %g.",
+      warning(_("%s: File-indicated value is different from internal value for at least one of the three system values.  SYSMIS: indicated %g, expected %g; HIGHEST: %g, %g; LOWEST: %g, %g"),
 	  h->fn, (double) data[0], (double) SYSMIS,
 	  (double) data[1], (double) DBL_MAX,
 	  (double) data[2], (double) second_lowest_double_val());
@@ -605,8 +593,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
   /* Read header, check magic. */
   assertive_bufread(h, &hdr, sizeof hdr, 0);
   if (0 != strncmp ("$FL2", hdr.rec_type, 4))
-    lose (("%s: Bad magic.  Proper system files begin with "
-	   "the four characters `$FL2'. This file will not be read.",
+    lose ((_("%s: Bad magic.  Proper system files begin with the four characters `$FL2'. This file will not be read"),
 	   h->fn));
 
   /* Check eye-catcher string. */
@@ -648,8 +635,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
     {
       bswap_int32 (&hdr.layout_code);
       if (hdr.layout_code != 2)
-	lose (("%s: File layout code has unexpected value %d.  Value "
-	       "should be 2, in big-endian or little-endian format.",
+	lose ((_("%s: File layout code has unexpected value %d.  Value should be 2, in big-endian or little-endian format"),
 	       h->fn, hdr.layout_code));
 
       ext->reverse_endian = 1;
@@ -664,26 +650,25 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
   ext->case_size = hdr.case_size;
   if (hdr.case_size <= 0 || ext->case_size > (INT_MAX
 					      / (int) sizeof (union value) / 2))
-    lose (("%s: Number of elements per case (%d) is not between 1 "
-	   "and %d.", h->fn, hdr.case_size, INT_MAX / sizeof (union value) / 2));
+    lose ((_("%s: Number of elements per case (%d) is not between 1 and %d"),
+	   h->fn, hdr.case_size, INT_MAX / sizeof (union value) / 2));
 
   ext->compressed = hdr.compressed;
 
   ext->weight_index = hdr.weight_index - 1;
   if (hdr.weight_index < 0 || hdr.weight_index > hdr.case_size)
-    lose (("%s: Index of weighting variable (%d) is not between 0 "
-	   "and number of elements per case (%d).",
+    lose ((_("%s: Index of weighting variable (%d) is not between 0 and number of elements per case (%d)"),
 	   h->fn, hdr.weight_index, ext->case_size));
 
   ext->ncases = hdr.ncases;
   if (ext->ncases < -1 || ext->ncases > INT_MAX / 2)
-    lose (("%s: Number of cases in file (%ld) is not between -1 and "
-	   "%d.", h->fn, (long) ext->ncases, INT_MAX / 2));
+    lose ((_("%s: Number of cases in file (%ld) is not between -1 and %d"),
+	   h->fn, (long) ext->ncases, INT_MAX / 2));
 
   ext->bias = hdr.bias;
   if (ext->bias != 100.0)
-    warning("%s: Compression bias (%g) is not the usual "
-	    "value of 100.", h->fn, ext->bias);
+    warning(_("%s: Compression bias (%g) is not the usual value of 100"), 
+	    h->fn, ext->bias);
 
   /* Make a file label only on the condition that the given label is
      not all spaces or nulls. */
@@ -784,8 +769,8 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	}
 
       if (sv.rec_type != 2)
-	lose (("%s: position %d: Bad record type (%d); "
-	       "the expected value was 2.", h->fn, i, sv.rec_type));
+	lose ((_("%s: position %d: Bad record type (%d); the expected value was 2"), 
+	       h->fn, i, sv.rec_type));
 
       /* If there was a long string previously, make sure that the
 	 continuations are present; otherwise make sure there aren't
@@ -793,28 +778,27 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
       if (long_string_count)
 	{
 	  if (sv.type != -1)
-	    lose (("%s: position %d: String variable does not have "
-			 "proper number of continuation records.", h->fn, i));
+	    lose ((_("%s: position %d: String variable does not have proper number of continuation records"), 
+		   h->fn, i));
 
 	  (*var_by_index)[i] = NULL;
 	  long_string_count--;
 	  continue;
 	}
       else if (sv.type == -1)
-	lose (("%s: position %d: Superfluous long string continuation "
-	       "record.", h->fn, i));
+	lose ((_("%s: position %d: Superfluous long string continuation record"),
+	       h->fn, i));
 
       /* Check fields for validity. */
       if (sv.type < 0 || sv.type > 255)
-	lose (("%s: position %d: Bad variable type code %d.",
+	lose ((_("%s: position %d: Bad variable type code %d"),
 	       h->fn, i, sv.type));
       if (sv.has_var_label != 0 && sv.has_var_label != 1)
-	lose (("%s: position %d: Variable label indicator field is not "
-	       "0 or 1.", h->fn, i));
+	lose ((_("%s: position %d: Variable label indicator field is not 0 or 1"),
+	       h->fn, i));
       if (sv.n_missing_values < -3 || sv.n_missing_values > 3
 	  || sv.n_missing_values == -1)
-	lose (("%s: position %d: Missing value indicator field is not "
-		     "-3, -2, 0, 1, 2, or 3.", h->fn, i));
+	lose ((_("%s: position %d: Missing value indicator field is not -3, -2, 0, 1, 2, or 3"), h->fn, i));
 
       /* Construct internal variable structure, initialize critical bits. */
       vv = (*var_by_index)[i] = dict->var[dict->nvar++] =
@@ -827,15 +811,13 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
       /* Copy first character of variable name. */
       if (!isalpha ((unsigned char) sv.name[0])
 	  && sv.name[0] != '@' && sv.name[0] != '#')
-	lose (("%s: position %d: Variable name begins with invalid "
-	       "character.", h->fn, i));
+	lose ((_("%s: position %d: Variable name begins with invalid character"), h->fn, i));
       if (islower ((unsigned char) sv.name[0]))
-	warning("%s: position %d: Variable name begins with lowercase letter "
-	     "%c.", h->fn, i, sv.name[0]);
+	warning(_("%s: position %d: Variable name begins with lowercase letter %c"),
+		h->fn, i, sv.name[0]);
       if (sv.name[0] == '#')
-	warning("%s: position %d: Variable name begins with octothorpe "
-		   "(`#').  Scratch variables should not appear in system "
-		   "files.", h->fn, i);
+	warning(_("%s: position %d: Variable name begins with octothorpe ('#').  Scratch variables should not appear in system files"), 
+		  h->fn, i);
       vv->name[0] = toupper ((unsigned char) (sv.name[0]));
 
       /* Copy remaining characters of variable name. */
@@ -847,16 +829,16 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	    break;
 	  else if (islower (c))
 	    {
-	      warning("%s: position %d: Variable name character %d is "
-		   "lowercase letter %c.", h->fn, i, j + 1, sv.name[j]);
+	      warning(_("%s: position %d: Variable name character %d is lowercase letter %c"), 
+		      h->fn, i, j + 1, sv.name[j]);
 	      vv->name[j] = toupper ((unsigned char) (c));
 	    }
 	  else if (isalnum (c) || c == '.' || c == '@'
 		   || c == '#' || c == '$' || c == '_')
 	    vv->name[j] = c;
 	  else
-	    lose (("%s: position %d: character `\\%03o' (%c) is not valid in a "
-		   "variable name.", h->fn, i, c, c));
+	    lose ((_("%s: position %d: character `\\%03o' (%c) is not valid in a variable name"), 
+		   h->fn, i, c, c));
 	}
       vv->name[j] = 0;
 
@@ -895,8 +877,8 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 
 	  /* Check len. */
 	  if (len < 0 || len > 255)
-	    lose (("%s: Variable %s indicates variable label of invalid "
-		   "length %d.", h->fn, vv->name, len));
+	    lose ((_("%s: Variable %s indicates variable label of invalid length %d"), 
+		   h->fn, vv->name, len));
 
 	  /* Read label into variable structure. */
 	  vv->label = bufread (h, NULL, ROUND_UP (len, sizeof (R_int32)), len + 1);
@@ -911,8 +893,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	  R_flt64 mv[3];
 
 	  if (vv->width > MAX_SHORT_STRING)
-	    lose (("%s: Long string variable %s may not have missing "
-		   "values.", h->fn, vv->name));
+	    lose ((_("%s: Long string variable %s may not have missing values"), h->fn, vv->name));
 
 	  assertive_bufread(h, mv, sizeof *mv * abs (sv.n_missing_values), 0);
 
@@ -935,8 +916,8 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	      int x = 0;
 
 	      if (vv->type == ALPHA)
-		lose (("%s: String variable %s may not have missing "
-		       "values specified as a range.", h->fn, vv->name));
+		lose ((_("%s: String variable %s may not have missing values specified as a range"), 
+		       h->fn, vv->name));
 
 	      if (mv[0] == ext->lowest)
 		{
@@ -972,11 +953,11 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 
   /* Some consistency checks. */
   if (long_string_count != 0)
-    lose (("%s: Long string continuation records omitted at end of "
-	   "dictionary.", h->fn));
+    lose ((_("%s: Long string continuation records omitted at end of dictionary"),
+	   h->fn));
   if (next_value != ext->case_size)
-    lose (("%s: System file header indicates %d variable positions but "
-	   "%d were read from file.", h->fn, ext->case_size, next_value));
+    lose ((_("%s: System file header indicates %d variable positions but %d were read from file"),
+	   h->fn, ext->case_size, next_value));
   dict->var = Realloc (dict->var, dict->nvar, struct variable *);
 
   /* Construct AVL tree of dictionary in order to speed up later
@@ -984,7 +965,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
   dict->var_by_name = avl_create (cmp_variable, NULL);
   for (i = 0; i < dict->nvar; i++)
     if (NULL != avl_insert (dict->var_by_name, dict->var[i]))
-      lose (("%s: Duplicate variable name `%s' within system file.",
+      lose ((_("%s: Duplicate variable name `%s' within system file"),
 	     h->fn, dict->var[i]->name));
 
   return 1;
@@ -1011,7 +992,7 @@ parse_format_spec (struct file_handle *h, R_int32 s, struct fmt_spec *v, struct 
 {
   if ((size_t) ((s >> 16) & 0xff)
       >= sizeof translate_fmt / sizeof *translate_fmt)
-    lose (("%s: Bad format specifier byte (%d).",
+    lose ((_("%s: Bad format specifier byte (%d)"),
 	   h->fn, (s >> 16) & 0xff));
   
   v->type = translate_fmt[(s >> 16) & 0xff];
@@ -1021,10 +1002,10 @@ parse_format_spec (struct file_handle *h, R_int32 s, struct fmt_spec *v, struct 
   /* FIXME?  Should verify the resulting specifier more thoroughly. */
 
   if (v->type == -1)
-    lose (("%s: Bad format specifier byte (%d).",
+    lose ((_("%s: Bad format specifier byte (%d)"),
 	   h->fn, (s >> 16) & 0xff));
   if ((vv->type == ALPHA) ^ ((formats[v->type].cat & FCAT_STRING) != 0))
-    lose (("%s: %s variable %s has %s format specifier %s.",
+    lose ((_("%s: %s variable %s has %s format specifier %s"),
 	   h->fn, vv->type == ALPHA ? "String" : "Numeric",
 	   vv->name,
 	   formats[v->type].cat & FCAT_STRING ? "string" : "numeric",
@@ -1103,8 +1084,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
       bswap_int32 (&rec_type);
     
     if (rec_type != 4)
-      lose (("%s: Variable index record (type 4) does not immediately "
-	     "follow value label record (type 3) as it ought.", h->fn));
+      lose ((_("%s: Variable index record (type 4) does not immediately follow value label record (type 3) as it ought"), h->fn));
   }
 
   /* Read number of variables associated with value label from type 4
@@ -1113,8 +1093,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
   if (ext->reverse_endian)
     bswap_int32 (&n_vars);
   if (n_vars < 1 || n_vars > ext->dict->nvar)
-    lose (("%s: Number of variables associated with a value label (%d) "
-	   "is not between 1 and the number of variables (%d).",
+    lose ((_("%s: Number of variables associated with a value label (%d) is not between 1 and the number of variables (%d)"),
 	   h->fn, n_vars, ext->dict->nvar));
 
   /* Allocate storage. */
@@ -1131,19 +1110,16 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
       if (ext->reverse_endian)
 	bswap_int32 (&var_index);
       if (var_index < 1 || var_index > ext->case_size)
-	lose (("%s: Variable index associated with value label (%d) is "
-	       "not between 1 and the number of values (%d).",
+	lose ((_("%s: Variable index associated with value label (%d) is not between 1 and the number of values (%d)"),
 	       h->fn, var_index, ext->case_size));
 
       /* Make sure it's a real variable. */
       v = var_by_index[var_index - 1];
       if (v == NULL)
-	lose (("%s: Variable index associated with value label (%d) refers "
-	       "to a continuation of a string variable, not to an actual "
-	       "variable.", h->fn, var_index));
+	lose ((_("%s: Variable index associated with value label (%d) refers to a continuation of a string variable, not to an actual variable"), 
+	       h->fn, var_index));
       if (v->type == ALPHA && v->width > MAX_SHORT_STRING)
-	lose (("%s: Value labels are not allowed on long string variables "
-	       "(%s).", h->fn, v->name));
+	lose ((_("%s: Value labels are not allowed on long string variables (%s)"), h->fn, v->name));
 
       /* Add it to the list of variables. */
       var[i] = v;
@@ -1152,9 +1128,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
   /* Type check the variables. */
   for (i = 1; i < n_vars; i++)
     if (var[i]->type != var[0]->type)
-      lose (("%s: Variables associated with value label are not all of "
-	     "identical type.  Variable %s has %s type, but variable %s has "
-	     "%s type.", h->fn,
+      lose ((_("%s: Variables associated with value label are not all of identical type.  Variable %s has %s type, but variable %s has %s type"), h->fn,
 	     var[0]->name, var[0]->type == ALPHA ? "string" : "numeric",
 	     var[i]->name, var[i]->type == ALPHA ? "string" : "numeric"));
 
@@ -1195,11 +1169,11 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
 	    continue;
 
 	  if (var[0]->type == NUMERIC)
-	    warning("%s: File contains duplicate label for value %g for "
-		 "variable %s.", h->fn, cooked_label[j]->v.f, v->name);
+	    warning(_("%s: File contains duplicate label for value %g for variable %s"), 
+		    h->fn, cooked_label[j]->v.f, v->name);
 	  else
-	    warning("%s: File contains duplicate label for value `%.*s' "
-		 "for variable %s.", h->fn, v->width,
+	    warning(_("%s: File contains duplicate label for value `%.*s' for variable %s"),
+		      h->fn, v->width,
 		 cooked_label[j]->v.s, v->name);
 
 	  free_value_label (old);
@@ -1238,9 +1212,9 @@ bufread (struct file_handle * h, void *buf, size_t nbytes, size_t minalloc)
   if ((nbytes != 0) && (1 != fread (buf, nbytes, 1, ext->file)))
     {
       if (ferror (ext->file))
-	error("%s: Reading system file: %s.", h->fn, strerror (errno));
+	error(_("%s: Reading system file: %s"), h->fn, strerror (errno));
       else
-	error("%s: Unexpected end of file.", h->fn);
+	error(_("%s: Unexpected end of file"), h->fn);
       return NULL;
     }
   return buf;
@@ -1257,13 +1231,13 @@ read_documents (struct file_handle * h)
   R_int32 n_lines;
 
   if (dict->documents != NULL)
-    lose (("%s: System file contains multiple type 6 (document) records.",
+    lose ((_("%s: System file contains multiple type 6 (document) records"),
 	   h->fn));
 
   assertive_bufread(h, &n_lines, sizeof n_lines, 0);
   dict->n_documents = n_lines;
   if (dict->n_documents <= 0)
-    lose (("%s: Number of document lines (%ld) must be greater than 0.",
+    lose ((_("%s: Number of document lines (%ld) must be greater than 0"),
 	   h->fn, (long) dict->n_documents));
 
   dict->documents = bufread (h, NULL, 80 * n_lines, 0);
@@ -1374,7 +1348,7 @@ buffer_input (struct file_handle * h)
   amt = fread (ext->buf, sizeof *ext->buf, 128, ext->file);
   if (ferror (ext->file))
     {
-      error("%s: Error reading file: %s.", h->fn, strerror (errno));
+      error(_("%s: Error reading file: %s"), h->fn, strerror (errno));
       return 0;
     }
   ext->ptr = ext->buf;
@@ -1412,8 +1386,7 @@ read_compressed_data (struct file_handle * h, R_flt64 * temp)
 	  case 252:
 	    /* Code 252 is end of file. */
 	    if (temp_beg != temp)
-	      lose (("%s: Compressed data is corrupted.  Data ends "
-		     "partway through a case.", h->fn));
+	      lose ((_("%s: Compressed data is corrupted.  Data ends partway through a case"), h->fn));
 	    goto lossage;
 	  case 253:
 	    /* Code 253 indicates that the value is stored explicitly
@@ -1421,7 +1394,7 @@ read_compressed_data (struct file_handle * h, R_flt64 * temp)
 	    if (ext->ptr == NULL || ext->ptr >= ext->end)
 	      if (!buffer_input (h))
 		{
-		  lose (("%s: Unexpected end of file.", h->fn));
+		  lose ((_("%s: Unexpected end of file"), h->fn));
 		  goto lossage;
 		}
 	    memcpy (temp++, ext->ptr++, sizeof *temp);
@@ -1462,7 +1435,7 @@ read_compressed_data (struct file_handle * h, R_flt64 * temp)
 	if (!buffer_input (h))
 	  {
 	    if (temp_beg != temp)
-	      lose (("%s: Unexpected end of file.", h->fn));
+	      lose ((_("%s: Unexpected end of file"), h->fn));
 	    goto lossage;
 	  }
       memcpy (ext->x, ext->ptr++, sizeof *temp);
@@ -1516,9 +1489,9 @@ sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * d
       if (amt != nbytes)
 	{
 	  if (ferror (ext->file))
-	    error("%s: Reading system file: %s.", h->fn, strerror (errno));
+	    error(_("%s: Reading system file: %s"), h->fn, strerror (errno));
 	  else if (amt != 0)
-	    error("%s: Partial record at end of system file.", h->fn);
+	    error(_("%s: Partial record at end of system file"), h->fn);
 	  goto lossage;
 	}
     }

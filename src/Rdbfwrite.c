@@ -12,6 +12,7 @@
 #include "shapefil.h"
 #include <R.h>
 #include <Rinternals.h>
+#include "foreign.h"
 
 
 static DBFHandle Rdbfwrite(DBFHandle, SEXP, SEXP, SEXP, SEXP);
@@ -30,10 +31,10 @@ SEXP DoWritedbf(SEXP file, SEXP df, SEXP pr, SEXP sc, SEXP DataTypes)
     DBFHandle hDBF;
 
     if (!isValidString(file))
-	error ("first argument must be a file name\n");
+	error (_("first argument must be a file name"));
 
     hDBF = DBFCreate(R_ExpandFileName(CHAR(STRING_ELT(file, 0))));
-    if (hDBF == NULL) error("unable to open file");
+    if (hDBF == NULL) error(_("unable to open file"));
  
     Rdbfwrite(hDBF, df, pr, sc, DataTypes);
     DBFClose(hDBF); 
@@ -77,7 +78,7 @@ Rdbfwrite(DBFHandle hDBF, SEXP df, SEXP pr, SEXP sc, SEXP DataTypes)
 	    DBFAddField(hDBF, nameMangleOut(szTitle,11), FTDate, 8, 0);
 	    break;
 	default:
-	    error("Unknown data type");
+	    error(_("unknown data type"));
 	    break;
 	}
     }
@@ -115,7 +116,7 @@ Rdbfwrite(DBFHandle hDBF, SEXP df, SEXP pr, SEXP sc, SEXP DataTypes)
 		    DBFWriteStringAttribute(hDBF, iRecord, i, CHAR(this));
 		break;
 	    default:
-		error("Unknown data type");
+		error(_("unknown data type"));
 		break;
 	    }
 	} 
