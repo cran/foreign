@@ -1,3 +1,12 @@
+2004-09-02 Thomas Lumley <tlumley@u.washington.edu>
+	* Add write.foreign for writing to foreign packages
+
+	* use Date rather than POSIXt for read.dta
+	
+	* Update tests/stata.Rout.save for using Date rather than POSIXt
+
+	* DESCRIPTION: New version is 0.7
+
 2004-07-29  Thomas Lumley <tlumley@u.washington.edu>
 	* DESCRIPTION: New version is 0.6-11
 	

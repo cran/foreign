@@ -5,14 +5,14 @@
   Reads a file in Stata version 5-8 or 7/SE binary format into a data frame. 
 }
 \usage{
-read.dta(file, convert.dates = TRUE, tz = "GMT",
+read.dta(file, convert.dates = TRUE, tz = NULL,
          convert.factors = TRUE, missing.type = FALSE,
          convert.underscore=TRUE, warn.missing.labels=TRUE)
 }
 \arguments{
   \item{file}{a filename as a character string.}
-  \item{convert.dates}{Convert Stata dates to \code{POSIXct} class?}
-  \item{tz}{timezone for date conversion}
+  \item{convert.dates}{Convert Stata dates to \code{Date} class?}
+  \item{tz}{Previously used to specify time zone. Now deprecated.}
   \item{convert.factors}{Use Stata value labels to create factors?
     (version 6.0 or later)}
   \item{missing.type}{For version 8 only, store information about
@@ -29,7 +29,7 @@ read.dta(file, convert.dates = TRUE, tz = "GMT",
   frame.  Nothing is done with variable characteristics.
 
   Optionally, Stata dates (\%d formats) are converted to \R's
-  \code{POSIXct} class and variables with Stata value labels are
+  \code{Date} class and variables with Stata value labels are
   converted to factors. In any case the value label and format
   information is stored as attributes on the returned data frame. 
 
@@ -49,14 +49,14 @@ read.dta(file, convert.dates = TRUE, tz = "GMT",
 }
 \references{
   Stata Users Manual (versions 5 & 6), Programming manual (version 7),
-  or online help (version 8) describe the format of the files
+  or online help (version 8) describe the format of the files.
 }
 
 \author{Thomas Lumley}
 \seealso{
   \code{\link{write.dta}},
   \code{\link{attributes}}
-  \code{\link{DateTimeClasses}}
+  \code{\link{Date}}
   \code{\link{factor}}
 }
 \examples{

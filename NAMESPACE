@@ -1,4 +1,4 @@
 export(data.restore, lookup.xport, read.dta, read.epiinfo, read.mtp,
-       read.S, read.spss, read.ssd, read.xport, write.dta)
+       read.S, read.spss, read.ssd, read.xport, write.dta, write.foreign)
 
-# not exported: SModeNames
+# not exported: SModeNames writeForeignStata writeForeignSPSS

@@ -1,5 +1,5 @@
 
-read.dta <- function(file, convert.dates=TRUE,tz="GMT",
+read.dta <- function(file, convert.dates=TRUE,tz=NULL,
                       convert.factors=TRUE,missing.type=FALSE,
                      convert.underscore=TRUE, warn.missing.labels=TRUE){
     rval<-.External("do_readStata", file,  PACKAGE = "foreign")
@@ -42,10 +42,12 @@ read.dta <- function(file, convert.dates=TRUE,tz="GMT",
     }
 
     if (convert.dates){
+        if (!is.null(tz))
+          warning("Argument tz= no longer needed and will soon be removed.")
         ff<-attr(rval,"formats")
         dates<-grep("%-*d",ff)
         for(v in dates)
-            rval[[v]]<-ISOdate(1960,1,1,tz=tz)+24*60*60*rval[[v]]
+            rval[[v]]<-as.Date("1960-1-1")+rval[[v]]
     }
     if (convert.factors){
         if (attr(rval, "version")==5)
