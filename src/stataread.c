@@ -1,5 +1,5 @@
 /**
- * $Id: stataread.c,v 1.7 2002/03/08 21:15:57 tlumley Exp $
+ * $Id: stataread.c,v 1.8 2002/05/17 18:59:19 tlumley Exp $
   Read  Stata version 7.0, 7/SE, 6.0 and 5.0 .dta files, write version 7.0, 6.0.
   
   (c) 1999, 2000, 2001, 2002 Thomas Lumley. 
@@ -76,8 +76,9 @@ static int InByteBinary(FILE * fp, int naok)
 
 static int InShortIntBinary(FILE * fp, int naok,int swapends)
 {
-  unsigned short first,second,result;
-  
+	unsigned first,second;
+	int result;
+	
   first = InByteBinary(fp,1);
   second = InByteBinary(fp,1);
   if (stata_endian == CN_TYPE_BIG){
@@ -85,6 +86,7 @@ static int InShortIntBinary(FILE * fp, int naok,int swapends)
   } else {
     result= (second<<8) | first;
   }
+  if (result>STATA_SHORTINT_NA) result-=65536;
   return ((result==STATA_SHORTINT_NA) & !naok ? NA_INTEGER  : result);
 }
 

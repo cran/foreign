@@ -1,6 +1,6 @@
 
 R : Copyright 2002, The R Development Core Team
-Version 1.5.0 Under development (unstable) (2002-04-12)
+Version 1.6.0 Under development (unstable) (2002-05-16)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -53,6 +53,8 @@ List of 11
   ..$ STUID   : NULL
   ..$ TLIMTH  : NULL
   ..$ GRADE   : NULL
+ - attr(*, "variable.labels")= Named chr [1:11] "YEAR OF ADMINISTRATION" "COUNTY DISTRICT NUMBER" "COUNTY DISTRICT CAMPUS NUMBER" "DISTRICT NAME" ...
+  ..- attr(*, "names")= chr [1:11] "YEAR" "DISTRICT" "CAMPUS" "DNAME" ...
 > sample100 <- data.frame(sample100)
 > summary(sample100)
       YEAR           DISTRICT          CAMPUS                      DNAME   
@@ -118,6 +120,8 @@ List of 11
   ..$ STUID   : NULL
   ..$ TLIMTH  : NULL
   ..$ GRADE   : NULL
+ - attr(*, "variable.labels")= Named chr [1:11] "YEAR OF ADMINISTRATION" "COUNTY DISTRICT NUMBER" "COUNTY DISTRICT CAMPUS NUMBER" "DISTRICT NAME" ...
+  ..- attr(*, "names")= chr [1:11] "YEAR" "DISTRICT" "CAMPUS" "DNAME" ...
 > sample100 <- data.frame(sample100)
 > summary(sample100)
       YEAR           DISTRICT          CAMPUS                      DNAME   
@@ -416,6 +420,8 @@ List of 20
   ..$ TRT     : NULL
   ..$ TRIG    : NULL
   ..$ COPPER  : NULL
+ - attr(*, "variable.labels")= Named chr [1:20] " " " " " " " " ...
+  ..- attr(*, "names")= chr [1:20] "AGE" "ALB" "ALKPHOS" "ASCITES" ...
 > pbc <- data.frame(pbc)
 > summary(pbc)
       AGE             ALB           ALKPHOS         ASCITES      

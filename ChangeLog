@@ -1,3 +1,15 @@
+2002-05-17 Thomas Lumley <tlumley@u.washington.edu>
+
+	* Stata short ints were coming through unsigned 
+
+        * updated SPSS output in tests to follow 2002-04-29 changes
+
+	* verion is 0.5-5
+
+2002-05-14 Thomas Lumley <tlumley@u.washington.edu>
+   
+	* Mark Myatt's fixes and extensions for read.epiinfo
+
 2002-05-01  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.5-4.

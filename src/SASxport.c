@@ -1,5 +1,5 @@
 /*
- *  $Id: SASxport.c,v 1.8 2002/03/28 00:24:22 bates Exp $
+ *  $Id: SASxport.c,v 1.9 2002/05/01 21:00:11 hornik Exp $
  *
  *  Read SAS transport data set format
  *

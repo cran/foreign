@@ -1,6 +1,6 @@
 
-R : Copyright 2001, The R Development Core Team
-Version 1.4.0 Under development (unstable) (2001-11-05)
+R : Copyright 2002, The R Development Core Team
+Version 1.6.0 Under development (unstable) (2002-05-16)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -98,20 +98,20 @@ Type `q()' to quit R.
  Mean   :50.45   Mean   :3.543   Mean   : 1525   Mean   : 58.14  
  3rd Qu.:56.99   3rd Qu.:3.820   3rd Qu.: 1677   3rd Qu.:  1.00  
  Max.   :78.44   Max.   :4.640   Max.   :13862   Max.   :247.00  
-      bili             chol           edema            edemarx       
- Min.   : 0.300   Min.   :  120   Min.   :0.00000   Min.   :0.00000  
- 1st Qu.: 0.700   1st Qu.:  267   1st Qu.:0.00000   1st Qu.:0.00000  
- Median : 1.200   Median :  376   Median :0.00000   Median :0.00000  
- Mean   : 2.688   Mean   :20235   Mean   :0.09256   Mean   :0.07815  
- 3rd Qu.: 3.000   3rd Qu.:65527   3rd Qu.:0.00000   3rd Qu.:0.00000  
- Max.   :28.000   Max.   :65527   Max.   :1.00000   Max.   :1.00000  
+      bili             chol            edema            edemarx       
+ Min.   : 0.300   Min.   :  -9.0   Min.   :0.00000   Min.   :0.00000  
+ 1st Qu.: 0.700   1st Qu.:  -9.0   1st Qu.:0.00000   1st Qu.:0.00000  
+ Median : 1.200   Median : 256.0   Median :0.00000   Median :0.00000  
+ Mean   : 2.688   Mean   : 245.8   Mean   :0.09256   Mean   :0.07815  
+ 3rd Qu.: 3.000   3rd Qu.: 346.0   3rd Qu.:0.00000   3rd Qu.:0.00000  
+ Max.   :28.000   Max.   :1775.0   Max.   :1.00000   Max.   :1.00000  
      hepmeg            time          plate          protime     
- Min.   :  0.00   Min.   :  41   Min.   :   62   Min.   : 9.00  
- 1st Qu.:  0.00   1st Qu.:1434   1st Qu.:  195   1st Qu.:10.00  
- Median :  1.00   Median :1487   Median :  256   Median :10.60  
- Mean   : 58.46   Mean   :1760   Mean   : 2340   Mean   :10.67  
- 3rd Qu.:  1.00   3rd Qu.:2153   3rd Qu.:  330   3rd Qu.:11.00  
- Max.   :247.00   Max.   :4795   Max.   :65527   Max.   :18.00  
+ Min.   :  0.00   Min.   :  41   Min.   : -9.0   Min.   : 9.00  
+ 1st Qu.:  0.00   1st Qu.:1434   1st Qu.:181.0   1st Qu.:10.00  
+ Median :  1.00   Median :1487   Median :249.0   Median :10.60  
+ Mean   : 58.46   Mean   :1760   Mean   :252.0   Mean   :10.67  
+ 3rd Qu.:  1.00   3rd Qu.:2153   3rd Qu.:321.0   3rd Qu.:11.00  
+ Max.   :247.00   Max.   :4795   Max.   :721.0   Max.   :18.00  
       sex              sgot           spiders          stage       
  Min.   :  0.00   Min.   : -9.00   Min.   :  0.0   Min.   :  1.00  
  1st Qu.:  1.00   1st Qu.: 44.20   1st Qu.:  0.0   1st Qu.:  3.00  
@@ -119,13 +119,13 @@ Type `q()' to quit R.
  Mean   : 58.78   Mean   : 88.22   Mean   : 58.3   Mean   : 60.35  
  3rd Qu.:  1.00   3rd Qu.:130.20   3rd Qu.:  1.0   3rd Qu.:  4.00  
  Max.   :247.00   Max.   :457.25   Max.   :247.0   Max.   :247.00  
-      cens              rx              trig             copper     
- Min.   :0.0000   Min.   :  1.00   Min.   :   33.0   Min.   :    4  
- 1st Qu.:0.0000   1st Qu.:  1.00   1st Qu.:   91.5   1st Qu.:   47  
- Median :0.0000   Median :  2.00   Median :  143.0   Median :   84  
- Mean   :0.2443   Mean   : 59.23   Mean   :20468.2   Mean   :15778  
- 3rd Qu.:0.0000   3rd Qu.:  2.00   3rd Qu.:65527.0   3rd Qu.:  396  
- Max.   :1.0000   Max.   :247.00   Max.   :65527.0   Max.   :65527  
+      cens              rx              trig            copper      
+ Min.   :0.0000   Min.   :  1.00   Min.   : -9.00   Min.   : -9.00  
+ 1st Qu.:0.0000   1st Qu.:  1.00   1st Qu.: -9.00   1st Qu.: 10.00  
+ Median :0.0000   Median :  2.00   Median : 85.00   Median : 48.00  
+ Mean   :0.2443   Mean   : 59.23   Mean   : 81.44   Mean   : 65.26  
+ 3rd Qu.:0.0000   3rd Qu.:  2.00   3rd Qu.:126.00   3rd Qu.: 88.00  
+ Max.   :1.0000   Max.   :247.00   Max.   :598.00   Max.   :588.00  
        id            first             late              t0        
  Min.   :  1.0   Min.   :0.0000   Min.   :0.0000   Min.   :   0.0  
  1st Qu.: 99.5   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:   0.0  
@@ -145,7 +145,7 @@ Type `q()' to quit R.
  $ edemarx: num  1 0 0 0.5 0.5 0.5 0 0 0 0 ...
  $ hepmeg : int  1 1 1 0 1 1 1 1 1 1 ...
  $ time   : int  400 1487 4500 1012 1487 1925 1487 1504 1487 2503 ...
- $ plate  : int  190 221 221 151 183 183 136 136 65527 65527 ...
+ $ plate  : int  190 221 221 151 183 183 136 136 -9 -9 ...
  $ protime: num  12.2 10.6 10.6 12.0 10.3 ...
  $ sex    : int  1 1 1 0 1 1 1 1 1 1 ...
  $ sgot   : num  137.9 113.5 113.5  96.1  60.6 ...

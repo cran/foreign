@@ -4,11 +4,13 @@
 \title{Read Epi Info data files}
 \description{
   Reads data files in the \code{.REC} format used by Epi Info versions 6
-  and earlier. Epi Info is a public domain database and statistics
-  package  produced by the US Centers for Disease Control.
+  and earlier and by EpidData. Epi Info is a public domain database and
+  statistics  package  produced by the US Centers for Disease Control
+  and EpiData is a freely available data entry and validation system.
   }
 \usage{
-read.epiinfo(file, read.deleted=FALSE, guess.broken.dates=FALSE, thisyear=NULL)
+read.epiinfo(file, read.deleted=FALSE, guess.broken.dates=FALSE,
+thisyear=NULL, lower.case.names = TRUE)
 }
 %- maybe also `usage' for other objects documented here.
 \arguments{
@@ -18,7 +20,8 @@ read.epiinfo(file, read.deleted=FALSE, guess.broken.dates=FALSE, thisyear=NULL)
   \item{guess.broken.dates}{Attempt to convert dates with 0 or 2 digit
     year information (see Details below)}
   \item{thisyear}{A 4-digit year to use for dates with no year. Defaults
-  to the current year}
+    to the current year}
+  \item{lower.case.names}{Convert variable names to lowercase?}
 }
 \details{
   Epi Info allows dates to be specified with no year or with a 2 or 4
@@ -39,7 +42,7 @@ read.epiinfo(file, read.deleted=FALSE, guess.broken.dates=FALSE, thisyear=NULL)
 \value{
   A data frame.
 }
-\references{\url{http://www.cdc.gov/epiinfo/}}
+\references{\url{http://www.cdc.gov/epiinfo/}, \url{http://www.epidata.dk}}
 
 \seealso{\link{DateTimeClasses} }
 

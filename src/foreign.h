@@ -1,5 +1,5 @@
 /*
- *  $Id: foreign.h,v 1.2 2002/05/01 14:31:45 ripley Exp $
+ *  $Id: foreign.h,v 1.3 2002/05/01 21:00:11 hornik Exp $
  *
  *  Common header file for the foreign package for R
  *

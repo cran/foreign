@@ -1,5 +1,5 @@
 /*
- *  $Id: minitab.c,v 1.2 2002/03/04 07:41:55 ripley Exp $ 
+ *  $Id: minitab.c,v 1.3 2002/05/01 20:59:50 hornik Exp $ 
  *
  *  Read Minitab portable data set format
  *
