@@ -29,7 +29,7 @@ write.dta <- function(dataframe, file, version = 6,convert.dates=TRUE,tz="GMT",
     names(dataframe)<-nn
     
     if (convert.dates){
-        dates<-which(sapply(dataframe,function(x) inherits(x,"POSIXt")))
+        dates<-which(isdate<-sapply(dataframe,function(x) inherits(x,"POSIXt")))
         for( v in dates)
             dataframe[[v]]<-as.vector(round(julian(dataframe[[v]],ISOdate(1960,1,1,tz=tz))))
     }

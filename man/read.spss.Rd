@@ -6,13 +6,16 @@
   \code{export} commands and returns a list.
 }
 \usage{
-read.spss(file)
+read.spss(file, use.value.labels=TRUE, to.data.frame=FALSE)
 }
 \arguments{
   \item{file}{ character variable with the name of the file to read.}
+  \item{use.value.labels}{ Convert variables with value labels into \R
+    factors with those levels?}
+  \item{to.data.frame}{return a data frame?}
 }
 \value{
-  A list with one component for each variable in the saved data set.
+  A list (or data frame) with one component for each variable in the saved data set.
 }
 \details{
   This uses modified code from the PSPP project for reading the SPSS
@@ -22,6 +25,7 @@ read.spss(file)
 \examples{
 \dontrun{
 read.spss("datafile")
+read.spss("datafile",use.value.labels=FALSE)
 }
 }
 \keyword{file}

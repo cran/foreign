@@ -1,10 +1,10 @@
 /*
- *  $Id: spss.c,v 1.4 2001/07/23 13:43:32 saikat Exp $
+ *  $Id: spss.c,v 1.5 2002/01/12 02:10:26 tlumley Exp $
  *
  *  Read SPSS files saved by SAVE and EXPORT commands
  *
  *  Copyright 2000-2000 Saikat DebRoy <saikat@stat.wisc.edu>
- *
+ *                      Thomas Lumley <tlumley@u.washington.edu>
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -179,6 +179,98 @@ val_lab_cmp (const void *a, const void *b, void *param)
     }
 }
 
+/* returns an array of pointers to the data elements of an avl_tree */
+/* Ugly, but the alternatives seem to be worse */
+
+void *avlFlatten(const avl_tree *tree){
+  int n;
+  void **ans;
+
+
+  /* T1. */
+  const avl_node *an[AVL_MAX_HEIGHT];	/* Stack A: nodes. */
+  const avl_node **ap = an;		/* Stack A: stack pointer. */
+  const avl_node *p = tree->root.link[0];
+  
+  n=avl_count(tree);
+  ans=Calloc(n, void * );
+
+  for (;;)  /* from avl.c:avl_walk */
+    {
+      /* T2. */
+      while (p != NULL)
+	{
+	  /* T3. */
+	  *ap++ = p;
+	  p = p->link[0];
+	}
+      
+      /* T4. */
+      if (ap == an)
+	  return ans;
+      p = *--ap;
+      
+      /* T5. */
+      n--;
+      ans[n]=p->data;
+      p = p->link[1];
+    }
+  
+}
+
+
+static SEXP getSPSSvaluelabels(struct dictionary *dict){
+  SEXP ans, somelabels, somevalues;
+  int nlabels,nvars,i,j;
+  struct value_label **flattened_labels;
+  struct avl_tree *labelset;
+  unsigned char tmp[MAX_SHORT_STRING+1];
+
+  nvars=dict->nvar;
+  if (nvars==0)      /* this would be dumb */
+    return R_NilValue; 
+  PROTECT(ans=allocVector(VECSXP, nvars));
+
+  for(i=0;i<nvars;i++){
+    labelset=(dict->var)[i]->val_lab;
+    if (!labelset){ /* this is quite normal */
+      SET_VECTOR_ELT(ans,i,R_NilValue); 
+      continue;
+    }
+
+    nlabels=avl_count(labelset);
+    /* avl_flatten Callocs, we must Free*/ 
+    flattened_labels=avlFlatten( labelset );
+
+    PROTECT(somelabels=allocVector(STRSXP, nlabels));
+
+    if ((dict->var)[i]->type==NUMERIC){
+      PROTECT(somevalues=allocVector(REALSXP, nlabels));
+      for(j=0;j<nlabels;j++){
+	SET_STRING_ELT(somelabels,j,mkChar(flattened_labels[j]->s));
+	REAL(somevalues)[j]=flattened_labels[j]->v.f;
+      }  
+    }
+    else {
+      PROTECT(somevalues=allocVector(STRSXP, nlabels));
+      for(j=0;j<nlabels;j++){
+	SET_STRING_ELT(somelabels,j,mkChar(flattened_labels[j]->s));
+	memcpy(tmp,flattened_labels[j]->v.s,MAX_SHORT_STRING);
+	tmp[MAX_SHORT_STRING]='\0';
+	SET_STRING_ELT(somevalues,j,mkChar(tmp));
+      }  
+    }
+    Free(flattened_labels);
+ 
+    namesgets(somevalues, somelabels);
+    SET_VECTOR_ELT(ans, i, somevalues);
+    UNPROTECT(2); /*somevalues, somelabels*/    
+  }
+  UNPROTECT(1); /*ans*/
+  return ans;
+}
+
+
 static SEXP
 read_SPSS_PORT(const char *filename)
 {
@@ -192,6 +284,7 @@ read_SPSS_PORT(const char *filename)
     int ncases = 0;
     int N = 10;
     int nval = 0;
+    SEXP val_labels;
 
     /* Set the fv and lv elements of all variables in the
        dictionary. */
@@ -257,6 +350,12 @@ read_SPSS_PORT(const char *filename)
 
     fh_close_handle(fh);
 
+    /* get all the value labels */
+    PROTECT(val_labels=getSPSSvaluelabels(dict));
+    namesgets(val_labels,ans_names);
+    setAttrib(ans,install("label.table"), val_labels);
+    UNPROTECT(1);
+
     free_dictionary(dict);
     setAttrib(ans, R_NamesSymbol, ans_names);
     UNPROTECT(2);
@@ -274,6 +373,7 @@ read_SPSS_SAVE(const char *filename)
     union value *case_vals;
     int i;
     int nval = 0;
+    SEXP val_labels;
 
     /* Set the fv and lv elements of all variables in the
        dictionary. */
@@ -322,6 +422,13 @@ read_SPSS_SAVE(const char *filename)
 	}
     }
     sfm_maybe_close(fh);
+
+    /* get all the value labels */
+    PROTECT(val_labels=getSPSSvaluelabels(dict));
+    namesgets(val_labels, duplicate(ans_names));
+    setAttrib(ans,install("label.table"), val_labels);
+    UNPROTECT(1);
+
     free_dictionary(dict);
     setAttrib(ans, R_NamesSymbol, ans_names);
     UNPROTECT(2);

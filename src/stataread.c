@@ -1,5 +1,5 @@
 /**
- * $Id: stataread.c,v 1.5 2001/11/13 23:21:19 tlumley Exp $
+ * $Id: stataread.c,v 1.6 2002/01/12 02:10:26 tlumley Exp $
   Read  Stata version 7.0, 6.0 and 5.0 .dta files, write version 7.0, 6.0.
   
   (c) 1999, 2000, 2001 Thomas Lumley. 
@@ -8,8 +8,8 @@
   The format of Stata files is documented under 'file formats' 
   in the Stata manual.
 
-  This code currently does not make use of the print format or value
-  label information in a .dta file. It cannot handle files with 'int'
+  This code currently does not make use of the print format information in 
+   a .dta file (except for dates). It cannot handle files with 'int'
   'float' or 'double' that differ from IEEE 4-byte integer, 4-byte
   real and 8-byte real respectively: it's not clear whether such files
   can exist.
@@ -117,9 +117,9 @@ static char* nameMangle(char *stataname, int len){
 
 /*****
       Turn a .dta file into a data frame
-      Variable labels go to attributes of the data frame
+      Variable labels go to attributes of the data frame, value labels go to factor levels
 
-      value labels and characteristics could go as attributes of the variables 
+     characteristics could go as attributes of the variables 
       not yet implemented
 ****/
 
