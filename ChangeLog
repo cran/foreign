@@ -1,10 +1,17 @@
+2002-07-25 Brian Ripley <ripley@stats.ox.ac.uk>
+
+	* src/stataread.c: float NAs were being mapped to NaNs.
+	(Fixed earlier in CVS by Martyn Plummer but not released.)
+
+	* DESCRIPTION: Version is 0.5-6
+
 2002-05-17 Thomas Lumley <tlumley@u.washington.edu>
 
 	* Stata short ints were coming through unsigned 
 
         * updated SPSS output in tests to follow 2002-04-29 changes
 
-	* verion is 0.5-5
+	* version is 0.5-5
 
 2002-05-14 Thomas Lumley <tlumley@u.washington.edu>
    

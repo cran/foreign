@@ -1,5 +1,5 @@
 /**
- * $Id: stataread.c,v 1.8 2002/05/17 18:59:19 tlumley Exp $
+ * $Id: stataread.c,v 1.9 2002/06/21 10:05:06 martyn Exp $
   Read  Stata version 7.0, 7/SE, 6.0 and 5.0 .dta files, write version 7.0, 6.0.
   
   (c) 1999, 2000, 2001, 2002 Thomas Lumley. 
@@ -101,14 +101,14 @@ static double InDoubleBinary(FILE * fp, int naok, int swapends)
     return ((i==STATA_DOUBLE_NA) & !naok ? NA_REAL : i);
 }
 
-static float InFloatBinary(FILE * fp, int naok, int swapends)
+static double InFloatBinary(FILE * fp, int naok, int swapends)
 {
     float i;
     if (fread(&i, sizeof(float), 1, fp) != 1)
 	error("a binary read error occured");
     if (swapends)
 	reverse_float(i);
-    return ((i==STATA_FLOAT_NA) & !naok ? (float) NA_REAL :  i);
+    return ((i==STATA_FLOAT_NA) & !naok ? NA_REAL :  (double) i);
 }
 
 static void InStringBinary(FILE * fp, int nchar, char* buffer)

@@ -6,7 +6,8 @@
   \code{export} commands and returns a list.
 }
 \usage{
-read.spss(file, use.value.labels=TRUE, to.data.frame=FALSE, max.value.labels=Inf)
+read.spss(file, use.value.labels=TRUE, to.data.frame=FALSE,
+          max.value.labels=Inf)
 }
 \arguments{
   \item{file}{ character variable with the name of the file to read.}
