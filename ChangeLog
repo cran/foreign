@@ -1,3 +1,9 @@
+1999-12-15  Douglas Bates  <bates@stat.wisc.edu>
+
+	* src/minitab.c (strtrim): Corrected the character count.
+	(MTB2SEXP): Added the names of the columns, if they are given.
+	
+
 1999-12-16  Douglas Bates  <bates@stat.wisc.edu>
 
 	* DESCRIPTION (Package): Created a 0.1-1 release under the package

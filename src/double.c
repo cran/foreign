@@ -1,5 +1,5 @@
 /*
- *  $Id: double.c,v 1.1 1999/12/16 00:34:43 saikat Exp $
+ *  $Id: double.c,v 1.2 2000/01/17 00:02:06 bates Exp $
  *
  *  This code is derived from code in the SAS Technical Support
  *  document TS-140 "The Record Layout of a Data Set in SAS Transport
@@ -7,18 +7,37 @@
  *       http://ftp.sas.com/techsup/download/technote/ts140.html
  */
 
+#include "Error.h"
 #include "SASxport.h"
 
 #ifdef WORDS_BIGENDIAN
-#define FLOATREP CN_TYPE_IEEEB
+static int little_endian = 0;
 #else
-#define FLOATREP CN_TYPE_IEEEL
+static int little_endian = 1;
 #endif
 
-#ifndef FLOATREP
-#define FLOATREP get_native()
-static int get_native(void); 
-#endif 
+static int floatrep = -1;
+
+typedef union
+{
+    double value;
+    unsigned int word[2];
+} ieee_double;
+
+static void setup_consts()
+{
+    ieee_double x;
+    x.value = 1;
+    if (x.word[0] == 0x3ff00000) {
+	little_endian = 0;
+	floatrep = CN_TYPE_IEEEB;
+    }
+    else if (x.word[1] == 0x3ff00000) {
+	little_endian = 1;
+	floatrep = CN_TYPE_IEEEL;
+    }
+    else error("couldn't determine endianness.");
+}
 
 /* The function cnxptiee translates numeric formats between the native
  * IEEE-754 format and the IBM 360 format used in the XPORT format.
@@ -59,8 +78,11 @@ int cnxptiee(char *from, int fromtype, char *to, int totype)
     char temp[8];
     int i; 
 
+    if (floatrep < 0) {
+	setup_consts();
+    }
     if (fromtype == CN_TYPE_NATIVE) { 
-	fromtype = FLOATREP;
+	fromtype = floatrep;
     }
     switch(fromtype) { 
     case CN_TYPE_IEEEL :
@@ -80,7 +102,7 @@ int cnxptiee(char *from, int fromtype, char *to, int totype)
 	return(-1); 
     } 
     if (totype == CN_TYPE_NATIVE) { 
-	totype = FLOATREP;
+	totype = floatrep;
     }
     switch(totype) { 
     case CN_TYPE_XPORT :
@@ -113,36 +135,8 @@ int cnxptiee(char *from, int fromtype, char *to, int totype)
     return(0);
 } 
 
-#ifndef FLOATREP
-static int get_native(void) { 
-    static char float_reps[][8] = {
-	{0x41,0x10,0x00,0x00,0x00,0x00,0x00,0x00}, 
-	{0x3f,0xf0,0x00,0x00,0x00,0x00,0x00,0x00}, 
-	{0x00,0x00,0x00,0x00,0x00,0x00,0xf0,0x3f}
-    }; 
-    static double one = 1.00; 
-    int i,j;
-
-    j = sizeof( float_reps )/8;
-    for (i = 0; i < j; i++) { 
-	if (memcmp(&one, float_reps + i, 8) == 0)
-	    return(i+1);
-    }
-    return(-1);
-} 
-#endif
-
-#ifdef WORDS_BIGENDIAN
-#define REVERSE(a,b)
-#else
 #define DEFINE_REVERSE
 void REVERSE(char *, int);
-#endif 
-
-#if !defined(DEFINE_REVERSE) && !defined(REVERSE)
-#define DEFINE_REVERSE
-void REVERSE(char *, int);
-#endif 
 
 void xpt2ieee(char *xport, char *ieee) 
 { 
@@ -160,8 +154,8 @@ void xpt2ieee(char *xport, char *ieee)
 	return;
     }
 
-    memcpy(((char *)&xport1) + sizeof(unsigned long) - 4, temp, 4); 
-    REVERSE((char *)&xport1,sizeof(unsigned long));
+    memcpy(((char *) &xport1) + sizeof( unsigned long ) - 4, temp, 4); 
+    REVERSE((char *) &xport1, sizeof( unsigned long ));
     memcpy(((char *)&xport2) + sizeof(unsigned long) - 4, temp + 4, 4); 
     REVERSE((char *)&xport2, sizeof(unsigned long));
 
@@ -308,39 +302,7 @@ void ieee2xpt(char *ieee, char *xport)
 	return;
     }
 
-    /*
-     * Translate IEEE floating point number into IBM format float
-     *
-     *   IEEE format:
-     *
-     *   6           5                0
-     *   3           1                0
-     *
-     *   SEEEEEEEEEEEMMMM ........ MMMM
-     *
-     */
-
-    /* Sign bit, 11 bit exponent, 52 fraction. Exponent is excess
-     * 1023. The fraction is multiplied by a power of 2 of the
-     * actual exponent. Normalized floating point numbers are
-     * represented with the binary point immediately to the left
-     * of the fraction with an implied "1" to the left of the
-     * binary point.
-     *
-     *   IBM format:
-     *
-     *   6       5                 0
-     *   3       5                 0
-     *
-     *   SEEEEEEEMMMM ......... MMMM
-     *
-     * Sign bit, 7 bit exponent, 56 bit fraction. Exponent is
-     * excess 64. The fraction is multiplied by a power of 16 of
-     * of the actual exponent. Normalized floating point numbers
-     * are presented with the radix point immediately to the left
-     * of the high order hex fraction digit.
-     *
-     * How do you translate from local to IBM format?
+    /* How do you translate from local to IBM format?
      *
      * The ieee format gives you a number that has a power of 2
      * exponent and a fraction of the form "1.<fraction bits>". 
@@ -446,18 +408,12 @@ void ieee2xpt(char *ieee, char *xport)
     return; 
 }
 
-#ifdef DEFINE_REVERSE
 void REVERSE(char *intp, int l)
 {
     int i,j;
     char save;
-#if 0
-#if !defined(WORDS_BIGENDIAN) && !defined(WORDS_LITTLEENDIAN)
-    static int one = 1; 
-    if (((unsigned char *) &one)[sizeof(one)-1] == 1) 
-	return;
-#endif
-#endif
+
+
     j = l/2;
     for (i = 0; i < j; i++) { 
 	save = intp[i];
@@ -465,4 +421,4 @@ void REVERSE(char *intp, int l)
 	intp[l-i-1] = save;
     }
 } 
-#endif 
+

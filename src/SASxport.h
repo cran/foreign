@@ -1,5 +1,5 @@
 /*
- *  $Id: SASxport.h.in,v 1.1 1999/12/16 00:34:43 saikat Exp $
+ *  $Id: SASxport.h,v 1.1 2000/02/07 00:26:22 bates Exp $
  *
  *  This file is derived from code in the SAS Technical Support
  *  document TS-140 "The Record Layout of a Data Set in SAS Transport
@@ -8,9 +8,6 @@
  */
 
 #include <string.h>		/* for memcpy and memset */
-
-/* Define if words are big endian */
-#undef WORDS_BIGENDIAN
 
 #define CN_TYPE_NATIVE 0
 #define CN_TYPE_XPORT  1

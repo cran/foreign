@@ -61,7 +61,8 @@ static
 SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
 				     MTB's and Free the MTB storage */
 {
-    SEXP ans = PROTECT(NEW_LIST(len)), names = PROTECT(NEW_STRING(len));
+    SEXP ans = PROTECT(NEW_LIST(len)),
+         names = PROTECT(NEW_CHARACTER(len));
     int i, nprot = 2;
     
     

@@ -1,4 +1,4 @@
-### $Id: minitab.R,v 1.2 1999/12/16 00:34:43 saikat Exp $
+### $Id: minitab.R,v 1.3 2000/01/17 00:02:06 bates Exp $
 ###
 ###             Read stored Minitab worksheets
 ###
@@ -21,4 +21,14 @@
 ### Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 ### MA 02111-1307, USA
 
-read.mtp <- function(fname) .Call("read_mtp", fname, PACKAGE = "foreign")
+## Files in the Minitab portable worksheet format represent numbers in a
+## fixed format (written in Fortran as 5e15.9 or something like that) but
+## the data values are only stored in Minitab in single precision.  We use
+## signif to remove the inaccuracies in the representation in the files.
+
+"read.mtp" <-
+function (fname) {
+  clean <- function(x) if(is.numeric(x)) signif(x, 6) else x
+  val <- .Call("read_mtp", fname, PACKAGE = "foreign")
+  lapply(val, clean)
+}
