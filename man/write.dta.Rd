@@ -1,9 +1,10 @@
 \name{write.dta}
 \alias{write.dta}
-\title{Write files in Stata binary format}
+\title{Write Files in Stata Binary Format}
 \usage{
-write.dta(dataframe, file, version = 6,convert.dates=TRUE, tz="GMT",
- convert.factors=c("labels","string","numeric","codes"))
+write.dta(dataframe, file, version = 6,
+          convert.dates = TRUE, tz = "GMT",
+          convert.factors = c("labels", "string", "numeric", "codes"))
 }
 \arguments{
   \item{dataframe}{a data frame.}
@@ -18,19 +19,18 @@ write.dta(dataframe, file, version = 6,convert.dates=TRUE, tz="GMT",
   format.  Does not write matrix variables.
 }
 \details{
- 
- The major differences between Stata versions is that 7.0 allows 32-character
- variable names. The \code{abbreviate} function is used to trim long
- variables to the permitted length. A warning is given if this is needed and
- it is an error for the abbreviated names not to be unique.
+  The major differences between Stata versions is that 7.0 allows 32-character
+  variable names. The \code{abbreviate} function is used to trim long
+  variables to the permitted length. A warning is given if this is needed and
+  it is an error for the abbreviated names not to be unique.
 
   The columns in the data frame become variables in the Stata data set.
   Missing values are correctly handled.  Optionally, R date/time objects
- (\code{POSIXt} classes) are converted into the Stata format. This loses
- information -- Stata dates are in days since 1960-1-1.  \code{POSIXct}
- objects can be written without conversion but will not be understood as
- dates by Stata;  \code{POSIXlt} objects cannot be written without
- conversion.
+  (\code{POSIXt} classes) are converted into the Stata format.  This loses
+  information -- Stata dates are in days since 1960-1-1.  \code{POSIXct}
+  objects can be written without conversion but will not be understood as
+  dates by Stata;  \code{POSIXlt} objects cannot be written without
+  conversion.
 
   There are four options for handling factors. The default is to use
   Stata \code{value labels} for the factor levels.
@@ -60,8 +60,7 @@ write.dta(dataframe, file, version = 6,convert.dates=TRUE, tz="GMT",
   \code{\link{abbreviate}}
 }
 \examples{
-data(swiss)
-write.dta(swiss,swissfile<-tempfile())
+write.dta(swiss, swissfile <- tempfile())
 read.dta(swissfile)
 }
 \keyword{file}

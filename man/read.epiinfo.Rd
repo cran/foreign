@@ -3,28 +3,28 @@
 \title{Read Epi Info data files}
 \description{
   Reads data files in the \code{.REC} format used by Epi Info versions 6
-  and earlier and by EpiData. Epi Info is a public domain database and
-  statistics  package  produced by the US Centers for Disease Control
+  and earlier and by EpiData.  Epi Info is a public domain database and
+  statistics package produced by the US Centers for Disease Control
   and EpiData is a freely available data entry and validation system.
   }
 \usage{
-read.epiinfo(file, read.deleted=FALSE, guess.broken.dates=FALSE,
-             thisyear=NULL, lower.case.names = FALSE)
+read.epiinfo(file, read.deleted = FALSE, guess.broken.dates = FALSE,
+             thisyear = NULL, lower.case.names = FALSE)
 }
 \arguments{
-  \item{file}{A filename, URL, or connnection }
+  \item{file}{A filename, URL, or connnection.}
   \item{read.deleted}{Deleted records are read if \code{TRUE}, omitted
-    if \code{FALSE} or replaced with \code{NA} if \code{NA} }
+    if \code{FALSE} or replaced with \code{NA} if \code{NA}.}
   \item{guess.broken.dates}{Attempt to convert dates with 0 or 2 digit
-    year information (see Details below)}
+    year information (see Details below).}
   \item{thisyear}{A 4-digit year to use for dates with no year. Defaults
-    to the current year}
+    to the current year.}
   \item{lower.case.names}{Convert variable names to lowercase?}
 }
 \details{
   Epi Info allows dates to be specified with no year or with a 2 or 4
   digits.  Dates with four-digit years are always converted to
-  \code{Date} class. With the \code{guess.broken.dates} option the function
+  \code{Date} class.  With the \code{guess.broken.dates} option the function
   will attempt to convert two-digit years using the operating system's
   default method (see \link{Date}) and will use the current
   year or the \code{thisyear} argument for dates with no year
@@ -45,7 +45,9 @@ read.epiinfo(file, read.deleted=FALSE, guess.broken.dates=FALSE,
   \url{http://www.epidata.dk}
 }
 
-\seealso{\link{DateTimeClasses} }
+\seealso{
+  \link{DateTimeClasses}
+}
 
 \examples{
 \dontrun{

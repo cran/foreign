@@ -1,10 +1,3 @@
-### $Id: zzz.R,v 1.3 2003/12/20 09:05:09 ripley Exp $
-###
-###             Read stored Minitab worksheets
-###
-### Copyright 1999-1999 Douglas M. Bates <bates$stat.wisc.edu>,
-###                     Saikat DebRoy <saikat$stat.wisc.edu>
-###
 ### This file is part of the `foreign' library for R and related languages.
 ### It is made available under the terms of the GNU General Public
 ### License, version 2, or at your option, any later version,
@@ -25,3 +18,5 @@
     library.dynam("foreign", pkg, lib)
     .C("spss_init", PACKAGE = "foreign")
 }
+
+.noGenerics <- TRUE
