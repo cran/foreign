@@ -1,5 +1,5 @@
 /*
- *  $Id: foreign.h,v 1.3 2002/05/01 21:00:11 hornik Exp $
+ *  $Id: foreign.h,v 1.4 2003/05/08 17:49:43 ripley Exp $
  *
  *  Common header file for the foreign package for R
  *
@@ -48,11 +48,11 @@
 # define endian LITTLE
 #endif /* not WORDS_BIGENDIAN */
 
-typedef int int32;
-typedef short int16;
+typedef int R_int32;
+/* typedef short int16; unused */
 
-typedef double flt64;
-typedef float flt32;
+typedef double R_flt64;
+/* typedef float flt32; unused */
 
 #define FPREP_IEEE754 754
 #define FPREP FPREP_IEEE754

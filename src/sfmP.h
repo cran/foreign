@@ -40,12 +40,12 @@ struct sysfile_header
   {
     char rec_type[4] P;		/* Record-type code, "$FL2". */
     char prod_name[60] P;	/* Product identification. */
-    int32 layout_code P;	/* 2. */
-    int32 case_size P;		/* Number of `value's per case. */
-    int32 compressed P;		/* 1=compressed, 0=not compressed. */
-    int32 weight_index P;	/* 1-based index of weighting var, or zero. */
-    int32 ncases P;		/* Number of cases, -1 if unknown. */
-    flt64 bias P;		/* Compression bias (100.0). */
+    R_int32 layout_code P;	/* 2. */
+    R_int32 case_size P;		/* Number of `value's per case. */
+    R_int32 compressed P;		/* 1=compressed, 0=not compressed. */
+    R_int32 weight_index P;	/* 1-based index of weighting var, or zero. */
+    R_int32 ncases P;		/* Number of cases, -1 if unknown. */
+    R_flt64 bias P;		/* Compression bias (100.0). */
     char creation_date[9] P;	/* `dd mmm yy' creation date of file. */
     char creation_time[8] P;	/* `hh:mm:ss' 24-hour creation time. */
     char file_label[64] P;	/* File label. */
@@ -55,13 +55,13 @@ struct sysfile_header
 /* Record Type 2: Variable. */
 struct sysfile_variable
   {
-    int32 rec_type P;		/* 2. */
-    int32 type P;		/* 0=numeric, 1-255=string width,
+    R_int32 rec_type P;		/* 2. */
+    R_int32 type P;		/* 0=numeric, 1-255=string width,
 				   -1=continued string. */
-    int32 has_var_label P;	/* 1=has a variable label, 0=doesn't. */
-    int32 n_missing_values P;	/* Missing value code of -3,-2,0,1,2, or 3. */
-    int32 print P;	/* Print format. */
-    int32 write P;	/* Write format. */
+    R_int32 has_var_label P;	/* 1=has a variable label, 0=doesn't. */
+    R_int32 n_missing_values P;	/* Missing value code of -3,-2,0,1,2, or 3. */
+    R_int32 print P;	/* Print format. */
+    R_int32 write P;	/* Write format. */
     char name[8] P;		/* Variable name. */
     /* The rest of the structure varies. */
   };

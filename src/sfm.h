@@ -60,10 +60,10 @@ struct sfm_write_info
     int compress;		/* 1=compress, 0=do not compress. */
 
     /* Written by sfm_write_dictionary(). */
-    int case_size;		/* Number of flt64 elements per case. */
+    int case_size;		/* Number of R_flt64 elements per case. */
   };
 
 int sfm_write_dictionary (struct sfm_write_info *);
-int sfm_write_case (struct file_handle *, const flt64* elem, int n_elem);
+int sfm_write_case (struct file_handle *, const R_flt64* elem, int n_elem);
 
 #endif /* !sfm_h */

@@ -1,6 +1,6 @@
 
 R : Copyright 2003, The R Development Core Team
-Version 1.7.0 Under development (unstable) (2003-04-12)
+Version 1.7.0 Patched (2003-05-08)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -46,20 +46,20 @@ $SPEC$length
 
 > Alfalfa <- read.xport("Alfalfa.xpt")
 > summary(Alfalfa)
-  POP                SAMPLE           REP            SEEDWT     
- MAX:20          Min.   :0.0     Min.   :1.00    Min.   :35.00  
- min:20          1st Qu.:2.0     1st Qu.:1.75    1st Qu.:47.75  
-                 Median :4.5     Median :2.50    Median :59.00  
-                 Mean   :4.5     Mean   :2.50    Mean   :56.08  
-                 3rd Qu.:7.0     3rd Qu.:3.25    3rd Qu.:62.25  
-                 Max.   :9.0     Max.   :4.00    Max.   :75.00  
-     HARV1           HARV2      
- Min.   :120.6   Min.   :129.1  
- 1st Qu.:148.3   1st Qu.:150.6  
- Median :165.8   Median :163.2  
- Mean   :163.0   Mean   :167.1  
- 3rd Qu.:176.4   3rd Qu.:179.6  
- Max.   :193.4   Max.   :235.3  
+  POP         SAMPLE         REP           SEEDWT          HARV1      
+ MAX:20   Min.   :0.0   Min.   :1.00   Min.   :35.00   Min.   :120.6  
+ min:20   1st Qu.:2.0   1st Qu.:1.75   1st Qu.:47.75   1st Qu.:148.3  
+          Median :4.5   Median :2.50   Median :59.00   Median :165.8  
+          Mean   :4.5   Mean   :2.50   Mean   :56.08   Mean   :163.0  
+          3rd Qu.:7.0   3rd Qu.:3.25   3rd Qu.:62.25   3rd Qu.:176.4  
+          Max.   :9.0   Max.   :4.00   Max.   :75.00   Max.   :193.4  
+     HARV2      
+ Min.   :129.1  
+ 1st Qu.:150.6  
+ Median :163.2  
+ Mean   :167.1  
+ 3rd Qu.:179.6  
+ Max.   :235.3  
 > ## test data provided by FRohde@birchdavis.com
 > lookup.xport("test.xpt")
 $TEST
@@ -93,11 +93,11 @@ $TEST$length
 
 > testdata <- read.xport("test.xpt")
 > summary(testdata)
-       I              K       
- Min.   :1.00   Min.   :1     
- 1st Qu.:1.75   1st Qu.:1     
- Median :2.50   Median :2     
- Mean   :2.50   Mean   :2     
- 3rd Qu.:3.25   3rd Qu.:3     
- Max.   :4.00   Max.   :3     
+       I              K    
+ Min.   :1.00   Min.   :1  
+ 1st Qu.:1.75   1st Qu.:1  
+ Median :2.50   Median :2  
+ Mean   :2.50   Mean   :2  
+ 3rd Qu.:3.25   3rd Qu.:3  
+ Max.   :4.00   Max.   :3  
 > q()

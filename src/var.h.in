@@ -33,10 +33,10 @@
 #define MAX_SHORT_STRING ((SIZEOF_DOUBLE)>=8 ? ((SIZEOF_DOUBLE)+1)/2*2 : 8)
 #define MIN_LONG_STRING (MAX_SHORT_STRING+1)
 
-/* FYI: It is a bad situation if sizeof(flt64) < MAX_SHORT_STRING:
+/* FYI: It is a bad situation if sizeof(R_flt64) < MAX_SHORT_STRING:
    then short string missing values can be truncated in system files
    because there's only room for as many characters as can fit in a
-   flt64. */
+   R_flt64. */
 #if MAX_SHORT_STRING > 8
 #error MAX_SHORT_STRING must be less than 8.
 #endif

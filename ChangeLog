@@ -1,3 +1,10 @@
+2003-05-08 Brian Ripley <ripley@stats.ox.ac.uk>
+
+ 	* src/* rename int32, flt64 and comment out int16 and flt32,
+	  to avoid conflicts on AIX 5.1.
+
+	* DESCRIPTION: version is 0.5-13
+
 2003-04-04 Duncan Murdoch <murdoch@stats.uwo.ca>
 
  	* bug fix for data.restore (bad error message)

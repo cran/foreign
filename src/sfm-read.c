@@ -108,17 +108,17 @@ struct sfm_fhuser_ext
     int weight_index;		/* 0-based index of weighting variable, or -1. */
 
     /* File's special constants. */
-    flt64 sysmis;
-    flt64 highest;
-    flt64 lowest;
+    R_flt64 sysmis;
+    R_flt64 highest;
+    R_flt64 lowest;
 
     /* Uncompression buffer. */
-    flt64 *buf;			/* Buffer data. */
-    flt64 *ptr;			/* Current location in buffer. */
-    flt64 *end;			/* End of buffer data. */
+    R_flt64 *buf;			/* Buffer data. */
+    R_flt64 *ptr;			/* Current location in buffer. */
+    R_flt64 *end;			/* End of buffer data. */
 
     /* Compression instruction octet. */
-    unsigned char x[sizeof (flt64)];
+    unsigned char x[sizeof (R_flt64)];
     /* Current instruction octet. */
     unsigned char *y;		/* Location in current instruction octet. */
   };
@@ -180,7 +180,7 @@ static void *bufread (struct file_handle * handle, void *buf, size_t nbytes,
 		      size_t minalloc);
 
 static int read_header (struct file_handle * h, struct sfm_read_info * inf);
-static int parse_format_spec (struct file_handle * h, int32 s,
+static int parse_format_spec (struct file_handle * h, R_int32 s,
 			      struct fmt_spec * v, struct variable *vv);
 static int read_value_labels (struct file_handle * h, struct variable ** var_by_index);
 static int read_variables (struct file_handle * h, struct variable *** var_by_index);
@@ -348,7 +348,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
   /* Read records of types 3, 4, 6, and 7. */
   for (;;)
     {
-      int32 rec_type;
+      R_int32 rec_type;
 
       assertive_bufread(h, &rec_type, sizeof rec_type, 0);
       if (ext->reverse_endian)
@@ -375,9 +375,9 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 	  {
 	    struct
 	      {
-		int32 subtype P;
-		int32 size P;
-		int32 count P;
+		R_int32 subtype P;
+		R_int32 size P;
+		R_int32 count P;
 	      }
 	    data;
 
@@ -391,11 +391,11 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 		bswap_int32 (&data.count);
 	      }
 
-	    /*if(data.size != sizeof(int32) && data.size != sizeof(flt64))
+	    /*if(data.size != sizeof(R_int32) && data.size != sizeof(R_flt64))
 	       lose(("%s: Element size in record type 7, subtype %d, is "
 	       "not either the size of IN (%d) or OBS (%d); actual value "
 	       "is %d.",
-	       h->fn, data.subtype, sizeof(int32), sizeof(flt64),
+	       h->fn, data.subtype, sizeof(R_int32), sizeof(R_flt64),
 	       data.size)); */
 
 	    switch (data.subtype)
@@ -434,7 +434,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 
 	case 999:
 	  {
-	    int32 filler;
+	    R_int32 filler;
 
 	    assertive_bufread(h, &filler, sizeof filler, 0);
 	    goto break_out_of_loop;
@@ -475,15 +475,15 @@ read_machine_int32_info (struct file_handle * h, int size, int count)
 {
   struct sfm_fhuser_ext *ext = h->ext;
 
-  int32 data[8];
+  R_int32 data[8];
   int file_endian;
 
   int i;
 
-  if (size != sizeof (int32) || count != 8)
+  if (size != sizeof (R_int32) || count != 8)
     lose (("%s: Bad size (%d) or count (%d) field on record type 7, "
     "subtype 3.	Expected size %d, count 8.",
-	h->fn, size, count, sizeof (int32)));
+	h->fn, size, count, sizeof (R_int32)));
 
   assertive_bufread(h, data, sizeof data, 0);
   if (ext->reverse_endian)
@@ -540,14 +540,14 @@ read_machine_flt64_info (struct file_handle * h, int size, int count)
 {
   struct sfm_fhuser_ext *ext = h->ext;
 
-  flt64 data[3];
+  R_flt64 data[3];
 
   int i;
 
-  if (size != sizeof (flt64) || count != 3)
+  if (size != sizeof (R_flt64) || count != 3)
     lose (("%s: Bad size (%d) or count (%d) field on record type 7, "
 	   "subtype 4.	Expected size %d, count 8.",
-	   h->fn, size, count, sizeof (flt64)));
+	   h->fn, size, count, sizeof (R_flt64)));
 
   assertive_bufread(h, data, sizeof data, 0);
   if (ext->reverse_endian)
@@ -874,7 +874,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	  vv->type = ALPHA;
 	  vv->width = sv.type;
 	  vv->nv = DIV_RND_UP (vv->width, MAX_SHORT_STRING);
-	  vv->get.nv = DIV_RND_UP (vv->width, sizeof (flt64));
+	  vv->get.nv = DIV_RND_UP (vv->width, sizeof (R_flt64));
 	  vv->get.fv = next_value;
 	  next_value += vv->get.nv;
 	  long_string_count = vv->get.nv - 1;
@@ -885,7 +885,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
       if (sv.has_var_label == 1)
 	{
 	  /* Disk buffer. */
-	  int32 len;
+	  R_int32 len;
 
 	  /* Read length of label. */
 	  assertive_bufread(h, &len, sizeof len, 0);
@@ -898,7 +898,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 		   "length %d.", h->fn, vv->name, len));
 
 	  /* Read label into variable structure. */
-	  vv->label = bufread (h, NULL, ROUND_UP (len, sizeof (int32)), len + 1);
+	  vv->label = bufread (h, NULL, ROUND_UP (len, sizeof (R_int32)), len + 1);
 	  if (vv->label == NULL)
 	    goto lossage;
 	  vv->label[len] = '\0';
@@ -907,7 +907,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
       /* Set missing values. */
       if (sv.n_missing_values != 0)
 	{
-	  flt64 mv[3];
+	  R_flt64 mv[3];
 
 	  if (vv->width > MAX_SHORT_STRING)
 	    lose (("%s: Long string variable %s may not have missing "
@@ -1006,7 +1006,7 @@ lossage:
 /* Translates the format spec from sysfile format to internal
    format. */
 static int
-parse_format_spec (struct file_handle *h, int32 s, struct fmt_spec *v, struct variable *vv)
+parse_format_spec (struct file_handle *h, R_int32 s, struct fmt_spec *v, struct variable *vv)
 {
   if ((size_t) ((s >> 16) & 0xff)
       >= sizeof translate_fmt / sizeof *translate_fmt)
@@ -1041,12 +1041,12 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
 {
   struct sfm_fhuser_ext *ext = h->ext;	/* File extension record. */
 
-  flt64 *raw_label = NULL;	/* Array of raw label values. */
+  R_flt64 *raw_label = NULL;	/* Array of raw label values. */
   struct value_label **cooked_label = NULL;	/* Array of cooked labels. */
-  int32 n_labels;		/* Number of labels. */
+  R_int32 n_labels;		/* Number of labels. */
 
   struct variable **var = NULL;	/* Associated variables. */
-  int32 n_vars;			/* Number of associated variables. */
+  R_int32 n_vars;			/* Number of associated variables. */
 
   int i;
 
@@ -1060,7 +1060,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
     bswap_int32 (&n_labels);
 
   /* Allocate memory. */
-  raw_label = Calloc (n_labels, flt64);
+  raw_label = Calloc (n_labels, R_flt64);
   cooked_label = Calloc (n_labels, struct value_label *);
   for (i = 0; i < n_labels; i++)
     cooked_label[i] = NULL;
@@ -1068,7 +1068,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
   /* Read each value/label tuple. */
   for (i = 0; i < n_labels; i++)
     {
-      flt64 value;
+      R_flt64 value;
       unsigned char label_len;
 
       int rem;
@@ -1085,7 +1085,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
       cooked_label[i]->s[label_len] = 0;
 
       /* Skip padding. */
-      rem = REM_RND_UP (label_len + 1, sizeof (flt64));
+      rem = REM_RND_UP (label_len + 1, sizeof (R_flt64));
       if (rem)
 	assertive_bufread(h, &value, rem, 0);
     }
@@ -1095,7 +1095,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
 
   /* Read record type of type 4 record. */
   {
-    int32 rec_type;
+    R_int32 rec_type;
     
     assertive_bufread(h, &rec_type, sizeof rec_type, 0);
     if (ext->reverse_endian)
@@ -1122,7 +1122,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
   /* Read the list of variables. */
   for (i = 0; i < n_vars; i++)
     {
-      int32 var_index;
+      R_int32 var_index;
       struct variable *v;
 
       /* Read variable index, check range. */
@@ -1163,7 +1163,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
     {
       if (var[0]->type == ALPHA)
 	{
-	  const int copy_len = min (sizeof (flt64), MAX_SHORT_STRING);
+	  const int copy_len = min (sizeof (R_flt64), MAX_SHORT_STRING);
 	  memcpy (cooked_label[i]->v.s, (char *) &raw_label[i], copy_len);
 	  if (MAX_SHORT_STRING > copy_len)
 	    memset (&cooked_label[i]->v.s[copy_len], ' ',
@@ -1253,7 +1253,7 @@ read_documents (struct file_handle * h)
 {
   struct sfm_fhuser_ext *ext = h->ext;
   struct dictionary *dict = ext->dict;
-  int32 n_lines;
+  R_int32 n_lines;
 
   if (dict->documents != NULL)
     lose (("%s: System file contains multiple type 6 (document) records.",
@@ -1369,7 +1369,7 @@ buffer_input (struct file_handle * h)
   size_t amt;
 
   if (ext->buf == NULL)
-    ext->buf = Calloc (128, flt64);
+    ext->buf = Calloc (128, R_flt64);
   amt = fread (ext->buf, sizeof *ext->buf, 128, ext->file);
   if (ferror (ext->file))
     {
@@ -1390,15 +1390,15 @@ buffer_input (struct file_handle * h)
    byte gives a value for that byte or indicates that the value can be
    found following the instructions. */
 static int
-read_compressed_data (struct file_handle * h, flt64 * temp)
+read_compressed_data (struct file_handle * h, R_flt64 * temp)
 {
   struct sfm_fhuser_ext *ext = h->ext;
 
-  const unsigned char *p_end = ext->x + sizeof (flt64);
+  const unsigned char *p_end = ext->x + sizeof (R_flt64);
   unsigned char *p = ext->y;
 
-  const flt64 *temp_beg = temp;
-  const flt64 *temp_end = &temp[ext->case_size];
+  const R_flt64 *temp_beg = temp;
+  const R_flt64 *temp_end = &temp[ext->case_size];
 
   for (;;)
     {
@@ -1494,7 +1494,7 @@ sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * d
   struct sfm_fhuser_ext *ext = h->ext;
 
   size_t nbytes;
-  flt64 *temp;
+  R_flt64 *temp;
 
   int i;
 
@@ -1506,7 +1506,7 @@ sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * d
      file.  (Cases in the data file have no particular relationship to
      cases in the active file.) */
   nbytes = sizeof *temp * ext->case_size;
-  temp = Calloc(ext->case_size, flt64);
+  temp = Calloc(ext->case_size, R_flt64);
 
   if (ext->compressed == 0)
     {
@@ -1535,7 +1535,7 @@ sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * d
       
       if (v->type == NUMERIC)
 	{
-	  flt64 src = temp[v->get.fv];
+	  R_flt64 src = temp[v->get.fv];
 	  if (ext->reverse_endian)
 	    bswap_flt64 (&src);
 	  perm[v->fv].f = src == ext->sysmis ? NA_REAL : src;
