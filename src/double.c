@@ -7,7 +7,7 @@
  *       http://ftp.sas.com/techsup/download/technote/ts140.html
  */
 
-#include "Error.h"
+#include "R.h"
 #include "SASxport.h"
 
 #ifdef WORDS_BIGENDIAN
