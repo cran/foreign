@@ -124,3 +124,12 @@ Roger Bivand
 R/read.epiinfo.R
 (c) 2002-4 Thomas Lumley
 Patches (c) 2002 Mark Myatt
+
+src/minitab.c
+Patches (c) 2004 Rajarshi Guha
+
+
+R/octave.R
+man/read.octave.Rd
+(c) 2004 Stephen Eglen
+Enhancements (c) 2004 R Development Core Team

@@ -1,6 +1,6 @@
 
 R : Copyright 2004, The R Foundation for Statistical Computing
-Version 2.0.0 Under development (unstable) (2004-09-02), ISBN 3-900051-07-0
+Version 2.1.0 Under development (unstable) (2004-12-27), ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,7 +16,7 @@ Type 'q()' to quit R.
 
 > library(foreign)
 > pc5 <- read.dta("pc5.dta")
-Warning message: 
+Warning message:
 Can't read factor labels from Stata 5 files. in: read.dta("pc5.dta") 
 > summary(pc5)
       age             alb           alkphos         ascites      
@@ -255,19 +255,19 @@ Can't read factor labels from Stata 5 files. in: read.dta("pc5.dta")
  NA's     :11   Max.   :30.00   Max.   :1960-01-31  
 > data(esoph)
 > write.dta(esoph,esophile<-tempfile())
-Warning message: 
+Warning message:
 Abbreviating variable names in: write.dta(esoph, esophile <- tempfile()) 
 > esoph2<-read.dta(esophile)
 > all.equal(ordered(esoph2$alcgp),esoph$alcgp)
 [1] TRUE
 > write.dta(esoph,esophile,convert.factors="string")
-Warning message: 
+Warning message:
 Abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "string") 
 > esoph2<-read.dta(esophile)
 > all.equal(as.character(esoph$alcgp),esoph2$alcgp)
 [1] TRUE
 > write.dta(esoph,esophile,convert.factors="code")
-Warning message: 
+Warning message:
 Abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "code") 
 > esoph2<-read.dta(esophile)
 > all.equal(as.numeric(esoph$alcgp),as.numeric(esoph2$alcgp))
@@ -308,7 +308,7 @@ Abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "co
  $ turn        : int  40 40 35 40 43 43 34 42 43 42 ...
  $ displacement: int  121 258 121 196 350 231 304 196 231 231 ...
  $ gear_ratio  : num  3.58 2.53 3.08 2.93 2.41 ...
- $ foreign     : Factor w/ 2 levels "Domestic","Fore..": 1 1 1 1 1 1 1 1 1 1 ...
+ $ foreign     : Factor w/ 2 levels "Domestic","Foreign": 1 1 1 1 1 1 1 1 1 1 ...
  $ testmiss    : num  NA NA NA NA NA NA NA NA NA NA ...
  - attr(*, "datalabel")= chr "1978 Automobile Data"
  - attr(*, "time.stamp")= chr "20 May 2003 14:39"
