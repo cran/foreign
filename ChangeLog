@@ -1,3 +1,29 @@
+2001-12-13  Thomas Lumley  <tlumley@u.washington.edu>. Typo in
+	date-handling provoked by gctorture()
+2001-12-13  Kurt Hornik  <Kurt.Hornik@ci.tuwien.ac.at>
+
+	* src/sfm-read.c (bufread): Do not read in 0 bytes [fix by PD].
+
+2001-12-04  Kurt Hornik  <Kurt.Hornik@ci.tuwien.ac.at>
+
+	* DESCRIPTION (Version): New version is 0.4-8.
+
+2001-11-13 Thomas Lumley <tlumley@u.washington.edu>
+	revised factor reading in src/stataread.c,
+	added factor writing for Stata,
+	long names now abbreviate()d not truncated.
+	Fixed various idiocies in writing strings.
+
+2001-11-12 Thomas Lumley <tlumley@u.washington.edu>
+	* src/stataread.c, R/read.dta.R, man/*.dta.Rd,
+	tests/datefactor.dta, tests/stata.R: read factors,
+	read and write dates in Stata.
+
+2001-10-11 Thomas Lumley <tlumley@u.washington.edu>
+	
+	* src/stataread.c: use strlen(), not the field width, as the 
+	argument to allocString().
+
 2001-07-23  Saikat DebRoy  <saikat@stat.wisc.edu>
 
 	* src/pfm-read.c, src/spss.c: Do not inline functions on non-gcc

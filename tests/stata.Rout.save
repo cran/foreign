@@ -1,6 +1,6 @@
 
 R : Copyright 2001, The R Development Core Team
-Version 1.3.0 Under development (unstable) (2001-05-04)
+Version 1.4.0 Under development (unstable) (2001-11-05)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -87,6 +87,7 @@ Type `q()' to quit R.
  - attr(*, "datalabel")= chr ""
  - attr(*, "time.stamp")= chr "14 Feb 1997 14:22"
  - attr(*, "formats")= chr  "%9.0g" "%9.0g" "%9.0g" "%9.0g" ...
+ - attr(*, "val.labels")= chr  "" "" "" "" ...
  - attr(*, "var.labels")= chr  "" "" "" "" ...
 > sun6 <- read.dta("sun6.dta")
 > summary(sun6)
@@ -161,5 +162,59 @@ Type `q()' to quit R.
  - attr(*, "datalabel")= chr ""
  - attr(*, "time.stamp")= chr "14 Sep 2000 10:40"
  - attr(*, "formats")= chr  "%9.0g" "%9.0g" "%9.0g" "%9.0g" ...
+ - attr(*, "val.labels")= chr  "" "" "" "" ...
  - attr(*, "var.labels")= chr  "" "" "" "" ...
+ - attr(*, "label.table")=List of 24
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+  ..$ : NULL
+> df<-read.dta("datefactor.dta")
+> summary(df)
+      hlth159         id            adate                    
+ EXCELLENT: 0   Min.   : 1.00   Min.   :1960-01-02 04:00:00  
+ VERY GOOD: 6   1st Qu.: 8.25   1st Qu.:1960-01-09 10:00:00  
+ GOOD     : 8   Median :15.50   Median :1960-01-16 16:00:00  
+ FAIR     : 4   Mean   :15.50   Mean   :1960-01-16 16:00:00  
+ POOR     : 1   3rd Qu.:22.75   3rd Qu.:1960-01-23 22:00:00  
+ NA's     :11   Max.   :30.00   Max.   :1960-01-31 04:00:00  
+> data(esoph)
+> write.dta(esoph,esophile<-tempfile())
+Warning message: 
+Abbreviating variable names in: write.dta(esoph, esophile <- tempfile()) 
+> esoph2<-read.dta(esophile)
+> all.equal(ordered(esoph2$alcgp),esoph$alcgp)
+[1] TRUE
+> write.dta(esoph,esophile,convert.factors="string")
+Warning message: 
+Abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "string") 
+> esoph2<-read.dta(esophile)
+> all.equal(as.character(esoph$alcgp),esoph2$alcgp)
+[1] TRUE
+> write.dta(esoph,esophile,convert.factors="code")
+Warning message: 
+Abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "code") 
+> esoph2<-read.dta(esophile)
+> all.equal(as.numeric(esoph$alcgp),as.numeric(esoph2$alcgp))
+[1] TRUE
 > q()

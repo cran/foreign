@@ -1224,7 +1224,7 @@ bufread (struct file_handle * h, void *buf, size_t nbytes, size_t minalloc)
 
   if (buf == NULL)
     buf = Calloc (max (nbytes, minalloc), char);
-  if (1 != fread (buf, nbytes, 1, ext->file))
+  if ((nbytes != 0) && (1 != fread (buf, nbytes, 1, ext->file)))
     {
       if (ferror (ext->file))
 	error("%s: Reading system file: %s.", h->fn, strerror (errno));
