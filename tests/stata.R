@@ -20,4 +20,8 @@ all.equal(as.numeric(esoph$alcgp),as.numeric(esoph2$alcgp))
 
 se<-read.dta("stata7se.dta")
 print(se)
+
+stata8<-read.dta("auto8.dta",missing=TRUE)
+str(stata8)
+
 q()

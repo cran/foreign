@@ -19,7 +19,7 @@ write.dta(dataframe, file, version = 6,convert.dates=TRUE, tz="GMT",
 }
 \details{
  
- The major difference between Stata versions is that 7.0 allows 32-character
+ The major differences between Stata versions is that 7.0 allows 32-character
  variable names. The \code{abbreviate} function is used to trim long
  variables to the permitted length. A warning is given if this is needed and
  it is an error for the abbreviated names not to be unique.
@@ -40,14 +40,17 @@ write.dta(dataframe, file, version = 6,convert.dates=TRUE, tz="GMT",
   numeric. Finally, \code{convert.factors="codes"} writes the underlying
   integer codes of the factors. This last used to be the only available
   method and is provided largely for backwards compatibility.
-  
+
+  For Stata 8.0 use \code{version=7} -- the only advantage of Stata 8.0
+  format is that it can represent multiple different missing value
+  types, and R doesn't have them.
   }
 \value{
   \code{NULL}
 }
 \references{
-  Stata 6.0 Users Manual, Stata 7.0 Programming manual describe the file
-  formats.
+  Stata 6.0 Users Manual, Stata 7.0 Programming manual, Stata 8.0 online
+  help describe the file formats.
 } 
 \author{Thomas Lumley}
 \seealso{

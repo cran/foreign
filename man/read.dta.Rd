@@ -2,10 +2,10 @@
 \alias{read.dta}
 \title{Read Stata binary files}
 \description{
-  Reads a file in Stata version 5-7 or 7/SE binary format into a dataframe. 
+  Reads a file in Stata version 5-8 or 7/SE binary format into a dataframe. 
 }
 \usage{
-read.dta(file, convert.dates=TRUE,tz="GMT",convert.factors=TRUE)
+read.dta(file, convert.dates=TRUE, tz="GMT", convert.factors=TRUE,missing.type=FALSE)
 }
 \arguments{
   \item{file}{a filename as a character string.}
@@ -13,6 +13,8 @@ read.dta(file, convert.dates=TRUE,tz="GMT",convert.factors=TRUE)
   \item{tz}{timezone for date conversion}
   \item{convert.factors}{Use Stata value labels to create factors?
     (version 6.0 or later)}
+  \item{missing.type}{For version 8 only, store information about
+    different types of missing data?}
 }
 \details{
   The variables in the Stata data set become the columns of the data
@@ -24,14 +26,21 @@ read.dta(file, convert.dates=TRUE,tz="GMT",convert.factors=TRUE)
   \code{POSIXct} class and variables with Stata value labels are
   converted to factors. In any case the value label and format
   information is stored as attributes on the returned data frame. 
-  
+
+  Stata 8.0 has 27 different missing data values. If \code{missing.type}
+  is \code{TRUE} a separate list is created with the same variable
+  names as the loaded data. For string variables the list value is
+  \code{NULL}. For other variables the value is \code{NA} where the
+  observation is not missing and 0-26 when the observation is
+  missing. This is attached as the code{"missing"} attribute of the
+  returned value. 
 }
 \value{
   a data frame
 }
 \references{
-  Stata Users Manual (versions 5 & 6) and Programming manual (version 7)
-  describe the format of the files
+  Stata Users Manual (versions 5 & 6), Programming manual (version 7),
+  or online help (version 8) describe the format of the files
 }
 
 \author{Thomas Lumley}

@@ -4,7 +4,7 @@
 \title{Read Epi Info data files}
 \description{
   Reads data files in the \code{.REC} format used by Epi Info versions 6
-  and earlier and by EpidData. Epi Info is a public domain database and
+  and earlier and by EpiData. Epi Info is a public domain database and
   statistics  package  produced by the US Centers for Disease Control
   and EpiData is a freely available data entry and validation system.
   }
