@@ -12,8 +12,8 @@ if test -z "${R_HOME}"; then
   exit 1
 fi
 
-CC=`${R_HOME}/bin/R CMD config CC`
-CFLAGS=`${R_HOME}/bin/R CMD config CFLAGS`
+CC=`"${R_HOME}/bin/R" CMD config CC`
+CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
 AC_PROG_CC
 
 AC_CACHE_CHECK([whether ${CC-cc} accepts -Wno-long-long],

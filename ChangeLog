@@ -1,3 +1,10 @@
+2004-07-15  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+
+	* DESCRIPTION (Version): New version is 0.6-10.
+
+	* configure.ac: Protect against possible whitespace in R_HOME when
+	calling R CMD config.
+
 2004-05-22  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.6-9.

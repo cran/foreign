@@ -76,17 +76,17 @@ read.epiinfo <- function (file, read.deleted = FALSE, guess.broken.dates = FALSE
         else if (header$type[i] == 5) 
             data[[i]] <- ifelse(data[[i]] %in% c("Y", "N"), data[[i]] == "Y", NA)
         else if (header$type[i] %in% c(11, 16) && header$len[i] == 5 && guess.broken.dates) 
-            data[[i]] <- as.POSIXct(strptime(paste(data[[i]], thisyear, sep = "/"), format = "%d/%m/%Y"))
+            data[[i]] <- as.Date(strptime(paste(data[[i]], thisyear, sep = "/"), format = "%d/%m/%Y"))
         else if (header$type[i] %in% c(11, 16) && header$len[i] == 8 && guess.broken.dates) 
-            data[[i]] <- as.POSIXct(strptime(data[[i]], format = "%d/%m/%y"))
+            data[[i]] <- as.Date(strptime(data[[i]], format = "%d/%m/%y"))
         else if (header$type[i] %in% c(11, 16) && header$len[i] == 10) 
-            data[[i]] <- as.POSIXct(strptime(data[[i]], format = "%d/%m/%Y"))
+            data[[i]] <- as.Date(strptime(data[[i]], format = "%d/%m/%Y"))
         else if (header$type[i] %in% c(2, 10) && header$len[i] == 5 && guess.broken.dates) 
-            data[[i]] <- as.POSIXct(strptime(paste(data[[i]], thisyear, sep = "/"), format = "%m/%d/%Y"))
+            data[[i]] <- as.Date(strptime(paste(data[[i]], thisyear, sep = "/"), format = "%m/%d/%Y"))
         else if (header$type[i] %in% c(2, 10) && header$len[i] == 8 && guess.broken.dates) 
-            data[[i]] <- as.POSIXct(strptime(data[[i]], format = "%d/%m/%y"))
+            data[[i]] <- as.Date(strptime(data[[i]], format = "%m/%d/%y"))
         else if (header$type[i] %in% c(2, 10) && header$len[i] == 10) 
-            data[[i]] <- as.POSIXct(strptime(data[[i]], format = "%d/%m/%Y"))
+            data[[i]] <- as.Date(strptime(data[[i]], format = "%m/%d/%Y"))
         #
         # SOUNDEX (type 17) fields
         #            
