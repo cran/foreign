@@ -1,5 +1,5 @@
 /*
- *  $Id: SASxport.c,v 1.12 2001/02/06 20:55:58 saikat Exp $
+ *  $Id: SASxport.c,v 1.4 2001/05/15 16:07:56 saikat Exp $
  *
  *  Read SAS transport data set format
  *
@@ -48,7 +48,7 @@
 #define BLANK24 "                        "
 
 #define GET_RECORD(rec, fp, len) \
-          fread((rec), (size_t) 1, (size_t) (len), (fp))
+          fread((rec), sizeof(char), (size_t) (len), (fp))
 
 #define IS_SASNA_CHAR(c) ((c) == 0x5f || (c) == 0x2e || (0x4l <= (c) \
 							 && (c) <= 0x5a))
@@ -58,7 +58,7 @@
 #endif
 
 
-static double Two32 = 0.;
+#define Two32 4294967296.0
 
 static double get_IBM_double(char* c)
 {
@@ -92,7 +92,6 @@ static double get_IBM_double(char* c)
     for (i = 0; i < 4; i++) buf[i] = c[i + 4];
     char_to_uint(&buf[0], lower);
 				/* initialize the constant if needed */
-    if (Two32 == 0.) Two32 = pow(2., 32.);
     value = ((double) upper + ((double) lower)/Two32) *
 	pow(16., (double) exponent);
     if (negative) value = -value;
@@ -204,8 +203,12 @@ init_xport_info(FILE *fp)
 
     lib_head = Calloc(1, struct SAS_XPORT_header);
 
-    if(!get_lib_header(fp, lib_head))
+    if(!get_lib_header(fp, lib_head)) {
+	Free(lib_head);
 	error("SAS transfer file has incorrect library header");
+    }
+
+    Free(lib_head);
 
     n = GET_RECORD(record, fp, 80);
     if(n != 80 || strncmp(MEM_HEADER, record, 75) != 0 ||
@@ -213,8 +216,6 @@ init_xport_info(FILE *fp)
 	error("File not in SAS transfer format");
     record[78] = '\0';
     sscanf(record+75, "%d", &namestr_length);
-
-    Free(lib_head);
 
     return namestr_length;
 }
@@ -228,20 +229,26 @@ init_mem_info(FILE *fp, char *name)
     struct SAS_XPORT_member  *mem_head;
 
     mem_head = Calloc(1, struct SAS_XPORT_member);
-    if(!get_mem_header(fp, mem_head))
+    if(!get_mem_header(fp, mem_head)) {
+	Free(mem_head);
 	error("SAS transfer file has incorrect member header");
+    }
 
     n = GET_RECORD(record, fp, 80);
     record[80] = '\0';
     if(n != 80 || strncmp(NAM_HEADER, record, 54) != 0 ||
-       (strrchr(record+58, ' ') - record) != 79)
+       (strrchr(record+58, ' ') - record) != 79) {
+	Free(mem_head);
 	error("File not in SAS transfer format");
+    }
     record[58] = '\0';
     sscanf(record+54, "%d", &length);
 
     tmp = strchr(mem_head->sas_dsname, ' ');
     n = tmp - mem_head->sas_dsname;
     if(n > 0) {
+	if (n > 8)
+	    n = 8;
 	strncpy(name, mem_head->sas_dsname, n);
 	name[n] = '\0';
     } else name[0] = '\0';
@@ -253,27 +260,31 @@ init_mem_info(FILE *fp, char *name)
 
 static int
 next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
-		int *tailpad, int *length, int ntype[], int nlng[],
-		int nvar0[], char *nname[], int npos[])
+		int *tailpad, int *length, int *ntype, int *nlng,
+		int *nvar0, SEXP nname, int *npos)
 {
     char *tmp;
     char record[81];
-    int i, n, nbytes, totwidth, nlength;
-    int *nname_len;
+    int i, n, nbytes, totwidth, nlength, restOfCard;
     struct SAS_XPORT_namestr *nam_head;
 
     nam_head = Calloc(nvars, struct SAS_XPORT_namestr);
 
     for(i = 0; i < nvars; i++) {
-	if(!get_nam_header(fp, nam_head+i, namestr_length))
+	if(!get_nam_header(fp, nam_head+i, namestr_length)) {
+	    Free(nam_head);
 	    error("SAS transfer file has incorrect library header");
+	}
     }
 
     *headpad = 480 + nvars * namestr_length;
     i = *headpad % 80;
     if(i > 0) {
 	i = 80 - i;
-	fseek(fp, i, SEEK_CUR);
+	if (fseek(fp, i, SEEK_CUR) != 0) {
+	    Free(nam_head);
+	    error("File not in SAS transfer format");
+	}
 	(*headpad) += i;
     }
     
@@ -283,25 +294,23 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	error("File not in SAS transfer format");
     }
   
-    nname_len = Calloc(nvars, int);
-
     for(i = 0; i < nvars; i++) {
-	ntype[i] = nam_head[i].ntype;
+	int nname_len = 0;
+	char tmpname[9];
+
+	ntype[i] = (int) ((nam_head[i].ntype == 1) ? REALSXP : STRSXP);
 	nlng[i]  = nam_head[i].nlng;
 	nvar0[i] = nam_head[i].nvar0;
 	npos[i]  = nam_head[i].npos;
 	tmp = strchr(nam_head[i].nname, ' ');
-	nname_len[i] = tmp - nam_head[i].nname;
-	if (nname_len[i] > 8)
-	    nname_len[i] = 8;
+	nname_len = tmp - nam_head[i].nname;
+	if (nname_len > 8)
+	    nname_len = 8;
+	strncpy(tmpname, nam_head[i].nname, nname_len);
+	tmpname[nname_len] = '\0';
+	SET_STRING_ELT(nname, i, mkChar(tmpname));
     }
 
-    for(i = 0; i < nvars; i++) {
-	strncpy(nname[i], nam_head[i].nname, nname_len[i]);
-	nname[i][nname_len[i]] = '\0';
-    }
-
-    Free(nname_len);
     Free(nam_head);
 
     totwidth = 0;
@@ -310,14 +319,19 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 
     nbytes = 0;
     nlength = 0;
-    tmp = R_alloc(totwidth+1, sizeof (char));
+/*      tmp = (char *) R_alloc(totwidth+1, sizeof(char)); */
+    tmp = CHAR(PROTECT(allocVector(CHARSXP, (totwidth<=80?81:(totwidth+1)) * 
+				   sizeof(char))));
+    restOfCard = 0;
+    *tailpad = 0;
     while(!feof(fp)) {
-	int restOfCard = 80 - (ftell(fp) % 80);
 	int allSpace = 1;
 	fpos_t currentPos;
 
-	if (fgetpos(fp, &currentPos))
+/*  	restOfCard = 80 - (ftell(fp) % 80); */
+	if (fgetpos(fp, &currentPos)) {
 	    error("problem accessing SAS XPORT file");
+	}
 
 	n = GET_RECORD(tmp, fp, restOfCard);
 	if (n != restOfCard) {
@@ -331,8 +345,11 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	    }
 	}
 	if (allSpace) {
-	    n = GET_RECORD(tmp, fp, 80);
-	    if (n < 1) break;
+  	    n = GET_RECORD(tmp, fp, 80);
+	    if (n < 1) {
+		*tailpad = restOfCard;
+		break;
+	    }
 	    if(n == 80 && strncmp(MEM_HEADER, record, 75) == 0 &&
 	       strncmp("  ", record+78, 2) == 0) {
 		*tailpad = restOfCard;
@@ -341,19 +358,25 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 		break;
 	    }
 	}
-	if (fsetpos(fp, &currentPos))
+	if (fsetpos(fp, &currentPos)) {
 	    error("problem accessing SAS XPORT file");
+	}
 
 	n = GET_RECORD(tmp, fp, totwidth);
 	if (n != totwidth) {
-	    if (!feof(fp))
+	    if (!feof(fp)) {
 		error("problem accessing SAS XPORT file");
+	    }
 	    *tailpad = n;
 	    break;
 	}
+	restOfCard = (restOfCard >= totwidth)?
+	    (restOfCard - totwidth):
+	    (80 - (totwidth - restOfCard)%80);
 	nlength++;
     }
     *length = nlength;
+    UNPROTECT(1);
 
     return (feof(fp)?-1:namestr_length);
 }
@@ -420,10 +443,8 @@ xport_info(SEXP xportFile)
 {
     FILE *fp;
     int i, namestrLength, memLength, ansLength;
-    int *ntype;
-    char *tmpchar, *dsname;
-    char **nnames;
-    SEXP ans, ansNames, newAns, newAnsNames, varInfoNames, varInfo;
+    char dsname[9];
+    SEXP ans, ansNames, varInfoNames, varInfo;
     SEXP char_numeric, char_character;
 
     PROTECT(varInfoNames = allocVector(STRSXP, VAR_INFO_LENGTH));
@@ -433,8 +454,9 @@ xport_info(SEXP xportFile)
     PROTECT(char_numeric   = mkChar("numeric"));
     PROTECT(char_character = mkChar("character"));
 
-    dsname = Calloc(9, char);
-    fp = fopen(CHAR(STRING_ELT(xportFile, 0)), "rb");
+    fp = fopen(R_ExpandFileName(CHAR(STRING_ELT(xportFile, 0))), "rb");
+    if (!fp)
+	error( "unable to open file");
     namestrLength = init_xport_info(fp);
 
     ansLength = 0;
@@ -456,45 +478,39 @@ xport_info(SEXP xportFile)
 	SET_XPORT_VAR_TAILPAD(varInfo, allocVector(INTSXP, 1));
 	SET_XPORT_VAR_LENGTH(varInfo, allocVector(INTSXP, 1));
 
-	ntype     = Calloc(memLength, int);
-	nnames    = Calloc(memLength, char *);
-	tmpchar = Calloc(memLength * 9, char);
-	for(i = 0; i < memLength; i++, tmpchar += 9)
-	    nnames[i] = tmpchar;
-
 	namestrLength =
 	    next_xport_info(fp, namestrLength, memLength,
 			    INTEGER(XPORT_VAR_HEADPAD(varInfo)),
 			    INTEGER(XPORT_VAR_TAILPAD(varInfo)),
-			    INTEGER(XPORT_VAR_LENGTH(varInfo)), ntype,
+			    INTEGER(XPORT_VAR_LENGTH(varInfo)),
+			    INTEGER(XPORT_VAR_SEXPTYPE(varInfo)),
 			    INTEGER(XPORT_VAR_WIDTH(varInfo)),
-			    INTEGER(XPORT_VAR_INDEX(varInfo)), nnames,
+			    INTEGER(XPORT_VAR_INDEX(varInfo)),
+			    XPORT_VAR_NAME(varInfo),
 			    INTEGER(XPORT_VAR_POSITION(varInfo)));
 
 	for(i = 0; i < memLength; i++) {
+	    int *ntype = INTEGER(XPORT_VAR_SEXPTYPE(varInfo));
 	    SET_STRING_ELT(XPORT_VAR_TYPE(varInfo), i,
-			   (ntype[i] == 1) ? char_numeric : char_character);
-	    INTEGER(XPORT_VAR_SEXPTYPE(varInfo))[i] =
-		(int) ((ntype[i] == 1) ? REALSXP : STRSXP);
-	    SET_STRING_ELT(XPORT_VAR_NAME(varInfo), i, mkChar(nnames[i]));
+			   (ntype[i] == REALSXP) ? char_numeric :
+			   char_character);
 	}
-	PROTECT(newAns = allocVector(VECSXP, ansLength+1));
-	PROTECT(newAnsNames = allocVector(STRSXP, ansLength+1));
+	PROTECT(ans = lengthgets(ans, ansLength+1));
+	PROTECT(ansNames = lengthgets(ansNames, ansLength+1));
+/*  	PROTECT(newAns = allocVector(VECSXP, ansLength+1)); */
+/*  	PROTECT(newAnsNames = allocVector(STRSXP, ansLength+1)); */
 
-	for(i = 0; i < ansLength; i++) {
-	    SET_VECTOR_ELT(newAns, i, VECTOR_ELT(ans, i));
-	    SET_STRING_ELT(newAnsNames, i, STRING_ELT(ansNames, i));
-	}
-	ans = newAns;
-	ansNames = newAnsNames;
+/*  	for(i = 0; i < ansLength; i++) { */
+/*  	    SET_VECTOR_ELT(newAns, i, VECTOR_ELT(ans, i)); */
+/*  	    SET_STRING_ELT(newAnsNames, i, STRING_ELT(ansNames, i)); */
+/*  	} */
+/*  	ans = newAns; */
+/*  	ansNames = newAnsNames; */
 
 	SET_STRING_ELT(ansNames, ansLength, mkChar(dsname));
 	SET_VECTOR_ELT(ans, ansLength, varInfo);
 	ansLength++;
  
-	Free(ntype);
-	Free(nnames[0]);
-	Free(nnames);
 	UNPROTECT(5);
 	PROTECT(ans);
 	PROTECT(ansNames);
@@ -502,7 +518,6 @@ xport_info(SEXP xportFile)
 
     setAttrib(ans, R_NamesSymbol, ansNames);  
     UNPROTECT(5);
-    Free(dsname);
     fclose(fp);
     return ans;
 }
@@ -526,8 +541,12 @@ xport_read(SEXP xportFile, SEXP xportInfo)
     names = getAttrib(xportInfo, R_NamesSymbol);
     setAttrib(ans, R_NamesSymbol, names);
 
-    fp = fopen(CHAR(STRING_ELT(xportFile, 0)), "rb");
-    fseek(fp, 240, SEEK_SET);
+    fp = fopen(R_ExpandFileName(CHAR(STRING_ELT(xportFile, 0))), "rb");
+    if (!fp)
+	error( "unable to open file");
+    if (fseek(fp, 240, SEEK_SET) != 0)
+	error("problem reading SAS XPORT file %s",
+	      CHAR(STRING_ELT(xportFile, 0)));
 
     for(i = 0; i < ansLength; i++) {
 	dataInfo = VECTOR_ELT(xportInfo, i);
@@ -546,7 +565,9 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 	totalWidth = 0;
 	for(j = 0; j < nvar; j++)
 	    totalWidth += dataWidth[j];
-	record = (char *) R_alloc(totalWidth + 1, sizeof (char));
+/* 	record = (char *) R_alloc(totalWidth + 1, sizeof (char)); */
+	record = CHAR(PROTECT(allocVector(CHARSXP,
+					  (totalWidth+1) * sizeof(char))));
 
 	dataHeadPad = asInteger(getListElement(dataInfo, "headpad"));
 	dataTailPad = asInteger(getListElement(dataInfo, "tailpad"));
@@ -578,7 +599,8 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 	}
 
 	fseek(fp, dataTailPad, SEEK_CUR);
-
+	
+	UNPROTECT(1);
     }
     UNPROTECT(1);
     fclose(fp);

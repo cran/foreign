@@ -1,5 +1,5 @@
 /*
- *  $Id: minitab.c,v 1.3 2000/10/30 16:43:23 saikat Exp $ 
+ *  $Id: minitab.c,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $ 
  *
  *  Read Minitab portable data set format
  *
@@ -104,7 +104,7 @@ read_mtp(SEXP fname)
     int i, j, nMTB = MTB_INITIAL_ENTRIES;
     
     PROTECT(fname = asChar(fname));
-    if ((f = fopen(CHAR(fname), "r")) == NULL)
+    if ((f = fopen(R_ExpandFileName(CHAR(fname)), "r")) == NULL)
 	error("Unable to open file %s for reading", CHAR(fname));
     if ((fgets(buf, MTP_BUF_SIZE, f) == NULL) ||
 	strncmp(buf, "Minitab Portable Worksheet ", 27) != 0)

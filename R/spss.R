@@ -1,4 +1,4 @@
-### $Id: spss.R,v 1.3 2000/12/13 16:26:57 saikat Exp $
+### $Id: spss.R,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
 ###
 ###             Read SPSS system data files
 ###

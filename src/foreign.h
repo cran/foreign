@@ -1,5 +1,5 @@
 /*
- *  $Id: foreign.h,v 1.2 2000/12/11 01:55:15 saikat Exp $
+ *  $Id: foreign.h,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
  *
  *  Common header file for the foreign package for R
  *
@@ -73,4 +73,7 @@ typedef float flt32;
 #endif
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define min(a,b) ((a) <= (b) ? (a) : (b))
+
+extern char* R_ExpandFileName(char*);
+
 #endif /* FOREIGN_H */

@@ -1,4 +1,4 @@
-### $Id: minitab.R,v 1.4 2000/12/12 22:21:11 bates Exp $
+### $Id: minitab.R,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
 ###
 ###             Read stored Minitab worksheets
 ###

@@ -18,7 +18,6 @@
    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
    02111-1307, USA. */
 
-#include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -246,7 +245,7 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
 
   /* Open the physical disk file. */
   ext = (struct pfm_fhuser_ext *) R_alloc (1, sizeof(struct pfm_fhuser_ext));
-  ext->file = fopen (h->norm_fn, "rb");
+  ext->file = fopen (R_ExpandFileName(h->norm_fn), "rb");
   if (ext->file == NULL)
     {
       Free (ext);
@@ -560,6 +559,9 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
       return 0;
     if (strlen (date) != 8)
       lose (("Bad date string length %d.", strlen (date)));
+    if (date[0] == ' ') /* the first field of date can be ' ' in some
+			   windows versions of SPSS */
+	date[0] = '0';
     for (i = 0; i < 8; i++)
       {
 	if (date[i] < 64 /* 0 */ || date[i] > 73 /* 9 */)
@@ -584,6 +586,9 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
       return 0;
     if (strlen (time) != 6)
       lose (("Bad time string length %d.", strlen (time)));
+    if (time[0] == ' ') /* the first field of date can be ' ' in some
+			   windows versions of SPSS */
+	time[0] = '0';
     for (i = 0; i < 6; i++)
       {
 	if (time[i] < 64 /* 0 */ || time[i] > 73 /* 9 */)
@@ -700,8 +705,10 @@ read_variables (struct file_handle *h)
 
     if (x == NOT_INT)
       goto lossage;
-    if (x != 161)
-      warning("Unexpected flag value %d.", x);
+
+/*  According to Akio Sone, there are cases where this is 160 */
+/*      if (x != 161) */
+/*        warning("Unexpected flag value %d.", x); */
   }
 
   ext->dict = new_dictionary (0);
@@ -837,7 +844,8 @@ read_variables (struct file_handle *h)
 	  if (v->miss_type == -1)
 	    lose (("Bad missing values for %s.", v->name));
 	  
-	  assert (map_ofs[v->miss_type] != -1);
+	  if (map_ofs[v->miss_type] == -1)
+	      error("read_variables : map_ofs[v->miss_type] == -1");
 	  if (!parse_value (h, &v->missing[map_ofs[v->miss_type]], v))
 	    goto lossage;
 	}

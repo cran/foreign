@@ -3,24 +3,27 @@
 %- Also NEED an `\alias' for EACH other topic documented here.
 \title{Write files in Stata binary format}
 \usage{
-write.dta(dataframe, filename)
+write.dta(dataframe, filename,version=7)
 }
 %- maybe also `usage' for other objects documented here.
 \arguments{
   \item{dataframe}{a data frame }
   \item{filename}{character string giving filename }
+  \item{version}{Stata version: 6 and 7 are supported}
 } 
 \description{
-  Writes the data frame to file in the Stata v6.0 binary format. Does
+  Writes the data frame to file in the Stata version 6.0 or 7.0 binary format. Does
   not write matrix variables.
 }
 \details{
   The columns in the data frame become variables in the Stata data
   set. Missing values are correctly handled. Nothing is done with factor
-  levels, which should end up as variable labels.
+  levels, which should end up as variable labels. The major difference
+  between versions is that 7.0 allows 32-character variable names.
 }
 \value{ \code{NULL} }
-\references{Stata v6.0 Users Manual describes the file format}
+\references{Stata 6.0 Users
+Manual, Stata 7.0 Programming manual describe the file formats}
 \author{Thomas Lumley}
 \seealso{\code{\link{read.dta}},\code{\link{attributes}}}
 \examples{

@@ -1,3 +1,4 @@
+gctorture(TRUE)
 library(foreign)
 ex1.51 <- read.mtp("ex1-51.mtp")
 summary(ex1.51)

@@ -10,7 +10,7 @@ read.dta(filename)
  \item{filename}{a filename as a character string}
 }
 \description{
-Reads a file in Stata v6.0 or v5.0 binary format into a dataframe. 
+Reads a file in Stata version 5-7 binary format into a dataframe. 
 }
 \details{
 The variables in the Stata data set become the columns of the data
@@ -21,7 +21,8 @@ with variable characteristics, print formats, or value labels.
 \value{
   a data frame
 }
-\references{Stata Users Manual describes the format of the files}
+\references{Stata Users Manual (versions 5 & 6) and Programming manual
+  (version 7) describe the format of the files}
 \author{Thomas Lumley}
 
 

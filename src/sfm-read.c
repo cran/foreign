@@ -18,7 +18,6 @@
    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
    02111-1307, USA. */
 
-#include <assert.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <errno.h>
@@ -30,6 +29,7 @@
 #include "sfm.h"
 #include "sfmP.h"
 #include "var.h"
+#include "R.h"
 
 /* Clamps A to be between B and C. */
 #define range(A, B, C)				\
@@ -146,7 +146,7 @@ sfm_close (struct file_handle * h)
   struct sfm_fhuser_ext *ext = h->ext;
 
   ext->opened--;
-  assert (ext->opened == 0);
+  if (!(ext->opened == 0)) error("assert failed : ext->opened == 0");
   Free (ext->buf);
   if (EOF == fclose (ext->file))
     error("%s: Closing system file: %s.", h->fn, strerror (errno));
@@ -203,7 +203,7 @@ static int read_documents (struct file_handle * h);
 void
 free_value_label (struct value_label * v)
 {
-  assert (v->ref_count >= 1);
+  if (!(v->ref_count >= 1)) error("assert failed : v->ref_count >= 1");
   if (--v->ref_count == 0)
     {
       free (v->s);
@@ -289,7 +289,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
   
   /* Open the physical disk file. */
   ext = (struct sfm_fhuser_ext *) R_alloc (1, sizeof(struct sfm_fhuser_ext));
-  ext->file = fopen (h->norm_fn, "rb");
+  ext->file = fopen (R_ExpandFileName(h->norm_fn), "rb");
   if (ext->file == NULL)
     {
       Free (ext);
@@ -340,7 +340,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
     {
       int32 rec_type;
 
-      assertive_bufread (h, &rec_type, sizeof rec_type, 0);
+      assertive_bufread(h, &rec_type, sizeof rec_type, 0);
       if (ext->reverse_endian)
 	bswap_int32 (&rec_type);
 
@@ -373,7 +373,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 
 	    int skip = 0;
 
-	    assertive_bufread (h, &data, sizeof data, 0);
+	    assertive_bufread(h, &data, sizeof data, 0);
 	    if (ext->reverse_endian)
 	      {
 		bswap_int32 (&data.subtype);
@@ -426,7 +426,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 	  {
 	    int32 filler;
 
-	    assertive_bufread (h, &filler, sizeof filler, 0);
+	    assertive_bufread(h, &filler, sizeof filler, 0);
 	    goto break_out_of_loop;
 	  }
 
@@ -475,7 +475,7 @@ read_machine_int32_info (struct file_handle * h, int size, int count)
     "subtype 3.	Expected size %d, count 8.",
 	h->fn, size, count, sizeof (int32)));
 
-  assertive_bufread (h, data, sizeof data, 0);
+  assertive_bufread(h, data, sizeof data, 0);
   if (ext->reverse_endian)
     for (i = 0; i < 8; i++)
       bswap_int32 (&data[i]);
@@ -490,7 +490,7 @@ read_machine_int32_info (struct file_handle * h, int size, int count)
 	       "formats.", h->fn));
       break;
     default:
-      assert (0);
+      if (!(0)) error("assert failed : 0");
     }
 
   /* PORTME: Check recorded file endianness against intuited file
@@ -503,7 +503,7 @@ read_machine_int32_info (struct file_handle * h, int size, int count)
       else if (file_endian == LITTLE)
 	file_endian = BIG;
       else
-	assert (0);
+	if (!(0)) error("assert failed : 0");
     }
   if ((file_endian == BIG) ^ (data[6] == 1))
     lose (("%s: File-indicated endianness (%s) does not match endianness "
@@ -539,7 +539,7 @@ read_machine_flt64_info (struct file_handle * h, int size, int count)
 	   "subtype 4.	Expected size %d, count 8.",
 	   h->fn, size, count, sizeof (flt64)));
 
-  assertive_bufread (h, data, sizeof data, 0);
+  assertive_bufread(h, data, sizeof data, 0);
   if (ext->reverse_endian)
     for (i = 0; i < 3; i++)
       bswap_flt64 (&data[i]);
@@ -592,7 +592,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
   dict->documents = NULL;
 
   /* Read header, check magic. */
-  assertive_bufread (h, &hdr, sizeof hdr, 0);
+  assertive_bufread(h, &hdr, sizeof hdr, 0);
   if (0 != strncmp ("$FL2", hdr.rec_type, 4))
     lose (("%s: Bad magic.  Proper system files begin with "
 	   "the four characters `$FL2'. This file will not be read.",
@@ -760,7 +760,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
       struct variable *vv;
       int j;
 
-      assertive_bufread (h, &sv, sizeof sv, 0);
+      assertive_bufread(h, &sv, sizeof sv, 0);
 
       if (ext->reverse_endian)
 	{
@@ -878,7 +878,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	  int32 len;
 
 	  /* Read length of label. */
-	  assertive_bufread (h, &len, sizeof len, 0);
+	  assertive_bufread(h, &len, sizeof len, 0);
 	  if (ext->reverse_endian)
 	    bswap_int32 (&len);
 
@@ -903,7 +903,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	    lose (("%s: Long string variable %s may not have missing "
 		   "values.", h->fn, vv->name));
 
-	  assertive_bufread (h, mv, sizeof *mv * abs (sv.n_missing_values), 0);
+	  assertive_bufread(h, mv, sizeof *mv * abs (sv.n_missing_values), 0);
 
 	  if (ext->reverse_endian && vv->type == NUMERIC)
 	    for (j = 0; j < abs (sv.n_missing_values); j++)
@@ -1045,7 +1045,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
      don't know yet whether it is of numeric or string type. */
 
   /* Read number of labels. */
-  assertive_bufread (h, &n_labels, sizeof n_labels, 0);
+  assertive_bufread(h, &n_labels, sizeof n_labels, 0);
   if (ext->reverse_endian)
     bswap_int32 (&n_labels);
 
@@ -1064,20 +1064,20 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
       int rem;
 
       /* Read value, label length. */
-      assertive_bufread (h, &value, sizeof value, 0);
-      assertive_bufread (h, &label_len, 1, 0);
+      assertive_bufread(h, &value, sizeof value, 0);
+      assertive_bufread(h, &label_len, 1, 0);
       memcpy (&raw_label[i], &value, sizeof value);
 
       /* Read label. */
       cooked_label[i] = Calloc (1, struct value_label);
       cooked_label[i]->s = Calloc (label_len + 1, char);
-      assertive_bufread (h, cooked_label[i]->s, label_len, 0);
+      assertive_bufread(h, cooked_label[i]->s, label_len, 0);
       cooked_label[i]->s[label_len] = 0;
 
       /* Skip padding. */
       rem = REM_RND_UP (label_len + 1, sizeof (flt64));
       if (rem)
-	assertive_bufread (h, &value, rem, 0);
+	assertive_bufread(h, &value, rem, 0);
     }
 
   /* Second step: Read the type 4 record that has the list of
@@ -1087,7 +1087,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
   {
     int32 rec_type;
     
-    assertive_bufread (h, &rec_type, sizeof rec_type, 0);
+    assertive_bufread(h, &rec_type, sizeof rec_type, 0);
     if (ext->reverse_endian)
       bswap_int32 (&rec_type);
     
@@ -1098,7 +1098,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
 
   /* Read number of variables associated with value label from type 4
      record. */
-  assertive_bufread (h, &n_vars, sizeof n_vars, 0);
+  assertive_bufread(h, &n_vars, sizeof n_vars, 0);
   if (ext->reverse_endian)
     bswap_int32 (&n_vars);
   if (n_vars < 1 || n_vars > ext->dict->nvar)
@@ -1116,7 +1116,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
       struct variable *v;
 
       /* Read variable index, check range. */
-      assertive_bufread (h, &var_index, sizeof var_index, 0);
+      assertive_bufread(h, &var_index, sizeof var_index, 0);
       if (ext->reverse_endian)
 	bswap_int32 (&var_index);
       if (var_index < 1 || var_index > ext->case_size)
@@ -1249,7 +1249,7 @@ read_documents (struct file_handle * h)
     lose (("%s: System file contains multiple type 6 (document) records.",
 	   h->fn));
 
-  assertive_bufread (h, &n_lines, sizeof n_lines, 0);
+  assertive_bufread(h, &n_lines, sizeof n_lines, 0);
   dict->n_documents = n_lines;
   if (dict->n_documents <= 0)
     lose (("%s: Number of document lines (%ld) must be greater than 0.",
@@ -1332,7 +1332,7 @@ dump_dictionary (struct dictionary * dict)
 	  debug_printf (("high+1"));
 	  break;
 	default:
-	  assert (0);
+	  if (!(0)) error("assert failed : 0");
 	}
       for (j = 0; j < n; j++)
 	if (v->type == NUMERIC)
@@ -1459,7 +1459,7 @@ read_compressed_data (struct file_handle * h, flt64 * temp)
     }
 
   /* Not reached. */
-  assert (0);
+  if (!(0)) error("assert failed : 0");
 
 winnage:
   /* We have filled up an entire record.  Update state and return
@@ -1490,7 +1490,7 @@ sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * d
 
   /* Make sure the caller remembered to finish polishing the
      dictionary returned by sfm_read_dictionary(). */
-  assert (dict->nval > 0);
+  if (!(dict->nval > 0)) error("assert failed : dict->nval > 0");
 
   /* The first concern is to obtain a full case relative to the data
      file.  (Cases in the data file have no particular relationship to

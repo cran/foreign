@@ -1,4 +1,4 @@
-### $Id: xport.R,v 1.3 2000/12/11 09:26:21 saikat Exp $
+### $Id: xport.R,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
 ###
 ###             Read SAS xport format libraries
 ###

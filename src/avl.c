@@ -23,7 +23,6 @@
 
 /* This is file avl.c in libavl. */
 
-#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "R.h"
@@ -55,7 +54,7 @@ avl_create (MAYBE_POOL avl_comparison_func cmp, void *param)
 {
   avl_tree *tree;
 
-  assert (cmp != NULL);
+  if (!(cmp != NULL)) error("assert failed : cmp != NULL");
 #if PSPP
   if (pool)
     tree = pool_alloc (pool, sizeof *tree);
@@ -86,7 +85,7 @@ avl_create (MAYBE_POOL avl_comparison_func cmp, void *param)
 void
 avl_destroy (avl_tree *tree, avl_node_func free_func)
 {
-  assert (tree != NULL);
+  if (!(tree != NULL)) error("assert failed : tree != NULL");
   
 #if PSPP
   if (free_func || tree->pool == NULL)
@@ -154,7 +153,7 @@ avl_free (avl_tree *tree)
 int
 avl_count (const avl_tree *tree)
 {
-  assert (tree != NULL);
+  if (!(tree != NULL)) error("assert failed : tree != NULL");
   return tree->count;
 }
 
@@ -204,7 +203,7 @@ avl_copy (MAYBE_POOL const avl_tree *tree, avl_copy_func copy)
   avl_node **qp = qa;		/* Stack QA: stack pointer. */
   avl_node *q;
   
-  assert (tree != NULL);
+  if (!(tree != NULL)) error("assert failed : tree != NULL");
 #if PSPP
   new_tree = avl_create (pool, tree->cmp, tree->param);
 #else
@@ -242,7 +241,7 @@ avl_copy (MAYBE_POOL const avl_tree *tree, avl_copy_func copy)
 	  /* PT4. */
 	  if (pp == pa)
 	    {
-	      assert (qp == qa);
+	      if (!(qp == qa)) error("assert failed : qp == qa");
 	      return new_tree;
 	    }
 	      
@@ -278,7 +277,7 @@ void
 avl_walk (const avl_tree *tree, avl_node_func walk_func, void *param)
 {
   /* Uses Knuth's algorithm 2.3.1T (inorder traversal). */
-  assert (tree && walk_func);
+  if (!(tree && walk_func)) error("assert failed : tree && walk_func");
   
   {
     /* T1. */
@@ -315,7 +314,7 @@ avl_walk (const avl_tree *tree, avl_node_func walk_func, void *param)
 void *
 avl_traverse (const avl_tree *tree, avl_traverser *trav)
 {
-  assert (tree && trav);
+  if (!(tree && trav)) error("assert failed : tree && trav");
 
   /* Uses Knuth's algorithm 2.3.1T (inorder traversal). */
   if (trav->init == 0)
@@ -370,14 +369,14 @@ avl_probe (avl_tree *tree, void *item)
   avl_node *t;
   avl_node *s, *p, *q, *r;
   
-  assert (tree != NULL);
+  if (!(tree != NULL)) error("assert failed : tree != NULL");
   t = &tree->root;
   s = p = t->link[0];
 
   if (s == NULL)
     {
       tree->count++;
-      assert (tree->count == 1);
+      if (!(tree->count == 1)) error("assert failed : tree->count == 1");
       q = t->link[0] = new_node (tree->pool);
       q->data = item;
       q->link[0] = q->link[1] = NULL;
@@ -451,7 +450,7 @@ avl_probe (avl_tree *tree, void *item)
 	  return &q->data;
 	}
       
-      assert (s->bal == -1);
+      if (!(s->bal == -1)) error("assert failed : s->bal == -1");
       if (r->bal == -1)
 	{
 	  /* A8. */
@@ -463,7 +462,7 @@ avl_probe (avl_tree *tree, void *item)
       else
 	{
 	  /* A9. */
-	  assert (r->bal == +1);
+	  if (!(r->bal == +1)) error("assert failed : r->bal == +1");
 	  p = r->link[1];
 	  r->link[1] = p->link[0];
 	  p->link[0] = r;
@@ -475,7 +474,7 @@ avl_probe (avl_tree *tree, void *item)
 	    s->bal = r->bal = 0;
 	  else 
 	    {
-	      assert (p->bal == +1);
+	      if (!(p->bal == +1)) error("assert failed : p->bal == +1");
 	      s->bal = 0, r->bal = -1;
 	    }
 	  p->bal = 0;
@@ -495,7 +494,7 @@ avl_probe (avl_tree *tree, void *item)
 	  return &q->data;
 	}
 
-      assert (s->bal == +1);
+      if (!(s->bal == +1)) error("assert failed : s->bal == +1");
       if (r->bal == +1)
 	{
 	  /* A8. */
@@ -507,7 +506,7 @@ avl_probe (avl_tree *tree, void *item)
       else
 	{
 	  /* A9. */
-	  assert (r->bal == -1);
+	  if (!(r->bal == -1)) error("assert failed : r->bal == -1");
 	  p = r->link[0];
 	  r->link[0] = p->link[1];
 	  p->link[1] = r;
@@ -519,7 +518,7 @@ avl_probe (avl_tree *tree, void *item)
 	    s->bal = r->bal = 0;
 	  else 
 	    {
-	      assert (p->bal == -1);
+	      if (!(p->bal == -1)) error("assert failed : p->bal == -1");
 	      s->bal = 0, r->bal = 1;
 	    }
 	  p->bal = 0;
@@ -541,7 +540,7 @@ avl_find (const avl_tree *tree, const void *item)
 {
   const avl_node *p;
 
-  assert (tree != NULL);
+  if (!(tree != NULL)) error("assert failed : tree != NULL");
   for (p = tree->root.link[0]; p; )
     {
       int diff = tree->cmp (item, p->data, tree->param);
@@ -578,7 +577,7 @@ avl_delete (avl_tree *tree, const void *item)
   avl_node **q;
   avl_node *p;
 
-  assert (tree != NULL);
+  if (!(tree != NULL)) error("assert failed : tree != NULL");
 
   a[0] = 0;
   pa[0] = &tree->root;
@@ -667,7 +666,7 @@ avl_delete (avl_tree *tree, const void *item)
 #endif
     Free (p);
 
-  assert (k > 0);
+  if (!(k > 0)) error("assert failed : k > 0");
   /* D10. */
   while (--k)
     {
@@ -687,10 +686,10 @@ avl_delete (avl_tree *tree, const void *item)
 	      break;
 	    }
 
-	  assert (s->bal == +1);
+	  if (!(s->bal == +1)) error("assert failed : s->bal == +1");
 	  r = s->link[1];
 
-	  assert (r != NULL);
+	  if (!(r != NULL)) error("assert failed : r != NULL");
 	  if (r->bal == 0)
 	    {
 	      /* D11. */
@@ -711,7 +710,7 @@ avl_delete (avl_tree *tree, const void *item)
 	  else 
 	    {
 	      /* D13. */
-	      assert (r->bal == -1);
+	      if (!(r->bal == -1)) error("assert failed : r->bal == -1");
 	      p = r->link[0];
 	      r->link[0] = p->link[1];
 	      p->link[1] = r;
@@ -723,7 +722,7 @@ avl_delete (avl_tree *tree, const void *item)
 		s->bal = r->bal = 0;
 	      else
 		{
-		  assert (p->bal == -1);
+		  if (!(p->bal == -1)) error("assert failed : p->bal == -1");
 		  s->bal = 0, r->bal = +1;
 		}
 	      p->bal = 0;
@@ -732,7 +731,7 @@ avl_delete (avl_tree *tree, const void *item)
 	}
       else
 	{
-	  assert (a[k] == 1);
+	  if (!(a[k] == 1)) error("assert failed : a[k] == 1");
 
 	  /* D10. */
 	  if (s->bal == +1)
@@ -746,7 +745,7 @@ avl_delete (avl_tree *tree, const void *item)
 	      break;
 	    }
 
-	  assert (s->bal == -1);
+	  if (!(s->bal == -1)) error("assert failed : s->bal == -1");
 	  r = s->link[0];
 
 	  if (r == NULL || r->bal == 0)
@@ -780,7 +779,7 @@ avl_delete (avl_tree *tree, const void *item)
 		s->bal = r->bal = 0;
 	      else
 		{
-		  assert (p->bal == 1);
+		  if (!(p->bal == 1)) error("assert failed : p->bal == 1");
 		  s->bal = 0, r->bal = -1;
 		}
 	      p->bal = 0;
@@ -799,7 +798,7 @@ avl_insert (avl_tree *tree, void *item)
 {
   void **p;
   
-  assert (tree != NULL);
+  if (!(tree != NULL)) error("assert failed : tree != NULL");
   
   p = avl_probe (tree, item);
   return (*p == item) ? NULL : *p;
@@ -814,7 +813,7 @@ avl_replace (avl_tree *tree, void *item)
 {
   void **p;
 
-  assert (tree != NULL);
+  if (!(tree != NULL)) error("assert failed : tree != NULL");
   
   p = avl_probe (tree, item);
   if (*p == item)
@@ -833,7 +832,7 @@ void *
 (avl_force_delete) (avl_tree *tree, void *item)
 {
   void *found = avl_delete (tree, item);
-  assert (found != NULL);
+  if (!(found != NULL)) error("assert failed : found != NULL");
   return found;
 }
 
@@ -851,7 +850,7 @@ print_structure (avl_node *node, int level)
   char lc[] = "([{`/";
   char rc[] = ")]}'\\";
 
-  assert (level <= 10);
+  if (!(level <= 10)) error("assert failed : level <= 10");
   
   if (node == NULL)
     {
@@ -915,7 +914,7 @@ recurse_tree (avl_node *node, int *count, int parent, int dir)
       
       if (parent != INT_MIN)
 	{
-	  assert (dir == -1 || dir == +1);
+	  if (!(dir == -1 || dir == +1)) error("assert failed : dir == -1 || dir == +1");
 	  if (dir == -1 && d > parent)
 	    {
 	      printf (" Node %d is smaller than its left child %d.\n",
@@ -929,7 +928,7 @@ recurse_tree (avl_node *node, int *count, int parent, int dir)
 	      done = 1;
 	    }
 	}
-      assert (node->bal >= -1 && node->bal <= 1);
+      if (!(node->bal >= -1 && node->bal <= 1)) error("assert failed : node->bal >= -1 && node->bal <= 1");
       return 1 + (nl > nr ? nl : nr);
     }
   else return 0;
@@ -973,7 +972,7 @@ compare_trees (avl_node *a, avl_node *b)
 {
   if (a == NULL || b == NULL)
     {
-      assert (a == NULL && b == NULL);
+      if (!(a == NULL && b == NULL)) error("assert failed : a == NULL && b == NULL");
       return;
     }
   if (a->data != b->data || a->bal != b->bal

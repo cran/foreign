@@ -1,0 +1,6 @@
+gctorture(TRUE)
+library(foreign)
+read.S("mySobj")
+data.restore("dumpdata", print = TRUE)
+print(myobj)
+q()

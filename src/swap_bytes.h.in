@@ -1,5 +1,5 @@
 /*
- *  $Id: swap_bytes.h.in,v 1.2 2000/12/13 17:04:00 saikat Exp $
+ *  $Id: swap_bytes.h.in,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
  *
  *  Reverse bytes in 2, 4 and 8 byte objects
  *

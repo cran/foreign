@@ -1,4 +1,4 @@
-### $Id: zzz.R,v 1.3 2000/12/11 06:24:40 saikat Exp $
+### $Id: zzz.R,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
 ###
 ###             Read stored Minitab worksheets
 ###

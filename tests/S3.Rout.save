@@ -1,0 +1,31 @@
+
+R : Copyright 2001, The R Development Core Team
+Version 1.3.0 Under development (unstable) (2001-05-04)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type `license()' or `licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type `contributors()' for more information.
+
+Type `demo()' for some demos, `help()' for on-line help, or
+`help.start()' for a HTML browser interface to help.
+Type `q()' to quit R.
+
+> gctorture(TRUE)
+> library(foreign)
+> read.S("mySobj")
+  factor ints floats
+1      a    1    1.1
+2     bc    2    1.2
+3    def    3    1.3
+> data.restore("dumpdata", print = TRUE)
+"myobj": structure
+[1] "dumpdata"
+> print(myobj)
+  factor ints floats
+1      a    1    1.1
+2     bc    2    1.2
+3    def    3    1.3
+> q()

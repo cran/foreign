@@ -1,3 +1,4 @@
+gctorture(TRUE)
 library(foreign)
 pc5 <- read.dta("pc5.dta")
 summary(pc5)

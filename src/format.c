@@ -18,7 +18,6 @@
    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
    02111-1307, USA. */
 
-#include <assert.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include "foreign.h"
@@ -226,7 +225,8 @@ convert_fmt_ItoO (const struct fmt_spec *input, struct fmt_spec *output)
     case FMT_PIBHEX:
       {
 	static const int map[] = {4, 6, 9, 11, 14, 16, 18, 21};
-	assert (input->w % 2 == 0 && input->w >= 2 && input->w <= 16);
+	if (input->w % 2 != 0 || input->w < 2 || input->w > 16)
+	    error("convert_fmt_ItoO : assert failed");
 	output->w = map[input->w / 2 - 1];
 	break;
       }
@@ -248,7 +248,7 @@ convert_fmt_ItoO (const struct fmt_spec *input, struct fmt_spec *output)
     case FMT_CCC:
     case FMT_CCD:
     case FMT_CCE:
-      assert (0);
+      error("convert_fmt_ItoO : invalid input->type : %d", input->type);
     case FMT_Z:
     case FMT_A:
       /* nothing is necessary */
@@ -282,7 +282,7 @@ convert_fmt_ItoO (const struct fmt_spec *input, struct fmt_spec *output)
       /* nothing is necessary */
       break;
     default:
-      assert (0);
+      error("convert_fmt_ItoO : invalid input->type : %d", input->type);
     }
 }
 

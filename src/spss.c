@@ -1,5 +1,5 @@
 /*
- *  $Id: spss.c,v 1.4 2000/12/13 17:04:00 saikat Exp $
+ *  $Id: spss.c,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
  *
  *  Read SPSS files saved by SAVE and EXPORT commands
  *
@@ -23,7 +23,6 @@
  *
  */
 
-#include "assert.h"
 #include "foreign.h"
 #include "file-handle.h"
 #include "pfm.h"
@@ -199,7 +198,8 @@ read_SPSS_PORT(const char *filename)
 	nval += v->nv;
     }
     dict->nval = nval;
-    assert (nval);
+    if (!nval)
+	error("nval is 0");
     case_vals = (union value *) R_alloc(dict->nval, sizeof(union value));
 
     for (i = 0; i < dict->nvar; i++) {
@@ -280,7 +280,8 @@ read_SPSS_SAVE(const char *filename)
 	nval += v->nv;
     }
     dict->nval = nval;
-    assert (nval);
+    if (!nval)
+	error("nval is 0");
     case_vals = (union value *) R_alloc(dict->nval, sizeof(union value));
 
     for (i = 0; i < dict->nvar; i++) {
@@ -405,7 +406,7 @@ SEXP
 do_read_SPSS(SEXP file)
 {
     char *filename = CHAR(PROTECT(asChar(file)));
-    FILE *fp = fopen(filename, "r");
+    FILE *fp = fopen(R_ExpandFileName(filename), "r");
     char buf[5];
     SEXP ans;
 
