@@ -1,7 +1,7 @@
 \name{S3 read functions}
 \alias{data.restore}
 \alias{read.S}
-\alias{SModeNames}
+% \alias{SModeNames}
 \title{Read an S3 Binary File}
 \description{
   Reads binary data files or \code{data.dump} files that were produced
@@ -37,8 +37,8 @@
   particular, comments will be lost from function bodies, and the 
   argument lists of functions will often be changed.
 
-  The \code{SModeNames} variable contains a list of the modes of
-  variables as used in S3.
+%  The \code{SModeNames} variable contains a list of the modes of
+%  variables as used in S3.
 }
 \author{
   Duncan Murdoch

@@ -43,10 +43,11 @@
    least multiple of positive Y greater than or equal to X}. */
 #if __GNUC__ && !__STRICT_ANSI__
 #define REM_RND_UP(X, Y)			\
+    (__extension__				\
 	({					\
 	  int rem = (X) % (Y);			\
 	  rem ? (Y) - rem : 0;			\
-	})
+	}))
 #else
 #define REM_RND_UP(X, Y) 			\
 	((X) % (Y) ? (Y) - (X) % (Y) : 0)

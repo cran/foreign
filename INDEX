@@ -1,6 +1,6 @@
 lookup.xport            Lookup information on a SAS XPORT format
                         library
-S3 read functions       Read an S3 Binary File
+data.restore            Read an S3 Binary File
 read.dta                Read Stata binary files
 read.epiinfo            Read Epi Info data files
 read.mtp                Read a Minitab Portable Worksheet

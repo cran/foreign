@@ -1,0 +1,4 @@
+export(data.restore, lookup.xport, read.dta, read.epiinfo, read.mtp,
+       read.S, read.spss, read.ssd, read.xport, write.dta)
+
+# not exported: SModeNames

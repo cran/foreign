@@ -1,5 +1,5 @@
 /**
- * $Id: stataread.c,v 1.11 2003/05/20 22:52:33 tlumley Exp $
+ * $Id: stataread.c,v 1.12 2003/12/20 07:24:28 hornik Exp $
   Read  Stata version 8.0, 7.0, 7/SE, 6.0 and 5.0 .dta files, write version 7.0, 6.0.
   
   (c) 1999, 2000, 2001, 2002 Thomas Lumley. 
@@ -151,8 +151,9 @@ SEXP R_LoadStataData(FILE *fp)
     /** first read the header **/
     
     abyte=InByteBinary(fp,1);   /* release version */
-    version=0;  /*-Wall*/
-    varnamelength=0;  /*-Wall*/
+    version=0;			/* -Wall */
+    varnamelength=0;		/* -Wall */
+    labeltable = R_NilValue;	/* -Wall */
     switch (abyte){
     case VERSION_5:
         version=5;

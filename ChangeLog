@@ -1,3 +1,44 @@
+2003-12-20  Brian Ripley  <ripley@stats.ox.ac.uk>
+
+	* DESCRIPTION (Version): New version is 0.6-6.
+
+	* NAMESPACE: New file.
+
+	* man/read.S.R: Do not export nor document SModeNames.
+
+	* src/zzz.R: Define .onLoad as well as .First.lib (the latter left
+	in case NAMESPACE is removed for debugging).
+
+2003-12-20  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+
+	* DESCRIPTION (Version): New version is 0.6-5.
+
+	* TITLE: Removed.
+
+	* configure:
+	* configure.in:
+	* configure.ac:
+	Upgrade to Autoconf 2.50 style.
+	Header file 'src/vars.h' needs to be in AC_CONFIG_HEADERS (as we
+	do not AC_SUBST() in it).
+	Add testing code for a '-Wno-long-long' C compiler option to shut
+	up warnings from gcc -pedantic in fact due to glibc's byteswap.h
+	bswap_64 macro (which tries using __extension__, but fails ...).
+	* src/Makevars.in:
+	New file for possibly setting PKG_CFLAGS to '-Wno-long-long'.
+
+	* src/sfm-read.c:
+	Use __extension__ in GNUC version of REM_RND_UP macro.
+
+2003-09-25  Saikat DebRoy  <saikat@stat.wisc.edu>
+
+	* DESCRIPTION: Increased version to 0.6-4.
+
+	* src/swap_bytes.h.in:
+	The GNU libc header file byteswap.h only provides the bswap_64 macro
+	when using gcc. Use suitable replacement when using another compiler
+	like icc.
+
 2003-09-25  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
 
 	* DESCRIPTION (Version): New version is 0.6-3.

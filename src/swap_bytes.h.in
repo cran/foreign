@@ -1,5 +1,5 @@
 /*
- *  $Id: swap_bytes.h.in,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
+ *  $Id: swap_bytes.h.in,v 1.2 2003/09/25 19:10:41 saikat Exp $
  *
  *  Reverse bytes in 2, 4 and 8 byte objects
  *
@@ -36,6 +36,8 @@
 
 #define swap_bytes_32(from, to) do { (to) = bswap_32(from); } while (0)
 
+#if defined __GNUC__ && __GNUC__ >= 2
+
 #define swap_bytes_double(from, to)		\
 do {						\
     union {					\
@@ -46,6 +48,22 @@ do {						\
     __to.u64 = bswap_64(__from.u64);		\
     (to) = __to.d;				\
 } while (0)
+
+#else
+
+#define swap_bytes_double(from, to)		\
+do {						\
+    union {					\
+	unsigned int u32[2];			\
+	double d;				\
+    } __from, __to;				\
+    __from.d = (from);  			\
+    swap_bytes_32(__from.u32[1], __to.u32[0]);	\
+    swap_bytes_32(__from.u32[0], __to.u32[1]);	\
+    (to) = __to.d;				\
+} while (0)
+
+#endif
 
 #else /* use reasonable portable definitions */
 
