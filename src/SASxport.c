@@ -1,5 +1,5 @@
 /*
- *  $Id: SASxport.c,v 1.9 2002/05/01 21:00:11 hornik Exp $
+ *  $Id: SASxport.c,v 1.10 2003/04/19 14:16:06 pd Exp $
  *
  *  Read SAS transport data set format
  *
@@ -60,7 +60,7 @@
 
 #define Two32 4294967296.0
 
-static double get_IBM_double(char* c)
+static double get_IBM_double(char* c, size_t len)
 {
 				/* Conversion from IBM 360 format to double */
 /*
@@ -82,6 +82,15 @@ static double get_IBM_double(char* c)
 				   integer conversion of c[1] to c[4] */
     char negative = c[0] & 0x80, exponent = (c[0] & 0x7f) - 70, buf[4];
     double value; 
+    char ibuf[8];
+
+    if (len < 2 || len > 8) 
+      error("invalid field length in numeric variable");
+
+    /* this effectively zero-pads c: */
+    memset(ibuf, 0, (size_t) 8);
+    memcpy(ibuf, c, len);
+    c = ibuf;
 				/* check for missing value */
     if (c[1] == '\0' && c[0] != '\0') return R_NaReal;
 				/* convert c[1] to c[3] to an int */
@@ -345,7 +354,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	    }
 	}
 	if (allSpace) {
-  	    n = GET_RECORD(tmp, fp, 80);
+  	    n = GET_RECORD(record, fp, 80);
 	    if (n < 1) {
 		*tailpad = restOfCard;
 		break;
@@ -582,7 +591,8 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 	    for(k = nvar-1; k >= 0; k--) {
 		tmpchar = record + dataPosition[k];
 		if(dataType[k] == REALSXP) {
-		    REAL(VECTOR_ELT(data, k))[j] = get_IBM_double(tmpchar);
+		    REAL(VECTOR_ELT(data, k))[j] = 
+			    get_IBM_double(tmpchar, dataWidth[k]);
 		} else {
 		    tmpchar[dataWidth[k]] = '\0';
 		    if(strlen(tmpchar) == 1 && IS_SASNA_CHAR(tmpchar[0])) {
