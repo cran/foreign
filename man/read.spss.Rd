@@ -34,6 +34,10 @@ read.spss(file, use.value.labels=TRUE, to.data.frame=FALSE,
   
   If SPSS variable labels are present, they are returned as the
   \code{"variable.labels"} attribute of the answer.
+
+  Fixed length strings (including value labels) are padded on the right
+  with spaces by SPSS, and so are read that way by R.  See the examples
+  for \code{\link{sub}} for ways to remove trailing spaces.
 }
 \author{Saikat DebRoy}
 \examples{

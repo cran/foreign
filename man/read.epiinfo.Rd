@@ -1,6 +1,5 @@
 \name{read.epiinfo}
 \alias{read.epiinfo}
-%- Also NEED an `\alias' for EACH other topic documented here.
 \title{Read Epi Info data files}
 \description{
   Reads data files in the \code{.REC} format used by Epi Info versions 6
@@ -10,9 +9,8 @@
   }
 \usage{
 read.epiinfo(file, read.deleted=FALSE, guess.broken.dates=FALSE,
-thisyear=NULL, lower.case.names = TRUE)
+             thisyear=NULL, lower.case.names = FALSE)
 }
-%- maybe also `usage' for other objects documented here.
 \arguments{
   \item{file}{A filename, URL, or connnection }
   \item{read.deleted}{Deleted records are read if \code{TRUE}, omitted
@@ -42,7 +40,10 @@ thisyear=NULL, lower.case.names = TRUE)
 \value{
   A data frame.
 }
-\references{\url{http://www.cdc.gov/epiinfo/}, \url{http://www.epidata.dk}}
+\references{
+  \url{http://www.cdc.gov/epiinfo/},
+  \url{http://www.epidata.dk}
+}
 
 \seealso{\link{DateTimeClasses} }
 
@@ -51,5 +52,4 @@ thisyear=NULL, lower.case.names = TRUE)
 data<-read.epiinfo("oswego.rec",guess.broken.dates=TRUE,thisyear="1972")
 }
 }
-\keyword{ file }% at least one, from doc/KEYWORDS
-
+\keyword{ file }

@@ -1,6 +1,20 @@
+2003-09-25  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+
+	* DESCRIPTION (Version): New version is 0.6-3.
+
+	* man/read.epiinfo.Rd: Codoc mismatch.
+
+2003-08-28  Thomas Lumley <tlumley@u.washington.edu>
+	
+	* read.spss.Rd: note that strings are padded on the right with
+	spaces. 
+
+	* version is 0.6-2
+
 2003-08-19  Thomas Lumley <tlumley@u.washington.edu>
 
-	* read.dta: work around a Stata file that says it has value labels but doesn't.
+	* read.dta: work around a Stata file that says it has value labels
+	but doesn't.
 
 	* version is 0.6-2
 	
