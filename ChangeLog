@@ -1,0 +1,7 @@
+1999-12-16  Douglas Bates  <bates@stat.wisc.edu>
+
+	* DESCRIPTION (Package): Created a 0.1-1 release under the package
+	name "foreign".
+	
+	* R/zzz.R: Added the copyright stuff.
+	

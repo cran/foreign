@@ -1,0 +1,60 @@
+/*
+ *  $Id: SASxport.h.in,v 1.1 1999/12/16 00:34:43 saikat Exp $
+ *
+ *  This file is derived from code in the SAS Technical Support
+ *  document TS-140 "The Record Layout of a Data Set in SAS Transport
+ *  (XPORT) Format" available as 
+ *       http://ftp.sas.com/techsup/download/technote/ts140.html
+ */
+
+#include <string.h>		/* for memcpy and memset */
+
+/* Define if words are big endian */
+#undef WORDS_BIGENDIAN
+
+#define CN_TYPE_NATIVE 0
+#define CN_TYPE_XPORT  1
+#define CN_TYPE_IEEEB  2 
+#define CN_TYPE_IEEEL  3 
+
+int cnxptiee(char *from, int fromtype, char *to, int totype);
+void xpt2ieee(char *xport, char *ieee);
+void ieee2xpt(char *ieee, char *xport);
+
+struct SAS_XPORT_header { 
+  char sas_symbol[2][8];	/* should be "SAS     " */
+  char saslib[8];		/* should be "SASLIB  " */
+  char sasver[8];
+  char sas_os[8];
+  char sas_create[16];
+  char sas_mod[16];
+};
+
+struct SAS_XPORT_member { 
+  char sas_symbol[8];
+  char sas_dsname[8];
+  char sasdata[8];
+  char sasver[8]; 
+  char sas_osname[8];
+  char sas_create[16];
+  char sas_mod[16];
+};
+
+struct SAS_XPORT_namestr {
+    short   ntype;              /* VARIABLE TYPE: 1=NUMERIC, 2=CHAR    */
+    short   nhfun;              /* HASH OF NNAME (always 0)            */
+    short   nlng;               /* LENGTH OF VARIABLE IN OBSERVATION   */
+    short   nvar0;              /* VARNUM                              */
+    char    nname[8];		/* NAME OF VARIABLE                    */
+    char    nlabel[40];		/* LABEL OF VARIABLE                   */
+    char    nform[8];		/* NAME OF FORMAT                      */
+    short   nfl;                /* FORMAT FIELD LENGTH OR 0            */
+    short   nfd;                /* FORMAT NUMBER OF DECIMALS           */
+    short   nfj;                /* 0=LEFT JUSTIFICATION, 1=RIGHT JUST  */
+    char    nfill[2];           /* (UNUSED, FOR ALIGNMENT AND FUTURE)  */
+    char    niform[8];		/* NAME OF INPUT FORMAT                */
+    short   nifl;               /* INFORMAT LENGTH ATTRIBUTE           */
+    short   nifd;               /* INFORMAT NUMBER OF DECIMALS         */
+    long    npos;               /* POSITION OF VALUE IN OBSERVATION    */
+    char    rest[52];           /* remaining fields are irrelevant     */
+};
