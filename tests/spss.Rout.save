@@ -1,6 +1,6 @@
 
 R : Copyright 2002, The R Development Core Team
-Version 1.5.0 Under development (unstable) (2002-03-08)
+Version 1.5.0 Under development (unstable) (2002-04-12)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -64,12 +64,12 @@ List of 11
  Max.   :2000.0   Max.   :230905   Max.   :230905101                       
                                                                            
              CNAME    SEX    DISADVG      ETHNICTY        STUID   
- J C AUSTIN EL  :23    : 4      : 4           : 4   00614421S: 6  
- R S KIMBROUGH M:12   F:62   NO :90   HISPANIC: 3   00614420S: 6  
- WILKINSON MIDDL: 9   M:34   YES: 6   OTHER   : 2   00614417S: 6  
- VERNON PRICE EL: 7                   WHITE   :91   00614416S: 6  
- TISINGER EL    : 6                                 00614414S: 6  
- THOMPSON EL    : 5                                 00614406S: 6  
+ J C AUSTIN EL  :23    : 4      : 4           : 4   00614373S: 6  
+ R S KIMBROUGH M:12   F:62   NO :90   HISPANIC: 3   00614378S: 6  
+ WILKINSON MIDDL: 9   M:34   YES: 6   OTHER   : 2   00614379S: 6  
+ VERNON PRICE EL: 7                   WHITE   :91   00614389S: 6  
+ TISINGER EL    : 6                                 00614397S: 6  
+ THOMPSON EL    : 5                                 00614403S: 6  
  (Other)        :38                                 (Other)  :64  
      TLIMTH          GRADE     
  Min.   :54.00   Min.   :3.00  
@@ -129,12 +129,12 @@ List of 11
  Max.   :2000.0   Max.   :230905   Max.   :230905101                       
                                                                            
              CNAME    SEX    DISADVG      ETHNICTY        STUID   
- J C AUSTIN EL  :23    : 4      : 4           : 4   00614421S: 6  
- R S KIMBROUGH M:12   F:62   NO :90   HISPANIC: 3   00614420S: 6  
- WILKINSON MIDDL: 9   M:34   YES: 6   OTHER   : 2   00614417S: 6  
- VERNON PRICE EL: 7                   WHITE   :91   00614416S: 6  
- TISINGER EL    : 6                                 00614414S: 6  
- THOMPSON EL    : 5                                 00614406S: 6  
+ J C AUSTIN EL  :23    : 4      : 4           : 4   00614373S: 6  
+ R S KIMBROUGH M:12   F:62   NO :90   HISPANIC: 3   00614378S: 6  
+ WILKINSON MIDDL: 9   M:34   YES: 6   OTHER   : 2   00614379S: 6  
+ VERNON PRICE EL: 7                   WHITE   :91   00614389S: 6  
+ TISINGER EL    : 6                                 00614397S: 6  
+ THOMPSON EL    : 5                                 00614403S: 6  
  (Other)        :38                                 (Other)  :64  
      TLIMTH          GRADE     
  Min.   :54.00   Min.   :3.00  
@@ -473,8 +473,8 @@ List of 20
  NA's   :28.00                   NA's   : 1.00                  
       WT58           DAYOFWK     VITAL10    FAMHXCVR        CHD     
  Min.   :123.0   MISSING :130   DEAD : 61   YES :  0   Min.   :0.0  
- 1st Qu.:156.0   SUNDAY  : 19   ALIVE:179   NO  :  0   1st Qu.:0.0  
- Median :171.0   TUESDAY : 19               NA's:240   Median :0.5  
+ 1st Qu.:156.0   TUESDAY : 19   ALIVE:179   NO  :  0   1st Qu.:0.0  
+ Median :171.0   SUNDAY  : 19               NA's:240   Median :0.5  
  Mean   :173.4   WEDNSDAY: 17                          Mean   :0.5  
  3rd Qu.:187.0   SATURDAY: 16                          3rd Qu.:1.0  
  Max.   :278.0   THURSDAY: 15                          Max.   :1.0  
@@ -499,8 +499,8 @@ List of 20
  NA's   :28.00                   NA's   : 1.00                  
       WT58           DAYOFWK     VITAL10    FAMHXCVR        CHD     
  Min.   :123.0   MISSING :130   DEAD : 61   YES :  0   Min.   :0.0  
- 1st Qu.:156.0   SUNDAY  : 19   ALIVE:179   NO  :  0   1st Qu.:0.0  
- Median :171.0   TUESDAY : 19               NA's:240   Median :0.5  
+ 1st Qu.:156.0   TUESDAY : 19   ALIVE:179   NO  :  0   1st Qu.:0.0  
+ Median :171.0   SUNDAY  : 19               NA's:240   Median :0.5  
  Mean   :173.4   WEDNSDAY: 17                          Mean   :0.5  
  3rd Qu.:187.0   SATURDAY: 16                          3rd Qu.:1.0  
  Max.   :278.0   THURSDAY: 15                          Max.   :1.0  

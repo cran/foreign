@@ -113,7 +113,18 @@ struct pfm_fhuser_ext
     int cc;			/* Current character. */
   };
 
+
+#ifndef Macintosh
 static struct fh_ext_class pfm_r_class;
+#else
+static void pfm_close (struct file_handle * h);
+static struct fh_ext_class pfm_r_class =
+{
+  5,
+  "reading as a portable file",
+  pfm_close,
+};
+#endif
 
 extern char *xstrdup(const char *s);
 
@@ -1086,9 +1097,11 @@ pfm_read_case (struct file_handle *h, union value *perm, struct dictionary *dict
   return 0;
 }
 
+#ifndef Macintosh
 static struct fh_ext_class pfm_r_class =
 {
   5,
   "reading as a portable file",
   pfm_close,
 };
+#endif

@@ -123,7 +123,17 @@ struct sfm_fhuser_ext
     unsigned char *y;		/* Location in current instruction octet. */
   };
 
+#ifndef Macintosh
 static struct fh_ext_class sfm_r_class;
+#else
+static void sfm_close (struct file_handle * h);
+static struct fh_ext_class sfm_r_class =
+{
+  3,
+  "reading as a system file",
+  sfm_close,
+};
+#endif
 
 #if GLOBAL_DEBUGGING
 void dump_dictionary (struct dictionary * dict);
@@ -1542,9 +1552,11 @@ lossage:
   return 0;
 }
 
+#ifndef Macintosh
 static struct fh_ext_class sfm_r_class =
 {
   3,
   "reading as a system file",
   sfm_close,
 };
+#endif
