@@ -1,3 +1,12 @@
+2004-05-22  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+
+	* DESCRIPTION (Version): New version is 0.6-9.
+
+	* INDEX: Removed.
+
+	* src/SASxport.c (xport_info, xport_read): Make sure that
+	R_ExpandFileName() is called on a valid string (PR#5049).
+
 2004-04-28 Thomas Lumley <tlumley@u.washington.edu>
 
 	* DESCRIPTION: version 0.6-8
