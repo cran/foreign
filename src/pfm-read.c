@@ -1,5 +1,5 @@
 /* PSPP - computes sample statistics.
-   Copyright (C) 1997-9, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1997-9, 2000, 2001 Free Software Foundation, Inc.
    Written by Ben Pfaff <blp@gnu.org>.
    Modified for R foreign library by Saikat DebRoy <saikat@stat.wisc.edu>.
 
@@ -30,6 +30,10 @@
 #include "format.h"
 #include "pfm.h"
 #include "var.h"
+
+#if !PSPP && !__GCC__
+#define inline
+#endif
 
 /* Clamps A to be between B and C. */
 #define range(A, B, C)				\

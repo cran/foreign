@@ -1,5 +1,5 @@
 /*
- *  $Id: spss.c,v 1.3 2001/07/17 12:57:34 ripley Exp $
+ *  $Id: spss.c,v 1.4 2001/07/23 13:43:32 saikat Exp $
  *
  *  Read SPSS files saved by SAVE and EXPORT commands
  *
@@ -29,6 +29,10 @@
 #include "sfm.h"
 #include "avl.h"
 #include "var.h"
+
+#if !PSPP && !__GCC__
+#define inline
+#endif
 
 /* Divides nonnegative X by positive Y, rounding up. */
 #define DIV_RND_UP(X, Y) 			\

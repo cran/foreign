@@ -1,3 +1,10 @@
+2001-07-23  Saikat DebRoy  <saikat@stat.wisc.edu>
+
+	* src/pfm-read.c, src/spss.c: Do not inline functions on non-gcc
+	compilers.
+	* src/sfmP.h: Don not use the __atribute__ keyword on non-gcc
+	compilers.
+
 2001-07-17 Brian Ripley  <ripley@stats.ox.ac.uk>
 
 	* DESCRIPTION (Version): New version is 0.4-6.

@@ -1,5 +1,5 @@
 /* PSPP - computes sample statistics.
-   Copyright (C) 1997-9, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1997-9, 2000, 2001 Free Software Foundation, Inc.
    Written by Ben Pfaff <blp@gnu.org>.
    Modified 2000 Saikat DebRoy <saikat@stat.wisc.edu>
 
@@ -22,7 +22,14 @@
    structures. */
 
 /* This attribute might avoid some problems.  On the other hand... */
+
+#if !PSPP
+#if __GNUC__ >= 2
 #define P __attribute__((packed))
+#else
+#define P
+#endif
+#endif
 
 #if __BORLANDC__
 #pragma option -a-		/* Turn off alignment. */
