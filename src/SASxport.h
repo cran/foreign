@@ -1,5 +1,5 @@
 /*
- *  $Id: SASxport.h,v 1.1.1.1 2001/03/23 16:15:26 bates Exp $
+ *  $Id: SASxport.h,v 1.1 2001/03/23 16:15:26 bates Exp $
  *
  *  This file is derived from code in the SAS Technical Support
  *  document TS-140 "The Record Layout of a Data Set in SAS Transport

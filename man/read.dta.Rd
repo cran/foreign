@@ -7,7 +7,7 @@
 \usage{
 read.dta(file, convert.dates = TRUE, tz = "GMT",
          convert.factors = TRUE, missing.type = FALSE,
-         convert.underscore=TRUE)
+         convert.underscore=TRUE, warn.missing.labels=TRUE)
 }
 \arguments{
   \item{file}{a filename as a character string.}
@@ -19,6 +19,8 @@ read.dta(file, convert.dates = TRUE, tz = "GMT",
     different types of missing data?}
   \item{convert.underscore}{Convert \code{"_"} in Stata variable names
     to \code{"."} in R names?}
+  \item{warn.missing.labels}{Warn if a variable is specified with value
+    labels and those value labels are not present in the file.}
 }
 \details{
   The variables in the Stata data set become the columns of the data

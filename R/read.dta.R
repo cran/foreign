@@ -1,7 +1,7 @@
 
 read.dta <- function(file, convert.dates=TRUE,tz="GMT",
                       convert.factors=TRUE,missing.type=FALSE,
-                     convert.underscore=TRUE){
+                     convert.underscore=TRUE, warn.missing.labels=TRUE){
     rval<-.External("do_readStata", file,  PACKAGE = "foreign")
 
     if(convert.underscore)
@@ -56,7 +56,7 @@ read.dta <- function(file, convert.dates=TRUE,tz="GMT",
           factors<-which(ll!="")
           for(v in factors){
             labels<-tt[[ll[v]]]
-            if (is.null(labels)){
+            if (warn.missing.labels && is.null(labels)){
               warning("Value labels (",ll[v],") for ",names(rval)[v]," are missing")
               next
             }
