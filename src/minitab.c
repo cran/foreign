@@ -64,7 +64,7 @@ SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
 				     MTB's and Free the MTB storage */
 {
     SEXP ans = PROTECT(NEW_LIST(len)), names = PROTECT(NEW_STRING(len));
-    int i;
+    int i,j;
     
     
     for (i = 0; i < len; i++) {
@@ -78,8 +78,21 @@ SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
 		   mtb[i]->len);
 	    Free(mtb[i]->dat.ndat);
 	    break;
-	default:
-	    PROBLEM "Non-numeric data types are not yet implemented" ERROR;
+        default:
+            if (mtb[i]->type == 4) { 
+                int nrow = mtb[i]->len / mtb[i]->dtype;
+                int ncol = mtb[i]->dtype;
+                SEXP aMatrix = PROTECT(allocMatrix(REALSXP,nrow,ncol));
+		
+                for (j = 0; j < nrow*ncol; j++) {
+                    REAL(aMatrix)[j] = mtb[i]->dat.ndat[j];
+                }
+                SET_ELEMENT(ans, i, aMatrix);
+                Free(mtb[i]->dat.ndat);
+                UNPROTECT(1);
+            } else {
+                PROBLEM "Non-numeric data types are not yet implemented" ERROR;
+            }
 	}
 	Free(mtb[i]);
     }
@@ -127,9 +140,16 @@ read_mtp(SEXP fname)
 		fscanf(f, "%lg", thisRec->dat.ndat + j);
 	    }
 	    break;
-	default:
-	    error("Non-numeric data types are not yet implemented");
-	} 
+        default:
+            if (thisRec->type == 4) { /* we have a matrix so dtype is number of columns */
+                thisRec->dat.ndat = Calloc(thisRec->len, double);
+                for (j = 0; j < thisRec->len; j++) {
+                    fscanf(f, "%lg", thisRec->dat.ndat + j);
+                }
+            } else {
+                error("Non-numeric data types are not yet implemented");
+            }
+        } 
 	fgets(buf, MTP_BUF_SIZE, f); /* clear rest of current line */
 	fgets(buf, MTP_BUF_SIZE, f); /* load next line */
     }
