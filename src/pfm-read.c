@@ -222,7 +222,7 @@ skip_char (struct file_handle *h, int c)
 
 /* Skip a single character if present, and return whether it was
    skipped. */
-#define match(C) skip_char (h, C)
+#define pfm_match(C) skip_char (h, C)
 
 static int read_header (struct file_handle *h);
 static int read_version_data (struct file_handle *h, struct pfm_read_info *inf);
@@ -290,11 +290,11 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
     goto lossage;
 
   /* Value labels. */
-  while (match (77 /* D */))
+  while (pfm_match (77 /* D */))
     if (!read_value_label (h))
       goto lossage;
 
-  if (!match (79 /* F */))
+  if (!pfm_match (79 /* F */))
     lose ((_("Data record expected")));
 
 #if 0
@@ -332,15 +332,15 @@ read_float (struct file_handle *h)
   int neg = 0;
 
   /* Skip leading spaces. */
-  while (match (126 /* space */))
+  while (pfm_match (126 /* space */))
     ;
 
-  if (match (137 /* * */))
+  if (pfm_match (137 /* * */))
     {
       advance ();	/* Probably a dot (.) but doesn't appear to matter. */
       return NA_REAL;
     }
-  else if (match (141 /* - */))
+  else if (pfm_match (141 /* - */))
     neg = 1;
 
   for (;;)
@@ -405,7 +405,7 @@ read_float (struct file_handle *h)
       exponent += exp;
     }
   
-  if (!match (142 /* / */))
+  if (!pfm_match (142 /* / */))
     lose ((_("Missing numeric terminator")));
 
   /* Multiply NUM by 30 to the EXPONENT power, checking for overflow.  */
@@ -542,7 +542,7 @@ read_header (struct file_handle *h)
     int i;
 
     for (i = 0; i < 8; i++)
-      if (!match (sig[i]))
+      if (!pfm_match (sig[i]))
 	lose ((_("Missing SPSSPORT signature")));
   }
 
@@ -560,7 +560,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
   struct pfm_fhuser_ext *ext = h->ext;
 
   /* Version. */
-  if (!match (74 /* A */))
+  if (!pfm_match (74 /* A */))
     lose ((_("Unrecognized version code %d"), ext->cc));
 
   /* Date. */
@@ -618,7 +618,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
   }
 
   /* Product. */
-  if (match (65 /* 1 */))
+  if (pfm_match (65 /* 1 */))
     {
       char *product;
       
@@ -632,7 +632,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
     inf->product[0] = 0;
 
   /* Subproduct. */
-  if (match (67 /* 3 */))
+  if (pfm_match (67 /* 3 */))
     {
       char *subproduct;
 
@@ -705,7 +705,7 @@ read_variables (struct file_handle *h)
   struct pfm_fhuser_ext *ext = h->ext;
   int i;
   
-  if (!match (68 /* 4 */))
+  if (!pfm_match (68 /* 4 */))
     lose ((_("Expected variable count record")));
   
   ext->nvars = read_int (h);
@@ -727,7 +727,7 @@ read_variables (struct file_handle *h)
 
   ext->dict = new_dictionary (0);
 
-  if (match (70 /* 6 */))
+  if (pfm_match (70 /* 6 */))
     {
       char *name = (char *) read_string (h);
       if (!name)
@@ -745,7 +745,7 @@ read_variables (struct file_handle *h)
       struct variable *v;
       int j;
 
-      if (!match (71 /* 7 */))
+      if (!pfm_match (71 /* 7 */))
 	lose ((_("Expected variable record")));
 
       width = read_int (h);
@@ -818,20 +818,20 @@ read_variables (struct file_handle *h)
 	goto lossage;
 
       /* Range missing values. */
-      if (match (75 /* B */))
+      if (pfm_match (75 /* B */))
 	{
 	  v->miss_type = MISSING_RANGE;
 	  if (!parse_value (h, &v->missing[0], v)
 	      || !parse_value (h, &v->missing[1], v))
 	    goto lossage;
 	}
-      else if (match (74 /* A */))
+      else if (pfm_match (74 /* A */))
 	{
 	  v->miss_type = MISSING_HIGH;
 	  if (!parse_value (h, &v->missing[0], v))
 	    goto lossage;
 	}
-      else if (match (73 /* 9 */))
+      else if (pfm_match (73 /* 9 */))
 	{
 	  v->miss_type = MISSING_LOW;
 	  if (!parse_value (h, &v->missing[0], v))
@@ -839,7 +839,7 @@ read_variables (struct file_handle *h)
 	}
 
       /* Single missing values. */
-      while (match (72 /* 8 */))
+      while (pfm_match (72 /* 8 */))
 	{
 	  static const int map_next[MISSING_COUNT] =
 	    {
@@ -863,7 +863,7 @@ read_variables (struct file_handle *h)
 	    goto lossage;
 	}
 
-      if (match (76 /* C */))
+      if (pfm_match (76 /* C */))
 	{
 	  char *label = (char *) read_string (h);
 	  

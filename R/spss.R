@@ -27,7 +27,7 @@ read.spss <- function(file,use.value.labels=TRUE,to.data.frame=FALSE,
   
     trim<-function(strings){
       if (trim.factor.names)
-        gsub(" *$","",strings)
+        gsub(" +$","",strings)
       else
         strings
     }

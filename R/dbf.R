@@ -62,6 +62,7 @@ write.dbf <- function(dataframe, file, factor2char = TRUE)
             scale[i] <- 0
         } else if (is.integer(x)) {
             rx <- range(x, na.rm = TRUE)
+	    if (any(rx == 0)) rx <- rx + 1 # added RSB 2005-03-10
             mrx <- as.integer(max(ceiling(log10(abs(rx))))+3)
             precision[i] <- min(max(nlen, mrx), 19)
             scale[i] <- 0
@@ -69,7 +70,8 @@ write.dbf <- function(dataframe, file, factor2char = TRUE)
             precision[i] <- 19
             rx <- range(x, na.rm = TRUE)
             mrx <- max(ceiling(log10(abs(rx))))
-            scale[i] <- min(precision[i] - ifelse(mrx > 0, mrx+3, 3), 15)
+            scale[i] <- min(precision[i] - ifelse(is.finite(mrx) && mrx > 0, 
+		mrx+3, 3), 15) # modified RSB 2005-03-10
         } else if (is.character(x)) {
             mf <- max(nchar(x[!is.na(x)]))
             precision[i] <- min(max(nlen, mf), 254)

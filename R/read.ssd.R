@@ -39,7 +39,7 @@ read.ssd <- function(libname, sectionnames, tmpXport=tempfile(),
     cat(st3, file=tmpProg, append=TRUE)
     cat(st4, file=tmpProg, append=TRUE)
     if(.Platform$OS.type == "windows")
-        sascmd <- paste(dQuote(sascmd), "-sysin")
+        sascmd <- paste(shQuote(sascmd), "-sysin")
     sasrun <- try(sysret <- system( paste( sascmd, tmpProg ) ))
     if (!inherits(sasrun, "try-error") & sysret == 0)
     {
