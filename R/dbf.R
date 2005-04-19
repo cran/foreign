@@ -62,6 +62,7 @@ write.dbf <- function(dataframe, file, factor2char = TRUE)
             scale[i] <- 0
         } else if (is.integer(x)) {
             rx <- range(x, na.rm = TRUE)
+            rx[!is.finite(rx)] <- 0 # added RSB 2005-04-17
 	    if (any(rx == 0)) rx <- rx + 1 # added RSB 2005-03-10
             mrx <- as.integer(max(ceiling(log10(abs(rx))))+3)
             precision[i] <- min(max(nlen, mrx), 19)
@@ -69,15 +70,18 @@ write.dbf <- function(dataframe, file, factor2char = TRUE)
         } else if (is.double(x)) {
             precision[i] <- 19
             rx <- range(x, na.rm = TRUE)
+            rx[!is.finite(rx)] <- 0 # added RSB 2005-04-17
             mrx <- max(ceiling(log10(abs(rx))))
-            scale[i] <- min(precision[i] - ifelse(is.finite(mrx) && mrx > 0, 
-		mrx+3, 3), 15) # modified RSB 2005-03-10
+            scale[i] <- min(precision[i] - ifelse(mrx > 0, mrx+3, 3), 15) 
+                    # modified RSB 2005-03-10 and 2005-04-17
         } else if (is.character(x)) {
             mf <- max(nchar(x[!is.na(x)]))
             precision[i] <- min(max(nlen, mf), 254)
             scale[i] <- 0
         } else stop("unknown column type in data frame")
     }
+    if (any(is.na(precision))) stop("NA in precision") # added RSB 2005-04-17
+    if (any(is.na(scale))) stop("NA in scale") # added RSB 2005-04-17
     invisible( .Call("DoWritedbf", as.character(file),
                      dataframe, as.integer(precision), as.integer(scale),
                      as.character(DataTypes),

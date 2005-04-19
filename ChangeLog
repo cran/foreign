@@ -1,3 +1,9 @@
+2005-04-17  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION (Version): New version is 0.8-7.
+
+	* R/dbf.R: further patch from Roger Bivand for all-NA fields.
+
 2005-04-04 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION (Version): New version is 0.8-6.
