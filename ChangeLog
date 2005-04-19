@@ -1,3 +1,17 @@
+2005-06-07  Thomas Lumley <tlumley@u.washington.edu>
+	* src/stataread.c: Writes of empty strings gave an error
+
+	* DESCRIPTION: version is 0.8-8
+
+2005-05-24  Thomas Lumley <tlumley@u.washington.edu>
+
+	* R/read.dta.R, man/read.dta.Rd: by default don't use value 
+	labels unless there is a label for every value.
+
+	* src/sfm-read.c, man/read.spss.Rd: Suppress the "Unrecognized 
+	record type 7, subtype 13" warning caused by long variable names 
+	in SPSS files.
+
 2005-04-17  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION (Version): New version is 0.8-7.

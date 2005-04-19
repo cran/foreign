@@ -1,6 +1,6 @@
 
 read.dta <- function(file, convert.dates=TRUE,tz=NULL,
-                      convert.factors=TRUE,missing.type=FALSE,
+                      convert.factors=TRUE, missing.type=FALSE,
                      convert.underscore=TRUE, warn.missing.labels=TRUE){
     rval<-.External("do_readStata", file,  PACKAGE = "foreign")
 
@@ -49,7 +49,7 @@ read.dta <- function(file, convert.dates=TRUE,tz=NULL,
         for(v in dates)
             rval[[v]]<-as.Date("1960-1-1")+rval[[v]]
     }
-    if (convert.factors){
+    if (convert.factors %in% c(TRUE, NA)){
         if (attr(rval, "version")==5)
           warning("cannot read factor labels from Stata 5 files")
         else {
@@ -62,6 +62,11 @@ read.dta <- function(file, convert.dates=TRUE,tz=NULL,
               warning("value labels (", ll[v], ") for ", names(rval)[v],
                       " are missing")
               next
+            }
+            if(!is.na(convert.factors)){
+                ## some levels don't have labels, so skip
+                if (!all(rval[[v]] %in% c(NA,NaN,tt[[ll[v]]])))
+                    next
             }
             rval[[v]]<-factor(rval[[v]],levels=tt[[ll[v]]],labels=names(tt[[ll[v]]]))
           }

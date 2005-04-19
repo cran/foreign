@@ -23,9 +23,7 @@ read.spss(file, use.value.labels=TRUE, to.data.frame=FALSE,
 }
 \details{
   This uses modified code from the PSPP project for reading the SPSS
-  formats.  Files written by recent versions of SPSS, which allow longer
-  variable names, will give a warning of "Unrecognized record type 7,
-  subtype 13". As far as we can tell, this is harmless.
+  formats. 
   
   Occasionally in SPSS value labels will be added to some values of a
   continuous variable (eg to distinguish different types of missing

@@ -14,7 +14,7 @@ read.dta(file, convert.dates = TRUE, tz = NULL,
   \item{convert.dates}{Convert Stata dates to \code{Date} class?}
   \item{tz}{Previously used to specify time zone. Now deprecated.}
   \item{convert.factors}{Use Stata value labels to create factors?
-    (version 6.0 or later)}
+    (version 6.0 or later).}
   \item{missing.type}{For version 8 only, store information about
     different types of missing data?}
   \item{convert.underscore}{Convert \code{"_"} in Stata variable names
@@ -30,8 +30,10 @@ read.dta(file, convert.dates = TRUE, tz = NULL,
 
   Optionally, Stata dates (\%d formats) are converted to \R's
   \code{Date} class and variables with Stata value labels are
-  converted to factors. In any case the value label and format
-  information is stored as attributes on the returned data frame. 
+  converted to factors. Ordinarily, \code{read.dta} will not convert
+  a variable to a factor unless a label is present for every level. Use
+  \code{convert.factors=NA} to override this. In any case the value
+  label and format information is stored as attributes on the returned data frame. 
 
   Stata 8.0 has 27 different missing data values. If \code{missing.type}
   is \code{TRUE} a separate list is created with the same variable

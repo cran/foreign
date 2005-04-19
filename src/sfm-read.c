@@ -414,6 +414,11 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 	      case 11: /* ?? Used by SPSS 8.0. */
 		skip = 1;
 		break;
+	       
+	      case 13:  /* long variable names. PSPP now has code for these
+			   that could be ported if someone is interested. */
+		skip = 1;
+		break;
 
 	      default:
 		warning(_("%s: Unrecognized record type 7, subtype %d encountered in system file"), h->fn, data.subtype);

@@ -565,6 +565,7 @@ static void  OutDoubleBinary(double d, FILE * fp, int naok)
 
 static void OutStringBinary(char *buffer, FILE * fp, int nchar)
 {
+    if (nchar==0) return;
     if (fwrite(buffer, nchar, 1, fp) != 1)
 	error(_("a binary write error occurred"));
 }
