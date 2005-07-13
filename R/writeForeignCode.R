@@ -1,10 +1,13 @@
 
-write.foreign<-function(df, datafile, codefile, package=c("SPSS","Stata"),...){
+write.foreign<-function(df, datafile, codefile, package=c("SPSS","Stata","SAS"),...){
 
   do.call(paste("writeForeign",package,sep=""),
-          list(df=df,datafile=datafile,codefile=codefile),...)
+          c(list(df=df,datafile=datafile,codefile=codefile),...))
 
 }
+
+## we want ASCII quotes, not UTF-8 quotes here
+adQuote <- function(x) paste("\"", x, "\"", sep = "")
 
 writeForeignSPSS<-function(df,datafile,codefile,varnames=NULL){
 
@@ -20,10 +23,10 @@ writeForeignSPSS<-function(df,datafile,codefile,varnames=NULL){
       warning("some variable names were abbreviated")
   }
 
-  cat("DATA LIST FILE=",datafile," free\n",file=codefile)
-  cat("/", varnames,"\n\n",file=codefile,append=TRUE)
+  cat("DATA LIST FILE=",dQuote(datafile)," free\n",file=codefile)
+  cat("/", varnames," .\n\n",file=codefile,append=TRUE)
   cat("VARIABLE LABELS\n",file=codefile,append=TRUE)
-  cat(paste(varnames, dQuote(varlabels),"\n"),file=codefile,append=TRUE)
+  cat(paste(varnames, adQuote(varlabels),"\n"),".\n",file=codefile,append=TRUE)
   factors<-sapply(df,is.factor)
   if (any(factors)){
     cat("\nVALUE LABELS\n",file=codefile,append=TRUE)
@@ -31,8 +34,9 @@ writeForeignSPSS<-function(df,datafile,codefile,varnames=NULL){
       cat("/\n",file=codefile,append=TRUE)
       cat(varnames[v]," \n",file=codefile,append=TRUE)
       levs<-levels(df[[v]])
-      cat(paste(1:length(levs),dQuote(levs),"\n",sep=" "),file=codefile,append=TRUE)
+      cat(paste(1:length(levs),adQuote(levs),"\n",sep=" "),file=codefile,append=TRUE)
     }
+    cat(".\n",file=codefile,append=TRUE)
   }
   cat("\nEXECUTE.\n",file=codefile,append=TRUE)
 }

@@ -8,7 +8,7 @@ writing the data as free-format text and writing a separate file of
 instructions for the other package to read the data. 
 }
 \usage{
-write.foreign(df, datafile, codefile, package = c("SPSS","Stata"), ...)
+write.foreign(df, datafile, codefile, package = c("SPSS","Stata","SAS"), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,11 +19,15 @@ write.foreign(df, datafile, codefile, package = c("SPSS","Stata"), ...)
   \item{\dots}{Other arguments for the individual \code{writeForeign} functions}
 }
 \details{
-The work for this function is done by \code{foreign:::writeForeignStata} and
+The work for this function is done by
+\code{foreign:::writeForeignStata}, \code{foreign:::writeForeignSAS} and
 \code{foreign:::writeForeignSPSS}. To add support for another package,
-eg SAS, create a function \code{writeForeignSAS} with the same first
+eg Systat, create a function \code{writeForeignSystat} with the same first
 three arguments as \code{write.foreign}. This will be called from
-\code{write.foreign} when \code{package="SAS"}. 
+\code{write.foreign} when \code{package="Systat"}.
+
+For \code{package="SAS"} there is an optional argument \code{dataname="rdata"}
+taking a string that will be the SAS data set name. 
 }
 \value{
   None

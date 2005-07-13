@@ -1,3 +1,25 @@
+2005-07-13  Thomas Lumley <tlumley@u.washington.edu>
+
+        * DESCRIPTION: version is 0.8-9
+
+2005-07-13  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* R/writeForeignCode.R:
+	* R/writeForeignSAS.R:
+	  replace use of dQuote() which gave UTF-8 quotes in a UTF-8 locale.
+
+2005-07-07 Thomas Lumley <tlumley@u.washington.edu>
+	
+	* R/writeForeignSAS.R: add SAS to write.foreign()
+
+2005-07-05  Thomas Lumley <tlumley@u.washington.edu>
+	
+	* R/writeForeignCode.R: extra punctuation in SPSS code files.
+
+2005-06-08  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/dbfopen.c: suppress a couple of warnings on Solaris.
+
 2005-06-07  Thomas Lumley <tlumley@u.washington.edu>
 	* src/stataread.c: Writes of empty strings gave an error
 

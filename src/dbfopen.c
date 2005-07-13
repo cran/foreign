@@ -1479,7 +1479,7 @@ static void str_to_upper (char *string)
     len = strlen (string);
 
     while (++i < len)
-        if (isalpha(string[i]) && islower(string[i]))
+        if (isalpha((int)string[i]) && islower((int)string[i]))
             string[i] = toupper ((int)string[i]);
 }
 
