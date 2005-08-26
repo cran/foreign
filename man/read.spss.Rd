@@ -42,6 +42,11 @@ read.spss(file, use.value.labels=TRUE, to.data.frame=FALSE,
   with spaces by SPSS, and so are read that way by R.   See the examples
   for \code{\link{sub}} for ways to remove trailing spaces in string data.
 }
+\note{
+  If SPSS value labels are converted to factors the underlying numerical
+  codes will not in general be the same as the SPSS numerical
+  values, since the numerical codes in R are always 1,2,3,...
+}
 \author{Saikat DebRoy}
 \examples{
 \dontrun{

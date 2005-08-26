@@ -1,6 +1,24 @@
+2005-08-26  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: version is 0.8-10
+
+	* src/pfm-read.c, src/sfm-read.c, src/spss.c: replace the
+	abuse of casting an int to/from void *, which correctly warned on
+	64-bit platforms.
+
+2005-08-19  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/Rdbfread.c, man/read.dbf.c: read over-wide numeric fields as
+	doubles.
+
+2005-08-15  Thomas Lumley <tlumley@u.washington.edu>
+
+	* R/read.spss.R, read.spss.Rd: reverse the order of factor levels
+	when creating factors from SPSS value labels
+	
 2005-07-13  Thomas Lumley <tlumley@u.washington.edu>
 
-        * DESCRIPTION: version is 0.8-9
+	* DESCRIPTION: version is 0.8-9
 
 2005-07-13  Brian Ripley <Brian.Ripley@R-project.org>
 
@@ -53,27 +71,27 @@
 
 	* DESCRIPTION (Version): New version is 0.8-5.
 
-	* R/dbf.R
-	* R/octave.R
-	* R/read.dta.R
-	* R/read.epiinfo.R
-	* R/read.ssd.R
-	* R/Sread.R
-	* R/writeForeignCode.R
-	* po/R-foreign.pot
-	* po/foreign.pot
-	* src/file-handle.c
-	* src/foreign.h
-	* src/format.c
-	* src/minitab.c
-	* src/pfm-read.c
-	* src/R_systat.c
-	* src/Rdbfread.c
-	* src/Rdbfwrite.c
-	* src/SASxport.c
-	* src/sfm-read.c
-	* src/spss.c
-	* src/stataread.c
+	* R/dbf.R:
+	* R/octave.R:
+	* R/read.dta.R:
+	* R/read.epiinfo.R:
+	* R/read.ssd.R:
+	* R/Sread.R:
+	* R/writeForeignCode.R:
+	* po/R-foreign.pot:
+	* po/foreign.pot:
+	* src/file-handle.c:
+	* src/foreign.h:
+	* src/format.c:
+	* src/minitab.c:
+	* src/pfm-read.c:
+	* src/R_systat.c:
+	* src/Rdbfread.c:
+	* src/Rdbfwrite.c:
+	* src/SASxport.c:
+	* src/sfm-read.c:
+	* src/spss.c:
+	* src/stataread.c:
 	mark error messages for gettext, improve messages.
 	* tests/stata.Rout.save: update for str() changes in R-devel
 

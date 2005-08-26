@@ -1161,10 +1161,11 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
     {
       struct variable *v = var[i];
       int j;
+      int width = v->width;
 
       /* Create AVL tree if necessary. */
       if (!v->val_lab)
-	v->val_lab = avl_create (val_lab_cmp, (void *) (v->width));
+	v->val_lab = avl_create (val_lab_cmp, (void *) (void *) (void *) (void *) (void *) (void *) (void *) (void *) (void *) &width);
 
       /* Add each label to the variable. */
       for (j = 0; j < n_labels; j++)

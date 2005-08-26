@@ -162,10 +162,11 @@ create_variable (struct dictionary *dict, const char *name,
 int
 val_lab_cmp (const void *a, const void *b, void *param)
 {
-  if ((int) param)
+  int width = *((int *)param);
+  if (width)
     return strncmp ((char *)((struct value_label *) a)->v.s,
 		    (char *)((struct value_label *) b)->v.s,
-		    (int) param);
+		    width);
   else
     {
       int temp = (((struct value_label *) a)->v.f

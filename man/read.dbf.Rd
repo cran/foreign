@@ -27,7 +27,11 @@ read.dbf(file, as.is = FALSE)
   \code{"L"} (logical), \code{"N"} and \code{"F"} (numeric and float)
   and \code{"D"} (dates): all other field types are read as-is as
   character vectors.  A numeric field are read as an \R integer vector if
-  it is encoded to have no decimals, otherwise as a numeric vector.
+  it is encoded to have no decimals, otherwise as a numeric vector.  However,
+  if the numbers are too large to fit into an integer vector, it is
+  changed to numeric.  Note that is possible to read integers that cannot be
+  represented exactly even as doubles: this sometimes occurs if IDs are
+  incorrectly coded as numeric.
 }
 
 \value{

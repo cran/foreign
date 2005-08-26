@@ -21,7 +21,7 @@
 ### Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 ### MA 02111-1307, USA
 
-read.spss <- function(file,use.value.labels=TRUE,to.data.frame=FALSE,
+read.spss <- function(file, use.value.labels=TRUE,to.data.frame=FALSE,
                       max.value.labels=Inf, trim.factor.names=FALSE) {
 
   
@@ -45,7 +45,7 @@ read.spss <- function(file,use.value.labels=TRUE,to.data.frame=FALSE,
       if (use.value.labels &&
           (!is.finite(max.value.labels) || nvalues<=max.value.labels) &&
           nlabels>=nvalues)
-        rval[[nm]]<-factor(rval[[nm]], levels=vl[[v]], labels=trim(names(vl[[v]])))
+        rval[[nm]]<-factor(rval[[nm]], levels=rev(vl[[v]]), labels=rev(trim(names(vl[[v]]))))
       else
         attr(rval[[nm]],"value.labels")<-vl[[v]]
     }

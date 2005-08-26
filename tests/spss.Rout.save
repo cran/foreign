@@ -1,17 +1,19 @@
 
-R : Copyright 2003, The R Development Core Team
-Version 1.7.0 Patched (2003-05-08)
+R : Copyright 2005, The R Foundation for Statistical Computing
+Version 2.2.0 Under development (unstable) (2005-08-18 r35317)
+ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
-Type `license()' or `licence()' for distribution details.
+Type 'license()' or 'licence()' for distribution details.
 
 R is a collaborative project with many contributors.
-Type `contributors()' for more information.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
 
-Type `demo()' for some demos, `help()' for on-line help, or
-`help.start()' for a HTML browser interface to help.
-Type `q()' to quit R.
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for a HTML browser interface to help.
+Type 'q()' to quit R.
 
 > library(foreign)
 > sample100 <- read.spss("sample100.sav",FALSE)
@@ -462,11 +464,11 @@ List of 20
 > electric<-read.spss("electric.sav",TRUE,TRUE)
 > summary(electric)
      CASEID                 FIRSTCHD        AGE           DBP58       
- Min.   :   1.00   OTHER   CHD  :  3   Min.   :40.0   Min.   : 65.00  
- 1st Qu.:  73.75   FATAL   MI   :  9   1st Qu.:45.0   1st Qu.: 80.00  
+ Min.   :   1.00   NO CHD       :120   Min.   :40.0   Min.   : 65.00  
+ 1st Qu.:  73.75   SUDDEN  DEATH: 36   1st Qu.:45.0   1st Qu.: 80.00  
  Median : 144.50   NONFATALMI   : 72   Median :48.0   Median : 87.00  
- Mean   : 572.94   SUDDEN  DEATH: 36   Mean   :47.8   Mean   : 88.79  
- 3rd Qu.:1042.25   NO CHD       :120   3rd Qu.:51.0   3rd Qu.: 96.50  
+ Mean   : 572.94   FATAL   MI   :  9   Mean   :47.8   Mean   : 88.79  
+ 3rd Qu.:1042.25   OTHER   CHD  :  3   3rd Qu.:51.0   3rd Qu.: 96.50  
  Max.   :2098.00                       Max.   :54.0   Max.   :160.00  
                                                       NA's   :  1.00  
      EDUYR           CHOL58          CGT58            HT58      
@@ -478,9 +480,9 @@ List of 20
  Max.   :18.00   Max.   :515.0   Max.   :60.00   Max.   :77.00  
  NA's   :28.00                   NA's   : 1.00                  
       WT58           DAYOFWK     VITAL10    FAMHXCVR        CHD     
- Min.   :123.0   MISSING :130   DEAD : 61   YES :  0   Min.   :0.0  
- 1st Qu.:156.0   TUESDAY : 19   ALIVE:179   NO  :  0   1st Qu.:0.0  
- Median :171.0   SUNDAY  : 19               NA's:240   Median :0.5  
+ Min.   :123.0   MISSING :130   ALIVE:179   NO  :  0   Min.   :0.0  
+ 1st Qu.:156.0   SUNDAY  : 19   DEAD : 61   YES :  0   1st Qu.:0.0  
+ Median :171.0   TUESDAY : 19               NA's:240   Median :0.5  
  Mean   :173.4   WEDNSDAY: 17                          Mean   :0.5  
  3rd Qu.:187.0   SATURDAY: 16                          3rd Qu.:1.0  
  Max.   :278.0   THURSDAY: 15                          Max.   :1.0  
@@ -488,11 +490,11 @@ List of 20
 > electric<-read.spss("electric.por",TRUE,TRUE)
 > summary(electric)
      CASEID                 FIRSTCHD        AGE           DBP58       
- Min.   :   1.00   OTHER   CHD  :  3   Min.   :40.0   Min.   : 65.00  
- 1st Qu.:  73.75   FATAL   MI   :  9   1st Qu.:45.0   1st Qu.: 80.00  
+ Min.   :   1.00   NO CHD       :120   Min.   :40.0   Min.   : 65.00  
+ 1st Qu.:  73.75   SUDDEN  DEATH: 36   1st Qu.:45.0   1st Qu.: 80.00  
  Median : 144.50   NONFATALMI   : 72   Median :48.0   Median : 87.00  
- Mean   : 572.94   SUDDEN  DEATH: 36   Mean   :47.8   Mean   : 88.79  
- 3rd Qu.:1042.25   NO CHD       :120   3rd Qu.:51.0   3rd Qu.: 96.50  
+ Mean   : 572.94   FATAL   MI   :  9   Mean   :47.8   Mean   : 88.79  
+ 3rd Qu.:1042.25   OTHER   CHD  :  3   3rd Qu.:51.0   3rd Qu.: 96.50  
  Max.   :2098.00                       Max.   :54.0   Max.   :160.00  
                                                       NA's   :  1.00  
      EDUYR           CHOL58          CGT58            HT58      
@@ -504,9 +506,9 @@ List of 20
  Max.   :18.00   Max.   :515.0   Max.   :60.00   Max.   :77.00  
  NA's   :28.00                   NA's   : 1.00                  
       WT58           DAYOFWK     VITAL10    FAMHXCVR        CHD     
- Min.   :123.0   MISSING :130   DEAD : 61   YES :  0   Min.   :0.0  
- 1st Qu.:156.0   TUESDAY : 19   ALIVE:179   NO  :  0   1st Qu.:0.0  
- Median :171.0   SUNDAY  : 19               NA's:240   Median :0.5  
+ Min.   :123.0   MISSING :130   ALIVE:179   NO  :  0   Min.   :0.0  
+ 1st Qu.:156.0   SUNDAY  : 19   DEAD : 61   YES :  0   1st Qu.:0.0  
+ Median :171.0   TUESDAY : 19               NA's:240   Median :0.5  
  Mean   :173.4   WEDNSDAY: 17                          Mean   :0.5  
  3rd Qu.:187.0   SATURDAY: 16                          3rd Qu.:1.0  
  Max.   :278.0   THURSDAY: 15                          Max.   :1.0  
@@ -530,8 +532,8 @@ List of 20
  Max.   :18.00   Max.   :515.0   Max.   :60.00   Max.   :77.00  
  NA's   :28.00                   NA's   : 1.00                  
       WT58          DAYOFWK       VITAL10    FAMHXCVR        CHD     
- Min.   :123.0   Min.   :1.000   DEAD : 61   YES :  0   Min.   :0.0  
- 1st Qu.:156.0   1st Qu.:4.000   ALIVE:179   NO  :  0   1st Qu.:0.0  
+ Min.   :123.0   Min.   :1.000   ALIVE:179   NO  :  0   Min.   :0.0  
+ 1st Qu.:156.0   1st Qu.:4.000   DEAD : 61   YES :  0   1st Qu.:0.0  
  Median :171.0   Median :9.000               NA's:240   Median :0.5  
  Mean   :173.4   Mean   :6.671                          Mean   :0.5  
  3rd Qu.:187.0   3rd Qu.:9.000                          3rd Qu.:1.0  

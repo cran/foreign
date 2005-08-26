@@ -25,6 +25,7 @@ SEXP Rdbfread(SEXP dbfnm)
     DBFFieldType eType;
     SEXP df, tmp, varlabels, row_names, DataTypes;
     short *types;
+    double dtmp;
 
 /* -------------------------------------------------------------------- */
 /*      Handle arguments.                                               */
@@ -121,9 +122,22 @@ SEXP Rdbfread(SEXP dbfnm)
 	    case 2:
 		if( DBFIsAttributeNULL( hDBF, iRecord, i ))
 		    INTEGER(VECTOR_ELT(df, nRvar))[iRecord] = NA_INTEGER;
-		else
-		    INTEGER(VECTOR_ELT(df, nRvar))[iRecord] =
-			DBFReadIntegerAttribute( hDBF, iRecord, i );
+		else {
+		    int ii;
+		    
+		    dtmp = DBFReadDoubleAttribute( hDBF, iRecord, i );
+		    if(dtmp> 2147483647.0 || dtmp < 2147483646.) { 
+			/* allow for NA_INTEGER = -(2^31 -1)*/
+			PROTECT(tmp = VECTOR_ELT(df, nRvar));
+			SET_VECTOR_ELT(df, nRvar, allocVector(REALSXP, nrecs));
+			for (ii = 0; ii < iRecord; ii++)
+			    REAL(VECTOR_ELT(df, nRvar))[ii] = INTEGER(tmp)[ii];
+			UNPROTECT(1);
+			REAL(VECTOR_ELT(df, nRvar))[iRecord] = dtmp;
+			types[i] = 3;
+		    } else
+			INTEGER(VECTOR_ELT(df, nRvar))[iRecord] = (int) dtmp;
+		}
 		nRvar++;
 		break;
 

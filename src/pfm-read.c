@@ -984,11 +984,11 @@ read_value_label (struct file_handle *h)
 	{
 	  struct variable *var = v[j];
 	  struct value_label *old;
+	  int width = var->width;
 
 	  /* Create AVL tree if necessary. */
 	  if (!var->val_lab)
-	    var->val_lab = avl_create (val_lab_cmp,
-				       (void *) (var->width));
+	    var->val_lab = avl_create (val_lab_cmp, (void *) &width);
 
 	  old = avl_replace (var->val_lab, vl);
 	  if (old == NULL)
