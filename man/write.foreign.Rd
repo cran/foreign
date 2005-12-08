@@ -1,7 +1,7 @@
 \name{write.foreign}
 \alias{write.foreign}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Write text files and code to read them.}
+\title{Write Text Files and Code to Read Them}
 \description{
 This function exports data frames to other statistical packages by
 writing the data as free-format text and writing a separate file of

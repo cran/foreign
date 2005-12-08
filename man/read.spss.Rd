@@ -1,6 +1,6 @@
 \name{read.spss}
 \alias{read.spss}
-\title{Read an SPSS data file}
+\title{Read an SPSS Data File}
 \description{
   \code{read.spss} reads a file stored by the SPSS \code{save} and
   \code{export} commands and returns a list.

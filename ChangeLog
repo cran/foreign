@@ -1,3 +1,13 @@
+2005-12-08  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: version is 0.8-11
+
+	* po/R-fr.po, po/fr.po: add French translations.
+
+2005-11-16  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/init.c: new file, add symbol registration.
+
 2005-08-26  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: version is 0.8-10
@@ -8,14 +18,14 @@
 
 2005-08-19  Brian Ripley <Brian.Ripley@R-project.org>
 
-	* src/Rdbfread.c, man/read.dbf.c: read over-wide numeric fields as
+	* src/Rdbfread.c, man/read.dbf.Rd: read over-wide numeric fields as
 	doubles.
 
 2005-08-15  Thomas Lumley <tlumley@u.washington.edu>
 
-	* R/read.spss.R, read.spss.Rd: reverse the order of factor levels
+	* R/spss.R, man/read.spss.Rd: reverse the order of factor levels
 	when creating factors from SPSS value labels
-	
+
 2005-07-13  Thomas Lumley <tlumley@u.washington.edu>
 
 	* DESCRIPTION: version is 0.8-9
@@ -27,11 +37,11 @@
 	  replace use of dQuote() which gave UTF-8 quotes in a UTF-8 locale.
 
 2005-07-07 Thomas Lumley <tlumley@u.washington.edu>
-	
+
 	* R/writeForeignSAS.R: add SAS to write.foreign()
 
 2005-07-05  Thomas Lumley <tlumley@u.washington.edu>
-	
+
 	* R/writeForeignCode.R: extra punctuation in SPSS code files.
 
 2005-06-08  Brian Ripley <Brian.Ripley@R-project.org>
@@ -45,11 +55,11 @@
 
 2005-05-24  Thomas Lumley <tlumley@u.washington.edu>
 
-	* R/read.dta.R, man/read.dta.Rd: by default don't use value 
+	* R/read.dta.R, man/read.dta.Rd: by default don't use value
 	labels unless there is a label for every value.
 
-	* src/sfm-read.c, man/read.spss.Rd: Suppress the "Unrecognized 
-	record type 7, subtype 13" warning caused by long variable names 
+	* src/sfm-read.c, man/read.spss.Rd: Suppress the "Unrecognized
+	record type 7, subtype 13" warning caused by long variable names
 	in SPSS files.
 
 2005-04-17  Brian Ripley <Brian.Ripley@R-project.org>
@@ -62,7 +72,7 @@
 
 	* DESCRIPTION (Version): New version is 0.8-6.
 
-	* R/dbf.R: patch from Roger Bivand for invalid value for the 
+	* R/dbf.R: patch from Roger Bivand for invalid value for the
 	guess at the width of integer or numeric fields
 
 	* src/pfm-read.c: match -> pfm_match to avoid warning.

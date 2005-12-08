@@ -1,6 +1,6 @@
 \name{read.epiinfo}
 \alias{read.epiinfo}
-\title{Read Epi Info data files}
+\title{Read Epi Info Data Files}
 \description{
   Reads data files in the \code{.REC} format used by Epi Info versions 6
   and earlier and by EpiData.  Epi Info is a public domain database and

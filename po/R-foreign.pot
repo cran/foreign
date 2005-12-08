@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: R 2.1.0\n"
+"Project-Id-Version: R 2.3.0\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2005-02-05 20:32\n"
+"POT-Creation-Date: 2005-12-08 20:27\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,7 +38,16 @@ msgstr ""
 msgid "data frame contains columns of unsupported class(es)"
 msgstr ""
 
+msgid ","
+msgstr ""
+
 msgid "unknown column type in data frame"
+msgstr ""
+
+msgid "NA in precision"
+msgstr ""
+
+msgid "NA in scale"
 msgstr ""
 
 msgid "cannot handle unknown type"
@@ -96,4 +105,10 @@ msgid "I cannot abbreviate the variable names to eight or fewer letters"
 msgstr ""
 
 msgid "some variable names were abbreviated"
+msgstr ""
+
+msgid "Cannot abbreviate the variable names to eight or fewer letters"
+msgstr ""
+
+msgid "Some variable names were abbreviated."
 msgstr ""

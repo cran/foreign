@@ -1,6 +1,6 @@
 \name{read.dta}
 \alias{read.dta}
-\title{Read Stata binary files}
+\title{Read Stata Binary Files}
 \description{
   Reads a file in Stata version 5-8 or 7/SE binary format into a data frame. 
 }
