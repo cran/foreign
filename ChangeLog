@@ -1,3 +1,18 @@
+2005-12-14  Brian Ripley <Brian.Ripley@R-project.org>
+
+        * DESCRIPTION: version is 0.8-12
+
+        * src/SASxport.c: force alignment of char *, as apparently
+        gcc4's memcpy requires this.
+
+2005-12-12  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/sfm-read.c, src/SASxport.h: use int not long.  First is
+	harmless, the second may not be on 64-bit platforms.
+	* src/sfm-read.c: reading a structure from a file assumes that
+	alignment is adding no padding, which is not the case on Sparc
+	Solaris's native compilers.
+
 2005-12-08  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: version is 0.8-11

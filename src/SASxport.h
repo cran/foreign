@@ -52,7 +52,7 @@ struct SAS_XPORT_namestr {
     char    niform[8];		/* NAME OF INPUT FORMAT                */
     short   nifl;               /* INFORMAT LENGTH ATTRIBUTE           */
     short   nifd;               /* INFORMAT NUMBER OF DECIMALS         */
-    long    npos;               /* POSITION OF VALUE IN OBSERVATION    */
+    int     npos;               /* POSITION OF VALUE IN OBSERVATION    */
     char    rest[52];           /* remaining fields are irrelevant     */
 };
 

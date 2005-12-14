@@ -103,7 +103,7 @@ struct sfm_fhuser_ext
 
     int reverse_endian;		/* 1=file has endianness opposite us. */
     int case_size;		/* Number of `values's per case. */
-    long ncases;		/* Number of cases, -1 if unknown. */
+    int  ncases;		/* Number of cases, -1 if unknown. */
     int compressed;		/* 1=compressed, 0=not compressed. */
     double bias;		/* Compression bias, usually 100.0. */
     int weight_index;		/* 0-based index of weighting variable, or -1. */
@@ -596,7 +596,21 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
   dict->documents = NULL;
 
   /* Read header, check magic. */
-  assertive_bufread(h, &hdr, sizeof hdr, 0);
+  /* This does not allow for alignment
+     assertive_bufread(h, &hdr, sizeof hdr, 0);
+  */
+  assertive_bufread(h, &hdr.rec_type, 4, 0);
+  assertive_bufread(h, &hdr.prod_name, 60, 0);
+  assertive_bufread(h, &hdr.layout_code, 4, 0);
+  assertive_bufread(h, &hdr.case_size, 4, 0);
+  assertive_bufread(h, &hdr.compressed, 4, 0);
+  assertive_bufread(h, &hdr.weight_index, 4, 0);
+  assertive_bufread(h, &hdr.ncases, 4, 0);
+  assertive_bufread(h, &hdr.bias, 8, 0);
+  assertive_bufread(h, &hdr.creation_date, 9, 0);
+  assertive_bufread(h, &hdr.creation_time, 8, 0);
+  assertive_bufread(h, &hdr.file_label, 64, 0);
+  assertive_bufread(h, &hdr.padding, 3, 0);
   if (0 != strncmp ("$FL2", hdr.rec_type, 4))
     lose ((_("%s: Bad magic.  Proper system files begin with the four characters `$FL2'. This file will not be read"),
 	   h->fn));
@@ -667,8 +681,8 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
 
   ext->ncases = hdr.ncases;
   if (ext->ncases < -1 || ext->ncases > INT_MAX / 2)
-    lose ((_("%s: Number of cases in file (%ld) is not between -1 and %d"),
-	   h->fn, (long) ext->ncases, INT_MAX / 2));
+    lose ((_("%s: Number of cases in file (%d) is not between -1 and %d"),
+	   h->fn, ext->ncases, INT_MAX / 2));
 
   ext->bias = hdr.bias;
   if (ext->bias != 100.0)
@@ -1243,8 +1257,8 @@ read_documents (struct file_handle * h)
   assertive_bufread(h, &n_lines, sizeof n_lines, 0);
   dict->n_documents = n_lines;
   if (dict->n_documents <= 0)
-    lose ((_("%s: Number of document lines (%ld) must be greater than 0"),
-	   h->fn, (long) dict->n_documents));
+    lose ((_("%s: Number of document lines (%d) must be greater than 0"),
+	   h->fn, dict->n_documents));
 
   dict->documents = bufread (h, NULL, 80 * n_lines, 0);
   if (dict->documents == NULL)

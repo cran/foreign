@@ -112,7 +112,16 @@ static double get_IBM_double(char* c, size_t len)
 static int
 get_nam_header(FILE *fp, struct SAS_XPORT_namestr *namestr, int length)
 {
-    char record[141];
+    /*
+     * gcc >= 4 is fussy about alignment in memcpy on some 64-bit
+     * platforms, e.g. ia64 aand sparc.
+     * This violates POSIX and C99, so we need to be safer.
+     * point to an array of ints to ensure alignment;
+     * assumes sizeof(int) == 4, because the code already assumes that
+anyway
+     */
+    int buf[36];
+    char *record = (char *) buf;
     int n;
 
     record[length] = '\0';
