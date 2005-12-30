@@ -1,4 +1,3 @@
-### $Id: minitab.R,v 1.2 2001/06/09 14:40:20 hornik Exp $
 ###
 ###             Read stored Minitab worksheets
 ###
@@ -18,8 +17,8 @@
 ###
 ### You should have received a copy of the GNU General Public
 ### License along with this program; if not, write to the Free
-### Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
-### MA 02111-1307, USA
+### Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+### Boston, MA 02110-1301  USA
 
 ## Files in the Minitab portable worksheet format represent numbers in a
 ## fixed format (written in Fortran as 5e15.9 or something like that) but
@@ -29,6 +28,6 @@
 "read.mtp" <-
 function (file) {
     clean <- function(x) if(is.numeric(x)) signif(x, 6) else x
-    val <- .Call("read_mtp", file, PACKAGE = "foreign")
+    val <- .Call(read_mtp, file)
     lapply(val, clean)
 }

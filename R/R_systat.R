@@ -5,7 +5,7 @@ read.systat <- function(file, to.data.frame=TRUE)
 {
     if (length(file) != 1) stop("only one file")
     if (!is.character(file)) stop("file must be character")
-    res <- .Call("readSystat", as.character(file), PACKAGE="foreign")
+    res <- .Call(readSystat, as.character(file))
     if (to.data.frame) {
         comment <- NULL
         if (!is.null(attr(res, "comment")) &&

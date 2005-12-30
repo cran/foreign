@@ -1,8 +1,9 @@
 
 read.dta <- function(file, convert.dates=TRUE,tz=NULL,
-                      convert.factors=TRUE, missing.type=FALSE,
-                     convert.underscore=TRUE, warn.missing.labels=TRUE){
-    rval<-.External("do_readStata", file,  PACKAGE = "foreign")
+                     convert.factors=TRUE, missing.type=FALSE,
+                     convert.underscore=TRUE, warn.missing.labels=TRUE)
+{
+    rval<-.External(do_readStata, file)
 
     if(convert.underscore)
       names(rval)<-gsub("_",".",names(rval))
@@ -129,6 +130,5 @@ write.dta <- function(dataframe, file, version = 6,convert.dates=TRUE,tz="GMT",
 
     if (any(sapply(dataframe, function(x) !is.null(dim(x)))))
         stop("cannot handle multicolumn columns")
-    invisible(.External("do_writeStata", file, dataframe, version, leveltable,
-                        PACKAGE = "foreign"))
+    invisible(.External(do_writeStata, file, dataframe, version, leveltable))
 }

@@ -2,7 +2,7 @@
 ### Changes for foreign package (C) 2004 R Development Core Team
 read.dbf <- function(file, as.is = FALSE)
 {
-    df <- .Call("Rdbfread", as.character(path.expand(file)), PACKAGE="foreign")
+    df <- .Call(Rdbfread, as.character(path.expand(file)))
     onames <- names(df)
     inames <- make.names(onames, unique = TRUE)
     names(df) <- inames
@@ -82,8 +82,7 @@ write.dbf <- function(dataframe, file, factor2char = TRUE)
     }
     if (any(is.na(precision))) stop("NA in precision") # added RSB 2005-04-17
     if (any(is.na(scale))) stop("NA in scale") # added RSB 2005-04-17
-    invisible( .Call("DoWritedbf", as.character(file),
+    invisible( .Call(DoWritedbf, as.character(file),
                      dataframe, as.integer(precision), as.integer(scale),
-                     as.character(DataTypes),
-                     PACKAGE = "foreign"))
+                     as.character(DataTypes)))
 }

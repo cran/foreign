@@ -15,57 +15,36 @@
 
    You should have received a copy of the GNU General Public License
    along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-   02111-1307, USA. */
-
-/* PORTME: There might easily be alignment problems with some of these
-   structures. */
-
-/* This attribute might avoid some problems.  On the other hand... */
-
-#if !PSPP
-#if __GNUC__ >= 2
-#define P __attribute__((packed))
-#else
-#define P
-#endif
-#endif
-
-#if __BORLANDC__
-#pragma option -a-		/* Turn off alignment. */
-#endif
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301
+   USA. */
 
 /* Record Type 1: General Information. */
 struct sysfile_header
   {
-    char rec_type[4] P;		/* Record-type code, "$FL2". */
-    char prod_name[60] P;	/* Product identification. */
-    R_int32 layout_code P;	/* 2. */
-    R_int32 case_size P;		/* Number of `value's per case. */
-    R_int32 compressed P;		/* 1=compressed, 0=not compressed. */
-    R_int32 weight_index P;	/* 1-based index of weighting var, or zero. */
-    R_int32 ncases P;		/* Number of cases, -1 if unknown. */
-    R_flt64 bias P;		/* Compression bias (100.0). */
-    char creation_date[9] P;	/* `dd mmm yy' creation date of file. */
-    char creation_time[8] P;	/* `hh:mm:ss' 24-hour creation time. */
-    char file_label[64] P;	/* File label. */
-    char padding[3] P;		/* Ignored padding. */
+    char rec_type[4];		/* Record-type code, "$FL2". */
+    char prod_name[60];		/* Product identification. */
+    R_int32 layout_code;	/* 2. */
+    R_int32 case_size;		/* Number of `value's per case. */
+    R_int32 compressed;		/* 1=compressed, 0=not compressed. */
+    R_int32 weight_index;	/* 1-based index of weighting var, or zero. */
+    R_int32 ncases;		/* Number of cases, -1 if unknown. */
+    R_flt64 bias;		/* Compression bias (100.0). */
+    char creation_date[9];	/* `dd mmm yy' creation date of file. */
+    char creation_time[8];	/* `hh:mm:ss' 24-hour creation time. */
+    char file_label[64];	/* File label. */
+    char padding[3];		/* Ignored padding. */
   };
 
 /* Record Type 2: Variable. */
 struct sysfile_variable
   {
-    R_int32 rec_type P;		/* 2. */
-    R_int32 type P;		/* 0=numeric, 1-255=string width,
+    R_int32 rec_type;		/* 2. */
+    R_int32 type;		/* 0=numeric, 1-255=string width,
 				   -1=continued string. */
-    R_int32 has_var_label P;	/* 1=has a variable label, 0=doesn't. */
-    R_int32 n_missing_values P;	/* Missing value code of -3,-2,0,1,2, or 3. */
-    R_int32 print P;	/* Print format. */
-    R_int32 write P;	/* Write format. */
-    char name[8] P;		/* Variable name. */
+    R_int32 has_var_label;	/* 1=has a variable label, 0=doesn't. */
+    R_int32 n_missing_values;	/* Missing value code of -3,-2,0,1,2, or 3. */
+    R_int32 print;	/* Print format. */
+    R_int32 write;	/* Write format. */
+    char name[8];		/* Variable name. */
     /* The rest of the structure varies. */
   };
-
-#if __BORLANDC__
-#pragma -a4
-#endif

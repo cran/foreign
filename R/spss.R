@@ -1,4 +1,3 @@
-### $Id: spss.R,v 1.5 2002/04/29 19:48:37 saikat Exp $
 ###
 ###		Read SPSS system data files
 ###
@@ -18,8 +17,8 @@
 ###
 ### You should have received a copy of the GNU General Public
 ### License along with this program; if not, write to the Free
-### Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
-### MA 02111-1307, USA
+### Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+### Boston, MA 02110-1301  USA
 
 read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
 		      max.value.labels = Inf, trim.factor.names = FALSE)
@@ -32,7 +31,7 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
 	    strings
     }
 
-    rval <- .Call("do_read_SPSS", file, PACKAGE = "foreign")
+    rval <- .Call(do_read_SPSS, file)
 
     vl <- attr(rval,"label.table")
     has.vl <- which(!sapply(vl,is.null))

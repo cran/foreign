@@ -1,5 +1,4 @@
 /*
- *  $Id: SASxport.c,v 1.12 2004/05/22 06:44:29 hornik Exp $
  *
  *  Read SAS transport data set format
  *
@@ -19,8 +18,8 @@
  *
  *  You should have received a copy of the GNU General Public
  *  License along with this program; if not, write to the Free
- *  Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- *  MA 02111-1307, USA
+ *  Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ *  Boston, MA 02110-1301  USA
  *
  */
 
@@ -92,17 +91,17 @@ static double get_IBM_double(char* c, size_t len)
     memset(ibuf, 0, (size_t) 8);
     memcpy(ibuf, c, len);
     c = ibuf;
-				/* check for missing value */
+    /* check for missing value */
     /* This isn't really right: NAs are ' ',  '.', A-Z plus zero fill */
     if (c[1] == '\0' && c[0] != '\0') return R_NaReal;
-				/* convert c[1] to c[3] to an int */
+    /* convert c[1] to c[3] to an int */
     buf[0] = '\0';
     for (i = 1; i < 4; i++) buf[i] = c[i];
-    char_to_uint(&buf[0], upper);
-				/* convert c[4] to c[7] to an int */
+    char_to_uint(buf, upper);
+    /* convert c[4] to c[7] to an int */
     for (i = 0; i < 4; i++) buf[i] = c[i + 4];
-    char_to_uint(&buf[0], lower);
-				/* initialize the constant if needed */
+    char_to_uint(buf, lower);
+    /* initialize the constant if needed */
     value = ((double) upper + ((double) lower)/Two32) *
 	pow(16., (double) exponent);
     if (negative) value = -value;
@@ -112,16 +111,7 @@ static double get_IBM_double(char* c, size_t len)
 static int
 get_nam_header(FILE *fp, struct SAS_XPORT_namestr *namestr, int length)
 {
-    /*
-     * gcc >= 4 is fussy about alignment in memcpy on some 64-bit
-     * platforms, e.g. ia64 aand sparc.
-     * This violates POSIX and C99, so we need to be safer.
-     * point to an array of ints to ensure alignment;
-     * assumes sizeof(int) == 4, because the code already assumes that
-anyway
-     */
-    int buf[36];
-    char *record = (char *) buf;
+    char record[141];
     int n;
 
     record[length] = '\0';
@@ -133,14 +123,14 @@ anyway
     char_to_short(record+2, namestr->nhfun);
     char_to_short(record+4, namestr->nlng);
     char_to_short(record+6, namestr->nvar0);
-    Memcpy(namestr->nname, record + 8, 8);
-    Memcpy(namestr->nlabel, record + 16, 40);
-    Memcpy(namestr->nform, record + 56, 8);
+    memcpy(namestr->nname, record + 8, 8);
+    memcpy(namestr->nlabel, record + 16, 40);
+    memcpy(namestr->nform, record + 56, 8);
     char_to_short(record+64, namestr->nfl);
     char_to_short(record+66, namestr->nfd);
     char_to_short(record+68, namestr->nfj);
-    Memcpy(namestr->nfill, record + 70, 2);
-    Memcpy(namestr->niform, record + 72, 8);
+    memcpy(namestr->nfill, record + 70, 2);
+    memcpy(namestr->niform, record + 72, 8);
     char_to_short(record+80, namestr->nifl);
     char_to_short(record+82, namestr->nifd);
     char_to_int(record+84, namestr->npos);
@@ -161,20 +151,20 @@ get_lib_header(FILE *fp, struct SAS_XPORT_header *head)
     if(n != 80)
 	return 0;
     record[80] = '\0';
-    Memcpy(head->sas_symbol[0], record, 8);
-    Memcpy(head->sas_symbol[1], record+8, 8);
-    Memcpy(head->saslib, record+16, 8);
-    Memcpy(head->sasver, record+24, 8);
-    Memcpy(head->sas_os, record+32, 8);
+    memcpy(head->sas_symbol[0], record, 8);
+    memcpy(head->sas_symbol[1], record+8, 8);
+    memcpy(head->saslib, record+16, 8);
+    memcpy(head->sasver, record+24, 8);
+    memcpy(head->sas_os, record+32, 8);
     if((strrchr(record+40, ' ') - record) != 63)
 	return 0;
-    Memcpy(head->sas_create, record+64, 16);
+    memcpy(head->sas_create, record+64, 16);
 
     n = GET_RECORD(record, fp, 80);
     if(n != 80)
 	return 0;
     record[80] = '\0';
-    Memcpy(head->sas_mod, record, 16);
+    memcpy(head->sas_mod, record, 16);
     if((strrchr(record+16, ' ') - record) != 79)
 	return 0;
     return 1;
@@ -194,19 +184,19 @@ get_mem_header(FILE *fp, struct SAS_XPORT_member *member)
     if(n != 80)
 	return 0;
     record[80] = '\0';
-    Memcpy(member->sas_symbol, record, 8);
-    Memcpy(member->sas_dsname, record+8, 8);
-    Memcpy(member->sasdata, record+16, 8);
-    Memcpy(member->sasver, record+24, 8);
-    Memcpy(member->sas_osname, record+32, 8);
+    memcpy(member->sas_symbol, record, 8);
+    memcpy(member->sas_dsname, record+8, 8);
+    memcpy(member->sasdata, record+16, 8);
+    memcpy(member->sasver, record+24, 8);
+    memcpy(member->sas_osname, record+32, 8);
     if((strrchr(record+40, ' ') - record) != 63)
 	return 0;
-    Memcpy(member->sas_create, record+64, 16);
+    memcpy(member->sas_create, record+64, 16);
 
     n = GET_RECORD(record, fp, 80);
     if(n != 80)
 	return 0;
-    Memcpy(member->sas_mod, record, 16);
+    memcpy(member->sas_mod, record, 16);
     if((strrchr(record+16, ' ') - record) != 79)
 	return 0;
     return 1;

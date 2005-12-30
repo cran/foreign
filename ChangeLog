@@ -1,9 +1,24 @@
+2005-12-30  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: version is 0.8-13
+
+	* NAMESPACE, R/*.R: use registered symbols in .Call/.External calls.
+
+	* COPYING: update FSF address
+
+2005-12-19  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/SASxport.[ch]: better ways to avoid alignment problems.
+
+	* src/sfmP.h, src/sfm-read.c: remove packing as it causes 
+	alignment problems on 64-bit platforms.
+
 2005-12-14  Brian Ripley <Brian.Ripley@R-project.org>
 
-        * DESCRIPTION: version is 0.8-12
+	* DESCRIPTION: version is 0.8-12
 
-        * src/SASxport.c: force alignment of char *, as apparently
-        gcc4's memcpy requires this.
+	* src/SASxport.c: force alignment of char *, as apparently
+	gcc4's memcpy requires this.
 
 2005-12-12  Brian Ripley <Brian.Ripley@R-project.org>
 

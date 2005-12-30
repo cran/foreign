@@ -1,5 +1,4 @@
 /*
- *  $Id: SASxport.h,v 1.1 2001/03/23 16:15:26 bates Exp $
  *
  *  This file is derived from code in the SAS Technical Support
  *  document TS-140 "The Record Layout of a Data Set in SAS Transport
@@ -58,31 +57,15 @@ struct SAS_XPORT_namestr {
 
 #ifdef WORDS_BIGENDIAN
 
-#define char_to_short(from, to)			\
-    do { (to) = *((short *)(from)); } while (0)
-
-#define char_to_int(from, to)			\
-    do { (to) = *((int *)(from)); } while (0)
-
-#define char_to_uint(from, to)			\
-    do { (to) = *((unsigned int *)(from)); } while (0)
+#define char_to_short(from, to) memcpy(&to, from, 2)
+#define char_to_int(from, to) memcpy(&to, from, 4)
+#define char_to_uint(from, to) memcpy(&to, from, 4)
 
 #else
 
-#define char_to_short(from, to)			\
-do {						\
-    swap_bytes_short(*((short *)(from)), to);	\
-} while (0)
-
-#define char_to_int(from, to)			\
-do {						\
-    swap_bytes_int(*((int *)(from)), to);	\
-} while (0)
-
-#define char_to_uint(from, to)			\
-do {						\
-    swap_bytes_uint(*((unsigned int *)(from)), to);	\
-} while (0)
+#define char_to_short(from, to)	memcpy(&to, from, 2); reverse_short(to);
+#define char_to_int(from, to) memcpy(&to, from, 4); reverse_int(to);
+#define char_to_uint(from, to) memcpy(&to, from, 4); reverse_uint(to);
 
 #endif /* WORDS_BIGENDIAN */
 

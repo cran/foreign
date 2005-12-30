@@ -15,7 +15,6 @@
 ### MA 02111-1307, USA
 
 .onLoad <- .First.lib <- function(lib, pkg) {
-    library.dynam("foreign", pkg, lib)
     .C("spss_init", PACKAGE = "foreign")
 }
 

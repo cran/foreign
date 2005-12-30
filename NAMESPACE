@@ -1,3 +1,5 @@
+useDynLib(foreign, .registration = TRUE)
+
 export(data.restore, lookup.xport, read.dbf, read.dta, read.epiinfo,
        read.mtp, read.octave, read.S, read.spss, read.ssd, read.systat,
        read.xport, write.dbf, write.dta, write.foreign)
