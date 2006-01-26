@@ -1,3 +1,12 @@
+2006-01-26 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: version is 0.8-14
+
+	* src/pspp-format-def.h: rename from format.def to avoid confusion
+	with Windows .def files.
+
+	* R/zzz.R: update FSF address.
+
 2005-12-30  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: version is 0.8-13

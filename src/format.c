@@ -28,7 +28,7 @@
 	{NAME, N_ARGS, IMIN_W, IMAX_W, OMIN_W, OMAX_W, CAT, OUTPUT, SPSS_FMT},
 struct fmt_desc formats[FMT_NUMBER_OF_FORMATS + 1] =
 {
-#include "format.def"
+#include "pspp-format-def.h"
   {"",         -1, -1,  -1, -1,   -1, 0000, -1, -1},
 };
 

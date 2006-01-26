@@ -33,7 +33,7 @@
 	LABEL,
 enum
   {
-#include "format.def"
+#include "pspp-format-def.h"
     FMT_NUMBER_OF_FORMATS
   };
 #undef DEFFMT
