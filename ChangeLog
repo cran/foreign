@@ -1,3 +1,13 @@
+2006-03-29 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: version is 0.8-15
+
+	* src/R_systat.c: Don't try to parse comments.
+
+2006-02-25 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/init.c: use const for tables.
+
 2006-01-26 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: version is 0.8-14

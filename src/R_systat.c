@@ -450,12 +450,13 @@ static void getlab(struct SysFilev3 *u)
 	       end of package byte=0110, i.e. 72 chars */
 	} while (len >= 72 && !isDollar);
 	/* until start of comment line is '$' */
-	if (len > 72) {
+	/* removed Mar 2006 to avoid a problen with over-long comments
+        if (len > 72) {
 	    combuf[len - 73] = '\0';
 	    u->h.comment = (char *) R_alloc(len - 72, sizeof(char));
 	    strncpy(u->h.comment, combuf, (len - 72));
 	}
-	else u->h.comment = NULL;
+	else u->h.comment = NULL; */
 	/* If comment on record(s) before the one beginning
 	   with a $, allocate space and squirrel away */
 

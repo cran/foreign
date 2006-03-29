@@ -44,7 +44,7 @@ static const R_CMethodDef CEntries[]  = {
 
 #define CALLDEF(name, n)  {#name, (DL_FUNC) &name, n}
 
-static R_CallMethodDef CallEntries[] = {
+static const R_CallMethodDef CallEntries[] = {
     CALLDEF(Rdbfread, 1),
     CALLDEF(DoWritedbf, 5),
     CALLDEF(read_mtp, 1),
@@ -57,7 +57,7 @@ static R_CallMethodDef CallEntries[] = {
 
 #define EXTDEF(name, n)  {#name, (DL_FUNC) &name, n}
 
-static R_ExternalMethodDef ExtEntries[] = {
+static const R_ExternalMethodDef ExtEntries[] = {
     EXTDEF(do_readStata, 1),
     EXTDEF(do_writeStata, 4),
     {NULL, NULL, 0}
