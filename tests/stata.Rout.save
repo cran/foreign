@@ -1,19 +1,18 @@
 
-R : Copyright 2005, The R Foundation for Statistical Computing
-Version 2.1.0 Under development (unstable) (2005-01-31), ISBN 3-900051-07-0
+R version 2.4.0 Under development (unstable) (2006-08-11 r38834)
+Copyright (C) 2006 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
-
-  Internationalized test version in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
 
 Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for a HTML browser interface to help.
+'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
 > library(foreign)
@@ -64,7 +63,7 @@ cannot read factor labels from Stata 5 files in: read.dta("pc5.dta")
  3rd Qu.:302.5   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1487.0  
  Max.   :418.0   Max.   :1.0000   Max.   :1.0000   Max.   :1487.0  
 > str(pc5)
-`data.frame':	659 obs. of  24 variables:
+'data.frame':	659 obs. of  24 variables:
  $ age    : num  58.8 56.4 56.4 70.1 54.7 ...
  $ alb    : num  2.60 4.14 4.14 3.48 2.54 ...
  $ alkphos: num  1718 7395 7395  516 6122 ...
@@ -187,7 +186,7 @@ cannot read factor labels from Stata 5 files in: read.dta("pc5.dta")
  3rd Qu.:302.5   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1487.0  
  Max.   :418.0   Max.   :1.0000   Max.   :1.0000   Max.   :1487.0  
 > str(sun6)
-`data.frame':	659 obs. of  24 variables:
+'data.frame':	659 obs. of  24 variables:
  $ age    : num  58.8 56.4 56.4 70.1 54.7 ...
  $ alb    : num  2.60 4.14 4.14 3.48 2.54 ...
  $ alkphos: num  1718 7395 7395  516 6122 ...
@@ -298,7 +297,7 @@ abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "co
 > 
 > stata8<-read.dta("auto8.dta",missing=TRUE,convert.underscore=FALSE)
 > str(stata8)
-`data.frame':	74 obs. of  13 variables:
+'data.frame':	74 obs. of  13 variables:
  $ make        : chr  "AMC Concord" "AMC Pacer" "AMC Spirit" "Buick Century" ...
  $ price       : int  4099 4749 3799 4816 7827 5788 4453 5189 10372 4082 ...
  $ mpg         : int  22 17 22 20 15 18 26 20 16 19 ...

@@ -150,7 +150,7 @@ data.restore <-
 	}
 	else if (code %in% c("list", "structure", "NULL", SModeNames)) {
 	    value <- list()
-	    for (i in seq(length = len)) {
+	    for (i in seq_len(len)) {
 		temp <- ReadSdump(FALSE, c(prefix, " "))
 		value[[nam.or.i(temp$name,i)]] <- temp$value
 	    }

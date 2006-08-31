@@ -27,7 +27,6 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <R.h>
-#include <Rdefines.h>
 #include <Rinternals.h>
 #include "foreign.h"
 
@@ -63,7 +62,8 @@ static
 SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
 				     MTB's and Free the MTB storage */
 {
-    SEXP ans = PROTECT(NEW_LIST(len)), names = PROTECT(NEW_STRING(len));
+    SEXP ans = PROTECT(allocVector(VECSXP,len)), 
+	names = PROTECT(allocVector(STRSXP, len));
     int i,j;
     
     
@@ -73,9 +73,8 @@ SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
 	SET_STRING_ELT(names, i, mkChar(thisRec->name));
 	switch(mtb[i]->dtype) {
 	case 0:			/* numeric data */
-	    SET_VECTOR_ELT(ans, i, NEW_NUMERIC(mtb[i]->len));
-	    Memcpy(NUMERIC_POINTER(VECTOR_ELT(ans, i)), mtb[i]->dat.ndat,
-		   mtb[i]->len);
+	    SET_VECTOR_ELT(ans, i, allocVector(REALSXP, mtb[i]->len));
+	    Memcpy(REAL(VECTOR_ELT(ans, i)), mtb[i]->dat.ndat, mtb[i]->len);
 	    Free(mtb[i]->dat.ndat);
 	    break;
         default:
@@ -87,7 +86,7 @@ SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
                 for (j = 0; j < nrow*ncol; j++) {
                     REAL(aMatrix)[j] = mtb[i]->dat.ndat[j];
                 }
-                SET_ELEMENT(ans, i, aMatrix);
+                SET_VECTOR_ELT(ans, i, aMatrix);
                 Free(mtb[i]->dat.ndat);
                 UNPROTECT(1);
             } else {

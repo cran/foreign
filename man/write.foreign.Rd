@@ -3,12 +3,13 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Write Text Files and Code to Read Them}
 \description{
-This function exports data frames to other statistical packages by
+This function exports simple data frames to other statistical packages by
 writing the data as free-format text and writing a separate file of
 instructions for the other package to read the data. 
 }
 \usage{
-write.foreign(df, datafile, codefile, package = c("SPSS","Stata","SAS"), ...)
+write.foreign(df, datafile, codefile,
+              package = c("SPSS","Stata","SAS"), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,14 +27,19 @@ eg Systat, create a function \code{writeForeignSystat} with the same first
 three arguments as \code{write.foreign}. This will be called from
 \code{write.foreign} when \code{package="Systat"}.
 
-For \code{package="SAS"} there is an optional argument \code{dataname="rdata"}
-taking a string that will be the SAS data set name. 
+Numeric variables and factors are supported for all packages, dates and times
+(\code{Date}, \code{dates}, \code{date}, and \code{POSIXt} classes) are
+also supported for SAS.
+
+For \code{package="SAS"} there are optional arguments \code{dataname="rdata"}
+taking a string that will be the SAS data set name and
+\code{validvarname} taking either \code{"V6"} or \code{"V7"}.
 }
 \value{
   None
 }
 
-\author{Thomas Lumley}
+\author{Thomas Lumley and Stephen Weigand}
 \examples{
 \dontrun{
 datafile<-tempfile()

@@ -1,3 +1,25 @@
+2006-08-31 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: there are no imports, from methods or elsewhere.
+	   version is 0.8-16.
+
+	* R/Sread.R, R/dbf.R, R/octave.R: use seq_{along,len}.
+	
+	* src/minitab.c: only use Rinternals.h.
+
+2006-08-11 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* tests/stata.Rout.save: update for str() change.
+
+2006-06-17 Thomas Lumley <tlmley@u.washington.edu>
+
+	* R/writeForeignSAS.R, COPYRIGHTS: Add Stephen Weigand's modifications 
+	
+2006-05-26 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* R/dbf.R, man/writedbf.Rd: new argument max_nchar to write.dbf()
+	to allow longer character fields.
+
 2006-03-29 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: version is 0.8-15

@@ -13,7 +13,7 @@ read.dbf <- function(file, as.is = FALSE)
                     inames[i], "\n")
     }
     data_types <- attr(df, "data_types")
-    for(i in seq(along=onames))
+    for(i in seq_along(onames))
         if(data_types[i] == "D") df[[i]] <- as.Date(df[[i]], format="%Y%m%d")
     if(!as.is) {
         df <- data.frame(lapply(df, function(x) {
@@ -25,7 +25,7 @@ read.dbf <- function(file, as.is = FALSE)
 }
 
 
-write.dbf <- function(dataframe, file, factor2char = TRUE)
+write.dbf <- function(dataframe, file, factor2char = TRUE, max_nchar = 254)
 {
 ### need to check precision
     allowed_classes <- c("logical", "integer", "numeric", "character",
@@ -43,7 +43,7 @@ write.dbf <- function(dataframe, file, factor2char = TRUE)
     m <- ncol(dataframe)
     DataTypes <- c(logical="L", integer="N", numeric="F", character="C",
                    factor=if(factor2char) "C" else "N", Date="D")[cl]
-    for(i in seq(length = m)) {
+    for(i in seq_len(m)) {
         x <- dataframe[[i]]
         if(is.factor(x))
             dataframe[[i]] <-
@@ -54,7 +54,7 @@ write.dbf <- function(dataframe, file, factor2char = TRUE)
     precision <- integer(m)
     scale <- integer(m)
     dfnames <- names(dataframe)
-    for (i in seq(length = m)) {
+    for (i in seq_len(m)) {
         nlen <- nchar(dfnames[i])
         x <- dataframe[, i]
         if (is.logical(x)) {
@@ -72,11 +72,14 @@ write.dbf <- function(dataframe, file, factor2char = TRUE)
             rx <- range(x, na.rm = TRUE)
             rx[!is.finite(rx)] <- 0 # added RSB 2005-04-17
             mrx <- max(ceiling(log10(abs(rx))))
-            scale[i] <- min(precision[i] - ifelse(mrx > 0, mrx+3, 3), 15) 
+            scale[i] <- min(precision[i] - ifelse(mrx > 0, mrx+3, 3), 15)
                     # modified RSB 2005-03-10 and 2005-04-17
         } else if (is.character(x)) {
             mf <- max(nchar(x[!is.na(x)]))
-            precision[i] <- min(max(nlen, mf), 254)
+            p <- max(nlen, mf)
+            if(p > max_nchar)
+                warning(gettext("character column %d will be truncated to %d bytes", i, max_nchar), domain = NA)
+            precision[i] <- min(p, max_nchar)
             scale[i] <- 0
         } else stop("unknown column type in data frame")
     }

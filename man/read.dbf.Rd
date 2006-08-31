@@ -17,9 +17,9 @@ read.dbf(file, as.is = FALSE)
   family of database languages, \sQuote{covering the dBase, Clipper,
     FoxPro, and their Windows equivalents Visual dBase, Visual Objects,
     and Visual FoxPro, plus some older products}
-  (\url{http://www.e-bachmann.dk/docs/xbase.htm}).  Most of these follow
-  the file structure used by Ashton-Tate's dBase II, III or 4 (later
-  owned by Borland).
+  (\url{http://www.clicketyclick.dk/databases/xbase/format/}).
+  Most of these follow the file structure used by Ashton-Tate's dBase
+  II, III or 4 (later owned by Borland).
 
   \code{read.dbf} is based on C code from
   \url{http://shapelib.maptools.org/} which implements the

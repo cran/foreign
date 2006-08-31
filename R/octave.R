@@ -158,7 +158,7 @@ function(file)
         ## Note that lists are deprecated now in favor of cells.
         n <- as.numeric(gsub("# length: ", "", readLines(con, 1)))
         out <- vector("list", n)
-        for(i in seq(length = n)) {
+        for(i in seq_len(n)) {
             ## Skip over "# name: _val" lines.
             readLines(con, 1)
             out[[i]] <- read_item(con)
@@ -172,8 +172,8 @@ function(file)
         nc <- as.numeric(gsub("# columns: ", "", readLines(con, 1)))
         out <- vector("list", nr * nc)
         dim(out) <- c(nr, nc)
-        for(j in seq(length = nc)) {
-            for(i in seq(length = nr)) {
+        for(j in seq_len(nc)) {
+            for(i in seq_len(nr)) {
                 ## Skip over "# name: <cell-element>" lines.
                 readLines(con, 1)
                 ## Get the next cell element.
@@ -191,7 +191,7 @@ function(file)
         ## Helper function: read in a struct.
         n <- as.numeric(gsub("# length: ", "", readLines(con, 1)))
         out <- vector("list", n)
-        for(i in seq(length = n)) {
+        for(i in seq_len(n)) {
             ## Skip over "# name: _val" lines.
             name <- gsub("# name: ", "", readLines(con, 1))
             out[[i]] <- read_item(con)

@@ -133,3 +133,8 @@ R/octave.R
 man/read.octave.Rd
 (c) 2004 Stephen Eglen
 Enhancements (c) 2004 R Development Core Team
+
+
+R/writeForeignSAS.R
+(c) 2004-5  R Development Core Team
+Enhancements (c) 2006 Stephen Weigand
