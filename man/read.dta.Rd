@@ -2,7 +2,7 @@
 \alias{read.dta}
 \title{Read Stata Binary Files}
 \description{
-  Reads a file in Stata version 5-8 or 7/SE binary format into a data frame. 
+  Reads a file in Stata version 5-9  binary format into a data frame. 
 }
 \usage{
 read.dta(file, convert.dates = TRUE, tz = NULL,
@@ -15,7 +15,7 @@ read.dta(file, convert.dates = TRUE, tz = NULL,
   \item{tz}{Previously used to specify time zone. Now deprecated.}
   \item{convert.factors}{Use Stata value labels to create factors?
     (version 6.0 or later).}
-  \item{missing.type}{For version 8 only, store information about
+  \item{missing.type}{For version 8,9 only, store information about
     different types of missing data?}
   \item{convert.underscore}{Convert \code{"_"} in Stata variable names
     to \code{"."} in R names?}
@@ -35,7 +35,8 @@ read.dta(file, convert.dates = TRUE, tz = NULL,
   \code{convert.factors=NA} to override this. In any case the value
   label and format information is stored as attributes on the returned data frame. 
 
-  Stata 8.0 has 27 different missing data values. If \code{missing.type}
+  Stata 8.0 introduced a system of 27 different missing data values. If
+  \code{missing.type}
   is \code{TRUE} a separate list is created with the same variable
   names as the loaded data. For string variables the list value is
   \code{NULL}. For other variables the value is \code{NA} where the
@@ -51,7 +52,7 @@ read.dta(file, convert.dates = TRUE, tz = NULL,
 }
 \references{
   Stata Users Manual (versions 5 & 6), Programming manual (version 7),
-  or online help (version 8) describe the format of the files.
+  or online help (version 8,9) describe the format of the files.
 }
 
 \author{Thomas Lumley}

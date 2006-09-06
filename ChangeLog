@@ -1,7 +1,24 @@
+2006-09-06 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: needs to depends on stats, for na.omit.
+	  It does use methods::as
+	  Version is 0.8-17
+
+2006-08-31 Thomas Lumley <tlumley@u.washington.edu>
+
+	* R/read.dta, src/stataread.c: return a list from C, 
+	  much faster for wide files
+
+	* man/read.dta.Rd, man/write.dta.Rd: update for Stata 9.
+
+	* src/sfm-read.c: changes from PR#9074 <tim.bock@numbers.net.au>
+
+	* src/writeForeignCode.R: fixes for PR#8936,  PR#8927, PR#9006
+
 2006-08-31 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: there are no imports, from methods or elsewhere.
-	   version is 0.8-16.
+	  Version is 0.8-16.
 
 	* R/Sread.R, R/dbf.R, R/octave.R: use seq_{along,len}.
 	

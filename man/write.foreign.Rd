@@ -9,7 +9,7 @@ instructions for the other package to read the data.
 }
 \usage{
 write.foreign(df, datafile, codefile,
-              package = c("SPSS","Stata","SAS"), ...)
+              package = c("SPSS", "Stata", "SAS"), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,7 +29,7 @@ three arguments as \code{write.foreign}. This will be called from
 
 Numeric variables and factors are supported for all packages, dates and times
 (\code{Date}, \code{dates}, \code{date}, and \code{POSIXt} classes) are
-also supported for SAS.
+also supported for SAS and characters are supported for SPSS.
 
 For \code{package="SAS"} there are optional arguments \code{dataname="rdata"}
 taking a string that will be the SAS data set name and

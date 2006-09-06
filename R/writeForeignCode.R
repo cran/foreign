@@ -12,19 +12,32 @@ adQuote <- function(x) paste("\"", x, "\"", sep = "")
 writeForeignSPSS<-function(df,datafile,codefile,varnames=NULL){
 
   dfn<-lapply(df, function(x) if (is.factor(x)) as.numeric(x) else x)
-  write.table(dfn, file=datafile,row=FALSE,col=FALSE)
+  write.table(dfn, file=datafile, row=FALSE, col=FALSE,
+              sep=",", quote=FALSE, na="",eol=",\n")
 
   varlabels<-names(df)
   if (is.null(varnames)){
-    varnames<-abbreviate(names(df),8)
+    varnames<-abbreviate(names(df), 8)
     if (any(sapply(varnames,nchar)>8))
       stop("I cannot abbreviate the variable names to eight or fewer letters")
     if (any(varnames!=varlabels))
       warning("some variable names were abbreviated")
   }
 
-  cat("DATA LIST FILE=",dQuote(datafile)," free\n",file=codefile)
-  cat("/", varnames," .\n\n",file=codefile,append=TRUE)
+  varnames<-gsub("[^[:alnum:]_\\$@#]","\\.",varnames)
+  
+  dl.varnames<-varnames
+  if (any(chv<-sapply(df,is.character))){
+      lengths<-sapply(df[chv],function(v) max(nchar(v)))
+      if(any(lengths>255))
+          stop("Cannot handle character variables longer than 255")
+      lengths<-paste("(A",lengths,")",sep="")
+      star<-ifelse(c(FALSE,diff(which(chv)>1))," *", " ")
+      dl.varnames[chv]<-paste(star,dl.varnames[chv],lengths)
+  }
+  
+  cat("DATA LIST FILE=",adQuote(datafile)," free (\",\")\n",file=codefile)
+  cat("/", dl.varnames," .\n\n",file=codefile,append=TRUE)
   cat("VARIABLE LABELS\n",file=codefile,append=TRUE)
   cat(paste(varnames, adQuote(varlabels),"\n"),".\n",file=codefile,append=TRUE)
   factors<-sapply(df,is.factor)

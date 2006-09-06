@@ -467,9 +467,6 @@ SEXP R_LoadStataData(FILE *fp)
 
     /** tidy up **/
 
-    PROTECT(tmp = mkString("data.frame"));
-    setAttrib(df, R_ClassSymbol, tmp);
-    UNPROTECT(1);
     PROTECT(row_names = allocVector(STRSXP, nobs));
     for (i=0; i<nobs; i++) {
         sprintf(datalabel, "%d", i+1);

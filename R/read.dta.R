@@ -19,21 +19,21 @@ read.dta <- function(file, convert.dates=TRUE,tz=NULL,
         if (abs(attr(rval,"version"))==8){
             for(v in which(types>250)){
                 this.type<-types[v]-250
-                rval[,v][rval[,v]>=stata.na$min[this.type]]<-NA
+                rval[[v]][rval[[v]] >= stata.na$min[this.type]] <- NA
             }
         }
     } else {
         if (abs(attr(rval,"version"))==8){
-            missings<-vector("list",NCOL(rval))
+            missings<-vector("list",length(rval))
             names(missings)<-names(rval)
             for(v in which(types>250)){
                 this.type<-types[v]-250
-                nas<-is.na(rval[,v]) |  rval[,v]>=stata.na$min[this.type]
-                natype<-(rval[nas,v]-stata.na$min[this.type])/stata.na$inc[this.type]
+                nas<-is.na(rval[[v]]) |  rval[[v]]>=stata.na$min[this.type]
+                natype<-(rval[[v]][nas]-stata.na$min[this.type])/stata.na$inc[this.type]
                 natype[is.na(natype)]<-0
                 missings[[v]]<-rep(NA,NROW(rval))
                 missings[[v]][nas]<-natype
-                rval[nas,v]<-NA
+                rval[[v]][nas]<-NA
             }
             attr(rval,"missing")<-missings
         } else {
@@ -74,9 +74,12 @@ read.dta <- function(file, convert.dates=TRUE,tz=NULL,
         }
       }
 
-
+    att<-attributes(rval)
+    rval<-as.data.frame(rval, stringsAsFactors=FALSE)
+    newatt<-attributes(rval)
+    newatt<-c(newatt, att[!(names(att) %in% names(newatt))])
+    attributes(rval)<-newatt
     rval
-
   }
 
 write.dta <- function(dataframe, file, version = 6,convert.dates=TRUE,tz="GMT",

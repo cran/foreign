@@ -414,7 +414,8 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 	      case 11: /* ?? Used by SPSS 8.0. */
 		skip = 1;
 		break;
-	       
+
+	      case 7: /* Multiple-response sets (later versions of SPSS). */	       
 	      case 13:  /* long variable names. PSPP now has code for these
 			   that could be ported if someone is interested. */
 		skip = 1;
@@ -648,13 +649,13 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
   
   /* Check endianness. */
   /* PORTME: endianness. */
-  if (hdr.layout_code == 2)
+  if (hdr.layout_code == 2 || hdr.layout_code == 3)
     ext->reverse_endian = 0;
   else
     {
       bswap_int32 (&hdr.layout_code);
-      if (hdr.layout_code != 2)
-	lose ((_("%s: File layout code has unexpected value %d.  Value should be 2, in big-endian or little-endian format"),
+      if (hdr.layout_code != 2 && hdr.layout_code != 3)
+	lose ((_("%s: File layout code has unexpected value %d.  Value should be 2 or 3, in big-endian or little-endian format"),
 	       h->fn, hdr.layout_code));
 
       ext->reverse_endian = 1;
