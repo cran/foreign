@@ -12,7 +12,7 @@ read.epiinfo(file, read.deleted = FALSE, guess.broken.dates = FALSE,
              thisyear = NULL, lower.case.names = FALSE)
 }
 \arguments{
-  \item{file}{A filename, URL, or connnection.}
+  \item{file}{A filename, URL, or connection.}
   \item{read.deleted}{Deleted records are read if \code{TRUE}, omitted
     if \code{FALSE} or replaced with \code{NA} if \code{NA}.}
   \item{guess.broken.dates}{Attempt to convert dates with 0 or 2 digit

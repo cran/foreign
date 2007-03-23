@@ -26,15 +26,22 @@ read.ssd(libname, sectionnames,
 }
 \details{
   Creates a SAS program and runs it.
+
+  Error handling is primitive.
 }
 \value{
-  A data frame if all goes well, or NULL with warnings and some
+  A data frame if all goes well, or \code{NULL} with warnings and some
   enduring side effects (log file for auditing)
 }
 \author{
   For Unix: VJ Carey \email{<stvjc@channing.harvard.edu>}
 }
-\note{ error handling is primitive }
+\note{
+  \strong{This requires SAS to be available.}  If you have a SAS dataset
+  without access to SAS you will need another product to convert it to a 
+  format such as \code{.csv}, for example \sQuote{Stat/Transfer} or 
+  \sQuote{DBMS/Copy} or the \sQuote{SAS System Viewer} (Windows only).
+}
 \seealso{\code{\link{read.xport}}}
 \examples{
 ## if there were some files on the web we could get a real
@@ -47,8 +54,8 @@ R> list.files("trialdata")
 [10] "form50.sas7bdat"   "form51.sas7bdat"   "form71.sas7bdat"  
 [13] "form72.sas7bdat"   "form8.sas7bdat"    "form9.sas7bdat"   
 [16] "form90.sas7bdat"   "form91.sas7bdat"  
-R> baseline<-read.ssd("trialdata","baseline")
-R> form90<-read.ssd("trialdata","form90")
+R> baseline <- read.ssd("trialdata","baseline")
+R> form90 <- read.ssd("trialdata","form90")
 
 ## Or for a Windows example
 sashome <- "/Program Files/SAS/SAS 9.1"

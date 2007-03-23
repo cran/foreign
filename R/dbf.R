@@ -9,8 +9,7 @@ read.dbf <- function(file, as.is = FALSE)
     if (!(identical(onames, inames))) {
         for (i in 1:length(onames))
             if (!(identical(onames[i], inames[i])))
-                cat("Field name: ", onames[i], " changed to: ",
-                    inames[i], "\n")
+                message("Field name: ", onames[i], " changed to: ", inames[i])
     }
     data_types <- attr(df, "data_types")
     for(i in seq_along(onames))

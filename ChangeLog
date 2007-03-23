@@ -1,3 +1,22 @@
+2007-03-23 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-19, depends on 2.5.0.
+	* NAMESPACE: remove conditionality
+	* man/read.ssd.Rd: add comments about alternatives.
+
+2007-03-06 Thomas Lumley <tlumley@u.washington.edu>
+
+	* R/read.dta.R: avoid as.data.frame.list, for efficiency 
+	
+2006-12-22 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* man/read.epiinfo.Rd: spelling
+
+2006-11-30 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* NAMESPACE: Conditional on R>=2.5.0, import write.table
+	* DESCRIPTION: Declare imports from utils, although only needed for R>=2.5.0
+
 2006-11-29 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-18.

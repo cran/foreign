@@ -75,7 +75,8 @@ read.dta <- function(file, convert.dates=TRUE,tz=NULL,
       }
 
     att<-attributes(rval)
-    rval<-as.data.frame(rval, stringsAsFactors=FALSE)
+    ##rval<-as.data.frame(rval, stringsAsFactors=FALSE)
+    class(rval)<-"data.frame"
     newatt<-attributes(rval)
     newatt<-c(newatt, att[!(names(att) %in% names(newatt))])
     attributes(rval)<-newatt
