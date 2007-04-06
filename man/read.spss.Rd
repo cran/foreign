@@ -46,8 +46,13 @@ read.spss(file, use.value.labels=TRUE, to.data.frame=FALSE,
   If SPSS value labels are converted to factors the underlying numerical
   codes will not in general be the same as the SPSS numerical
   values, since the numerical codes in R are always 1,2,3,...
+
+  You may see warnings about the file encoding: it is possible such
+  files contain non-ASCII character data which need re-encoding.
+  The most common occurrence is Windows codepage 1252, a superset of
+  Latin-1.
 }
-\author{Saikat DebRoy}
+\author{Saikat DebRoy and the R Core team}
 \examples{
 \dontrun{
 read.spss("datafile")

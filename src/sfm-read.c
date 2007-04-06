@@ -522,11 +522,18 @@ read_machine_int32_info (struct file_handle * h, int size, int count)
 	   data[6] == 1 ? "big-endian" : (data[6] == 2 ? "little-endian"
 					  : "unknown")));
 
+/* Removes a problem with SPSS 15 files, according to
+http://www.nabble.com/problem-loading-SPSS-15.0-save-files-t2726500.html
+We just deal with the cases we know are wrong (2 and 3 are OK).
+*/
   /* PORTME: Character representation code. */
-  if (data[7] != 2 && data[7] != 3)
+  if (data[7] == 1 || data[7] == 4)
     lose ((_("%s: File-indicated character representation code (%s) is not ASCII"), h->fn,
        data[7] == 1 ? "EBCDIC" : (data[7] == 4 ? "DEC Kanji" : "Unknown")));
-
+  if(data[7] >= 500)
+      warning(_("%s: File-indicated character representation code (%d) looks like a Windows codepage"), h-> fn, data[7]);
+  else if(data[7] > 4)
+      warning(_("%s: File-indicated character representation code (%d) is unknown"), h-> fn, data[7]);
   return 1;
 
 lossage:
