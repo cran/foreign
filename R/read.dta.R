@@ -94,13 +94,13 @@ write.dta <- function(dataframe, file, version = 6,convert.dates=TRUE,tz="GMT",
     }
 
 
-
+    ## assume this is in chars: probably only works for ASCII
     namelength<-if (version==6) 8 else 31
     oldn<-names(dataframe)
     nn<-abbreviate(oldn,namelength )
-    if (any(nchar(nn)>namelength))
+    if (any(nchar(nn) > namelength))
         stop("cannot uniquely abbreviate variable names")
-    if (any(nchar(oldn)>namelength))
+    if (any(nchar(oldn) > namelength))
         warning("abbreviating variable names")
     names(dataframe)<-nn
     attr(dataframe,"orig.names")<-oldn

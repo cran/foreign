@@ -1,6 +1,6 @@
 
-R version 2.4.0 Under development (unstable) (2006-08-11 r38834)
-Copyright (C) 2006 The R Foundation for Statistical Computing
+R version 2.6.0 Under development (unstable) (2007-05-29 r41742)
+Copyright (C) 2007 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -18,7 +18,7 @@ Type 'q()' to quit R.
 > library(foreign)
 > pc5 <- read.dta("pc5.dta")
 Warning message:
-cannot read factor labels from Stata 5 files in: read.dta("pc5.dta") 
+In read.dta("pc5.dta") : cannot read factor labels from Stata 5 files
 > summary(pc5)
       age             alb           alkphos         ascites      
  Min.   :26.28   Min.   :1.960   Min.   :   -9   Min.   :-9.000  
@@ -257,19 +257,21 @@ cannot read factor labels from Stata 5 files in: read.dta("pc5.dta")
 > data(esoph)
 > write.dta(esoph,esophile<-tempfile())
 Warning message:
-abbreviating variable names in: write.dta(esoph, esophile <- tempfile()) 
+In write.dta(esoph, esophile <- tempfile()) : abbreviating variable names
 > esoph2<-read.dta(esophile)
 > all.equal(ordered(esoph2$alcgp),esoph$alcgp)
 [1] TRUE
 > write.dta(esoph,esophile,convert.factors="string")
 Warning message:
-abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "string") 
+In write.dta(esoph, esophile, convert.factors = "string") :
+  abbreviating variable names
 > esoph2<-read.dta(esophile)
 > all.equal(as.character(esoph$alcgp),esoph2$alcgp)
 [1] TRUE
 > write.dta(esoph,esophile,convert.factors="code")
 Warning message:
-abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "code") 
+In write.dta(esoph, esophile, convert.factors = "code") :
+  abbreviating variable names
 > esoph2<-read.dta(esophile)
 > all.equal(as.numeric(esoph$alcgp),as.numeric(esoph2$alcgp))
 [1] TRUE
@@ -295,7 +297,7 @@ abbreviating variable names in: write.dta(esoph, esophile, convert.factors = "co
 6    white      6
 7    black      7
 > 
-> stata8<-read.dta("auto8.dta",missing=TRUE,convert.underscore=FALSE)
+> stata8<-read.dta("auto8.dta",missing.type=TRUE,convert.underscore=FALSE)
 > str(stata8)
 'data.frame':	74 obs. of  13 variables:
  $ make        : chr  "AMC Concord" "AMC Pacer" "AMC Spirit" "Buick Century" ...

@@ -197,7 +197,7 @@ data.restore <-
     repeat {
 	temp <- ReadSdump(TRUE, " ")
 	if(is.null(temp)) break
-	assign(temp$name, temp$value, env = env)
+	assign(temp$name, temp$value, envir = env)
     }
     file
 }

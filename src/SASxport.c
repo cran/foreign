@@ -346,9 +346,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 
     nbytes = 0;
     nlength = 0;
-/*      tmp = (char *) R_alloc(totwidth+1, sizeof(char)); */
-    tmp = CHAR(PROTECT(allocVector(CHARSXP, (totwidth<=80?81:(totwidth+1)) * 
-				   sizeof(char))));
+    tmp = Calloc(totwidth <= 80 ? 81 : (totwidth+1), char);
     restOfCard = 0;
     *tailpad = 0;
     while(!feof(fp)) {
@@ -403,7 +401,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	nlength++;
     }
     *length = nlength;
-    UNPROTECT(1);
+    Free(tmp);
 
     return (feof(fp)?-1:namestr_length);
 }
@@ -416,7 +414,7 @@ static SEXP
 getListElement(SEXP list, char *str) {
     SEXP names;
     SEXP elmt = (SEXP) NULL;
-    char *tempChar;
+    const char *tempChar;
     int i;
 
     names = getAttrib(list, R_NamesSymbol);
@@ -606,9 +604,7 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 	totalWidth = 0;
 	for(j = 0; j < nvar; j++)
 	    totalWidth += dataWidth[j];
-/* 	record = (char *) R_alloc(totalWidth + 1, sizeof (char)); */
-	record = CHAR(PROTECT(allocVector(CHARSXP,
-					  (totalWidth+1) * sizeof(char))));
+	record = Calloc(totalWidth + 1, char);
 
 	dataHeadPad = asInteger(getListElement(dataInfo, "headpad"));
 	dataTailPad = asInteger(getListElement(dataInfo, "tailpad"));
@@ -641,7 +637,7 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 
 	fseek(fp, dataTailPad, SEEK_CUR);
 	
-	UNPROTECT(1);
+	Free(record);
     }
     UNPROTECT(1);
     fclose(fp);

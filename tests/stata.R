@@ -27,7 +27,7 @@ print(se)
 v8<-read.dta("stata8mac.dta")
 print(v8)
 
-stata8<-read.dta("auto8.dta",missing=TRUE,convert.underscore=FALSE)
+stata8<-read.dta("auto8.dta",missing.type=TRUE,convert.underscore=FALSE)
 str(stata8)
 
 q()

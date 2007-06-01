@@ -18,7 +18,8 @@ SEXP Rdbfread(SEXP dbfnm)
 {
     DBFHandle hDBF;
     int i, iRecord, nflds, nrecs, nRvar, pc=0;
-    char labelbuff[81], *pszFilename = NULL;
+    char labelbuff[81];
+    const char *pszFilename = NULL;
     int nWidth, nDecimals, val;
     char szTitle[12], buf[2];
     const char *p;

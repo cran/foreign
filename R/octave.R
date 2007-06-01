@@ -89,9 +89,9 @@ function(file)
             c1 <- gsub(",", " ", c1)
             s <- unlist(strsplit(c1, " "))
             nums <- as.numeric(s[-1])   # Remove initial space.
-            reals <- nums[seq(from = 1, by = 2, length = length(nums)/2)]
-            imags <- nums[seq(from = 2, by = 2, length = length(nums)/2)]
-            matrix(data = complex(real = reals, imag = imags),
+            reals <- nums[seq.int(from = 1, by = 2, length.out = length(nums)/2)]
+            imags <- nums[seq.int(from = 2, by = 2, length.out = length(nums)/2)]
+            matrix(data = complex(real = reals, imaginary = imags),
                    nrow = nr, ncol = nc, byrow = TRUE)
         }
         else {
@@ -103,7 +103,7 @@ function(file)
             nums <- strsplit(data, ",")
             stopifnot(all(sapply(nums, length) == 2))
             array(complex(real = as.numeric(sapply(nums, "[", 1)),
-                          imag = as.numeric(sapply(nums, "[", 2))),
+                          imaginary = as.numeric(sapply(nums, "[", 2))),
                   dim = dims)
         }
     }
@@ -114,7 +114,7 @@ function(file)
                                     readLines(con, 1)))
         d <- readLines(con, n = 2 * elements)
         ## Remove the odd-numbered lines, they just store "length".
-        d[seq(from = 2, by = 2, length = length(d)/2)]
+        d[seq.int(from = 2, by = 2, length.out = length(d)/2)]
     }
 
     read_octave_scalar <- function(con) {
@@ -139,7 +139,7 @@ function(file)
         d <- readLines(con, n = 1) # Skip over "# base, limit, increment".
         d <- as.numeric(scan(con, nlines = 1, quiet = TRUE))
         stopifnot(length(d) == 3)
-        seq(from = d[1], to = d[2], by = d[3])
+        seq.int(from = d[1], to = d[2], by = d[3])
     }
 
     read_octave_unknown <- function(con, type) {

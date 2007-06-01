@@ -551,7 +551,7 @@ is_PORT(FILE *fp)
 SEXP
 do_read_SPSS(SEXP file)
 {
-    char *filename = CHAR(PROTECT(asChar(file)));
+    const char *filename = CHAR(PROTECT(asChar(file)));
     FILE *fp = fopen(R_ExpandFileName(filename), "rb");
     char buf[5];
     SEXP ans;

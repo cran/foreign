@@ -24,6 +24,7 @@ read.dbf <- function(file, as.is = FALSE)
 }
 
 
+### assumes that all chars are single-byte
 write.dbf <- function(dataframe, file, factor2char = TRUE, max_nchar = 254)
 {
 ### need to check precision
@@ -54,7 +55,7 @@ write.dbf <- function(dataframe, file, factor2char = TRUE, max_nchar = 254)
     scale <- integer(m)
     dfnames <- names(dataframe)
     for (i in seq_len(m)) {
-        nlen <- nchar(dfnames[i])
+        nlen <- nchar(dfnames[i], "b")
         x <- dataframe[, i]
         if (is.logical(x)) {
             precision[i] <- 1
@@ -74,7 +75,7 @@ write.dbf <- function(dataframe, file, factor2char = TRUE, max_nchar = 254)
             scale[i] <- min(precision[i] - ifelse(mrx > 0, mrx+3, 3), 15)
                     # modified RSB 2005-03-10 and 2005-04-17
         } else if (is.character(x)) {
-            mf <- max(nchar(x[!is.na(x)]))
+            mf <- max(nchar(x[!is.na(x)], "b"))
             p <- max(nlen, mf)
             if(p > max_nchar)
                 warning(gettext("character column %d will be truncated to %d bytes", i, max_nchar), domain = NA)

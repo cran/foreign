@@ -61,7 +61,7 @@ struct SysFilev3 {
 
 
 static void init_use(struct SysFilev3 *);
-static void getuse(char *, struct SysFilev3 *);
+static void getuse(const char *, struct SysFilev3 *);
 static void getlab(struct SysFilev3 *);
 static void closeuse(struct SysFilev3 *);
 static size_t getshort(short *, FILE *);
@@ -209,7 +209,7 @@ to the end of the file, and calculating that the number of
 observations is integer.
 */
 
-static void getuse(char *fname, struct SysFilev3 *u)
+static void getuse(const char *fname, struct SysFilev3 *u)
 {
     int i, j, k, db_offset_rec;
     int end;

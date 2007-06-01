@@ -153,7 +153,7 @@ SEXP R_LoadStataData(FILE *fp)
     int i,j,nvar,nobs,charlen, version,swapends,varnamelength,nlabels,totlen;
     unsigned char abyte;
     char datalabel[81], timestamp[18], aname[33];
-    SEXP df,names,tmp,tmp1,varlabels,types,row_names;
+    SEXP df,names,tmp,varlabels,types,row_names;
     SEXP levels, labels,labeltable, sversion;
     char stringbuffer[129], *txt;   
     int *off;
@@ -313,10 +313,7 @@ SEXP R_LoadStataData(FILE *fp)
     PROTECT(tmp=allocVector(STRSXP,nvar));
     for(i=0;i<nvar;i++){
         InStringBinary(fp,varnamelength+1,aname);
-	PROTECT(tmp1=allocString(strlen(aname)));
-	strcpy(CHAR(tmp1),aname);
-	SET_STRING_ELT(tmp,i,tmp1);
-	UNPROTECT(1);
+	SET_STRING_ELT(tmp,i,mkChar(aname));
     }
     setAttrib(df,install("val.labels"),tmp);
     UNPROTECT(1); /*tmp*/	
@@ -387,10 +384,7 @@ SEXP R_LoadStataData(FILE *fp)
 				    charlen=INTEGER(types)[j]-STATA_STRINGOFFSET;
 				    InStringBinary(fp,charlen,stringbuffer);
 				    stringbuffer[charlen]=0;
-				    PROTECT(tmp=allocString(strlen(stringbuffer)));
-				    strcpy(CHAR(tmp),stringbuffer); /*we know strcpy is safe here*/
-				    SET_STRING_ELT(VECTOR_ELT(df,j),i,tmp);
-				    UNPROTECT(1);
+				    SET_STRING_ELT(VECTOR_ELT(df,j),i,mkChar(stringbuffer));
 				    break;
 			    }
 		    }
@@ -418,10 +412,7 @@ SEXP R_LoadStataData(FILE *fp)
 				    charlen=INTEGER(types)[j]-STATA_SE_STRINGOFFSET;
 				    InStringBinary(fp,charlen,stringbuffer);
 				    stringbuffer[charlen]=0;
-				    PROTECT(tmp=allocString(strlen(stringbuffer)));
-				    strcpy(CHAR(tmp),stringbuffer); /*we know strcpy is safe here*/
-				    SET_STRING_ELT(VECTOR_ELT(df,j),i,tmp);
-				    UNPROTECT(1);
+				    SET_STRING_ELT(VECTOR_ELT(df,j),i,mkChar(stringbuffer));
 				    break;
 			    }
 		    }
@@ -559,7 +550,7 @@ static void  OutDoubleBinary(double d, FILE * fp, int naok)
 }
 
 
-static void OutStringBinary(char *buffer, FILE * fp, int nchar)
+static void OutStringBinary(const char *buffer, FILE * fp, int nchar)
 {
     if (nchar==0) return;
     if (fwrite(buffer, nchar, 1, fp) != 1)

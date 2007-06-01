@@ -1,3 +1,25 @@
+2007-06-01 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/foreign.h: remove duplicate definition of R_ExpandFileName.
+	* src/R_systat.c, src/Rdfread.c, src/SASexport.c, src/spss.c,
+	src/stataread.c: issues with CHAR being made (const char *).
+	* DESCRIPTION: Version is 0.8-21, depends on R >=2.6.0
+
+2007-05-29 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* R/dbf.R, R/read.dta.R: comments on meaning of nchar()
+	- probably always ASCII
+	* tests/stata.Rout.save: update for R 2.6.x
+
+2007-05-20 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* R/Sread.R, R/octave.R, tests/stata.*: partial matching issues,
+	use seq.int.
+
+2007-04-06  Kurt Hornik  <Kurt.Hornik@wu-wien.ac.at>
+
+	* DESCRIPTION: Version is 0.8-20
+
 2007-04-06 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* src/sfm-read.c: warning not error on unknown character

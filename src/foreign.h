@@ -74,6 +74,4 @@ typedef double R_flt64;
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 
-extern char* R_ExpandFileName(char*);
-
 #endif /* FOREIGN_H */
