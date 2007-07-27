@@ -1,3 +1,9 @@
+% This file is part of the 'foreign' package for R
+% It is distributed under the GPL version 2 or later
+
+% Original copyright 2004 by Roger Bivand
+% Changes for the foreign package (C) 2004 R Development Core Team
+
 \name{read.systat}
 \alias{read.systat}
 \title{Obtain a Data Frame from a Systat File}

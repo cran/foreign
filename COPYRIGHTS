@@ -8,7 +8,7 @@ src/Rdbfread.c
 src/Rdbfwrite.c
 
 Copyright 2000-2001 (c) Nicholas Lewin-Koh
-Changes for the foreign package (C) 2004 R Development Core Team
+Changes for the foreign package (C) 2004-7 R Development Core Team
 
 
 src/dbfopen.c
@@ -113,7 +113,7 @@ R/read.ssd.R
 man/read.ssd.Rd
 
 (c) 2002 VJ Carey
-(c) 2004 R Development Core Team
+(c) 2002-7 R Development Core Team
 
 
 man/read.systat.Rd
@@ -132,7 +132,7 @@ Patches (c) 2004 Rajarshi Guha
 R/octave.R
 man/read.octave.Rd
 (c) 2004 Stephen Eglen
-Enhancements (c) 2004 R Development Core Team
+Enhancements (c) 2004-7 R Development Core Team
 
 
 R/writeForeignSAS.R

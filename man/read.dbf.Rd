@@ -1,3 +1,9 @@
+% This file is part of the 'foreign' package for R
+% It is distributed under the GPL version 2 or later
+
+% Original by Nicholas Lewin-Koh and Roger Bivand,
+% Changes for the foreign package (C) 2004-6 R Development Core Team
+
 \name{read.dbf}
 \alias{read.dbf}
 \title{Read a DBF File}

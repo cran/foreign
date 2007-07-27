@@ -1,3 +1,6 @@
+% This file is part of the 'foreign' package for R
+% It is distributed under the GPL version 2 or later
+
 \name{write.arff}
 \alias{write.arff}
 \title{Write Data into ARFF Files}

@@ -1,3 +1,9 @@
+% This file is part of the 'foreign' package for R
+% It is distributed under the GPL version 2 or later
+
+% Original copyright (c) 2004 Stephen Eglen
+% Changes copyright (c) 2004 R Development Core Team
+
 \name{read.octave}
 \alias{read.octave}
 \title{Read Octave Text Data Files}

@@ -1,3 +1,5 @@
+### This file is part of the `foreign' package for R.
+
 ###
 ###             Read stored Minitab worksheets
 ###
@@ -16,9 +18,8 @@
 ### details.
 ###
 ### You should have received a copy of the GNU General Public
-### License along with this program; if not, write to the Free
-### Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-### Boston, MA 02110-1301  USA
+### License along with this program; if not, a copy is available at
+### http://www.r-project.org/Licenses/
 
 ## Files in the Minitab portable worksheet format represent numbers in a
 ## fixed format (written in Fortran as 5e15.9 or something like that) but

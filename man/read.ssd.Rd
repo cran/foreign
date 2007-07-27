@@ -1,3 +1,9 @@
+% This file is part of the 'foreign' package for R
+% It is distributed under the GPL version 2 or later
+
+% Original copyright (c) 2002 VJ Carey
+% Changes copyright (c) 2002-7 R Development Core Team
+
 \name{read.ssd}
 \alias{read.ssd}
 \title{Obtain a Data Frame from a SAS Permanent Dataset, via read.xport }

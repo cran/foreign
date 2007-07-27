@@ -1,3 +1,16 @@
+2007-07-27 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-22
+	* R/*.R, src/*.[ch]: Add licence statement, or update source for GPL.
+	* man/*.Rd: Copy over copyright claims from COPYRIGHTS to files
+	mentioned.
+	* COPYRIGHTS: update some dates.
+	* LICENCE: Clarify that this package is licensed under GPL >= 2.
+
+2007-06-06 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/sfm-read.c: remove Solaris compiler warning.
+
 2007-06-01 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* src/foreign.h: remove duplicate definition of R_ExpandFileName.

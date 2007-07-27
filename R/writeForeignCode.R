@@ -1,3 +1,17 @@
+### This file is part of the 'foreign' package for R.
+
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  A copy of the GNU General Public License is available at
+#  http://www.r-project.org/Licenses/
 
 write.foreign<-function(df, datafile, codefile, package=c("SPSS","Stata","SAS"),...){
 
@@ -25,7 +39,7 @@ writeForeignSPSS<-function(df,datafile,codefile,varnames=NULL){
   }
 
   varnames<-gsub("[^[:alnum:]_\\$@#]","\\.",varnames)
-  
+
   dl.varnames<-varnames
   if (any(chv<-sapply(df,is.character))){
       lengths<-sapply(df[chv],function(v) max(nchar(v)))
@@ -35,7 +49,7 @@ writeForeignSPSS<-function(df,datafile,codefile,varnames=NULL){
       star<-ifelse(c(FALSE,diff(which(chv)>1))," *", " ")
       dl.varnames[chv]<-paste(star,dl.varnames[chv],lengths)
   }
-  
+
   cat("DATA LIST FILE=",adQuote(datafile)," free (\",\")\n",file=codefile)
   cat("/", dl.varnames," .\n\n",file=codefile,append=TRUE)
   cat("VARIABLE LABELS\n",file=codefile,append=TRUE)

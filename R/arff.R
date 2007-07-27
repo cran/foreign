@@ -1,4 +1,18 @@
+### This file is part of the 'foreign' package for R.
 ### Functions for reading and writing files in Weka ARFF format.
+
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  A copy of the GNU General Public License is available at
+#  http://www.r-project.org/Licenses/
 
 ### <NOTE>
 ### String and evaluation types are enclosed by single quotes upon
@@ -14,7 +28,7 @@ function(file)
         file <- file(file, "r")
         on.exit(close(file))
     }
-    if(!inherits(file, "connection")) 
+    if(!inherits(file, "connection"))
         stop("Argument 'file' must be a character string or connection.")
     if(!isOpen(file)) {
         open(file, "r")
@@ -26,7 +40,7 @@ function(file)
     col_types <- NULL
     col_dfmts <- character()
     line <- readLines(file, n = 1)
-    while(length(line) > 0 && 
+    while(length(line) > 0 &&
           (regexpr('^[[:space:]]*@(?i)data', line,
                    perl = TRUE) == -1)) {
         if(regexpr('^[[:space:]]*@(?i)attribute', line,
@@ -34,7 +48,7 @@ function(file)
             con <- textConnection(line)
             line <- scan(con, character(), quiet = TRUE)
             close(con)
-            if(length(line) < 3) 
+            if(length(line) < 3)
                 stop("Invalid attribute specification.")
             col_names <- c(col_names, line[2])
             if((type <- tolower(line[3])) == "date") {
@@ -66,7 +80,7 @@ function(file)
     if(length(col_names) !=
        length(grep('factor|numeric|character', col_types)))
         stop("Invalid type specification.")
-    
+
     ## Get data.
     data <- read.table(file, sep = ",", na.strings = "?",
                        colClasses = col_types, comment.char = '%')
@@ -85,13 +99,13 @@ write.arff <-
 function(x, file, eol = "\n")
 {
     ## See write.table().
-    if(file == "") 
+    if(file == "")
         file <- stdout()
     else if(is.character(file)) {
         file <- file(file, 'w')
         on.exit(close(file))
     }
-    if(!inherits(file, "connection")) 
+    if(!inherits(file, "connection"))
         stop("Argument 'file' must be a character string or connection.")
 
     if (!is.data.frame(x) && !is.matrix(x))
@@ -146,7 +160,7 @@ function(x)
     x <- sub("dd", "%d", x)
     ## And it's 'hh' and not 'HH' ...
     x <- sub("HH", "%H", x)
-    
+
     ## Now the real stuff.
     ## Is there a POSIX format string for the century component of year?
     x <- sub("CCYY", "%Y", x)

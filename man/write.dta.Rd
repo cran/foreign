@@ -1,3 +1,6 @@
+% This file is part of the 'foreign' package for R
+% It is distributed under the GPL version 2 or later
+
 \name{write.dta}
 \alias{write.dta}
 \title{Write Files in Stata Binary Format}

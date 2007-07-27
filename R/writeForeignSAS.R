@@ -1,11 +1,29 @@
+### This file is part of the 'foreign' package for R.
+
+# Copyright (c) 2004-5  R Development Core Team
+# Enhancements Copyright (c) 2006 Stephen Weigand
+
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  A copy of the GNU General Public License is available at
+#  http://www.r-project.org/Licenses/
+
 make.SAS.names <- function(varnames, validvarname = c("V7", "V6")){
   validvarname <- match.arg(validvarname)
   nmax <- if(validvarname == "V7") 32 else 8
-  
+
   x <- sub("^([0-9])", "_\\1", varnames)
   x <- gsub("[^a-zA-Z0-9_]", "_", x)
   x <- abbreviate(x, minlength = nmax)
-  
+
   if (any(nchar(x) > nmax) || any(duplicated(x)))
     stop("Cannot uniquely abbreviate the variable names to ",
          nmax, " or fewer characters")
@@ -13,17 +31,17 @@ make.SAS.names <- function(varnames, validvarname = c("V7", "V6")){
   x
 }
 
-make.SAS.formats <- function(varnames){  
+make.SAS.formats <- function(varnames){
   x <- sub("^([0-9])", "_\\1", varnames)
   x <- gsub("[^a-zA-Z0-9_]", "_", x)
   x <- sub("([0-9])$", "\\1f", x) # can't end in digit so append 'f'
   x <- abbreviate(x, minlength = 8)
-  
+
   if(any(nchar(x) > 8) || any(duplicated(x)))
     stop("Cannot uniquely abbreviate format names to conform to ",
          " eight-character limit and not ending in a digit")
   names(x) <- varnames
-  x  
+  x
 }
 
 writeForeignSAS<-function(df,datafile,codefile,dataname="rdata",
@@ -33,16 +51,16 @@ writeForeignSAS<-function(df,datafile,codefile,dataname="rdata",
   dates <- sapply(df, FUN = function(x) inherits(x, "Date") || inherits(x, "dates") || inherits(x, "date"))
   xdates <- sapply(df, FUN = function(x)  inherits(x, "dates") || inherits(x, "date"))
   datetimes <- sapply(df, FUN = function(x) inherits(x, "POSIXt"))
-  
+
   varlabels <- names(df)
   varnames <- make.SAS.names(names(df), validvarname = validvarname)
   if (any(varnames != varlabels))
     message("Some variable names were abbreviated or otherwise altered.")
-  
-  
+
+
   dfn<-df
   if (any(factors))
-    dfn[factors]<-lapply(dfn[factors], as.numeric)     
+    dfn[factors]<-lapply(dfn[factors], as.numeric)
   if (any(datetimes))
     dfn[datetimes] <- lapply(dfn[datetimes],
                              function(x) format(x, "%d%b%Y %H:%M:%S"))
@@ -50,8 +68,8 @@ writeForeignSAS<-function(df,datafile,codefile,dataname="rdata",
     dfn[xdates]<-lapply(dfn[xdates],
                         function(x) as.Date(as.POSIXct(x)))
   }
-  
-  write.table(dfn, file = datafile, row = FALSE, col = FALSE, 
+
+  write.table(dfn, file = datafile, row = FALSE, col = FALSE,
               sep = ",", quote = TRUE, na = "")
   lrecl<-max(sapply(readLines(datafile),nchar))+4
 
@@ -74,7 +92,7 @@ writeForeignSAS<-function(df,datafile,codefile,dataname="rdata",
 
   cat("DATA ",dataname,";\n",file=codefile,append=TRUE)
 
-  if (any(strings)){    
+  if (any(strings)){
     cat("LENGTH", file = codefile, append = TRUE)
     lengths <- sapply(df[,strings, drop = FALSE],
                       FUN = function(x) max(nchar(x)))
@@ -84,25 +102,25 @@ writeForeignSAS<-function(df,datafile,codefile,dataname="rdata",
     cat("\n;\n\n", file = codefile, append = TRUE)
   }
 
-  if (any(dates)){    
+  if (any(dates)){
     cat("INFORMAT", file = codefile, append = TRUE)
     for(v in varnames[dates])
       cat("\n", v, file = codefile, append = TRUE)
     cat("\n YYMMDD10.\n;\n\n", file = codefile, append = TRUE)
-  }                  
+  }
 
-  if (any(datetimes)){    
+  if (any(datetimes)){
     cat("INFORMAT", file = codefile, append = TRUE)
     for(v in varnames[datetimes])
       cat("\n", v, file = codefile, append = TRUE)
     cat("\n DATETIME18.\n;\n\n", file = codefile, append = TRUE)
   }
-  
+
   cat("INFILE ",adQuote(datafile),
-      "\n     DSD", 
+      "\n     DSD",
       "\n     LRECL=",lrecl,";\n",
       file=codefile,append=TRUE)
-  
+
   cat("INPUT",file=codefile,append=TRUE)
   for(v in 1:ncol(df)){
     cat("\n",varnames[v],file=codefile,append=TRUE)
@@ -112,27 +130,27 @@ writeForeignSAS<-function(df,datafile,codefile,dataname="rdata",
   cat("\n;\n",file=codefile,append=TRUE)
 
   for(v in 1:ncol(df)){
-    if (varnames[v] != names(varnames)[v]) 
+    if (varnames[v] != names(varnames)[v])
       cat("LABEL ",varnames[v],"=",adQuote(varlabels[v]),";\n",
           file=codefile,append=TRUE)
   }
-  
+
   if (any(factors)){
-    for (f in 1:length(fmtnames)) 
+    for (f in 1:length(fmtnames))
       cat("FORMAT", names(fmtnames)[f],paste(fmtnames[f],".",sep = ""),";\n",
           file=codefile,append=TRUE)
   }
-  
-  if (any(dates)){    
+
+  if (any(dates)){
     for(v in varnames[dates])
       cat("FORMAT", v, "yymmdd10.;\n", file = codefile, append = TRUE)
-  }        
-  
-  if (any(datetimes)){    
+  }
+
+  if (any(datetimes)){
     for(v in varnames[datetimes])
       cat("FORMAT", v, "datetime18.;\n", file = codefile, append = TRUE)
   }
-  
+
   cat("RUN;\n",file=codefile,append=TRUE)
-} 
+}
 

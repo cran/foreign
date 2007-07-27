@@ -1,3 +1,6 @@
+% This file is part of the 'foreign' package for R
+% It is distributed under the GPL version 2 or later
+
 \name{lookup.xport}
 \alias{lookup.xport}
 \title{Lookup Information on a SAS XPORT Format Library}

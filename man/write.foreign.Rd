@@ -1,6 +1,8 @@
+% This file is part of the 'foreign' package for R
+% It is distributed under the GPL version 2 or later
+
 \name{write.foreign}
 \alias{write.foreign}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Write Text Files and Code to Read Them}
 \description{
 This function exports simple data frames to other statistical packages by
@@ -11,13 +13,13 @@ instructions for the other package to read the data.
 write.foreign(df, datafile, codefile,
               package = c("SPSS", "Stata", "SAS"), ...)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{df}{A data frame}
   \item{datafile}{Name of file for data output}
   \item{codefile}{Name of file for code output}
   \item{package}{Name of package}
-  \item{\dots}{Other arguments for the individual \code{writeForeign} functions}
+  \item{\dots}{Other arguments for the individual \code{writeForeign}
+    functions}
 }
 \details{
 The work for this function is done by
@@ -27,7 +29,7 @@ eg Systat, create a function \code{writeForeignSystat} with the same first
 three arguments as \code{write.foreign}. This will be called from
 \code{write.foreign} when \code{package="Systat"}.
 
-Numeric variables and factors are supported for all packages, dates and times
+Numeric variables and factors are supported for all packages: dates and times
 (\code{Date}, \code{dates}, \code{date}, and \code{POSIXt} classes) are
 also supported for SAS and characters are supported for SPSS.
 
@@ -40,8 +42,7 @@ taking a string that will be the SAS data set name and
 }
 
 \author{Thomas Lumley and Stephen Weigand}
-\examples{
-\dontrun{
+\examples{\dontrun{
 datafile<-tempfile()
 codefile<-tempfile()
 write.foreign(esoph,datafile,codefile,package="SPSS")
@@ -49,7 +50,6 @@ file.show(datafile)
 file.show(codefile)
 unlink(datafile)
 unlink(codefile)
-}
-}
-\keyword{file}% at least one, from doc/KEYWORDS
+}}
+\keyword{file}
 
