@@ -6,6 +6,7 @@
 ### Copyright 2000-2002 Saikat DebRoy <saikat$stat.wisc.edu>
 ###			Douglas M. Bates <bates$stat.wisc.edu>,
 ###			Thomas Lumley
+### Copyright 2007 R Core Development Team
 ### This file is part of the `foreign' package for R and related languages.
 ### It is made available under the terms of the GNU General Public
 ### License, version 2, or at your option, any later version,
@@ -22,15 +23,12 @@
 ### http://www.r-project.org/Licenses/
 
 read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
-		      max.value.labels = Inf, trim.factor.names = FALSE)
+		      max.value.labels = Inf, trim.factor.names = FALSE,
+                      trim_values = TRUE)
 {
 
-    trim <- function(strings) {
-	if (trim.factor.names)
-	    gsub(" +$","",strings)
-	else
-	    strings
-    }
+    trim <- function(strings, trim=TRUE)
+	if (trim) sub(" +$","",strings) else strings
 
     rval <- .Call(do_read_SPSS, file)
 
@@ -43,8 +41,9 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
 	if (use.value.labels &&
 	    (!is.finite(max.value.labels) || nvalues <= max.value.labels) &&
 	    nlabels >= nvalues)
-	    rval[[nm]] <- factor(rval[[nm]], levels = rev(vl[[v]]),
-				 labels = rev(trim(names(vl[[v]]))))
+	    rval[[nm]] <- factor(trim(rval[[nm]], trim_values),
+                                 levels = rev(trim(vl[[v]], trim_values)),
+				 labels = rev(trim(names(vl[[v]]), trim.factor.names)))
 	else
 	    attr(rval[[nm]],"value.labels") <- vl[[v]]
     }

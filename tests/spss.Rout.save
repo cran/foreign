@@ -1,6 +1,6 @@
 
-R : Copyright 2005, The R Foundation for Statistical Computing
-Version 2.2.0 Under development (unstable) (2005-08-18 r35317)
+R version 2.6.0 alpha (2007-09-17 r42887)
+Copyright (C) 2007 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -12,7 +12,7 @@ Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
 
 Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for a HTML browser interface to help.
+'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
 > library(foreign)
@@ -479,14 +479,14 @@ List of 20
  3rd Qu.:14.00   3rd Qu.:293.2   3rd Qu.:20.00   3rd Qu.:70.20  
  Max.   :18.00   Max.   :515.0   Max.   :60.00   Max.   :77.00  
  NA's   :28.00                   NA's   : 1.00                  
-      WT58           DAYOFWK     VITAL10    FAMHXCVR        CHD     
- Min.   :123.0   MISSING :130   ALIVE:179   NO  :  0   Min.   :0.0  
- 1st Qu.:156.0   SUNDAY  : 19   DEAD : 61   YES :  0   1st Qu.:0.0  
- Median :171.0   TUESDAY : 19               NA's:240   Median :0.5  
- Mean   :173.4   WEDNSDAY: 17                          Mean   :0.5  
- 3rd Qu.:187.0   SATURDAY: 16                          3rd Qu.:1.0  
- Max.   :278.0   THURSDAY: 15                          Max.   :1.0  
-                 (Other) : 24                                       
+      WT58           DAYOFWK     VITAL10    FAMHXCVR       CHD     
+ Min.   :123.0   MISSING :130   ALIVE:179   NO :178   Min.   :0.0  
+ 1st Qu.:156.0   SUNDAY  : 19   DEAD : 61   YES: 62   1st Qu.:0.0  
+ Median :171.0   TUESDAY : 19                         Median :0.5  
+ Mean   :173.4   WEDNSDAY: 17                         Mean   :0.5  
+ 3rd Qu.:187.0   SATURDAY: 16                         3rd Qu.:1.0  
+ Max.   :278.0   THURSDAY: 15                         Max.   :1.0  
+                 (Other) : 24                                      
 > electric<-read.spss("electric.por",TRUE,TRUE)
 > summary(electric)
      CASEID                 FIRSTCHD        AGE           DBP58       
@@ -505,14 +505,14 @@ List of 20
  3rd Qu.:14.00   3rd Qu.:293.2   3rd Qu.:20.00   3rd Qu.:70.20  
  Max.   :18.00   Max.   :515.0   Max.   :60.00   Max.   :77.00  
  NA's   :28.00                   NA's   : 1.00                  
-      WT58           DAYOFWK     VITAL10    FAMHXCVR        CHD     
- Min.   :123.0   MISSING :130   ALIVE:179   NO  :  0   Min.   :0.0  
- 1st Qu.:156.0   SUNDAY  : 19   DEAD : 61   YES :  0   1st Qu.:0.0  
- Median :171.0   TUESDAY : 19               NA's:240   Median :0.5  
- Mean   :173.4   WEDNSDAY: 17                          Mean   :0.5  
- 3rd Qu.:187.0   SATURDAY: 16                          3rd Qu.:1.0  
- Max.   :278.0   THURSDAY: 15                          Max.   :1.0  
-                 (Other) : 24                                       
+      WT58           DAYOFWK     VITAL10    FAMHXCVR       CHD     
+ Min.   :123.0   MISSING :130   ALIVE:179   NO :178   Min.   :0.0  
+ 1st Qu.:156.0   SUNDAY  : 19   DEAD : 61   YES: 62   1st Qu.:0.0  
+ Median :171.0   TUESDAY : 19                         Median :0.5  
+ Mean   :173.4   WEDNSDAY: 17                         Mean   :0.5  
+ 3rd Qu.:187.0   SATURDAY: 16                         3rd Qu.:1.0  
+ Max.   :278.0   THURSDAY: 15                         Max.   :1.0  
+                 (Other) : 24                                      
 > electric<-read.spss("electric.sav",TRUE,TRUE,max.value.labels=4)
 > summary(electric)
      CASEID           FIRSTCHD          AGE           DBP58       
@@ -531,12 +531,12 @@ List of 20
  3rd Qu.:14.00   3rd Qu.:293.2   3rd Qu.:20.00   3rd Qu.:70.20  
  Max.   :18.00   Max.   :515.0   Max.   :60.00   Max.   :77.00  
  NA's   :28.00                   NA's   : 1.00                  
-      WT58          DAYOFWK       VITAL10    FAMHXCVR        CHD     
- Min.   :123.0   Min.   :1.000   ALIVE:179   NO  :  0   Min.   :0.0  
- 1st Qu.:156.0   1st Qu.:4.000   DEAD : 61   YES :  0   1st Qu.:0.0  
- Median :171.0   Median :9.000               NA's:240   Median :0.5  
- Mean   :173.4   Mean   :6.671                          Mean   :0.5  
- 3rd Qu.:187.0   3rd Qu.:9.000                          3rd Qu.:1.0  
- Max.   :278.0   Max.   :9.000                          Max.   :1.0  
-                                                                     
+      WT58          DAYOFWK       VITAL10    FAMHXCVR       CHD     
+ Min.   :123.0   Min.   :1.000   ALIVE:179   NO :178   Min.   :0.0  
+ 1st Qu.:156.0   1st Qu.:4.000   DEAD : 61   YES: 62   1st Qu.:0.0  
+ Median :171.0   Median :9.000                         Median :0.5  
+ Mean   :173.4   Mean   :6.671                         Mean   :0.5  
+ 3rd Qu.:187.0   3rd Qu.:9.000                         3rd Qu.:1.0  
+ Max.   :278.0   Max.   :9.000                         Max.   :1.0  
+                                                                    
 > q()

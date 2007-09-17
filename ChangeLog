@@ -1,3 +1,22 @@
+2007-09-17 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-23, use approved license abbreviation.
+	* R/spss.R, man/read.spss.Rd, tests/spss.Rout.save:
+	New argument trim_values=TRUE to read.spss, as some examples have
+	padding in the value labels table and not in the data.  One
+	example is in PR#9896.
+
+2007-08-12 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* man/read.spss.Rd: Clarifications, including
+	'Unrecognized record type 7, subtype 16' message.
+	Add URL for PSPP project.
+
+2007-08-02 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/pfm-read.c, src/sfm-read.c: include headers conditionally 
+	provided via R.h.
+
 2007-07-27 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-22

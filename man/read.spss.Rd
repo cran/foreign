@@ -5,35 +5,40 @@
 \alias{read.spss}
 \title{Read an SPSS Data File}
 \description{
-  \code{read.spss} reads a file stored by the SPSS \code{save} and
-  \code{export} commands and returns a list.
+  \code{read.spss} reads a file stored by the SPSS \code{save} or
+  \code{export} commands.
 }
 \usage{
-read.spss(file, use.value.labels=TRUE, to.data.frame=FALSE,
-          max.value.labels=Inf, trim.factor.names=FALSE)
+read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
+          max.value.labels = Inf, trim.factor.names = FALSE,
+          trim_values=TRUE)
 }
 \arguments{
-  \item{file}{ character variable with the name of the file to read.}
-  \item{use.value.labels}{ Convert variables with value labels into \R
+  \item{file}{Character string: the name of the file to read.}
+  \item{use.value.labels}{Convert variables with value labels into \R
     factors with those levels?}
   \item{to.data.frame}{return a data frame?}
-  \item{max.value.labels}{Only variables with at most this many unique
-    values will be converted to factors}
-  \item{trim.factor.names}{Trim trailing spaces from factor levels?}
+  \item{max.value.labels}{Only variables with value labels and at most this
+    many unique values will be converted to factors if
+    \code{use.value.labels = TRUE}.}
+  \item{trim.factor.names}{Logical: trim trailing spaces from factor levels?}
+  \item{trim_values}{Logical: should values and value labels have
+    trailing spaces ignored when matching for \code{use.value.labels = TRUE}?}
 }
 \value{
-  A list (or data frame) with one component for each variable in the saved data set.
+  A list (or data frame) with one component for each variable in
+  the saved data set.
 }
 \details{
-  This uses modified code from the PSPP project for reading the SPSS
-  formats. 
+  This uses modified code from the PSPP project
+  (\url{http://www.gnu.org/software/pspp/} for reading the SPSS formats.
   
   Occasionally in SPSS value labels will be added to some values of a
   continuous variable (eg to distinguish different types of missing
   data), and you will not want these variables converted to factors.  By
   setting \code{max.val.labels} you can specify that variables with a
   large number of distinct values are not converted to factors even if
-  they have value labels. In addition, variables will not be converted
+  they have value labels.  In addition, variables will not be converted
   to factors if there are non-missing values that have no value label.
   The value labels are then returned in the \code{"value.labels"}
   attribute of the variable.
@@ -42,8 +47,12 @@ read.spss(file, use.value.labels=TRUE, to.data.frame=FALSE,
   \code{"variable.labels"} attribute of the answer.
 
   Fixed length strings (including value labels) are padded on the right
-  with spaces by SPSS, and so are read that way by R.   See the examples
-  for \code{\link{sub}} for ways to remove trailing spaces in string data.
+  with spaces by SPSS, and so are read that way by \R.  The default
+  argument \code{trim_values=TRUE} causes trailing spaces to be ignored
+  when matching to value labels, as examples have been seen where the
+  strings and the value labels had different amounts of padding.  See
+  the examples for \code{\link{sub}} for ways to remove trailing spaces
+  in charcter data.
 }
 \note{
   If SPSS value labels are converted to factors the underlying numerical
@@ -54,16 +63,21 @@ read.spss(file, use.value.labels=TRUE, to.data.frame=FALSE,
   files contain non-ASCII character data which need re-encoding.
   The most common occurrence is Windows codepage 1252, a superset of
   Latin-1.
+
+  You may also see warnings like
+  \sQuote{Unrecognized record type 7, subtype 16}.  These are thought to
+  be harmless: see
+  \url{http://www.nabble.com/problem-loading-SPSS-15.0-save-files-t2726500.html}
 }
 \author{Saikat DebRoy and the R Core team}
 \examples{
 \dontrun{
 read.spss("datafile")
 ## don't convert value labels to factor levels
-read.spss("datafile",use.value.labels=FALSE)
+read.spss("datafile", use.value.labels = FALSE)
 ## convert value labels to factors for variables with at most
 ## ten distinct values.
-read.spss("datafile",max.val.labels=10)
+read.spss("datafile", max.val.labels = 10)
 }
 }
 \keyword{file}
