@@ -5,7 +5,7 @@
 \alias{read.dta}
 \title{Read Stata Binary Files}
 \description{
-  Reads a file in Stata version 5-9  binary format into a data frame. 
+  Reads a file in Stata version 5--10 binary format into a data frame. 
 }
 \usage{
 read.dta(file, convert.dates = TRUE, tz = NULL,
@@ -18,7 +18,7 @@ read.dta(file, convert.dates = TRUE, tz = NULL,
   \item{tz}{Previously used to specify time zone. Now deprecated.}
   \item{convert.factors}{Use Stata value labels to create factors?
     (version 6.0 or later).}
-  \item{missing.type}{For version 8,9 only, store information about
+  \item{missing.type}{For version 8 or later, store information about
     different types of missing data?}
   \item{convert.underscore}{Convert \code{"_"} in Stata variable names
     to \code{"."} in R names?}
@@ -55,7 +55,9 @@ read.dta(file, convert.dates = TRUE, tz = NULL,
 }
 \references{
   Stata Users Manual (versions 5 & 6), Programming manual (version 7),
-  or online help (version 8,9) describe the format of the files.
+  or online help (version 8, 9, 10) describe the format of the files.
+  Or at \url{http://www.stata.com/help.cgi?dta} and
+  \url{http://www.stata.com/help.cgi?dta_113}
 }
 
 \author{Thomas Lumley}
@@ -67,7 +69,7 @@ read.dta(file, convert.dates = TRUE, tz = NULL,
 }
 \examples{
 data(swiss)
-write.dta(swiss,swissfile<-tempfile())
+write.dta(swiss,swissfile <- tempfile())
 read.dta(swissfile)
 }
 \keyword{file}

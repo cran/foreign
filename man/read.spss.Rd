@@ -11,7 +11,7 @@
 \usage{
 read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
           max.value.labels = Inf, trim.factor.names = FALSE,
-          trim_values=TRUE)
+          trim_values = TRUE, reencode = NA)
 }
 \arguments{
   \item{file}{Character string: the name of the file to read.}
@@ -22,12 +22,27 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
     many unique values will be converted to factors if
     \code{use.value.labels = TRUE}.}
   \item{trim.factor.names}{Logical: trim trailing spaces from factor levels?}
-  \item{trim_values}{Logical: should values and value labels have
+  \item{trim_values}{logical: should values and value labels have
     trailing spaces ignored when matching for \code{use.value.labels = TRUE}?}
+  \item{reencode}{logical: should character strings be re-encoded to the
+    current locale.  The default, \code{NA}, means to do so in a UTF-*
+    locale, only.  Alternatively character, specifying an encoding to
+    assume.} 
 }
 \value{
   A list (or data frame) with one component for each variable in
   the saved data set.
+
+  If what looks like a Windows codepage was recorded in the SPSS file,
+  it is attached (as a number) as attribute \code{"codepage"} to the
+  result.
+
+  There may be attributes \code{"label.table"} and
+  \code{"variable.labels"}.  Attribute \code{"label.table"} is a named
+  list of value labels with one element per variable, either \code{NULL}
+  or a names character vector.
+  Attribute \code{"variable.labels"} is a named character vector with
+  names the short variable names and elements the long names.
 }
 \details{
   This uses modified code from the PSPP project
@@ -59,15 +74,12 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
   codes will not in general be the same as the SPSS numerical
   values, since the numerical codes in R are always 1,2,3,...
 
-  You may see warnings about the file encoding: it is possible such
-  files contain non-ASCII character data which need re-encoding.
-  The most common occurrence is Windows codepage 1252, a superset of
-  Latin-1.
-
-  You may also see warnings like
-  \sQuote{Unrecognized record type 7, subtype 16}.  These are thought to
-  be harmless: see
-  \url{http://www.nabble.com/problem-loading-SPSS-15.0-save-files-t2726500.html}
+  You may see warnings about the file encoding for SPSS \code{save}
+  files: it is possible such files contain non-ASCII character data
+  which need re-encoding. The most common occurrence is Windows codepage
+  1252, a superset of Latin-1.  The encoding is recorded (as in integer)
+  in attribute \code{"codepage"} of the result if it looks like a
+  Windows codepage.
 }
 \author{Saikat DebRoy and the R Core team}
 \examples{

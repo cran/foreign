@@ -45,6 +45,11 @@
 #define VERSION_7 0x6e
 #define VERSION_7SE 111
 #define VERSION_8 113
+#define VERSION_114 114
+/*
+http://statacorp.com/statalist/archive/2007-06/msg01021.html
+says 113 is versions 8-9, 114 is version 10.
+*/
 
 /* Stata format constants */
 #define STATA_FLOAT  'f'
@@ -174,6 +179,7 @@ SEXP R_LoadStataData(FILE *fp)
     SEXP levels, labels,labeltable, sversion;
     char stringbuffer[129], *txt;   
     int *off;
+    int fmtlist_len = 12;
       
     
     /** first read the header **/
@@ -203,8 +209,13 @@ SEXP R_LoadStataData(FILE *fp)
 	version=-8;  /* version 8 automatically uses SE format */
 	varnamelength=32; 
 	break;
+    case VERSION_114:
+	version=-10; 
+	varnamelength=32;
+	fmtlist_len=49;
+	break;
     default:
-        error(_("not a Stata version 5-8 .dta file"));
+        error(_("not a Stata version 5-10 .dta file"));
     }
     stata_endian=(int) RawByteBinary(fp,1);     /* byte ordering */
     swapends = stata_endian != CN_TYPE_NATIVE;
@@ -221,6 +232,7 @@ SEXP R_LoadStataData(FILE *fp)
     case 6:
     case 7:
     case 8:
+    case 10:
         InStringBinary(fp,81,datalabel);   
 	break;
     }
@@ -315,9 +327,9 @@ SEXP R_LoadStataData(FILE *fp)
     **/
 
     PROTECT(tmp=allocVector(STRSXP,nvar));
-    for (i=0;i<nvar;i++){
-        InStringBinary(fp,12,timestamp);
-	SET_STRING_ELT(tmp,i,mkChar(timestamp));
+    for (i = 0; i < nvar; i++) {
+        InStringBinary(fp, fmtlist_len, timestamp);
+	SET_STRING_ELT(tmp, i, mkChar(timestamp));
     }
     setAttrib(df,install("formats"),tmp);
     UNPROTECT(1);
@@ -349,6 +361,7 @@ SEXP R_LoadStataData(FILE *fp)
     case 6:
     case 7:
     case 8:
+    case 10:
         for(i=0;i<nvar;i++) {
             InStringBinary(fp,81,datalabel);
 	    SET_STRING_ELT(varlabels,i,mkChar(datalabel));
@@ -584,25 +597,28 @@ static char* nameMangleOut(char *stataname, int len){
 
 void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 {
-    int i,j,k,l,nvar,nobs,charlen,txtlen,len;
+    int i,j,k=0,l,nvar,nobs,charlen,txtlen,len;
     char datalabel[81]="Written by R.              ", timestamp[18], aname[33];
     char format9g[12]="%9.0g", strformat[12]="";
     SEXP names,types,theselabels,orig_names;
     
     int namelength=8;
-    if (version==7 || version==8)
-	namelength=32;
-    k=0; /* -Wall */
+    int fmtlist_len = 12;
+
+    if (version>=7) namelength=32;
+    if (version>=10) fmtlist_len = 49;
 
     /* names are 32 characters in version 7 */
 
     /** first write the header **/
     if (version==6)
-	OutByteBinary((char) VERSION_6,fp);            /* release */
+	OutByteBinary((char) VERSION_6, fp);            /* release */
     else if (version==7)
-	OutByteBinary((char) VERSION_7,fp);   
-    else if (version==8)
-	OutByteBinary((char) VERSION_8,fp);   
+	OutByteBinary((char) VERSION_7, fp);   
+    else if (version==8)  /* and also 9, mapped in R code */
+	OutByteBinary((char) VERSION_8, fp);   
+    else if (version==10) /* see comment above */
+	OutByteBinary((char) VERSION_114, fp);   
     OutByteBinary((char) CN_TYPE_NATIVE, fp);
     OutByteBinary(1,fp);            /* filetype */
     OutByteBinary(0,fp);            /* padding */
@@ -654,7 +670,7 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 	    break;
         }
       }
-    } else { /* version 8 */
+    } else { /* version 8, 10 */
       for(i=0;i<nvar;i++){
         switch(TYPEOF(VECTOR_ELT(df,i))){
           case LGLSXP:
@@ -705,9 +721,9 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
           /* string types are at most 128 characters
               so we can't get a buffer overflow in sprintf **/	   
 	    sprintf(strformat,"%%%ds",INTEGER(types)[i]);
-	    OutStringBinary(strformat,fp,12);
+	    OutStringBinary(strformat,fp,fmtlist_len);
 	} else { 
-	    OutStringBinary(format9g,fp,12);
+	    OutStringBinary(format9g,fp,fmtlist_len);
 	}
     }
 

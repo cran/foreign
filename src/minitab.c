@@ -107,7 +107,11 @@ read_mtp(SEXP fname)
     int i, j, nMTB = MTB_INITIAL_ENTRIES;
     
     PROTECT(fname = asChar(fname));
+#ifdef WIN32 /* force text-mode read */
+    if ((f = fopen(R_ExpandFileName(CHAR(fname)), "rt")) == NULL)
+#else
     if ((f = fopen(R_ExpandFileName(CHAR(fname)), "r")) == NULL)
+#endif
 	error(_("unable to open file '%s' for reading"), CHAR(fname));
     if ((fgets(buf, MTP_BUF_SIZE, f) == NULL) ||
 	strncmp(buf, "Minitab Portable Worksheet ", 27) != 0)

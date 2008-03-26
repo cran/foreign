@@ -33,14 +33,15 @@
 /* Information produced by sfm_read_dictionary() that doesn't fit into
    a dictionary struct. */
 struct sfm_read_info
-  {
+{
     char creation_date[10];	/* `dd mmm yy' plus a null. */
     char creation_time[9];	/* `hh:mm:ss' plus a null. */
     int endianness;		/* BIG or LITTLE. */
     int compressed;		/* 0=no, 1=yes. */
     int ncases;			/* -1 if unknown. */
     char product[61];		/* Product name plus a null. */
-  };
+    int encoding;		/* 2 or 3 or Windows codepage? */
+};
 
 struct dictionary;
 struct file_handle;
@@ -53,7 +54,7 @@ void sfm_maybe_close (struct file_handle *);
 
 /* Information needed by sfm_write_dictionary(). */
 struct sfm_write_info
-  {
+{
     /* Read by sfm_write_dictionary(). */
     struct file_handle *h;	/* File handle. */
     struct dictionary *dict;	/* Primary dictionary. */
@@ -61,7 +62,7 @@ struct sfm_write_info
 
     /* Written by sfm_write_dictionary(). */
     int case_size;		/* Number of R_flt64 elements per case. */
-  };
+};
 
 int sfm_write_dictionary (struct sfm_write_info *);
 int sfm_write_case (struct file_handle *, const R_flt64* elem, int n_elem);

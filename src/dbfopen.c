@@ -193,6 +193,13 @@
 #include <ctype.h>
 #include <string.h>
 
+#include <Rversion.h>
+#if R_VERSION >= R_Version(2,7,0)
+# include <R_ext/Utils.h>
+#else
+# define R_atof atof
+#endif
+
 #ifndef FALSE
 #  define FALSE		0
 #  define TRUE		1
@@ -775,7 +782,7 @@ static void *DBFReadAttribute(DBFHandle psDBF, int hEntity, int iField,
 /* -------------------------------------------------------------------- */
     if( chReqType == 'N' )
     {
-        dDoubleField = atof(pszStringField);
+        dDoubleField = R_atof(pszStringField);
 
 	pReturnField = &dDoubleField;
     }

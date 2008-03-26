@@ -51,7 +51,7 @@ read.dta <- function(file, convert.dates=TRUE,tz=NULL,
             }
             attr(rval,"missing")<-missings
         } else {
-            warning("'missing.type' only applicable to version 8 files")
+            warning("'missing.type' only applicable to version >= 8 files")
         }
 
     }
@@ -101,9 +101,10 @@ write.dta <- function(dataframe, file, version = 6,convert.dates=TRUE,tz="GMT",
                       convert.factors=c("labels","string","numeric","codes"))
 {
 
-    if (version<6) stop("Version must be 6-8")
-    if (version>8) {
-        warning("Version must be 6-8: using 7")
+    if (version<6) stop("Version must be 6-10")
+    if (version == 9) version <- 8
+    if (version>10) {
+        warning("Version must be 6-10: using 7")
         version<-7
     }
 

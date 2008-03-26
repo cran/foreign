@@ -119,7 +119,7 @@ read.epiinfo <- function (file, read.deleted = FALSE,
             data[[i]] <- substr(data[[i]], 1, 5)
             }
         else {
-            blanks <- grep("^[ \\t]*$", data[[i]])
+            blanks <- grep("^[[:blank:]]*$", data[[i]])
             data[[i]][blanks] <- NA
         }
     }

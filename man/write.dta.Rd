@@ -12,13 +12,14 @@ write.dta(dataframe, file, version = 6,
 \arguments{
   \item{dataframe}{a data frame.}
   \item{file}{character string giving filename.}
-  \item{version}{Stata version: 6 and 7 are supported.}
+  \item{version}{Stata version: 6, 7, 8 and 10 are supported, and 9 is
+    mapped to 8.}
   \item{convert.dates}{Convert \code{POSIXt} objects to Stata dates?}
   \item{tz}{timezone for date conversion}
   \item{convert.factors}{how to handle factors}
   } 
 \description{
-  Writes the data frame to file in the Stata version 6.0 or 7.0 binary
+  Writes the data frame to file in the Stata binary
   format.  Does not write matrix variables.
 }
 \details{
@@ -44,10 +45,10 @@ write.dta(dataframe, file, version = 6,
   integer codes of the factors. This last used to be the only available
   method and is provided largely for backwards compatibility.
 
-  For Stata 8 or 9 use \code{version=7} -- the only advantage of Stata 8
+  For Stata 8 or later use \code{version=7} -- the only advantage of Stata 8
   format is that it can represent multiple different missing value
   types, and R doesn't have them.
-  }
+}
 \value{
   \code{NULL}
 }

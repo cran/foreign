@@ -69,32 +69,6 @@
 #undef DEBUGGING
 /*#define DEBUGGING 1*/
 
-static double 
-second_lowest_double_val()
-{
-  /* PORTME: Set the value for second_lowest_value, which is the
-     "second lowest" possible value for a double.  This is the value
-     for LOWEST on MISSING VALUES, etc. */
-#if FPREP == FPREP_IEEE754
-#ifdef WORDS_BIGENDIAN
-    union {
-	unsigned char c[8];
-	double d;
-    } second_lowest = {{0xff, 0xef, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfe}};
-#else
-    union {
-	unsigned char c[8];
-	double d;
-    } second_lowest = {{0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0xef, 0xff}};
-#endif
-    return second_lowest.d;
-#else /* FPREP != FPREP_IEEE754 */
-#error Unknown floating-point representation.
-#endif /* FPREP != FPREP_IEEE754 */
-}
-
-#define SECOND_LOWEST_VALUE second_lowest_double_val()
-#define NOT_INT INT_MIN
 
 /* pfm's file_handle extension. */
 struct pfm_fhuser_ext
@@ -322,7 +296,7 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
 }
 
 /* Read a floating point value and return its value, or
-   second_lowest_value on error. */
+   NA_REAL on error. */
 static double
 read_float (struct file_handle *h)
 {
@@ -428,28 +402,28 @@ read_float (struct file_handle *h)
 
  overflow:
   if (neg)
-    return -DBL_MAX / 10.;
+    return R_NegInf;
   else
-    return DBL_MAX / 10;
+    return R_PosInf;
 
  lossage:
-  return -DBL_MAX;
+  return NA_REAL;
 }
   
-/* Read an integer and return its value, or NOT_INT on failure. */
+/* Read an integer and return its value, or NA_INTEGER on failure. */
 int
 read_int (struct file_handle *h)
 {
   double f = read_float (h);
 
-  if (f == SECOND_LOWEST_VALUE)
+  if (f == NA_REAL)
     goto lossage;
   if (floor (f) != f || f >= INT_MAX || f <= INT_MIN)
     lose ((_("Bad integer format")));
   return f;
 
  lossage:
-  return NOT_INT;
+  return NA_INTEGER;
 }
 
 /* Reads a string and returns its value in a static buffer, or NULL on
@@ -469,12 +443,12 @@ read_string (struct file_handle *h)
       return NULL;
     }
   else if (buf == NULL)
-    buf = Calloc (256, unsigned char);
+    buf = Calloc (65536, unsigned char);
 
   n = read_int (h);
-  if (n == NOT_INT)
+  if (n == NA_INTEGER)
     return NULL;
-  if (n < 0 || n > 255)
+  if (n < 0 || n > 65535)
     lose ((_("Bad string length %d"), n));
   
   {
@@ -711,7 +685,7 @@ read_variables (struct file_handle *h)
     lose ((_("Expected variable count record")));
   
   ext->nvars = read_int (h);
-  if (ext->nvars <= 0 || ext->nvars == NOT_INT)
+  if (ext->nvars <= 0 || ext->nvars == NA_INTEGER)
     lose ((_("Invalid number of variables %d"), ext->nvars));
   ext->vars = Calloc (ext->nvars, int);
 
@@ -719,7 +693,7 @@ read_variables (struct file_handle *h)
   {
     int x = read_int (h);
 
-    if (x == NOT_INT)
+    if (x == NA_INTEGER)
       goto lossage;
 
 /*  According to Akio Sone, there are cases where this is 160 */
@@ -751,7 +725,7 @@ read_variables (struct file_handle *h)
 	lose ((_("Expected variable record")));
 
       width = read_int (h);
-      if (width == NOT_INT)
+      if (width == NA_INTEGER)
 	goto lossage;
       if (width < 0)
 	lose ((_("Invalid variable width %d"), width));
@@ -763,7 +737,7 @@ read_variables (struct file_handle *h)
       for (j = 0; j < 6; j++)
 	{
 	  fmt[j] = read_int (h);
-	  if (fmt[j] == NOT_INT)
+	  if (fmt[j] == NA_INTEGER)
 	    goto lossage;
 	}
 
@@ -806,7 +780,7 @@ read_variables (struct file_handle *h)
 	}
 
       asciify ((char *) name);
-      if (width < 0 || width > 255)
+      if (width < 0 || width > 65535)
 	lose ((_("Bad width %d for variable %s"), width, name));
 
       v = create_variable (ext->dict, (char *) name, 
@@ -912,7 +886,7 @@ parse_value (struct file_handle *h, union value *v, struct variable *vv)
   else
     {
       v->f = read_float (h);
-      if (v->f == SECOND_LOWEST_VALUE)
+      if (v->f == NA_REAL)
 	return 0;
     }
 
@@ -935,7 +909,7 @@ read_value_label (struct file_handle *h)
   int i;
 
   nv = read_int (h);
-  if (nv == NOT_INT)
+  if (nv == NA_INTEGER)
     return 0;
 
   v = Calloc (nv, struct variable *);
@@ -956,7 +930,7 @@ read_value_label (struct file_handle *h)
     }
 
   n_labels = read_int (h);
-  if (n_labels == NOT_INT)
+  if (n_labels == NA_INTEGER)
     goto lossage;
 
   for (i = 0; i < n_labels; i++)
@@ -1054,7 +1028,7 @@ pfm_read_case (struct file_handle *h, union value *perm, struct dictionary *dict
     if (ext->vars[i] == 0)
       {
 	tp->f = read_float (h);
-	if (tp->f == SECOND_LOWEST_VALUE)
+	if (tp->f == NA_REAL)
 	  goto unexpected_eof;
 	tp++;
       }

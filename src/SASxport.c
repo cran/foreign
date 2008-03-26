@@ -381,6 +381,18 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 		break;
 	    }
 	}
+        else /* beware that the previous member can end on card
+	      * boundary with no padding */
+	    if (restOfCard == 80 && n == 80 && 
+		strncmp(MEM_HEADER, tmp, 75) == 0 &&
+		strncmp("  ", tmp+78, 2) == 0) {
+		strncpy(record, tmp, 80);
+		*tailpad = 0;
+		record[78] = '\0';
+		sscanf(record+75, "%d", &namestr_length);
+		break;
+	    }
+
 	if (fsetpos(fp, &currentPos)) {
 	    error(_("problem accessing SAS XPORT file"));
 	}

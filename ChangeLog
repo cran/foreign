@@ -1,3 +1,38 @@
+2008-03-27 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-24.
+	* src/SASxport.c: Patch from PD for case where record 
+	ends on card boundary
+	(http://finzi.psych.upenn.edu/R/Rhelp02a/archive/57864.html,
+	https://stat.ethz.ch/pipermail/r-help/2008-February/155272.html)
+	* tests/sas.R: regression test.
+	* src/pfm-read.c: Use R's NA_REAL, Inf etc to return error and
+	overflow conditions.  Allow widths up to 65535 bytes.
+	* src/sfm-read.c: Increase the limit on variable labels to 65536 bytes
+	(https://stat.ethz.ch/pipermail/r-help/2008-March/156950.html).
+	Skip records of type 7 subtype 16.
+	* R/spss.R, src/sfm-read.c, src/sfmP.h, pfm-read.c,
+	man/read.spss.Rd: add 'reencode' argument to read.spss.
+
+2008-03-22 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/dbfopen.c: Use R_atof where available, for
+	locale-independence.
+
+2008-03-18 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* R/read.dta.R, src/stataread.c, man/read.dta.Rd,
+	man/write.dta.Rd.  Add support for Stata 10 (aka 114) format.
+
+2008-03-09 Duncan Murdoch <Duncan.Murdoch@R-project.org>
+
+	* R/read.epiinfo.R:  bad regexp for blanks fixed.
+
+2008-01-23 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/minitab.c: force text-mode opening (embedded uses of R can
+	change the default on Windows).
+	
 2007-09-17 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-23, use approved license abbreviation.

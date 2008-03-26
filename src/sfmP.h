@@ -40,6 +40,7 @@ struct sysfile_variable
   {
     R_int32 rec_type;		/* 2. */
     R_int32 type;		/* 0=numeric, 1-255=string width,
+				   (allowed to be up to 65535 in 0.8-24)
 				   -1=continued string. */
     R_int32 has_var_label;	/* 1=has a variable label, 0=doesn't. */
     R_int32 n_missing_values;	/* Missing value code of -3,-2,0,1,2, or 3. */

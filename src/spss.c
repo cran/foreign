@@ -3,6 +3,7 @@
  *
  *  Copyright 2000-2000 Saikat DebRoy <saikat@stat.wisc.edu>
  *                      Thomas Lumley <tlumley@u.washington.edu>
+ *  Copyright 2005-8 R Core Development Team
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -216,55 +217,56 @@ void *avlFlatten(const avl_tree *tree){
 }
 
 
-static SEXP getSPSSvaluelabels(struct dictionary *dict){
-  SEXP ans, somelabels, somevalues;
-  int nlabels,nvars,i,j;
-  struct value_label **flattened_labels;
-  struct avl_tree *labelset;
-  unsigned char tmp[MAX_SHORT_STRING+1];
+static SEXP getSPSSvaluelabels(struct dictionary *dict)
+{
+    SEXP ans, somelabels, somevalues;
+    int nlabels,nvars,i,j;
+    struct value_label **flattened_labels;
+    struct avl_tree *labelset;
+    unsigned char tmp[MAX_SHORT_STRING+1];
 
-  nvars=dict->nvar;
-  if (nvars==0)      /* this would be dumb */
-    return R_NilValue; 
-  PROTECT(ans=allocVector(VECSXP, nvars));
+    nvars = dict->nvar;
+    if (nvars ==0 )      /* this would be dumb */
+	return R_NilValue; 
+    PROTECT(ans = allocVector(VECSXP, nvars));
 
-  for(i=0;i<nvars;i++){
-    labelset=(dict->var)[i]->val_lab;
-    if (!labelset){ /* this is quite normal */
-      SET_VECTOR_ELT(ans,i,R_NilValue); 
-      continue;
-    }
+    for(i = 0; i < nvars; i++){
+	labelset = (dict->var)[i]->val_lab;
+	if (!labelset) { /* this is quite normal */
+	    SET_VECTOR_ELT(ans, i, R_NilValue); 
+	    continue;
+	}
 
-    nlabels=avl_count(labelset);
-    /* avl_flatten Callocs, we must Free*/ 
-    flattened_labels=avlFlatten( labelset );
+	nlabels = avl_count(labelset);
+	/* avl_flatten Callocs, we must Free*/ 
+	flattened_labels = avlFlatten( labelset );
 
-    PROTECT(somelabels=allocVector(STRSXP, nlabels));
+	PROTECT(somelabels = allocVector(STRSXP, nlabels));
 
-    if ((dict->var)[i]->type==NUMERIC){
-      PROTECT(somevalues=allocVector(REALSXP, nlabels));
-      for(j=0;j<nlabels;j++){
-	SET_STRING_ELT(somelabels,j,mkChar(flattened_labels[j]->s));
-	REAL(somevalues)[j]=flattened_labels[j]->v.f;
-      }  
-    }
-    else {
-      PROTECT(somevalues=allocVector(STRSXP, nlabels));
-      for(j=0;j<nlabels;j++){
-	SET_STRING_ELT(somelabels,j,mkChar(flattened_labels[j]->s));
-	memcpy(tmp,flattened_labels[j]->v.s, MAX_SHORT_STRING);
-	tmp[MAX_SHORT_STRING]='\0';
-	SET_STRING_ELT(somevalues, j, mkChar((char *)tmp));
-      }  
-    }
-    Free(flattened_labels);
+	if ((dict->var)[i]->type == NUMERIC){
+	    PROTECT(somevalues = allocVector(REALSXP, nlabels));
+	    for(j = 0; j < nlabels; j++){
+		SET_STRING_ELT(somelabels, j, mkChar(flattened_labels[j]->s));
+		REAL(somevalues)[j] = flattened_labels[j]->v.f;
+	    }  
+	}
+	else {
+	    PROTECT(somevalues = allocVector(STRSXP, nlabels));
+	    for(j = 0;j < nlabels; j++){
+		SET_STRING_ELT(somelabels, j, mkChar(flattened_labels[j]->s));
+		memcpy(tmp,flattened_labels[j]->v.s, MAX_SHORT_STRING);
+		tmp[MAX_SHORT_STRING] = '\0';
+		SET_STRING_ELT(somevalues, j, mkChar((char *)tmp));
+	    }  
+	}
+	Free(flattened_labels);
  
-    namesgets(somevalues, somelabels);
-    SET_VECTOR_ELT(ans, i, somevalues);
-    UNPROTECT(2); /*somevalues, somelabels*/    
-  }
-  UNPROTECT(1); /*ans*/
-  return ans;
+	namesgets(somevalues, somelabels);
+	SET_VECTOR_ELT(ans, i, somevalues);
+	UNPROTECT(2); /*somevalues, somelabels*/    
+    }
+    UNPROTECT(1); /*ans*/
+    return ans;
 }
 
 
@@ -447,7 +449,7 @@ read_SPSS_SAVE(const char *filename)
     UNPROTECT(1);
 
     /* get SPSS variable labels */
-    PROTECT(variable_labels=allocVector(STRSXP, dict->nvar));
+    PROTECT(variable_labels = allocVector(STRSXP, dict->nvar));
     nvar_label = 0;
     for (i = 0; i < dict->nvar; i++) {
         char *lab = dict->var[i]->label;
@@ -464,6 +466,7 @@ read_SPSS_SAVE(const char *filename)
 
     free_dictionary(dict);
     setAttrib(ans, R_NamesSymbol, ans_names);
+    setAttrib(ans, install("codepage"), ScalarInteger(inf.encoding));
     UNPROTECT(2);
     return ans;
 }

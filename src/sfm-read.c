@@ -186,7 +186,7 @@ static int parse_format_spec (struct file_handle * h, R_int32 s,
 			      struct fmt_spec * v, struct variable *vv);
 static int read_value_labels (struct file_handle * h, struct variable ** var_by_index);
 static int read_variables (struct file_handle * h, struct variable *** var_by_index);
-static int read_machine_int32_info (struct file_handle * h, int size, int count);
+static int read_machine_int32_info (struct file_handle * h, int size, int count, int *encoding);
 static int read_machine_flt64_info (struct file_handle * h, int size, int count);
 static int read_documents (struct file_handle * h);
 
@@ -401,7 +401,8 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 	    switch (data.subtype)
 	      {
 	      case 3:
-		if (!read_machine_int32_info (h, data.size, data.count))
+		  if (!read_machine_int32_info (h, data.size, data.count, 
+						&(inf->encoding)))
 		  goto lossage;
 		break;
 
@@ -419,6 +420,10 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 	      case 7: /* Multiple-response sets (later versions of SPSS). */	       
 	      case 13:  /* long variable names. PSPP now has code for these
 			   that could be ported if someone is interested. */
+		skip = 1;
+		break;
+
+	      case 16: /* See http://www.nabble.com/problem-loading-SPSS-15.0-save-files-t2726500.html */
 		skip = 1;
 		break;
 
@@ -476,7 +481,7 @@ lossage:
 
 /* Read record type 7, subtype 3. */
 static int
-read_machine_int32_info (struct file_handle * h, int size, int count)
+read_machine_int32_info (struct file_handle * h, int size, int count, int *encoding)
 {
   struct sfm_fhuser_ext *ext = h->ext;
 
@@ -499,7 +504,7 @@ read_machine_int32_info (struct file_handle * h, int size, int count)
     {
     case FPREP_IEEE754:
       if (data[4] != 1)
-	lose ((_("%s: Floating-point representation in system file is not IEEE-754.  PSPP cannot convert between floating-point formats"), h->fn));
+	lose ((_("%s: Floating-point representation in system file is not IEEE-754.  read.spss cannot convert between floating-point formats"), h->fn));
       break;
     default:
       if (!(0)) error("assert failed : 0");
@@ -523,6 +528,7 @@ read_machine_int32_info (struct file_handle * h, int size, int count)
 	   data[6] == 1 ? "big-endian" : (data[6] == 2 ? "little-endian"
 					  : "unknown")));
 
+  *encoding = data[7];
 /* Removes a problem with SPSS 15 files, according to
 http://www.nabble.com/problem-loading-SPSS-15.0-save-files-t2726500.html
 We just deal with the cases we know are wrong (2 and 3 are OK).
@@ -532,9 +538,9 @@ We just deal with the cases we know are wrong (2 and 3 are OK).
     lose ((_("%s: File-indicated character representation code (%s) is not ASCII"), h->fn,
        data[7] == 1 ? "EBCDIC" : (data[7] == 4 ? "DEC Kanji" : "Unknown")));
   if(data[7] >= 500)
-      warning(_("%s: File-indicated character representation code (%d) looks like a Windows codepage"), h-> fn, data[7]);
+      warning(_("%s: File-indicated character representation code (%d) looks like a Windows codepage"), h->fn, data[7]);
   else if(data[7] > 4)
-      warning(_("%s: File-indicated character representation code (%d) is unknown"), h-> fn, data[7]);
+      warning(_("%s: File-indicated character representation code (%d) is unknown"), h->fn, data[7]);
   return 1;
 
 lossage:
@@ -862,7 +868,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	      vv->name[j] = toupper ((unsigned char) (c));
 	    }
 	  else if (isalnum (c) || c == '.' || c == '@'
-		   || c == '#' || c == '$' || c == '_')
+		   || c == '#' || c == '$' || c == '_' || c > 127)
 	    vv->name[j] = c;
 	  else
 	    lose ((_("%s: position %d: character `\\%03o' (%c) is not valid in a variable name"), 
@@ -904,7 +910,9 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	    bswap_int32 (&len);
 
 	  /* Check len. */
-	  if (len < 0 || len > 255)
+	  /* Changed from 255 in 0.8-24.  No limit is really needed,
+	     so think of this as a sanity check */
+	  if (len < 0 || len > 65535)
 	    lose ((_("%s: Variable %s indicates variable label of invalid length %d"), 
 		   h->fn, vv->name, len));
 
@@ -1073,7 +1081,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
   raw_label = Calloc (n_labels, R_flt64);
   cooked_label = Calloc (n_labels, struct value_label *);
   for (i = 0; i < n_labels; i++)
-    cooked_label[i] = NULL;
+      cooked_label[i] = NULL;  /* But Calloc just zeroed it */
 
   /* Read each value/label tuple. */
   for (i = 0; i < n_labels; i++)
