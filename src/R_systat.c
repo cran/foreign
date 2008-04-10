@@ -25,7 +25,7 @@
 #define MAXVARS	      8192	/* maximum number of variables */
 #define MAXLINES	50	/* number of history lines */
 #define SYSLABSIZ	12	/* systat label size */
-#define	LABELSIZ 	12	/* length of variable names and string values */
+#define	LABELSIZ	12	/* length of variable names and string values */
 #define	FORTBUF	       128	/* apparent packet length in .sys files */
 #define	MYBUFSIZ     10*72	/* comment length */
 #define DMIS	   -1.0e36	/* missing value */
@@ -282,7 +282,7 @@ static void getuse(const char *fname, struct SysFilev3 *u)
 
 	if (u->h.nk > 0) {	/* if there are string variables */
 
-	    db_offset_rec = 
+	    db_offset_rec =
 		(u->h.nd % (FORTBUF / (u->h.ntype == 1 ? sizeof(float) : sizeof(double))))
 		* (u->h.ntype == 1 ? sizeof(float) :
 		   sizeof(double));
@@ -466,7 +466,7 @@ static void getlab(struct SysFilev3 *u)
 	} while (len >= 72 && !isDollar);
 	/* until start of comment line is '$' */
 	/* removed Mar 2006 to avoid a problen with over-long comments
-        if (len > 72) {
+	if (len > 72) {
 	    combuf[len - 73] = '\0';
 	    u->h.comment = (char *) R_alloc(len - 72, sizeof(char));
 	    strncpy(u->h.comment, combuf, (len - 72));
@@ -654,7 +654,7 @@ static int getdb(FILE *fd, short type, double *x)
     if (type == 1) {
 	if(fread(&fx, sizeof(float), 1, fd) != 1) return(1);
 	swapb(&fx, sizeof(float));
-	*x = (double) fx;	/* and cast it */	    
+	*x = (double) fx;	/* and cast it */
     } else {
 	if(fread(&dx, sizeof(double), 1, fd) != 1) return(1);
 	swapb(&dx, sizeof(double));

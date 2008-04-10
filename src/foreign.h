@@ -39,7 +39,7 @@
 #endif
 
 #define CN_TYPE_BIG     1
-#define CN_TYPE_LITTLE  2 
+#define CN_TYPE_LITTLE  2
 #define CN_TYPE_XPORT   3
 #define CN_TYPE_IEEEB   CN_TYPE_BIG
 #define CN_TYPE_IEEEL   CN_TYPE_LITTLE

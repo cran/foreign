@@ -1,3 +1,13 @@
+2008-04-10 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-25.
+	* R/zzz.R: add .onUnload() to unload the DLL.
+
+2008-04-04 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* tests/sas.R: precautionary use of binary mode -- needed to test
+	under Windows in R < 2.7.0.
+
 2008-03-27 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-24.

@@ -65,7 +65,7 @@ avl_create (MAYBE_POOL avl_comparison_func cmp, void *param)
   tree->pool = pool;
 #endif
   tree->root.link[0] = NULL;
-  tree->root.link[1] = NULL; 
+  tree->root.link[1] = NULL;
   tree->cmp = cmp;
   tree->count = 0;
   tree->param = param;
@@ -74,7 +74,7 @@ avl_create (MAYBE_POOL avl_comparison_func cmp, void *param)
 }
 
 /* Destroy tree TREE.  Function FREE_FUNC is called for every node in
-   the tree as it is destroyed.  
+   the tree as it is destroyed.
 
    No effect if the tree has an pool owner and free_func is NULL.
    The caller owns the pool and must destroy it itself.
@@ -85,14 +85,14 @@ void
 avl_destroy (avl_tree *tree, avl_node_func free_func)
 {
   if (!(tree != NULL)) error("assert failed : tree != NULL");
-  
+
 #if PSPP
   if (free_func || tree->pool == NULL)
 #endif
     {
       /* Uses Knuth's Algorithm 2.3.1T as modified in exercise 13
 	 (postorder traversal). */
-      
+
       /* T1. */
       avl_node *an[AVL_MAX_HEIGHT];	/* Stack A: nodes. */
       char ab[AVL_MAX_HEIGHT];		/* Stack A: bits. */
@@ -123,7 +123,7 @@ avl_destroy (avl_tree *tree, avl_node_func free_func)
 		  p = p->link[1];
 		  break;
 		}
-      
+
 	      if (free_func)
 		free_func (p->data, tree->param);
 #if PSPP
@@ -196,12 +196,12 @@ avl_copy (MAYBE_POOL const avl_tree *tree, avl_copy_func copy)
   const avl_node *pa[AVL_MAX_HEIGHT];	/* Stack PA: nodes. */
   const avl_node **pp = pa;		/* Stack PA: stack pointer. */
   const avl_node *p = &tree->root;
-  
+
   /* QT1. */
   avl_node *qa[AVL_MAX_HEIGHT];	/* Stack QA: nodes. */
   avl_node **qp = qa;		/* Stack QA: stack pointer. */
   avl_node *q;
-  
+
   if (!(tree != NULL)) error("assert failed : tree != NULL");
 #if PSPP
   new_tree = avl_create (pool, tree->cmp, tree->param);
@@ -236,14 +236,14 @@ avl_copy (MAYBE_POOL const avl_tree *tree, avl_copy_func copy)
 	      p = p->link[0];
 	      q = q->link[0];
 	    }
-      
+
 	  /* PT4. */
 	  if (pp == pa)
 	    {
 	      if (!(qp == qa)) error("assert failed : qp == qa");
 	      return new_tree;
 	    }
-	      
+
 	  p = *--pp;
 	  q = *--qp;
 
@@ -277,7 +277,7 @@ avl_walk (const avl_tree *tree, avl_node_func walk_func, void *param)
 {
   /* Uses Knuth's algorithm 2.3.1T (inorder traversal). */
   if (!(tree && walk_func)) error("assert failed : tree && walk_func");
-  
+
   {
     /* T1. */
     const avl_node *an[AVL_MAX_HEIGHT];	/* Stack A: nodes. */
@@ -293,7 +293,7 @@ avl_walk (const avl_tree *tree, avl_node_func walk_func, void *param)
 	    *ap++ = p;
 	    p = p->link[0];
 	  }
-      
+
 	/* T4. */
 	if (ap == an)
 	  return;
@@ -336,7 +336,7 @@ avl_traverse (const avl_tree *tree, avl_traverser *trav)
 	  trav->stack[trav->nstack++] = trav->p;
 	  trav->p = trav->p->link[0];
 	}
-      
+
       /* T4. */
       if (trav->nstack == 0)
 	{
@@ -367,7 +367,7 @@ avl_probe (avl_tree *tree, void *item)
   /* A1. */
   avl_node *t;
   avl_node *s, *p, *q, *r;
-  
+
   if (!(tree != NULL)) error("assert failed : tree != NULL");
   t = &tree->root;
   s = p = t->link[0];
@@ -419,7 +419,7 @@ avl_probe (avl_tree *tree, void *item)
 	t = p, s = q;
       p = q;
     }
-  
+
   /* A5. */
   tree->count++;
   q->data = item;
@@ -448,7 +448,7 @@ avl_probe (avl_tree *tree, void *item)
 	  s->bal = 0;
 	  return &q->data;
 	}
-      
+
       if (!(s->bal == -1)) error("assert failed : s->bal == -1");
       if (r->bal == -1)
 	{
@@ -471,7 +471,7 @@ avl_probe (avl_tree *tree, void *item)
 	    s->bal = 1, r->bal = 0;
 	  else if (p->bal == 0)
 	    s->bal = r->bal = 0;
-	  else 
+	  else
 	    {
 	      if (!(p->bal == +1)) error("assert failed : p->bal == +1");
 	      s->bal = 0, r->bal = -1;
@@ -515,7 +515,7 @@ avl_probe (avl_tree *tree, void *item)
 	    s->bal = -1, r->bal = 0;
 	  else if (p->bal == 0)
 	    s->bal = r->bal = 0;
-	  else 
+	  else
 	    {
 	      if (!(p->bal == -1)) error("assert failed : p->bal == -1");
 	      s->bal = 0, r->bal = 1;
@@ -523,7 +523,7 @@ avl_probe (avl_tree *tree, void *item)
 	  p->bal = 0;
 	}
     }
-		
+
   /* A10. */
   if (t != &tree->root && s == t->link[1])
     t->link[1] = p;
@@ -532,7 +532,7 @@ avl_probe (avl_tree *tree, void *item)
 
   return &q->data;
 }
-  
+
 /* Search TREE for an item matching ITEM, and return it if found. */
 void *
 avl_find (const avl_tree *tree, const void *item)
@@ -572,7 +572,7 @@ avl_delete (avl_tree *tree, const void *item)
   avl_node *pa[AVL_MAX_HEIGHT];		/* Stack P: Nodes. */
   char a[AVL_MAX_HEIGHT];		/* Stack P: Bits. */
   int k = 1;				/* Stack P: Pointer. */
-  
+
   avl_node **q;
   avl_node *p;
 
@@ -608,7 +608,7 @@ avl_delete (avl_tree *tree, const void *item)
       k++;
     }
   tree->count--;
-  
+
   item = p->data;
 
   /* D5. */
@@ -639,7 +639,7 @@ avl_delete (avl_tree *tree, const void *item)
 
 	  a[k] = 0;
 	  pa[k++] = r;
-	    
+
 	  /* D8. */
 	  while (s->link[0] != NULL)
 	    {
@@ -706,7 +706,7 @@ avl_delete (avl_tree *tree, const void *item)
 	      s->bal = r->bal = 0;
 	      pa[k - 1]->link[(int) a[k - 1]] = r;
 	    }
-	  else 
+	  else
 	    {
 	      /* D13. */
 	      if (!(r->bal == -1)) error("assert failed : r->bal == -1");
@@ -786,7 +786,7 @@ avl_delete (avl_tree *tree, const void *item)
 	    }
 	}
     }
-      
+
   return (void *) item;
 }
 
@@ -796,9 +796,9 @@ void *
 avl_insert (avl_tree *tree, void *item)
 {
   void **p;
-  
+
   if (!(tree != NULL)) error("assert failed : tree != NULL");
-  
+
   p = avl_probe (tree, item);
   return (*p == item) ? NULL : *p;
 }
@@ -813,7 +813,7 @@ avl_replace (avl_tree *tree, void *item)
   void **p;
 
   if (!(tree != NULL)) error("assert failed : tree != NULL");
-  
+
   p = avl_probe (tree, item);
   if (*p == item)
     return NULL;
@@ -850,7 +850,7 @@ print_structure (avl_node *node, int level)
   char rc[] = ")]}'\\";
 
   if (!(level <= 10)) error("assert failed : level <= 10");
-  
+
   if (node == NULL)
     {
       printf (" nil");
@@ -896,7 +896,7 @@ print_contents (avl_tree *tree)
 int
 recurse_tree (avl_node *node, int *count, int parent, int dir)
 {
-  if (node) 
+  if (node)
     {
       int d = (int) node->data;
       int nl = node->link[0] ? recurse_tree (node->link[0], count, d, -1) : 0;
@@ -910,7 +910,7 @@ recurse_tree (avl_node *node, int *count, int parent, int dir)
 		  d, nr, nl, nr - nl, node->bal);
 	  done = 1;
 	}
-      
+
       if (parent != INT_MIN)
 	{
 	  if (!(dir == -1 || dir == +1)) error("assert failed : dir == -1 || dir == +1");
@@ -954,7 +954,7 @@ void
 shuffle (int *array, int n)
 {
   int i;
-  
+
   for (i = 0; i < n; i++)
     {
       int j = i + rand () % (n - i);
@@ -1009,7 +1009,7 @@ compare_trees (avl_node *a, avl_node *b)
    * Create a tree and insert the integers from 0 up to TREE_SIZE - 1
    into it, in random order.  Verify the tree structure after each
    insertion.
-   
+
    * Remove each integer from the tree, in a different random order.
    After each deletion, verify the tree structure; also, make a copy
    of the tree into a new tree, verify the copy and compare it to the
@@ -1029,28 +1029,28 @@ main (int argc, char **argv)
   int array[TREE_SIZE];
   int seed;
   int iteration;
-  
+
   if (argc == 2)
     seed = atoi (argv[1]);
   else
     seed = time (0) * 257 % 32768;
 
   fputs ("Testing avl...\n", stdout);
-  
+
   for (iteration = 1; iteration <= N_ITERATIONS; iteration++)
     {
       avl_tree *tree;
       int i;
-      
+
       printf ("Iteration %4d/%4d: seed=%5d", iteration, N_ITERATIONS, seed);
       fflush (stdout);
-      
+
       srand (seed++);
 
       for (i = 0; i < TREE_SIZE; i++)
 	array[i] = i;
       shuffle (array, TREE_SIZE);
-      
+
       tree = avl_create (compare_ints, NULL);
       for (i = 0; i < TREE_SIZE; i++)
 	avl_force_insert (tree, (void *) (array[i]));
@@ -1079,7 +1079,7 @@ main (int argc, char **argv)
 
       avl_destroy (tree, NULL);
     }
-  
+
   return 0;
 }
 #endif /* SELF_TEST */
@@ -1089,4 +1089,3 @@ main (int argc, char **argv)
   compile-command: "gcc -DSELF_TEST=1 -W -Wall -I. -o ./avl-test avl.c"
   End:
 */
-

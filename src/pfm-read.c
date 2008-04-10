@@ -42,7 +42,7 @@
 	((A) < (B) ? (B) : ((A) > (C) ? (C) : (A)))
 
 /* Divides nonnegative X by positive Y, rounding up. */
-#define DIV_RND_UP(X, Y) 			\
+#define DIV_RND_UP(X, Y)			\
 	(((X) + ((Y) - 1)) / (Y))
 
 /* Returns nonnegative difference between {nonnegative X} and {the
@@ -54,16 +54,16 @@
 	  rem ? (Y) - rem : 0;			\
 	})
 #else
-#define REM_RND_UP(X, Y) 			\
+#define REM_RND_UP(X, Y)			\
 	((X) % (Y) ? (Y) - (X) % (Y) : 0)
 #endif
 
 /* Rounds X up to the next multiple of Y. */
-#define ROUND_UP(X, Y) 				\
+#define ROUND_UP(X, Y)				\
 	(((X) + ((Y) - 1)) / (Y) * (Y))
 
 /* Rounds X down to the previous multiple of Y. */
-#define ROUND_DOWN(X, Y) 			\
+#define ROUND_DOWN(X, Y)			\
 	((X) / (Y) * (Y))
 
 #undef DEBUGGING
@@ -139,7 +139,7 @@ fill_buf (struct file_handle *h)
   /* PORTME: line ends. */
   {
     int c;
-    
+
     c = getc (ext->file);
     if (c != '\n' && c != '\r')
       lose ((_("Bad line end")));
@@ -148,11 +148,11 @@ fill_buf (struct file_handle *h)
     if (c != '\n' && c != '\r')
       ungetc (c, ext->file);
   }
-  
+
   if (ext->trans)
     {
       int i;
-      
+
       for (i = 0; i < 80; i++)
 	ext->buf[i] = ext->trans[ext->buf[i]];
     }
@@ -186,7 +186,7 @@ static inline int
 skip_char (struct file_handle *h, int c)
 {
   struct pfm_fhuser_ext *ext = h->ext;
-  
+
   if (ext->cc == c)
     {
       advance ();
@@ -239,7 +239,7 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
   if (ext->file == NULL)
     {
       Free (ext);
-      error(_("an error occurred while opening \"%s\" for reading as a portable file: %s"), 
+      error(_("an error occurred while opening \"%s\" for reading as a portable file: %s"),
 	    h->fn, strerror (errno));
       return NULL;
     }
@@ -256,7 +256,7 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
   /* Read the header. */
   if (!read_header (h))
     goto lossage;
-  
+
   /* Read version, date info, product identification. */
   if (!read_version_data (h, inf))
     goto lossage;
@@ -284,7 +284,7 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
 
  lossage:
   /* Come here on unsuccessful completion. */
-  
+
   fclose (ext->file);
   if (ext && ext->dict)
     free_dictionary (ext->dict);
@@ -300,7 +300,7 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
 static double
 read_float (struct file_handle *h)
 {
-  struct pfm_fhuser_ext *ext = h->ext;			      
+  struct pfm_fhuser_ext *ext = h->ext;
   double num = 0.;
   int got_dot = 0;
   int got_digit = 0;
@@ -355,7 +355,7 @@ read_float (struct file_handle *h)
 
   if (!got_digit)
     lose ((_("Number expected")));
-      
+
   if (ext->cc == 130 /* + */ || ext->cc == 141 /* - */)
     {
       /* Get the exponent.  */
@@ -375,12 +375,12 @@ read_float (struct file_handle *h)
 	}
 
       /* We don't check whether there were actually any digits, but we
-         probably should. */
+	 probably should. */
       if (neg_exp)
 	exp = -exp;
       exponent += exp;
     }
-  
+
   if (!pfm_match (142 /* / */))
     lose ((_("Missing numeric terminator")));
 
@@ -409,7 +409,7 @@ read_float (struct file_handle *h)
  lossage:
   return NA_REAL;
 }
-  
+
 /* Read an integer and return its value, or NA_INTEGER on failure. */
 int
 read_int (struct file_handle *h)
@@ -435,7 +435,7 @@ read_string (struct file_handle *h)
   struct pfm_fhuser_ext *ext = h->ext;
   static unsigned char *buf;
   int n;
-  
+
   if (h == NULL)
     {
       Free (buf);
@@ -450,7 +450,7 @@ read_string (struct file_handle *h)
     return NULL;
   if (n < 0 || n > 65535)
     lose ((_("Bad string length %d"), n));
-  
+
   {
     int i;
 
@@ -460,7 +460,7 @@ read_string (struct file_handle *h)
 	advance ();
       }
   }
-  
+
   buf[n] = 0;
   return buf;
 
@@ -481,7 +481,7 @@ read_header (struct file_handle *h)
     for (i = 0; i < 200; i++)
       advance ();
   }
-  
+
   {
     unsigned char src[256];
     int trans_temp[256];
@@ -502,7 +502,7 @@ read_header (struct file_handle *h)
     for (i = 0; i < 256; i++)
       if (trans_temp[src[i]] == -1)
 	trans_temp[src[i]] = i;
-    
+
     ext->trans = Calloc (256, unsigned char);
     for (i = 0; i < 256; i++)
       ext->trans[i] = trans_temp[i] == -1 ? 0 : trans_temp[i];
@@ -512,7 +512,7 @@ read_header (struct file_handle *h)
       ext->buf[i] = ext->trans[ext->buf[i]];
     ext->cc = ext->trans[ext->cc];
   }
-  
+
   {
     unsigned char sig[8] = {92, 89, 92, 92, 89, 88, 91, 93};
     int i;
@@ -544,7 +544,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
     static const int map[] = {6, 7, 8, 9, 3, 4, 0, 1};
     char *date = (char *) read_string (h);
     int i;
-    
+
     if (!date)
       return 0;
     if (strlen (date) != 8)
@@ -565,7 +565,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
 	inf->creation_date[10] = 0;
       }
   }
-  
+
   /* Time. */
   {
     static const int map[] = {0, 1, 3, 4, 6, 7};
@@ -597,7 +597,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
   if (pfm_match (65 /* 1 */))
     {
       char *product;
-      
+
       product = (char *) read_string (h);
       if (product == NULL)
 	return 0;
@@ -621,7 +621,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
   else if (inf)
     inf->subproduct[0] = 0;
   return 1;
-  
+
  lossage:
   return 0;
 }
@@ -680,10 +680,10 @@ read_variables (struct file_handle *h)
 {
   struct pfm_fhuser_ext *ext = h->ext;
   int i;
-  
+
   if (!pfm_match (68 /* 4 */))
     lose ((_("Expected variable count record")));
-  
+
   ext->nvars = read_int (h);
   if (ext->nvars <= 0 || ext->nvars == NA_INTEGER)
     lose ((_("Invalid number of variables %d"), ext->nvars));
@@ -712,7 +712,7 @@ read_variables (struct file_handle *h)
       strcpy (ext->dict->weight_var, name);
       asciify (ext->dict->weight_var);
     }
-  
+
   for (i = 0; i < ext->nvars; i++)
     {
       int width;
@@ -730,7 +730,7 @@ read_variables (struct file_handle *h)
       if (width < 0)
 	lose ((_("Invalid variable width %d"), width));
       ext->vars[i] = width;
-      
+
       name = read_string (h);
       if (name == NULL)
 	goto lossage;
@@ -750,7 +750,7 @@ read_variables (struct file_handle *h)
 	       i, strlen ((char *) name)));
       if ((name[0] < 74 /* A */ || name[0] > 125 /* Z */)
 	  && name[0] != 152 /* @ */)
-	lose ((_("position %d: Variable name begins with invalid character"), 
+	lose ((_("position %d: Variable name begins with invalid character"),
 	       i));
       if (name[0] >= 100 /* a */ && name[0] <= 125 /* z */)
 	{
@@ -775,7 +775,7 @@ read_variables (struct file_handle *h)
 		   || c == 136 /* $ */ || c == 146 /* _ */)
 	    name[j] = c;
 	  else
-	    lose ((_("position %d: character `\\%03o' is not valid in a variable name"), 
+	    lose ((_("position %d: character `\\%03o' is not valid in a variable name"),
 		   i, c));
 	}
 
@@ -783,7 +783,7 @@ read_variables (struct file_handle *h)
       if (width < 0 || width > 65535)
 	lose ((_("Bad width %d for variable %s"), width, name));
 
-      v = create_variable (ext->dict, (char *) name, 
+      v = create_variable (ext->dict, (char *) name,
 			   width ? ALPHA : NUMERIC, width);
       v->get.fv = v->fv;
       if (v == NULL)
@@ -824,7 +824,7 @@ read_variables (struct file_handle *h)
 	      -1, -1, -1,
 	    };
 
-	  static const int map_ofs[MISSING_COUNT] = 
+	  static const int map_ofs[MISSING_COUNT] =
 	    {
 	      -1, 0, 1, 2, -1, -1, -1, 2, 1, 1,
 	    };
@@ -832,7 +832,7 @@ read_variables (struct file_handle *h)
 	  v->miss_type = map_next[v->miss_type];
 	  if (v->miss_type == -1)
 	    lose ((_("Bad missing values for %s"), v->name));
-	  
+
 	  if (map_ofs[v->miss_type] == -1)
 	      error("read_variables : map_ofs[v->miss_type] == -1");
 	  if (!parse_value (h, &v->missing[map_ofs[v->miss_type]], v))
@@ -842,7 +842,7 @@ read_variables (struct file_handle *h)
       if (pfm_match (76 /* C */))
 	{
 	  char *label = (char *) read_string (h);
-	  
+
 	  if (label == NULL)
 	    goto lossage;
 
@@ -871,7 +871,7 @@ parse_value (struct file_handle *h, union value *v, struct variable *vv)
     {
       char *mv = (char *) read_string (h);
       int j;
-      
+
       if (mv == NULL)
 	return 0;
 
@@ -940,10 +940,10 @@ read_value_label (struct file_handle *h)
       struct value_label *vl;
 
       int j;
-      
+
       if (!parse_value (h, &val, v[0]))
 	goto lossage;
-      
+
       label = (char *) read_string (h);
       if (label == NULL)
 	goto lossage;
@@ -1019,7 +1019,7 @@ pfm_read_case (struct file_handle *h, union value *perm, struct dictionary *dict
   /* Check for end of file. */
   if (ext->cc == 99 /* Z */)
     return 0;
-  
+
   /* The first concern is to obtain a full case relative to the data
      file.  (Cases in the data file have no particular relationship to
      cases in the active file.) */
@@ -1038,7 +1038,7 @@ pfm_read_case (struct file_handle *h, union value *perm, struct dictionary *dict
 	if (s == NULL)
 	  goto unexpected_eof;
 	asciify (s);
-	  
+
 	st_bare_pad_copy ((char *) tp->s, s, ext->vars[i]);
 	tp += DIV_RND_UP (ext->vars[i], MAX_SHORT_STRING);
       }
@@ -1051,7 +1051,7 @@ pfm_read_case (struct file_handle *h, union value *perm, struct dictionary *dict
 
       if (v->get.fv == -1)
 	continue;
-      
+
       if (v->type == NUMERIC)
 	perm[v->fv].f = temp[v->get.fv].f;
       else

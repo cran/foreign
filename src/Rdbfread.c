@@ -60,7 +60,7 @@ SEXP Rdbfread(SEXP dbfnm)
 /* -------------------------------------------------------------------- */
     if( DBFGetFieldCount(hDBF) == 0 )
     {
-    	DBFClose( hDBF );
+	DBFClose( hDBF );
 	error(_("no fields in DBF table"));
     }
 
@@ -129,7 +129,7 @@ SEXP Rdbfread(SEXP dbfnm)
 		if( DBFIsAttributeNULL( hDBF, iRecord, i ))
 		    SET_STRING_ELT(VECTOR_ELT(df, nRvar), iRecord, NA_STRING);
 		else
-		    SET_STRING_ELT(VECTOR_ELT(df, nRvar), iRecord, 
+		    SET_STRING_ELT(VECTOR_ELT(df, nRvar), iRecord,
 				   mkChar(DBFReadStringAttribute( hDBF, iRecord, i)));
 		nRvar++;
 		break;
@@ -139,9 +139,9 @@ SEXP Rdbfread(SEXP dbfnm)
 		    INTEGER(VECTOR_ELT(df, nRvar))[iRecord] = NA_INTEGER;
 		else {
 		    int ii;
-		    
+
 		    dtmp = DBFReadDoubleAttribute( hDBF, iRecord, i );
-		    if(dtmp> 2147483647.0 || dtmp < 2147483646.) { 
+		    if(dtmp> 2147483647.0 || dtmp < 2147483646.) {
 			/* allow for NA_INTEGER = -(2^31 -1)*/
 			PROTECT(tmp = VECTOR_ELT(df, nRvar));
 			SET_VECTOR_ELT(df, nRvar, allocVector(REALSXP, nrecs));
@@ -206,8 +206,8 @@ SEXP Rdbfread(SEXP dbfnm)
     setAttrib(df, install("data_types"), DataTypes);
     PROTECT(row_names = allocVector(STRSXP, nrecs)); pc++;
     for (i = 0; i < nrecs; i++) {
-        sprintf(labelbuff, "%d", i+1);
-        SET_STRING_ELT(row_names, i, mkChar(labelbuff));
+	sprintf(labelbuff, "%d", i+1);
+	SET_STRING_ELT(row_names, i, mkChar(labelbuff));
     }
     setAttrib(df, R_RowNamesSymbol, row_names);
 

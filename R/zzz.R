@@ -17,4 +17,7 @@
 .onLoad <- .First.lib <- function(lib, pkg)
     .C("spss_init", PACKAGE = "foreign")
 
+.onUnload <- function(libpath)
+    library.dynam.unload("foreign", libpath)
+
 .noGenerics <- TRUE

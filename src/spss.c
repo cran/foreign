@@ -32,7 +32,7 @@
 #endif
 
 /* Divides nonnegative X by positive Y, rounding up. */
-#define DIV_RND_UP(X, Y) 			\
+#define DIV_RND_UP(X, Y)			\
 	(((X) + ((Y) - 1)) / (Y))
 
 char *
@@ -49,7 +49,7 @@ struct dictionary *
 new_dictionary (int copy)
 {
   struct dictionary *d = Calloc (1, struct dictionary);
-  
+
   d->var = NULL;
   d->var_by_name = avl_create (cmp_variable, NULL);
   d->nvar = 0;
@@ -65,7 +65,7 @@ new_dictionary (int copy)
 
   d->n_documents = 0;
   d->documents = NULL;
-  
+
   d->weight_index = -1;
   d->weight_var[0] = 0;
 
@@ -73,7 +73,7 @@ new_dictionary (int copy)
 
   return d;
 }
-    
+
 /* Find and return the variable in dictionary D having name NAME, or
    NULL if no such variable exists in D. */
 struct variable *
@@ -139,18 +139,18 @@ create_variable (struct dictionary *dict, const char *name,
 {
   if (find_dict_variable (dict, name))
     return NULL;
-  
+
   {
     struct variable *new_var;
-    
+
     dict->var = Realloc (dict->var, dict->nvar + 1, struct variable *);
     new_var = dict->var[dict->nvar] = Calloc (1, struct variable);
-    
+
     new_var->index = dict->nvar;
     dict->nvar++;
-    
+
     init_variable (dict, new_var, name, type, width);
-    
+
     return new_var;
   }
 }
@@ -189,7 +189,7 @@ void *avlFlatten(const avl_tree *tree){
   const avl_node *an[AVL_MAX_HEIGHT];	/* Stack A: nodes. */
   const avl_node **ap = an;		/* Stack A: stack pointer. */
   const avl_node *p = tree->root.link[0];
-  
+
   n=avl_count(tree);
   ans=Calloc(n, void * );
 
@@ -202,18 +202,18 @@ void *avlFlatten(const avl_tree *tree){
 	  *ap++ = p;
 	  p = p->link[0];
 	}
-      
+
       /* T4. */
       if (ap == an)
 	  return ans;
       p = *--ap;
-      
+
       /* T5. */
       n--;
       ans[n]=p->data;
       p = p->link[1];
     }
-  
+
 }
 
 
@@ -227,18 +227,18 @@ static SEXP getSPSSvaluelabels(struct dictionary *dict)
 
     nvars = dict->nvar;
     if (nvars ==0 )      /* this would be dumb */
-	return R_NilValue; 
+	return R_NilValue;
     PROTECT(ans = allocVector(VECSXP, nvars));
 
     for(i = 0; i < nvars; i++){
 	labelset = (dict->var)[i]->val_lab;
 	if (!labelset) { /* this is quite normal */
-	    SET_VECTOR_ELT(ans, i, R_NilValue); 
+	    SET_VECTOR_ELT(ans, i, R_NilValue);
 	    continue;
 	}
 
 	nlabels = avl_count(labelset);
-	/* avl_flatten Callocs, we must Free*/ 
+	/* avl_flatten Callocs, we must Free*/
 	flattened_labels = avlFlatten( labelset );
 
 	PROTECT(somelabels = allocVector(STRSXP, nlabels));
@@ -248,7 +248,7 @@ static SEXP getSPSSvaluelabels(struct dictionary *dict)
 	    for(j = 0; j < nlabels; j++){
 		SET_STRING_ELT(somelabels, j, mkChar(flattened_labels[j]->s));
 		REAL(somevalues)[j] = flattened_labels[j]->v.f;
-	    }  
+	    }
 	}
 	else {
 	    PROTECT(somevalues = allocVector(STRSXP, nlabels));
@@ -257,13 +257,13 @@ static SEXP getSPSSvaluelabels(struct dictionary *dict)
 		memcpy(tmp,flattened_labels[j]->v.s, MAX_SHORT_STRING);
 		tmp[MAX_SHORT_STRING] = '\0';
 		SET_STRING_ELT(somevalues, j, mkChar((char *)tmp));
-	    }  
+	    }
 	}
 	Free(flattened_labels);
- 
+
 	namesgets(somevalues, somelabels);
 	SET_VECTOR_ELT(ans, i, somevalues);
-	UNPROTECT(2); /*somevalues, somelabels*/    
+	UNPROTECT(2); /*somevalues, somelabels*/
     }
     UNPROTECT(1); /*ans*/
     return ans;
@@ -361,15 +361,15 @@ read_SPSS_PORT(const char *filename)
     PROTECT(variable_labels=allocVector(STRSXP, dict->nvar));
     nvar_label = 0;
     for (i = 0; i < dict->nvar; i++) {
-        char *lab = dict->var[i]->label;
-        if (lab != NULL) {
-            nvar_label++;
-            SET_STRING_ELT(variable_labels, i, mkChar(lab));
-        }
+	char *lab = dict->var[i]->label;
+	if (lab != NULL) {
+	    nvar_label++;
+	    SET_STRING_ELT(variable_labels, i, mkChar(lab));
+	}
     }
     if (nvar_label > 0) {
-        namesgets(variable_labels, ans_names);
-        setAttrib(ans,install("variable.labels"), variable_labels);
+	namesgets(variable_labels, ans_names);
+	setAttrib(ans,install("variable.labels"), variable_labels);
     }
     UNPROTECT(1);
 
@@ -452,15 +452,15 @@ read_SPSS_SAVE(const char *filename)
     PROTECT(variable_labels = allocVector(STRSXP, dict->nvar));
     nvar_label = 0;
     for (i = 0; i < dict->nvar; i++) {
-        char *lab = dict->var[i]->label;
-        if (lab != NULL) {
-            nvar_label++;
-            SET_STRING_ELT(variable_labels, i, mkChar(lab));
-        }
+	char *lab = dict->var[i]->label;
+	if (lab != NULL) {
+	    nvar_label++;
+	    SET_STRING_ELT(variable_labels, i, mkChar(lab));
+	}
     }
     if (nvar_label > 0) {
-        namesgets(variable_labels, ans_names);
-        setAttrib(ans,install("variable.labels"), variable_labels);
+	namesgets(variable_labels, ans_names);
+	setAttrib(ans,install("variable.labels"), variable_labels);
     }
     UNPROTECT(1);
 
@@ -525,14 +525,14 @@ is_PORT(FILE *fp)
 	    if (trans_temp[src[i]] == -1)
 		trans_temp[src[i]] = i;
 	}
-    
+
 	for (i = 0; i < 256; i++) {
 	    if (trans_temp[i] == -1)
 		trans_temp[i] = 0;
 	}
 
     }
-  
+
     {
 	unsigned char sig[9] = {92, 89, 92, 92, 89, 88, 91, 93, '\0'};
 	unsigned char buf[9];
@@ -558,7 +558,7 @@ do_read_SPSS(SEXP file)
     SEXP ans;
 
     if(!fp)
-	error(_("unable to open file"));    
+	error(_("unable to open file"));
     if(fread_pfm(buf, sizeof(char), 4, fp) != 4) {
 	fclose(fp);
 	error(_("problem in reading file '%s'"), filename);

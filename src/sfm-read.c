@@ -37,7 +37,7 @@
 	((A) < (B) ? (B) : ((A) > (C) ? (C) : (A)))
 
 /* Divides nonnegative X by positive Y, rounding up. */
-#define DIV_RND_UP(X, Y) 			\
+#define DIV_RND_UP(X, Y)			\
 	(((X) + ((Y) - 1)) / (Y))
 
 /* Returns nonnegative difference between {nonnegative X} and {the
@@ -50,22 +50,22 @@
 	  rem ? (Y) - rem : 0;			\
 	}))
 #else
-#define REM_RND_UP(X, Y) 			\
+#define REM_RND_UP(X, Y)			\
 	((X) % (Y) ? (Y) - (X) % (Y) : 0)
 #endif
 
 /* Rounds X up to the next multiple of Y. */
-#define ROUND_UP(X, Y) 				\
+#define ROUND_UP(X, Y)				\
 	(((X) + ((Y) - 1)) / (Y) * (Y))
 
 /* Rounds X down to the previous multiple of Y. */
-#define ROUND_DOWN(X, Y) 			\
+#define ROUND_DOWN(X, Y)			\
 	((X) / (Y) * (Y))
 
 #undef DEBUGGING
 /*#define DEBUGGING 1*/
 
-static double 
+static double
 second_lowest_double_val()
 {
   /* PORTME: Set the value for second_lowest_value, which is the
@@ -195,7 +195,7 @@ static int read_documents (struct file_handle * h);
 #define lose(X)					\
 	do					\
 	  {					\
-	    warning X;	 			\
+	    warning X;				\
 	    goto lossage;			\
 	  }					\
 	while (0)
@@ -240,7 +240,7 @@ free_dictionary (struct dictionary * d)
   d->n_splits = 0;
   Free (d->splits);
   d->splits = NULL;
-  
+
   if (d->var_by_name)
     avl_destroy (d->var_by_name, NULL);
 
@@ -298,7 +298,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
   warning ("%s: Opening system-file handle %s for reading.",
       fh_handle_filename (h), fh_handle_name (h));
 #endif
-  
+
   /* Open the physical disk file. */
   ext = (struct sfm_fhuser_ext *) Calloc(1, struct sfm_fhuser_ext);
   ext->file = fopen (R_ExpandFileName(h->norm_fn), "rb");
@@ -401,7 +401,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 	    switch (data.subtype)
 	      {
 	      case 3:
-		  if (!read_machine_int32_info (h, data.size, data.count, 
+		  if (!read_machine_int32_info (h, data.size, data.count,
 						&(inf->encoding)))
 		  goto lossage;
 		break;
@@ -417,7 +417,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 		skip = 1;
 		break;
 
-	      case 7: /* Multiple-response sets (later versions of SPSS). */	       
+	      case 7: /* Multiple-response sets (later versions of SPSS). */
 	      case 13:  /* long variable names. PSPP now has code for these
 			   that could be ported if someone is interested. */
 		skip = 1;
@@ -467,7 +467,7 @@ break_out_of_loop:
 
 lossage:
   /* Come here on unsuccessful completion. */
-  
+
   Free (var_by_index);
   fclose (ext->file);
   if (ext && ext->dict)
@@ -577,7 +577,7 @@ read_machine_flt64_info (struct file_handle * h, int size, int count)
 	  (double) data[1], (double) DBL_MAX,
 	  (double) data[2], (double) second_lowest_double_val());
     }
-  
+
   return 1;
 
 lossage:
@@ -642,7 +642,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
 	break;
       }
   prod_name[60] = '\0';
-  
+
   {
 #define N_PREFIXES 2
     static const char *prefix[N_PREFIXES] =
@@ -660,7 +660,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
 	  break;
 	}
   }
-  
+
   /* Check endianness. */
   /* PORTME: endianness. */
   if (hdr.layout_code == 2 || hdr.layout_code == 3)
@@ -701,7 +701,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
 
   ext->bias = hdr.bias;
   if (ext->bias != 100.0)
-    warning(_("%s: Compression bias (%g) is not the usual value of 100"), 
+    warning(_("%s: Compression bias (%g) is not the usual value of 100"),
 	    h->fn, ext->bias);
 
   /* Make a file label only on the condition that the given label is
@@ -759,7 +759,7 @@ cmp_variable (const void *a, const void *b, void *foo)
 }
 
 /* Reads most of the dictionary from file H; also fills in the
-   associated VAR_BY_INDEX array. 
+   associated VAR_BY_INDEX array.
 
    Note: the dictionary returned by this function has an invalid NVAL
    element, also the VAR[] array does not have the FV and LV elements
@@ -803,7 +803,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	}
 
       if (sv.rec_type != 2)
-	lose ((_("%s: position %d: Bad record type (%d); the expected value was 2"), 
+	lose ((_("%s: position %d: Bad record type (%d); the expected value was 2"),
 	       h->fn, i, sv.rec_type));
 
       /* If there was a long string previously, make sure that the
@@ -812,7 +812,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
       if (long_string_count)
 	{
 	  if (sv.type != -1)
-	    lose ((_("%s: position %d: String variable does not have proper number of continuation records"), 
+	    lose ((_("%s: position %d: String variable does not have proper number of continuation records"),
 		   h->fn, i));
 
 	  (*var_by_index)[i] = NULL;
@@ -850,7 +850,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	warning(_("%s: position %d: Variable name begins with lowercase letter %c"),
 		h->fn, i, sv.name[0]);
       if (sv.name[0] == '#')
-	warning(_("%s: position %d: Variable name begins with octothorpe ('#').  Scratch variables should not appear in system files"), 
+	warning(_("%s: position %d: Variable name begins with octothorpe ('#').  Scratch variables should not appear in system files"),
 		  h->fn, i);
       vv->name[0] = toupper ((unsigned char) (sv.name[0]));
 
@@ -863,7 +863,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	    break;
 	  else if (islower (c))
 	    {
-	      warning(_("%s: position %d: Variable name character %d is lowercase letter %c"), 
+	      warning(_("%s: position %d: Variable name character %d is lowercase letter %c"),
 		      h->fn, i, j + 1, sv.name[j]);
 	      vv->name[j] = toupper ((unsigned char) (c));
 	    }
@@ -871,7 +871,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 		   || c == '#' || c == '$' || c == '_' || c > 127)
 	    vv->name[j] = c;
 	  else
-	    lose ((_("%s: position %d: character `\\%03o' (%c) is not valid in a variable name"), 
+	    lose ((_("%s: position %d: character `\\%03o' (%c) is not valid in a variable name"),
 		   h->fn, i, c, c));
 	}
       vv->name[j] = 0;
@@ -913,7 +913,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	  /* Changed from 255 in 0.8-24.  No limit is really needed,
 	     so think of this as a sanity check */
 	  if (len < 0 || len > 65535)
-	    lose ((_("%s: Variable %s indicates variable label of invalid length %d"), 
+	    lose ((_("%s: Variable %s indicates variable label of invalid length %d"),
 		   h->fn, vv->name, len));
 
 	  /* Read label into variable structure. */
@@ -952,7 +952,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	      int x = 0;
 
 	      if (vv->type == ALPHA)
-		lose ((_("%s: String variable %s may not have missing values specified as a range"), 
+		lose ((_("%s: String variable %s may not have missing values specified as a range"),
 		       h->fn, vv->name));
 
 	      if (mv[0] == ext->lowest)
@@ -1030,7 +1030,7 @@ parse_format_spec (struct file_handle *h, R_int32 s, struct fmt_spec *v, struct 
       >= sizeof translate_fmt / sizeof *translate_fmt)
     lose ((_("%s: Bad format specifier byte (%d)"),
 	   h->fn, (s >> 16) & 0xff));
-  
+
   v->type = translate_fmt[(s >> 16) & 0xff];
   v->w = (s >> 8) & 0xff;
   v->d = s & 0xff;
@@ -1114,11 +1114,11 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
   /* Read record type of type 4 record. */
   {
     R_int32 rec_type;
-    
+
     assertive_bufread(h, &rec_type, sizeof rec_type, 0);
     if (ext->reverse_endian)
       bswap_int32 (&rec_type);
-    
+
     if (rec_type != 4)
       lose ((_("%s: Variable index record (type 4) does not immediately follow value label record (type 3) as it ought"), h->fn));
   }
@@ -1152,7 +1152,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
       /* Make sure it's a real variable. */
       v = var_by_index[var_index - 1];
       if (v == NULL)
-	lose ((_("%s: Variable index associated with value label (%d) refers to a continuation of a string variable, not to an actual variable"), 
+	lose ((_("%s: Variable index associated with value label (%d) refers to a continuation of a string variable, not to an actual variable"),
 	       h->fn, var_index));
       if (v->type == ALPHA && v->width > MAX_SHORT_STRING)
 	lose ((_("%s: Value labels are not allowed on long string variables (%s)"), h->fn, v->name));
@@ -1206,7 +1206,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
 	    continue;
 
 	  if (var[0]->type == NUMERIC)
-	    warning(_("%s: File contains duplicate label for value %g for variable %s"), 
+	    warning(_("%s: File contains duplicate label for value %g for variable %s"),
 		    h->fn, cooked_label[j]->v.f, v->name);
 	  else
 	    warning(_("%s: File contains duplicate label for value `%.*s' for variable %s"),
@@ -1310,7 +1310,7 @@ dump_dictionary (struct dictionary * dict)
       debug_printf (("(fv:%d,%d)", v->fv, v->nv));
       /*debug_printf (("(get.fv:%d,%d)", v->get.fv, v->get.nv));*/
       debug_printf (("(left:%s)(miss:", v->left ? "left" : "right"));
-	      
+
       switch (v->miss_type)
 	{
 	case MISSING_NONE:
@@ -1540,7 +1540,7 @@ sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * d
 
       if (v->get.fv == -1)
 	continue;
-      
+
       if (v->type == NUMERIC)
 	{
 	  R_flt64 src = temp[v->get.fv];

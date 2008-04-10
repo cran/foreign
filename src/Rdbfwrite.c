@@ -3,7 +3,7 @@
  * First version for R's maptools package appears to be
  * Copyright 2000-2001 (c) Nicholas Lewin-Koh
  *
- * Changes for the foreign package 
+ * Changes for the foreign package
  * Copyright (C) 2004 the R Code Development Team
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -41,7 +41,7 @@ static char* nameMangleOut(char *dbfFldname, int len)
 
 
 SEXP DoWritedbf(SEXP file, SEXP df, SEXP pr, SEXP sc, SEXP DataTypes)
-{ 
+{
     DBFHandle hDBF;
 
     if (!isValidString(file))
@@ -49,17 +49,17 @@ SEXP DoWritedbf(SEXP file, SEXP df, SEXP pr, SEXP sc, SEXP DataTypes)
 
     hDBF = DBFCreate(R_ExpandFileName(CHAR(STRING_ELT(file, 0))));
     if (hDBF == NULL) error(_("unable to open file"));
- 
+
     Rdbfwrite(hDBF, df, pr, sc, DataTypes);
-    DBFClose(hDBF); 
+    DBFClose(hDBF);
     return R_NilValue;
 }
 
 
-static DBFHandle 
+static DBFHandle
 Rdbfwrite(DBFHandle hDBF, SEXP df, SEXP pr, SEXP sc, SEXP DataTypes)
 {
-    
+
     int	i, iRecord, nflds, nrecs, itmp;
     int	nWidth;
     char szTitle[12];
@@ -71,24 +71,24 @@ Rdbfwrite(DBFHandle hDBF, SEXP df, SEXP pr, SEXP sc, SEXP DataTypes)
     for(i = 0; i < nflds; i++) {
 	strncpy(szTitle, CHAR(STRING_ELT(names,i)), 11);
 	szTitle[11] = '\0';
-	nWidth = INTEGER(pr)[i];	
+	nWidth = INTEGER(pr)[i];
 	switch(CHAR(STRING_ELT(DataTypes, i))[0]) {
-        case 'L':
+	case 'L':
 	    DBFAddField(hDBF, nameMangleOut(szTitle,11), FTLogical, nWidth, 0);
 	    break;
-        case 'N':
-        case 'F':
-	    if(TYPEOF(VECTOR_ELT(df, i)) == INTSXP) 
-		DBFAddField(hDBF, nameMangleOut(szTitle,11), FTInteger, 
+	case 'N':
+	case 'F':
+	    if(TYPEOF(VECTOR_ELT(df, i)) == INTSXP)
+		DBFAddField(hDBF, nameMangleOut(szTitle,11), FTInteger,
 			    nWidth, 0);
-	    else 
+	    else
 		DBFAddField(hDBF, nameMangleOut(szTitle,11), FTDouble, nWidth,
 			    INTEGER(sc)[i]);
 	    break;
-        case 'C':
+	case 'C':
 	    DBFAddField(hDBF, nameMangleOut(szTitle,11), FTString, nWidth, 0);
 	    break;
-        case 'D':
+	case 'D':
 	    DBFAddField(hDBF, nameMangleOut(szTitle,11), FTDate, 8, 0);
 	    break;
 	default:
@@ -105,7 +105,7 @@ Rdbfwrite(DBFHandle hDBF, SEXP df, SEXP pr, SEXP sc, SEXP DataTypes)
 		if(itmp == NA_INTEGER)
 		    DBFWriteNULLAttribute(hDBF, iRecord, i);
 		else
-		    DBFWriteLogicalAttribute(hDBF, iRecord, i, 
+		    DBFWriteLogicalAttribute(hDBF, iRecord, i,
 					     (itmp != 0) ? 'T' : 'F');
 		break;
 	    case INTSXP:
@@ -133,9 +133,8 @@ Rdbfwrite(DBFHandle hDBF, SEXP df, SEXP pr, SEXP sc, SEXP DataTypes)
 		error(_("unknown data type"));
 		break;
 	    }
-	} 
+	}
     }
 
     return(hDBF);
 }
-

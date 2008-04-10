@@ -54,7 +54,7 @@ do {						\
 	unsigned int u32[2];			\
 	double d;				\
     } __from, __to;				\
-    __from.d = (from);  			\
+    __from.d = (from);			\
     swap_bytes_32(__from.u32[1], __to.u32[0]);	\
     swap_bytes_32(__from.u32[0], __to.u32[1]);	\
     (to) = __to.d;				\
@@ -85,7 +85,7 @@ do {						\
 	unsigned int u32[2];			\
 	double d;				\
     } __from, __to;				\
-    __from.d = (from);  			\
+    __from.d = (from);			\
     swap_bytes_32(__from.u32[1], __to.u32[0]);	\
     swap_bytes_32(__from.u32[0], __to.u32[1]);	\
     (to) = __to.d;				\
@@ -113,7 +113,7 @@ do {						\
 	unsigned short u16;			\
 	short          s16;			\
     } __from, __to;				\
-    __from.s16 = (x);    			\
+    __from.s16 = (x);			\
     swap_bytes_16(__from.u16, __to.u16);	\
     (x) = __to.s16;				\
 } while(0)
@@ -139,7 +139,7 @@ do {						\
 	unsigned int u32;			\
 	int          s32;			\
     } __from, __to;				\
-    __from.s32 = (x);    			\
+    __from.s32 = (x);			\
     swap_bytes_32(__from.u32, __to.u32);	\
     (x) = __to.s32;				\
 } while(0)
@@ -155,7 +155,7 @@ do {						\
     (to) = __to.f;				\
 } while(0)
 
-#define reverse_float(x)        		\
+#define reverse_float(x)		\
 do {						\
     union {					\
 	unsigned int u32;			\

@@ -116,13 +116,13 @@ check_input_specifier (const struct fmt_spec *spec)
     }
   if ((f->cat & FCAT_EVEN_WIDTH) && spec->w % 2)
     {
-      error (_("input format %s specifies an odd width %d, but format %s requires an even width between %d and %d"), 
+      error (_("input format %s specifies an odd width %d, but format %s requires an even width between %d and %d"),
 	     str, spec->w, f->name, f->Imin_w, f->Imax_w);
       return 0;
     }
   if (f->n_args > 1 && (spec->d < 0 || spec->d > 16))
     {
-      error (_("Input format %s specifies a bad number of implied decimal places %d.  Input format %s allows up to 16 implied decimal places"), 
+      error (_("Input format %s specifies a bad number of implied decimal places %d.  Input format %s allows up to 16 implied decimal places"),
 	     str, spec->d, f->name);
       return 0;
     }
@@ -157,7 +157,7 @@ check_output_specifier (const struct fmt_spec *spec)
     }
   if ((f->cat & FCAT_EVEN_WIDTH) && spec->w % 2)
     {
-      error (_("output format %s specifies an odd width %d, but output format %s requires an even width between %d and %d"), 
+      error (_("output format %s specifies an odd width %d, but output format %s requires an even width between %d and %d"),
 	     str, spec->w, f->name, f->Omin_w, f->Omax_w);
       return 0;
     }

@@ -38,18 +38,18 @@
 
 #define LIB_HEADER HEADER_BEG HEADER_TYPE_LIBRARY HEADER_END
 #define MEM_HEADER HEADER_BEG HEADER_TYPE_MEMBER \
-                   "HEADER RECORD!!!!!!!000000000000000001600000000"
+		   "HEADER RECORD!!!!!!!000000000000000001600000000"
 #define DSC_HEADER HEADER_BEG HEADER_TYPE_DSCRPTR HEADER_END
 #define NAM_HEADER HEADER_BEG HEADER_TYPE_NAMESTR \
-                   "HEADER RECORD!!!!!!!000000"
+		   "HEADER RECORD!!!!!!!000000"
 #define OBS_HEADER HEADER_BEG HEADER_TYPE_OBS HEADER_END
 #define BLANK24 "                        "
 
 #define GET_RECORD(rec, fp, len) \
-          fread((rec), sizeof(char), (size_t) (len), (fp))
+	  fread((rec), sizeof(char), (size_t) (len), (fp))
 
 #define IS_SASNA_CHAR(c) ((c) == 0x5f || (c) == 0x2e || \
-                          (0x41 <= (c) && (c) <= 0x5a))
+			  (0x41 <= (c) && (c) <= 0x5a))
 
 #ifndef NULL
 #define NULL ((void *) 0)
@@ -79,10 +79,10 @@ static double get_IBM_double(char* c, size_t len)
 				   excess 70 (=64+6) to accomodate
 				   integer conversion of c[1] to c[4] */
     char negative = c[0] & 0x80, exponent = (c[0] & 0x7f) - 70, buf[4];
-    double value; 
+    double value;
     char ibuf[8];
 
-    if (len < 2 || len > 8) 
+    if (len < 2 || len > 8)
       error(_("invalid field length in numeric variable"));
 
     /* this effectively zero-pads c: */
@@ -144,7 +144,7 @@ get_lib_header(FILE *fp, struct SAS_XPORT_header *head)
     n = GET_RECORD(record, fp, 80);
     if(n == 80 && strncmp(LIB_HEADER, record, 80) != 0)
 	error(_("file not in SAS transfer format"));
-  
+
     n = GET_RECORD(record, fp, 80);
     if(n != 80)
 	return 0;
@@ -167,7 +167,7 @@ get_lib_header(FILE *fp, struct SAS_XPORT_header *head)
 	return 0;
     return 1;
 }
-  
+
 static int
 get_mem_header(FILE *fp, struct SAS_XPORT_member *member)
 {
@@ -177,7 +177,7 @@ get_mem_header(FILE *fp, struct SAS_XPORT_member *member)
     n = GET_RECORD(record, fp, 80);
     if(n != 80 || strncmp(DSC_HEADER, record, 80) != 0)
 	error(_("file not in SAS transfer format"));
-  
+
     n = GET_RECORD(record, fp, 80);
     if(n != 80)
 	return 0;
@@ -295,13 +295,13 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	}
 	(*headpad) += i;
     }
-    
+
     n = GET_RECORD(record, fp, 80);
     if(n != 80 || strncmp(OBS_HEADER, record, 80) != 0) {
 	Free(nam_head);
 	error(_("file not in SAS transfer format"));
     }
-  
+
     for(i = 0; i < nvars; i++) {
 	int nname_len = 0, nlabel_len = 0, nform_len = 0;
 	char tmpname[41];
@@ -351,7 +351,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	int allSpace = 1;
 	fpos_t currentPos;
 
-/*  	restOfCard = 80 - (ftell(fp) % 80); */
+/*	restOfCard = 80 - (ftell(fp) % 80); */
 	if (fgetpos(fp, &currentPos)) {
 	    error(_("problem accessing SAS XPORT file"));
 	}
@@ -368,7 +368,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	    }
 	}
 	if (allSpace) {
-  	    n = GET_RECORD(record, fp, 80);
+	    n = GET_RECORD(record, fp, 80);
 	    if (n < 1) {
 		*tailpad = restOfCard;
 		break;
@@ -381,9 +381,9 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 		break;
 	    }
 	}
-        else /* beware that the previous member can end on card
+	else /* beware that the previous member can end on card
 	      * boundary with no padding */
-	    if (restOfCard == 80 && n == 80 && 
+	    if (restOfCard == 80 && n == 80 &&
 		strncmp(MEM_HEADER, tmp, 75) == 0 &&
 		strncmp("  ", tmp+78, 2) == 0) {
 		strncpy(record, tmp, 80);
@@ -544,26 +544,26 @@ xport_info(SEXP xportFile)
 	}
 	PROTECT(ans = lengthgets(ans, ansLength+1));
 	PROTECT(ansNames = lengthgets(ansNames, ansLength+1));
-/*  	PROTECT(newAns = allocVector(VECSXP, ansLength+1)); */
-/*  	PROTECT(newAnsNames = allocVector(STRSXP, ansLength+1)); */
+/*	PROTECT(newAns = allocVector(VECSXP, ansLength+1)); */
+/*	PROTECT(newAnsNames = allocVector(STRSXP, ansLength+1)); */
 
-/*  	for(i = 0; i < ansLength; i++) { */
-/*  	    SET_VECTOR_ELT(newAns, i, VECTOR_ELT(ans, i)); */
-/*  	    SET_STRING_ELT(newAnsNames, i, STRING_ELT(ansNames, i)); */
-/*  	} */
-/*  	ans = newAns; */
-/*  	ansNames = newAnsNames; */
+/*	for(i = 0; i < ansLength; i++) { */
+/*	    SET_VECTOR_ELT(newAns, i, VECTOR_ELT(ans, i)); */
+/*	    SET_STRING_ELT(newAnsNames, i, STRING_ELT(ansNames, i)); */
+/*	} */
+/*	ans = newAns; */
+/*	ansNames = newAnsNames; */
 
 	SET_STRING_ELT(ansNames, ansLength, mkChar(dsname));
 	SET_VECTOR_ELT(ans, ansLength, varInfo);
 	ansLength++;
- 
+
 	UNPROTECT(5);
 	PROTECT(ans);
 	PROTECT(ansNames);
     }
 
-    setAttrib(ans, R_NamesSymbol, ansNames);  
+    setAttrib(ans, R_NamesSymbol, ansNames);
     UNPROTECT(5);
     fclose(fp);
     return ans;
@@ -629,7 +629,7 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 	    for(k = nvar-1; k >= 0; k--) {
 		tmpchar = record + dataPosition[k];
 		if(dataType[k] == REALSXP) {
-		    REAL(VECTOR_ELT(data, k))[j] = 
+		    REAL(VECTOR_ELT(data, k))[j] =
 			get_IBM_double(tmpchar, dataWidth[k]);
 		} else {
 		    tmpchar[dataWidth[k]] = '\0';
@@ -646,7 +646,7 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 	}
 
 	fseek(fp, dataTailPad, SEEK_CUR);
-	
+
 	Free(record);
     }
     UNPROTECT(1);

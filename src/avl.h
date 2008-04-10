@@ -128,9 +128,9 @@ void *avl_replace (avl_tree *tree, void *item);
 #define avl_force_insert(A, B)			\
 	do					\
 	  {					\
-            void *r = avl_insert (A, B);	\
+	    void *r = avl_insert (A, B);	\
 	    if (r != NULL)			\
-              error("assert failed : r == NULL"); \
+	      error("assert failed : r == NULL"); \
 	  }					\
 	while (0)
 void *avl_force_delete (avl_tree *, void *);

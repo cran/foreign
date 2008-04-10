@@ -351,7 +351,7 @@ struct ccase
     union value data[1];
   };
 
-/* Dictionary. */ 
+/* Dictionary. */
 
 /* Complete dictionary state. */
 struct dictionary
@@ -365,7 +365,7 @@ struct dictionary
 
     int n_splits;		/* Number of SPLIT FILE variables. */
     struct variable **splits;	/* List of SPLIT FILE vars. */
-    
+
     char *label;		/* File label. */
 
     int n_documents;		/* Number of lines of documents. */
