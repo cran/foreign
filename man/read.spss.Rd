@@ -76,10 +76,11 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
 
   You may see warnings about the file encoding for SPSS \code{save}
   files: it is possible such files contain non-ASCII character data
-  which need re-encoding. The most common occurrence is Windows codepage
-  1252, a superset of Latin-1.  The encoding is recorded (as in integer)
+  which need re-encoding.  The most common occurrence is Windows codepage
+  1252, a superset of Latin-1.  The encoding is recorded (as an integer)
   in attribute \code{"codepage"} of the result if it looks like a
-  Windows codepage.
+  Windows codepage.  Automatic re-encoding is done only in UTF-8
+  locales: see \code{reencode}.
 }
 \author{Saikat DebRoy and the R Core team}
 \examples{

@@ -5,7 +5,7 @@
 \alias{write.dta}
 \title{Write Files in Stata Binary Format}
 \usage{
-write.dta(dataframe, file, version = 6,
+write.dta(dataframe, file, version = 7,
           convert.dates = TRUE, tz = "GMT",
           convert.factors = c("labels", "string", "numeric", "codes"))
 }
@@ -14,7 +14,8 @@ write.dta(dataframe, file, version = 6,
   \item{file}{character string giving filename.}
   \item{version}{Stata version: 6, 7, 8 and 10 are supported, and 9 is
     mapped to 8.}
-  \item{convert.dates}{Convert \code{POSIXt} objects to Stata dates?}
+  \item{convert.dates}{Convert \code{Date} and \code{POSIXt} objects
+    to Stata dates?}
   \item{tz}{timezone for date conversion}
   \item{convert.factors}{how to handle factors}
   } 
@@ -23,10 +24,11 @@ write.dta(dataframe, file, version = 6,
   format.  Does not write matrix variables.
 }
 \details{
-  The major differences between Stata versions is that 7.0 allows 32-character
-  variable names. The \code{abbreviate} function is used to trim long
-  variables to the permitted length. A warning is given if this is needed and
-  it is an error for the abbreviated names not to be unique.
+  The major differences between Stata versions is that 7.0 and later
+  allows 32-character variable names (5 and 6 were restricted to
+  8-character name). The \code{abbreviate} function is used to trim long
+  variables to the permitted length. A warning is given if this is
+  needed and it is an error for the abbreviated names not to be unique.
 
   The columns in the data frame become variables in the Stata data set.
   Missing values are correctly handled.  Optionally, R date/time objects
@@ -45,9 +47,19 @@ write.dta(dataframe, file, version = 6,
   integer codes of the factors. This last used to be the only available
   method and is provided largely for backwards compatibility.
 
-  For Stata 8 or later use \code{version=7} -- the only advantage of Stata 8
-  format is that it can represent multiple different missing value
-  types, and R doesn't have them.
+  For Stata 8 or later use the default \code{version=7} -- the only
+  advantage of Stata 8 format is that it can represent multiple
+  different missing value types, and R doesn't have them. Stata 10
+  allows longer format lists, but R does not make use of them.
+
+  Note that the Stata formats are documented to be use ASCII strings --
+  \R does not enforce this, but use of non-ASCII character strings will
+  not be portable as the encoding is not recorded.
+
+  Stata uses some large numerical values to represent missing
+  values. This function does not currently check, and hence integers
+  greater than \code{2147483620} and doubles greater than
+  \code{8.988e+307} may be misinterpreted by Stata.
 }
 \value{
   \code{NULL}

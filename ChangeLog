@@ -1,3 +1,24 @@
+2008-05-29 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-26.
+	* src/stataread.c: increase buffer size for version 10 files.
+	The "label.table" list attribute now only contains as many elements
+	as are present in the file, and is only present in the result if
+	there are value labels in the file.
+	Version numbers are now positive in returned attribute 
+	except for -7 (Stata 7SE).
+	Reformatted for legibility.
+	* R/read.dta.R: Reformatting for legibility, more support for
+	Stata 10 files.
+	Default format for write.dta is now 7 (not 6).
+	write.dta converts class Date and not just POSIXt.
+	Argument 'tz' of read.dta has been removed.
+	Default for 'convert_underscore' is now FALSE.
+	* man/read.dta.Rd: typo.  More information on the attributes and
+	how value labels are stored.  Warnings on non-ASCII strings and
+	large integer and numeric values. 
+	* tests/stata.Rout.save: update. [NB: will need updating for R 2.8.0]
+
 2008-04-10 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-25.

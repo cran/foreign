@@ -8,14 +8,13 @@
   Reads a file in Stata version 5--10 binary format into a data frame. 
 }
 \usage{
-read.dta(file, convert.dates = TRUE, tz = NULL,
-         convert.factors = TRUE, missing.type = FALSE,
-         convert.underscore=TRUE, warn.missing.labels=TRUE)
+read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
+         missing.type = FALSE,
+         convert.underscore = FALSE, warn.missing.labels = TRUE)
 }
 \arguments{
   \item{file}{a filename as a character string.}
   \item{convert.dates}{Convert Stata dates to \code{Date} class?}
-  \item{tz}{Previously used to specify time zone. Now deprecated.}
   \item{convert.factors}{Use Stata value labels to create factors?
     (version 6.0 or later).}
   \item{missing.type}{For version 8 or later, store information about
@@ -31,27 +30,34 @@ read.dta(file, convert.dates = TRUE, tz = NULL,
   variable labels, and timestamp are stored as attributes of the data
   frame.  Nothing is done with variable characteristics.
 
-  Optionally, Stata dates (\%d formats) are converted to \R's
+  By default Stata dates (\%d and \%td formats) are converted to \R's
   \code{Date} class and variables with Stata value labels are
-  converted to factors. Ordinarily, \code{read.dta} will not convert
-  a variable to a factor unless a label is present for every level. Use
-  \code{convert.factors=NA} to override this. In any case the value
-  label and format information is stored as attributes on the returned data frame. 
-
-  Stata 8.0 introduced a system of 27 different missing data values. If
-  \code{missing.type}
-  is \code{TRUE} a separate list is created with the same variable
-  names as the loaded data. For string variables the list value is
-  \code{NULL}. For other variables the value is \code{NA} where the
-  observation is not missing and 0-26 when the observation is
-  missing. This is attached as the code{"missing"} attribute of the
-  returned value.
+  converted to factors.  Ordinarily, \code{read.dta} will not convert
+  a variable to a factor unless a label is present for every level.  Use
+  \code{convert.factors = NA} to override this.  In any case the value
+  label and format information is stored as attributes on the returned
+  data frame.
   
-  The option to allow underscores in variable names may become the
-  default in future versions now that R supports their use.
+  Stata 8.0 introduced a system of 27 different missing data values.  If
+  \code{missing.type} is \code{TRUE} a separate list is created with the
+  same variable names as the loaded data.  For string variables the list
+  value is \code{NULL}.  For other variables the value is \code{NA}
+  where the observation is not missing and 0--26 when the observation is
+  missing.  This is attached as the \code{"missing"} attribute of the
+  returned value.
 }
 \value{
-  a data frame
+  a data frame with attributes.  These will include \code{"datalabel"},
+  \code{"time.stamp"}, \code{"formats"}, \code{"types"},
+  \code{"val.labels"}, \code{"var.labels"} and \code{"version"} and may
+  include \code{"label.table"}.  Possible versions are \code{5, 6, 7},
+  \code{-7} (Stata 7SE, \sQuote{format-111}), \code{8} (Stata 8 and 9,
+  \sQuote{format-113}) and \code{10} (Stata 10, \sQuote{format-114}).
+
+  The value labels in attribute \code{"val.labels"} name a table for
+  each variable, or are an empty string.  The tables are elements of the
+  named list attribute \code{"label.table"}: each is an integer vector with
+  names,
 }
 \references{
   Stata Users Manual (versions 5 & 6), Programming manual (version 7),

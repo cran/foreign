@@ -218,31 +218,6 @@ In read.dta("pc5.dta") : cannot read factor labels from Stata 5 files
  - attr(*, "val.labels")= chr  "" "" "" "" ...
  - attr(*, "var.labels")= chr  "" "" "" "" ...
  - attr(*, "version")= int 6
- - attr(*, "label.table")=List of 24
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
-  ..$ : NULL
 > all.equal(summary(sun6),summary(pc5))
 [1] TRUE
 > df<-read.dta("datefactor.dta")
@@ -256,22 +231,14 @@ In read.dta("pc5.dta") : cannot read factor labels from Stata 5 files
  NA's     :11   Max.   :30.00   Max.   :1960-01-31  
 > data(esoph)
 > write.dta(esoph,esophile<-tempfile())
-Warning message:
-In write.dta(esoph, esophile <- tempfile()) : abbreviating variable names
 > esoph2<-read.dta(esophile)
 > all.equal(ordered(esoph2$alcgp),esoph$alcgp)
 [1] TRUE
 > write.dta(esoph,esophile,convert.factors="string")
-Warning message:
-In write.dta(esoph, esophile, convert.factors = "string") :
-  abbreviating variable names
 > esoph2<-read.dta(esophile)
 > all.equal(as.character(esoph$alcgp),esoph2$alcgp)
 [1] TRUE
 > write.dta(esoph,esophile,convert.factors="code")
-Warning message:
-In write.dta(esoph, esophile, convert.factors = "code") :
-  abbreviating variable names
 > esoph2<-read.dta(esophile)
 > all.equal(as.numeric(esoph$alcgp),as.numeric(esoph2$alcgp))
 [1] TRUE
@@ -319,22 +286,10 @@ In write.dta(esoph, esophile, convert.factors = "code") :
  - attr(*, "types")= int  18 252 252 252 254 252 252 252 252 252 ...
  - attr(*, "val.labels")= chr  "" "" "" "" ...
  - attr(*, "var.labels")= chr  "Make and Model" "Price" "Mileage (mpg)" "Repair Record 1978" ...
- - attr(*, "version")= int -8
- - attr(*, "label.table")=List of 13
+ - attr(*, "version")= int 8
+ - attr(*, "label.table")=List of 1
   ..$ origin: Named num  0 1
   .. ..- attr(*, "names")= chr  "Domestic" "Foreign"
-  ..$       : NULL
-  ..$       : NULL
-  ..$       : NULL
-  ..$       : NULL
-  ..$       : NULL
-  ..$       : NULL
-  ..$       : NULL
-  ..$       : NULL
-  ..$       : NULL
-  ..$       : NULL
-  ..$       : NULL
-  ..$       : NULL
  - attr(*, "missing")=List of 13
   ..$ make        : NULL
   ..$ price       : num  NA NA NA NA NA NA NA NA NA NA ...
