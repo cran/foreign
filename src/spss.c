@@ -549,6 +549,9 @@ is_PORT(FILE *fp)
     return 1;
 }
 
+#include <string.h>
+#include <errno.h>
+
 SEXP
 do_read_SPSS(SEXP file)
 {
@@ -558,7 +561,7 @@ do_read_SPSS(SEXP file)
     SEXP ans;
 
     if(!fp)
-	error(_("unable to open file"));
+	error(_("unable to open file: '%s'"), strerror(errno));
     if(fread_pfm(buf, sizeof(char), 4, fp) != 4) {
 	fclose(fp);
 	error(_("problem in reading file '%s'"), filename);

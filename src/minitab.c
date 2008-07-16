@@ -97,6 +97,8 @@ SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
     UNPROTECT(2);
     return(ans);
 }
+#include <string.h>
+#include <errno.h>
 
 SEXP
 read_mtp(SEXP fname)
@@ -112,7 +114,8 @@ read_mtp(SEXP fname)
 #else
     if ((f = fopen(R_ExpandFileName(CHAR(fname)), "r")) == NULL)
 #endif
-	error(_("unable to open file '%s' for reading"), CHAR(fname));
+	error(_("unable to open file '%s': '%s'"), 
+	      CHAR(fname), strerror(error));
     if ((fgets(buf, MTP_BUF_SIZE, f) == NULL) ||
 	strncmp(buf, "Minitab Portable Worksheet ", 27) != 0)
 	error(_("file '%s' is not in Minitab Portable Worksheet format"),

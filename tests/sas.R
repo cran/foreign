@@ -1,3 +1,4 @@
+if(!nzchar(Sys.getenv("R_FOREIGN_FULL_TEST"))) q("no")
 library("foreign")
 setwd(tempdir())
 tfile <- "int1982ag.zip"

@@ -188,8 +188,6 @@ static int read_value_labels (struct file_handle * h, struct variable ** var_by_
 static int read_variables (struct file_handle * h, struct variable *** var_by_index);
 static int read_machine_int32_info (struct file_handle * h, int size, int count, int *encoding);
 static int read_machine_flt64_info (struct file_handle * h, int size, int count);
-static int read_long_var_names (struct file_handle * h, struct dictionary *
-		, unsigned long size, unsigned int count);
 static int read_documents (struct file_handle * h);
 
 /* Displays the message X with corrupt_msg, then jumps to the lossage
@@ -420,13 +418,9 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 		break;
 
 	      case 7: /* Multiple-response sets (later versions of SPSS). */
-		skip = 1;
-		break;
-
-	      case 13:	/* long variable names. PSPP now has code for these
+	      case 13:  /* long variable names. PSPP now has code for these
 			   that could be ported if someone is interested. */
-		if (!read_long_var_names(h, ext->dict, data.size, data.count))
-		  goto lossage;
+		skip = 1;
 		break;
 
 	      case 16: /* See http://www.nabble.com/problem-loading-SPSS-15.0-save-files-t2726500.html */
@@ -590,64 +584,6 @@ lossage:
   return 0;
 }
 
-/* Read record type 7, subtype 13.
- * long variable names
- */
-static int
-read_long_var_names (struct file_handle * h, struct dictionary * dict
-		, unsigned long size, unsigned int count)
-{
-  char * data;
-  unsigned int j;
-  struct variable ** lp;
-  struct variable ** end;
-  char * p;
-  char * endp;
-  char * val;
-  if ((1 != size)||(0 == count)) {
-    warning("%s: strange record info seen, size=%u, count=%u"
-      ", ignoring long variable names"
-      , h->fn, size, count);
-    return 0;
-  }
-  size *= count;
-  data = Calloc (size +1, char);
-  bufread(h, data, size, 0);
-  /* parse */
-  end = &dict->var[dict->nvar];
-  p = data;
-  do {
-    if (0 != (endp = strchr(p, '\t')))
-      *endp = 0; /* put null terminator */
-    if (0 == (val = strchr(p, '='))) {
-      warning("%s: no long variable name for variable '%s'", h->fn, p);
-    } else {
-      *val = 0;
-      ++val;
-      /* now, p is key, val is long name */
-      for (lp = dict->var; lp < end; ++lp) {
-        if (!strcmp(lp[0]->name, p)) {
-          strncpy(lp[0]->name, val, sizeof(lp[0]->name));
-          break;
-        }
-      }
-      if (lp >= end) {
-        warning("%s: long variable name mapping '%s' to '%s'"
-        "for variable which does not exist"
-        , h->fn, p, val);
-      }
-    }
-    p = &endp[1]; /* put to next */
-  } while (endp);
-
-  free(data);
-  return 1;
-
-lossage:
-  free(data);
-  return 0;
-}
-
 static int
 read_header (struct file_handle * h, struct sfm_read_info * inf)
 {
@@ -655,7 +591,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
   struct sysfile_header hdr;		/* Disk buffer. */
   struct dictionary *dict;		/* File dictionary. */
   char prod_name[sizeof hdr.prod_name + 1];	/* Buffer for product name. */
-  int skip_amt = 0;			/* Amount of product name to omit. */
+  int skip_amt = 0;		        /* Amount of product name to omit. */
   int i;
 
   /* Create the dictionary. */
@@ -1559,7 +1495,7 @@ lossage:
 /* Reads one case from system file H into the value array PERM
    according to the instructions given in associated dictionary DICT,
    which must have the get.* elements appropriately set.  Returns
-   nonzero only if successful.	*/
+   nonzero only if successful.  */
 int
 sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * dict)
 {

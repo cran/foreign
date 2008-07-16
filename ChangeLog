@@ -1,3 +1,22 @@
+2008-07-16  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* src/sfm-read.c (sfm_read_long_var_names): added, from patch
+	by Kurt Van Dijck <kurt.van.dijck@skynet.be>
+
+	* tests/spss_long.sav : added example for those by Ilse Laurijssen
+	* tests/spss.R : add stringent tests; also testing the above.
+
+	* DESCRIPTION (Version): 0.8-27
+
+2008-06-18 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/SASxport.c, sas/minitab.c, sas/spss.c, sas/stataread.c: use
+	sterrror(errno) to give reason for fopen failure.
+
+2008-06-13 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* tests/sas.R: make optional, controlled by env variable.
+
 2008-05-29 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-26.
@@ -5,7 +24,7 @@
 	The "label.table" list attribute now only contains as many elements
 	as are present in the file, and is only present in the result if
 	there are value labels in the file.
-	Version numbers are now positive in returned attribute 
+	Version numbers are now positive in returned attribute
 	except for -7 (Stata 7SE).
 	Reformatted for legibility.
 	* R/read.dta.R: Reformatting for legibility, more support for
@@ -16,7 +35,7 @@
 	Default for 'convert_underscore' is now FALSE.
 	* man/read.dta.Rd: typo.  More information on the attributes and
 	how value labels are stored.  Warnings on non-ASCII strings and
-	large integer and numeric values. 
+	large integer and numeric values.
 	* tests/stata.Rout.save: update. [NB: will need updating for R 2.8.0]
 
 2008-04-10 Brian Ripley <Brian.Ripley@R-project.org>
@@ -32,7 +51,7 @@
 2008-03-27 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-24.
-	* src/SASxport.c: Patch from PD for case where record 
+	* src/SASxport.c: Patch from PD for case where record
 	ends on card boundary
 	(http://finzi.psych.upenn.edu/R/Rhelp02a/archive/57864.html,
 	https://stat.ethz.ch/pipermail/r-help/2008-February/155272.html)
@@ -63,7 +82,7 @@
 
 	* src/minitab.c: force text-mode opening (embedded uses of R can
 	change the default on Windows).
-	
+
 2007-09-17 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-23, use approved license abbreviation.
@@ -80,7 +99,7 @@
 
 2007-08-02 Brian Ripley <Brian.Ripley@R-project.org>
 
-	* src/pfm-read.c, src/sfm-read.c: include headers conditionally 
+	* src/pfm-read.c, src/sfm-read.c: include headers conditionally
 	provided via R.h.
 
 2007-07-27 Brian Ripley <Brian.Ripley@R-project.org>
@@ -140,8 +159,8 @@
 
 2007-03-06 Thomas Lumley <tlumley@u.washington.edu>
 
-	* R/read.dta.R: avoid as.data.frame.list, for efficiency 
-	
+	* R/read.dta.R: avoid as.data.frame.list, for efficiency
+
 2006-12-22 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* man/read.epiinfo.Rd: spelling
@@ -167,7 +186,7 @@
 
 2006-08-31 Thomas Lumley <tlumley@u.washington.edu>
 
-	* R/read.dta, src/stataread.c: return a list from C, 
+	* R/read.dta, src/stataread.c: return a list from C,
 	  much faster for wide files
 
 	* man/read.dta.Rd, man/write.dta.Rd: update for Stata 9.
@@ -182,7 +201,7 @@
 	  Version is 0.8-16.
 
 	* R/Sread.R, R/dbf.R, R/octave.R: use seq_{along,len}.
-	
+
 	* src/minitab.c: only use Rinternals.h.
 
 2006-08-11 Brian Ripley <Brian.Ripley@R-project.org>
@@ -191,8 +210,8 @@
 
 2006-06-17 Thomas Lumley <tlmley@u.washington.edu>
 
-	* R/writeForeignSAS.R, COPYRIGHTS: Add Stephen Weigand's modifications 
-	
+	* R/writeForeignSAS.R, COPYRIGHTS: Add Stephen Weigand's modifications
+
 2006-05-26 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* R/dbf.R, man/writedbf.Rd: new argument max_nchar to write.dbf()
@@ -229,7 +248,7 @@
 
 	* src/SASxport.[ch]: better ways to avoid alignment problems.
 
-	* src/sfmP.h, src/sfm-read.c: remove packing as it causes 
+	* src/sfmP.h, src/sfm-read.c: remove packing as it causes
 	alignment problems on 64-bit platforms.
 
 2005-12-14  Brian Ripley <Brian.Ripley@R-project.org>

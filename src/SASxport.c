@@ -479,6 +479,9 @@ const char *cVarInfoNames[] = {
 #define SET_XPORT_VAR_TAILPAD(varinfo, val)   SET_VECTOR_ELT(varinfo, 9, val)
 #define SET_XPORT_VAR_LENGTH(varinfo, val)    SET_VECTOR_ELT(varinfo, 10, val)
 
+#include <string.h>
+#include <errno.h>
+
 SEXP
 xport_info(SEXP xportFile)
 {
@@ -499,7 +502,7 @@ xport_info(SEXP xportFile)
 	error(_("first argument must be a file name"));
     fp = fopen(R_ExpandFileName(CHAR(STRING_ELT(xportFile, 0))), "rb");
     if (!fp)
-	error(_("unable to open file"));
+	error(_("unable to open file: '%s'"), strerror(errno));
     namestrLength = init_xport_info(fp);
 
     ansLength = 0;
@@ -592,7 +595,7 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 	error(_("first argument must be a file name"));
     fp = fopen(R_ExpandFileName(CHAR(STRING_ELT(xportFile, 0))), "rb");
     if (!fp)
-	error(_("unable to open file"));
+	error(_("unable to open file: '%s'"), strerror(errno));
     if (fseek(fp, 240, SEEK_SET) != 0)
 	error(_("problem reading SAS XPORT file '%s'"),
 	      CHAR(STRING_ELT(xportFile, 0)));

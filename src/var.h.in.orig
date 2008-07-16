@@ -41,10 +41,6 @@
 #error MAX_SHORT_STRING must be less than 8.
 #endif
 
-/* VAR_NAME_LEN: the length of a variable.
- * SPSS supports names of 64 long
- */
-#define VAR_NAME_LEN 64
 /* Special values. */
 #define SYSMIS (-DBL_MAX)
 #define LOWEST second_lowest_double_val()
@@ -232,7 +228,7 @@ struct sort_cases_proc
 /* MODIFY VARS private data. */
 struct modify_vars_proc
   {
-    char new_name[VAR_NAME_LEN +1];		/* Variable's new name. */
+    char new_name[9];		/* Variable's new name. */
     int drop_this_var;		/* 0=keep this var, 1=drop this var. */
     struct variable *next;	/* Next in linked list. */
   };
@@ -306,7 +302,7 @@ enum
 struct variable
   {
     /* Required by parse_variables() to be in this order.  */
-    char name[VAR_NAME_LEN +1];	/* As a string. */
+    char name[9];		/* As a string. */
     int index;			/* Index into its dictionary's var[]. */
     int type;			/* NUMERIC or ALPHA. */
     int foo;			/* Used for temporary storage. */
@@ -377,9 +373,9 @@ struct dictionary
 
     int weight_index;		/* `value' index of $WEIGHT, or -1 if none.
 				   Call update_weighting() before using! */
-    char weight_var[VAR_NAME_LEN];/* Name of WEIGHT variable. */
+    char weight_var[9];		/* Name of WEIGHT variable. */
 
-    char filter_var[VAR_NAME_LEN];/* Name of FILTER variable. */
+    char filter_var[9];		/* Name of FILTER variable. */
     /* Do not make another field the last field! or see
        temporary.c:restore_dictionary() before doing so! */
   };

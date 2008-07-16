@@ -1,0 +1,347 @@
+From kurt.van.dijck@skynet.be  Tue Jul 15 23:56:57 2008
+X-VM-v5-Data: ([nil nil nil nil nil nil nil t nil]
+	["9615" "Tuesday" "15" "July" "2008" "23:56:50" "+0200" "Kurt Van Dijck" "kurt.van.dijck@skynet.be" "<20080715215650.GA943@e-circ.dyndns.org>" "298" "spss long labels" "^From:" nil nil "7" "2008071523:56:50" "spss long labels" nil "<alpine.LFD.1.10.0807150926110.6110@gannet.stats.ox.ac.uk>" ("<486B35A8.5000700@skynet.be>" "<48747153.7080803@skynet.be>" "<18556.21468.48751.243985@stat.math.ethz.ch>" "<alpine.LFD.1.10.0807150926110.6110@gannet.stats.ox.ac.uk>") nil nil nil nil]
+	nil)
+Return-Path: <kurt.van.dijck@skynet.be>
+X-Spam-Checker-Version: SpamAssassin 3.2.4 (2008-01-01) on hypatia.math.ethz.ch
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,SPF_SOFTFAIL,WHOIS_MYPRIVREG autolearn=no version=3.2.4
+Received: from phil3.ethz.ch (phil3.ethz.ch [129.132.202.239])
+	by hypatia.math.ethz.ch (8.14.1/8.14.1) with ESMTP id m6FLuvNC022965
+	for <maechler@stat.math.ethz.ch>; Tue, 15 Jul 2008 23:56:57 +0200
+Received: from mailrelay010.isp.belgacom.be ([195.238.6.177])
+	by phil3.ethz.ch with esmtp (Exim 4.66)
+	(envelope-from <kurt.van.dijck@skynet.be>)
+	id 1KIsW7-00086I-CK
+	for maechler@stat.math.ethz.ch; Tue, 15 Jul 2008 23:57:06 +0200
+X-Belgacom-Dynamic: yes
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: AtYEAEi6fEhXQcxa/2dsb2JhbACBWo8un1k
+Received: from 90.204-65-87.adsl-dyn.isp.belgacom.be (HELO e-circ.dyndns.org) ([87.65.204.90])
+  by relay.skynet.be with ESMTP; 15 Jul 2008 23:56:53 +0200
+Received: by e-circ.dyndns.org (Postfix, from userid 1000)
+	id 513D8DFD30; Tue, 15 Jul 2008 23:56:50 +0200 (CEST)
+Message-ID: <20080715215650.GA943@e-circ.dyndns.org>
+References: <486B35A8.5000700@skynet.be> <48747153.7080803@skynet.be> <18556.21468.48751.243985@stat.math.ethz.ch> <alpine.LFD.1.10.0807150926110.6110@gannet.stats.ox.ac.uk>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="KsGdsel6WgEHnImy"
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.1.10.0807150926110.6110@gannet.stats.ox.ac.uk>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+X-USF-Tag-Only: YES
+X-USF-Filter-Node: phil3.ethz.ch
+X-USF-Spam-Level: --
+X-USF-Spam-Status: hits=-2.2 tests=BAYES_00,FORGED_RCVD_HELO,MIME_BASE64_NO_NAME
+X-USF-Spam-Flag: NO
+X-USF: 
+X-Virus-Scanned: by amavisd-new at stat.math.ethz.ch
+X-DSPAM-Result: Innocent
+X-DSPAM-Processed: Tue Jul 15 23:57:04 2008
+X-DSPAM-Confidence: 0.9977
+X-DSPAM-Probability: 0.0000
+X-DSPAM-Signature: 487d1d30230852052111525
+From: kurt.van.dijck@skynet.be (Kurt Van Dijck)
+To: Prof Brian Ripley <ripley@stats.ox.ac.uk>
+Cc: r-devel@r-project.org, Martin Maechler <maechler@stat.math.ethz.ch>
+Subject: spss long labels
+Date: Tue, 15 Jul 2008 23:56:50 +0200
+
+
+--KsGdsel6WgEHnImy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Jul 15, 2008 at 09:29:22AM +0100, Prof Brian Ripley wrote:
+> On Tue, 15 Jul 2008, Martin Maechler wrote:
+> 
+> >Hi Kurt,
+> >
+> >>>>>>"KVD" == Kurt Van Dijck <kurt.van.dijck@skynet.be>
+> >>>>>>    on Wed, 09 Jul 2008 10:05:39 +0200 writes:
+> >
+> >   KVD> Hi all, I got no feedback at all concerning the merge
+> >   KVD> of this patch in the source tree.  Am I supposed to do
+> >   KVD> this myself? How should I do this (do I have subversion
+> >   KVD> commit access)? Is this patch acceptable at all? Is it
+> >   KVD> being tested?
+> >
+> >I don't know if it's being tested.
+> >It's vacation and traveling time, also for the R core team.
+> 
+> Indeed.  This is on my TODO list, but I've been away (and unexpectedly 
+> mainly offline) for the last two weeks, and will be again until Friday.
+> 
+> Hopefully I will have a chance to take a look next week, but we do need 
+> at least one example file.  (I could generate SPSS examples, but they may 
+> not be what you are trying to test.)
+> 
+> >
+> >The foreign package source is kept in svn-archive
+> > https://svn.r-project.org/R-packages/trunk/foreign/
+> >
+> >and I have tried to apply your patch (from July 2) to the
+> >sources but
+> >
+> >   patch -p0 < K_Van_Dijck_patch
+> >
+> >   patching file src/sfm-read.c
+> >   Hunk #1 FAILED at 188.
+> >   Hunk #2 FAILED at 420.
+> >   Hunk #3 FAILED at 590.
+> >   Hunk #4 FAILED at 1559.
+> >   4 out of 4 hunks FAILED -- saving rejects to file src/sfm-read.c.rej
+> >   patching file src/var.h.in
+> >   Hunk #1 FAILED at 41.
+> >   Hunk #2 FAILED at 232.
+> >   Hunk #3 FAILED at 306.
+> >   Hunk #4 FAILED at 377.
+> >   4 out of 4 hunks FAILED -- saving rejects to file src/var.h.in.rej
+> >
+> >
+> >Could you provide a patch against the development code from the
+> >above url ?
+> >(after installing 'subversion', you get the development directory by
+> >  svn co https://svn.r-project.org/R-packages/trunk/foreign/
+> >)
+I had problems with whitespace in the patch file,
+I attached a new one
+> >   KVD> I got some personal reactions on my post, proving there
+> >   KVD> is general interest in getting rid of the inconvenience
+> >   KVD> of importing long labels from SPSS files.
+> >
+> >My problem is that I cannot do much testing apart from the tests
+> >already present in foreign/tests/spss.R
+> >
+> >Could you provide a new small *.sav file and a corresponding
+> >read.spss() call which exhibits the
+> >problems and is fixed by your patch?
+> >
+> >Thank you in advance for your contribution!
+> >Best regards,
+> >
+I ran the spss.R in tests/, it worked fine. Be sure to clean all object
+files before compiling.
+
+Ilse made me a test .sav file (attached) with 2 variables (varialbe1 &
+      variable2), 3 records.
+This piece of R code shows the problem:
+
+# to resolve locale problem
+Sys.setlocale (locale="C");
+# read spss datafile
+library(foreign);
+data = read.spss("spss_long.sav", to.data.frame=TRUE);
+# to.data.frame not necessary, but gives nicer output
+# commands to show the data, the variable names and labels
+data;
+names(data);
+attr(data, "variable.labels");
+
+# result in unpatched version:
+# both variable names are in shortened form 
+# (max 8 characters; provided in SPSS-file)
+
+#> data;
+#  VARIABLE V2_A
+#1        1    1
+#2        2    1
+#3        2    3
+#
+#> names(data);
+#[1] "VARIABLE" "V2_A"    
+#
+#> attr(data,"variable.labels");
+#   VARIABLE        V2_A 
+#"variable1" "variable2" 
+
+# and in patched version:
+# variable names are the full names as originally defined in the SPSS-file
+
+#> data;
+#  variable1 variable2
+#1         1         1
+#2         2         1
+#3         2         3
+#> names(data);
+#[1] "variable1" "variable2"
+#> attr(data, "variable.labels");
+#  variable1   variable2 
+#"variable1" "variable2" 
+
+Kind regards,
+Kurt & Ilse
+
+Index: src/sfm-read.c
+===================================================================
+--- src/sfm-read.c	(revision 5175)
++++ src/sfm-read.c	(working copy)
+@@ -188,6 +188,8 @@
+ static int read_variables (struct file_handle * h, struct variable *** var_by_index);
+ static int read_machine_int32_info (struct file_handle * h, int size, int count, int *encoding);
+ static int read_machine_flt64_info (struct file_handle * h, int size, int count);
++static int read_long_var_names (struct file_handle * h, struct dictionary *
++		, unsigned long size, unsigned int count);
+ static int read_documents (struct file_handle * h);
+ 
+ /* Displays the message X with corrupt_msg, then jumps to the lossage
+@@ -418,11 +420,15 @@
+ 		break;
+ 
+ 	      case 7: /* Multiple-response sets (later versions of SPSS). */
+-	      case 13:  /* long variable names. PSPP now has code for these
+-			   that could be ported if someone is interested. */
+ 		skip = 1;
+ 		break;
+ 
++	      case 13:	/* long variable names. PSPP now has code for these
++			   that could be ported if someone is interested. */
++		if (!read_long_var_names(h, ext->dict, data.size, data.count))
++		  goto lossage;
++		break;
++
+ 	      case 16: /* See http://www.nabble.com/problem-loading-SPSS-15.0-save-files-t2726500.html */
+ 		skip = 1;
+ 		break;
+@@ -584,14 +590,72 @@
+   return 0;
+ }
+ 
++/* Read record type 7, subtype 13.
++ * long variable names
++ */
+ static int
++read_long_var_names (struct file_handle * h, struct dictionary * dict
++		, unsigned long size, unsigned int count)
++{
++  char * data;
++  unsigned int j;
++  struct variable ** lp;
++  struct variable ** end;
++  char * p;
++  char * endp;
++  char * val;
++  if ((1 != size)||(0 == count)) {
++    warning("%s: strange record info seen, size=%u, count=%u"
++      ", ignoring long variable names"
++      , h->fn, size, count);
++    return 0;
++  }
++  size *= count;
++  data = Calloc (size +1, char);
++  bufread(h, data, size, 0);
++  /* parse */
++  end = &dict->var[dict->nvar];
++  p = data;
++  do {
++    if (0 != (endp = strchr(p, '\t')))
++      *endp = 0; /* put null terminator */
++    if (0 == (val = strchr(p, '='))) {
++      warning("%s: no long variable name for variable '%s'", h->fn, p);
++    } else {
++      *val = 0;
++      ++val;
++      /* now, p is key, val is long name */
++      for (lp = dict->var; lp < end; ++lp) {
++        if (!strcmp(lp[0]->name, p)) {
++          strncpy(lp[0]->name, val, sizeof(lp[0]->name));
++          break;
++        }
++      }
++      if (lp >= end) {
++        warning("%s: long variable name mapping '%s' to '%s'"
++        "for variable which does not exist"
++        , h->fn, p, val);
++      }
++    }
++    p = &endp[1]; /* put to next */
++  } while (endp);
++
++  free(data);
++  return 1;
++
++lossage:
++  free(data);
++  return 0;
++}
++
++static int
+ read_header (struct file_handle * h, struct sfm_read_info * inf)
+ {
+   struct sfm_fhuser_ext *ext = h->ext;	/* File extension strcut. */
+   struct sysfile_header hdr;		/* Disk buffer. */
+   struct dictionary *dict;		/* File dictionary. */
+   char prod_name[sizeof hdr.prod_name + 1];	/* Buffer for product name. */
+-  int skip_amt = 0;		        /* Amount of product name to omit. */
++  int skip_amt = 0;			/* Amount of product name to omit. */
+   int i;
+ 
+   /* Create the dictionary. */
+@@ -1495,7 +1559,7 @@
+ /* Reads one case from system file H into the value array PERM
+    according to the instructions given in associated dictionary DICT,
+    which must have the get.* elements appropriately set.  Returns
+-   nonzero only if successful.  */
++   nonzero only if successful.	*/
+ int
+ sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * dict)
+ {
+Index: src/var.h.in
+===================================================================
+--- src/var.h.in	(revision 5175)
++++ src/var.h.in	(working copy)
+@@ -41,6 +41,10 @@
+ #error MAX_SHORT_STRING must be less than 8.
+ #endif
+ 
++/* VAR_NAME_LEN: the length of a variable.
++ * SPSS supports names of 64 long
++ */
++#define VAR_NAME_LEN 64
+ /* Special values. */
+ #define SYSMIS (-DBL_MAX)
+ #define LOWEST second_lowest_double_val()
+@@ -228,7 +232,7 @@
+ /* MODIFY VARS private data. */
+ struct modify_vars_proc
+   {
+-    char new_name[9];		/* Variable's new name. */
++    char new_name[VAR_NAME_LEN +1];		/* Variable's new name. */
+     int drop_this_var;		/* 0=keep this var, 1=drop this var. */
+     struct variable *next;	/* Next in linked list. */
+   };
+@@ -302,7 +306,7 @@
+ struct variable
+   {
+     /* Required by parse_variables() to be in this order.  */
+-    char name[9];		/* As a string. */
++    char name[VAR_NAME_LEN +1];	/* As a string. */
+     int index;			/* Index into its dictionary's var[]. */
+     int type;			/* NUMERIC or ALPHA. */
+     int foo;			/* Used for temporary storage. */
+@@ -373,9 +377,9 @@
+ 
+     int weight_index;		/* `value' index of $WEIGHT, or -1 if none.
+ 				   Call update_weighting() before using! */
+-    char weight_var[9];		/* Name of WEIGHT variable. */
++    char weight_var[VAR_NAME_LEN];/* Name of WEIGHT variable. */
+ 
+-    char filter_var[9];		/* Name of FILTER variable. */
++    char filter_var[VAR_NAME_LEN];/* Name of FILTER variable. */
+     /* Do not make another field the last field! or see
+        temporary.c:restore_dictionary() before doing so! */
+   };
+
+--KsGdsel6WgEHnImy
+Content-Type: message/external-body; access-type=local-file; name="/u/maechler/R/D/R-packages/foreign/tests/spss_long.sav"
+Content-Transfer-Encoding: 7bit
+
+Content-Type: application/octet-stream
+Content-Disposition: attachment; filename="spss_long.sav"
+Content-ID: <18557.44330.843670.345324@stat.math.ethz.ch>
+Content-Transfer-Encoding: binary
+
+[Deleted untyped binary data]
+[Saved to /u/maechler/R/D/R-packages/foreign/tests/spss_long.sav on lynne]
+
+--KsGdsel6WgEHnImy--
+
