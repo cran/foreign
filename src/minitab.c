@@ -115,7 +115,7 @@ read_mtp(SEXP fname)
     if ((f = fopen(R_ExpandFileName(CHAR(fname)), "r")) == NULL)
 #endif
 	error(_("unable to open file '%s': '%s'"), 
-	      CHAR(fname), strerror(error));
+	      CHAR(fname), strerror(errno));
     if ((fgets(buf, MTP_BUF_SIZE, f) == NULL) ||
 	strncmp(buf, "Minitab Portable Worksheet ", 27) != 0)
 	error(_("file '%s' is not in Minitab Portable Worksheet format"),

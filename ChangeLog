@@ -1,12 +1,21 @@
+2008-07-29 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-28.
+	* src/sfm-read.c: endianness fix from
+	https://stat.ethz.ch/pipermail/r-devel/2008-July/050194.html
+
+
+2008-07-21 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/minitab.c, src/sfm-read.c: clean up last changes.
+
 2008-07-16  Martin Maechler  <maechler@stat.math.ethz.ch>
 
+	* DESCRIPTION (Version): 0.8-27.
 	* src/sfm-read.c (sfm_read_long_var_names): added, from patch
 	by Kurt Van Dijck <kurt.van.dijck@skynet.be>
-
 	* tests/spss_long.sav : added example for those by Ilse Laurijssen
 	* tests/spss.R : add stringent tests; also testing the above.
-
-	* DESCRIPTION (Version): 0.8-27
 
 2008-06-18 Brian Ripley <Brian.Ripley@R-project.org>
 
