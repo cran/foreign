@@ -49,12 +49,12 @@ function(file)
         ## gets us to the end of the connection.
         looking <- TRUE
         while(looking) {
-            line <- readLines(con, n = 1)
-            if(length(grep("^# name: ", line)) == 1) {
+            line <- readLines(con, n = 1L)
+            if(length(grep("^# name: ", line)) == 1L) {
                 ## We have reached the next variable.
                 pushBack(line, con)
                 looking <- FALSE
-            } else if(length(line) == 0) {
+            } else if(length(line) == 0L) {
                 ## We have reached the end of file.
                 looking <- FALSE
             }
@@ -65,8 +65,8 @@ function(file)
         ## Helper function: read in a real matrix/array.
         ## Format of the header varies depending on whether matrix is 2d
         ## or higher.  So need to do a check first.
-        line <- readLines(con, 1)
-        if(regexpr("^# rows:", line) > 0) {
+        line <- readLines(con, 1L)
+        if(regexpr("^# rows:", line) > 0L) {
             ## Dealing with a 2d matrix; this header is of the form:
             ## # type: matrix
             ## # rows: 15
@@ -87,7 +87,7 @@ function(file)
             ## each dimension (15 x 15 x 6) and then read in the
             ## corresponding number of elements.
             ndims <- as.integer(gsub("# ndims: ", "", line))
-            dims <- scan(con, nlines = 1, quiet = TRUE)
+            dims <- scan(con, nlines = 1L, quiet = TRUE)
             data <- scan(con, n = prod(dims), quiet = TRUE)
             array(data, dim = dims)
         }
@@ -96,32 +96,32 @@ function(file)
     read_octave_complex_matrix <- function(con) {
         ## Helper function: read in a complex matrix/array.
         ## See read_octave_matrix().
-        line <- readLines(con, 1)
-        if(regexpr("^# rows:", line) > 0) {
+        line <- readLines(con, 1L)
+        if(regexpr("^# rows:", line) > 0L) {
             nr <- as.integer(gsub("# rows: ", "", line))
-            nc <- as.integer(gsub("# columns: ", "", readLines(con, 1)))
+            nc <- as.integer(gsub("# columns: ", "", readLines(con, 1L)))
             data <- readLines(con, n = nr)
             cl <- paste(data, sep = "", collapse = "")
             c1 <- gsub("\\(", "", cl)
             c1 <- gsub("\\)", "", c1)
             c1 <- gsub(",", " ", c1)
             s <- unlist(strsplit(c1, " "))
-            nums <- as.numeric(s[-1])   # Remove initial space.
-            reals <- nums[seq.int(from = 1, by = 2, length.out = length(nums)/2)]
-            imags <- nums[seq.int(from = 2, by = 2, length.out = length(nums)/2)]
+            nums <- as.numeric(s[-1L])   # Remove initial space.
+            reals <- nums[seq.int(from = 1L, by = 2L, length.out = length(nums)/2)]
+            imags <- nums[seq.int(from = 2L, by = 2L, length.out = length(nums)/2)]
             matrix(data = complex(real = reals, imaginary = imags),
                    nrow = nr, ncol = nc, byrow = TRUE)
         }
         else {
             ndims <- as.integer(gsub("# ndims: ", "", line))
-            dims <- scan(con, nlines = 1, quiet = TRUE)
+            dims <- scan(con, nlines = 1L, quiet = TRUE)
             data <- readLines(con, n = prod(dims))
             data <- gsub("\\(", "", data)
             data <- gsub("\\)", "", data)
             nums <- strsplit(data, ",")
             stopifnot(all(sapply(nums, length) == 2))
-            array(complex(real = as.numeric(sapply(nums, "[", 1)),
-                          imaginary = as.numeric(sapply(nums, "[", 2))),
+            array(complex(real = as.numeric(sapply(nums, "[", 1L)),
+                          imaginary = as.numeric(sapply(nums, "[", 2L))),
                   dim = dims)
         }
     }
@@ -130,34 +130,34 @@ function(file)
         ## Helper function: read in a string array.
         elements <- as.numeric(gsub("# elements: ", "",
                                     readLines(con, 1)))
-        d <- readLines(con, n = 2 * elements)
+        d <- readLines(con, n = 2L * elements)
         ## Remove the odd-numbered lines, they just store "length".
-        d[seq.int(from = 2, by = 2, length.out = length(d)/2)]
+        d[seq.int(from = 2L, by = 2L, length.out = length(d)/2L)]
     }
 
     read_octave_scalar <- function(con) {
         ## Helper function: read in a scalar.
-        as.numeric(scan(con, nlines = 1, quiet = TRUE))
+        as.numeric(scan(con, nlines = 1L, quiet = TRUE))
     }
 
     read_octave_complex_scalar <- function(con) {
         ## Helper function: read in a complex scalar.
-        d <- readLines(con, n = 1)
+        d <- readLines(con, n = 1L)
         ## Remove parens then split.
         str <- gsub("\\(", "", d)
         str <- gsub("\\)", "", str)
         nums <- as.numeric(unlist(strsplit(str, ",")))
-        stopifnot(length(nums) == 2)
-        complex(real = nums[1], imag = nums[2])
+        stopifnot(length(nums) == 2L)
+        complex(real = nums[1L], imag = nums[2L])
     }
 
 
     read_octave_range <- function(con) {
         ## Helper function: read in a range.
         d <- readLines(con, n = 1) # Skip over "# base, limit, increment".
-        d <- as.numeric(scan(con, nlines = 1, quiet = TRUE))
-        stopifnot(length(d) == 3)
-        seq.int(from = d[1], to = d[2], by = d[3])
+        d <- as.numeric(scan(con, nlines = 1L, quiet = TRUE))
+        stopifnot(length(d) == 3L)
+        seq.int(from = d[1L], to = d[2L], by = d[3L])
     }
 
     read_octave_unknown <- function(con, type) {
@@ -186,14 +186,14 @@ function(file)
 
     read_octave_cell <- function(con) {
         ## Helper function: read in a cell.
-        nr <- as.numeric(gsub("# rows: ", "", readLines(con, 1)))
-        nc <- as.numeric(gsub("# columns: ", "", readLines(con, 1)))
+        nr <- as.numeric(gsub("# rows: ", "", readLines(con, 1L)))
+        nc <- as.numeric(gsub("# columns: ", "", readLines(con, 1L)))
         out <- vector("list", nr * nc)
         dim(out) <- c(nr, nc)
         for(j in seq_len(nc)) {
             for(i in seq_len(nr)) {
                 ## Skip over "# name: <cell-element>" lines.
-                readLines(con, 1)
+                readLines(con, 1L)
                 ## Get the next cell element.
                 out[[i, j]] <- read_item(con)
             }
@@ -220,20 +220,20 @@ function(file)
 
     read_octave_bool <- function(con) {
         ## Helper function: read in a bool.
-        as.logical(scan(con, nlines = 1, quiet = TRUE))
+        as.logical(scan(con, nlines = 1L, quiet = TRUE))
     }
 
     read_octave_bool_matrix <- function(con) {
         ## Helper function: read in a bool matrix.
-        nr <- as.integer(gsub("# rows: ", "", readLines(con, 1)))
-        nc <- as.integer(gsub("# columns: ", "", readLines(con, 1)))
+        nr <- as.integer(gsub("# rows: ", "", readLines(con, 1L)))
+        nc <- as.integer(gsub("# columns: ", "", readLines(con, 1L)))
         data <- scan(con, nlines = nr, quiet = TRUE)
         matrix(as.logical(data), nrow = nr, ncol = nc, byrow = TRUE)
     }
 
     read_item <- function(con) {
         ## Assume that the name has already been read.
-        type <- gsub("# type: ", "", readLines(con, 1))
+        type <- gsub("# type: ", "", readLines(con, 1L))
         switch(type,
                "matrix" = read_octave_matrix(con),
                "scalar" = read_octave_scalar(con),
@@ -253,7 +253,7 @@ function(file)
     zz <- file(file, "r")
     on.exit(close(zz))
 
-    readLines(zz, n = 1)                # Skip over the header line.
+    readLines(zz, n = 1L)                # Skip over the header line.
 
     ## Build up a return list of items -- separately store the return
     ## values and the names.
@@ -261,8 +261,8 @@ function(file)
     names <- character()
     reading <- TRUE
     while(reading) {
-        line <- readLines(zz, 1, ok = TRUE)
-        if(length(line) == 0) {
+        line <- readLines(zz, 1L, ok = TRUE)
+        if(length(line) == 0L) {
             reading <- FALSE
         }
         else {

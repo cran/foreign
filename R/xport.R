@@ -27,6 +27,6 @@ lookup.xport <- function(file) .Call(xport_info, file)
 read.xport <- function(file) {
     data.info <- lookup.xport(file)
     ans <- .Call(xport_read, file, data.info)
-    if (length(ans) == 1) as.data.frame(ans[[1]])
+    if (length(ans) == 1L) as.data.frame(ans[[1L]])
     else lapply(ans, as.data.frame)
 }

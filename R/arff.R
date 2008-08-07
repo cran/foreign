@@ -39,23 +39,23 @@ function(file)
     col_names <- NULL
     col_types <- NULL
     col_dfmts <- character()
-    line <- readLines(file, n = 1)
-    while(length(line) > 0 &&
+    line <- readLines(file, n = 1L)
+    while(length(line) > 0L &&
           (regexpr('^[[:space:]]*@(?i)data', line,
-                   perl = TRUE) == -1)) {
+                   perl = TRUE) == -1L)) {
         if(regexpr('^[[:space:]]*@(?i)attribute', line,
-                   perl = TRUE) > 0) {
+                   perl = TRUE) > 0L) {
             con <- textConnection(line)
             line <- scan(con, character(), quiet = TRUE)
             close(con)
-            if(length(line) < 3)
+            if(length(line) < 3L)
                 stop("Invalid attribute specification.")
-            col_names <- c(col_names, line[2])
-            if((type <- tolower(line[3])) == "date") {
+            col_names <- c(col_names, line[2L])
+            if((type <- tolower(line[3L])) == "date") {
                 col_types <- c(col_types, "character")
                 col_dfmts <- c(col_dfmts,
-                               if(length(line) > 3)
-                               ISO_8601_to_POSIX_datetime_format(line[4])
+                               if(length(line) > 3L)
+                               ISO_8601_to_POSIX_datetime_format(line[4L])
                                else "%Y-%m-%d %H:%M:%S")
             }
             else if(type == "relational")
@@ -69,11 +69,11 @@ function(file)
                 col_dfmts <- c(col_dfmts, NA)
             }
         }
-        line <- readLines(file, n = 1)
+        line <- readLines(file, n = 1L)
     }
 
     ## Test header.
-    if(length(line) == 0)
+    if(length(line) == 0L)
         stop("Missing data section.")
     if(is.null(col_names))
         stop("Missing attribute section.")

@@ -31,8 +31,8 @@ writeForeignSPSS<-function(df,datafile,codefile,varnames=NULL){
 
   varlabels<-names(df)
   if (is.null(varnames)){
-    varnames<-abbreviate(names(df), 8)
-    if (any(sapply(varnames,nchar)>8))
+    varnames<-abbreviate(names(df), 8L)
+    if (any(sapply(varnames, nchar) > 8L))
       stop("I cannot abbreviate the variable names to eight or fewer letters")
     if (any(varnames!=varlabels))
       warning("some variable names were abbreviated")
@@ -43,7 +43,7 @@ writeForeignSPSS<-function(df,datafile,codefile,varnames=NULL){
   dl.varnames<-varnames
   if (any(chv<-sapply(df,is.character))){
       lengths<-sapply(df[chv],function(v) max(nchar(v)))
-      if(any(lengths>255))
+      if(any(lengths > 255L))
           stop("Cannot handle character variables longer than 255")
       lengths<-paste("(A",lengths,")",sep="")
       star<-ifelse(c(FALSE,diff(which(chv)>1))," *", " ")
@@ -79,5 +79,4 @@ writeForeignStata<-function(df,datafile,codefile){
   nms<-ifelse(factors,paste(nms,formats,sep=":"),nms)
 
   cat("infile",nms," using ",datafile,", automatic\n", file=codefile)
-
 }

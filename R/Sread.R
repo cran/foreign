@@ -36,50 +36,50 @@ read.S <- function (file)
 
     readheader <- function(s)
     {
-	head <- readBin(s, "int", 8, 1)
-	all(head == c(0, 83, 32, 100, 97, 116, 97, 1))
+	head <- readBin(s, "int", 8L, 1L)
+	all(head == c(0L, 83L, 32L, 100L, 97L, 116L, 97L, 1L))
     }
 
     ReadSObj <- function (code, len)
     {
-	if (code == 1)
+	if (code == 1L)
 	    result <- as.logical(readBin(s, "int", len, endian = endian))
-	else if (code == 2)
+	else if (code == 2L)
 	    result <- readBin(s, "int", len, endian = endian)
-	else if (code == 3)
+	else if (code == 3L)
 	    result <- readBin(s, "numeric", len, size=4, endian = endian)
-	else if (code == 4)
+	else if (code == 4L)
 	    result <- readBin(s, "numeric", len, endian = endian)
-	else if (code == 5) {
+	else if (code == 5L) {
 	    charsize <- readBin(s, "int", endian = endian)
 	    newpos <- charsize + seek(s, NA)
 	    result <- readBin(s, "character", len)
 	    seek(s, newpos)
 	}
-	else if (code == 6) {
+	else if (code == 6L) {
 	    result <- list()
-	    if (len > 0) {
-		names <- ReadSObj(5, len)
-		codes <- ReadSObj(2, len)
-		lens <- ReadSObj(2, len)
+	    if (len > 0L) {
+		names <- ReadSObj(5L, len)
+		codes <- ReadSObj(2L, len)
+		lens <- ReadSObj(2L, len)
 		offsets <- ReadSObj(2, len)
-		for (i in 1:len) {
+		for (i in 1L:len) {
 		    seek(s, offsets[i])
                     temp <-
-                        if (codes[i] > 0)
+                        if (codes[i] > 0L)
                             ReadSObj(codes[i], lens[i]) else as.name(names[i])
                     result[[nam.or.i(names[i], i)]] <- temp
 		}
 	    }
 	}
-	else if (code == 7)
+	else if (code == 7L)
 	    result <- readBin(s, "complex", len, endian = endian)
-	else if (code == 21) {
-	    temp <- ReadSObj(6, len)
+	else if (code == 21L) {
+	    temp <- ReadSObj(6L, len)
 	    result <- temp[[".Data"]]
 	    attributes(result) <-
 		temp[-match(c(".Data", ".Dim", ".Dimnames", ".Label"),
-			    names(temp), nomatch = 0)]
+			    names(temp), nomatch = 0L)]
 	    dim(result) <- temp[[".Dim"]]
 	    names(result) <- names(temp[[".Data"]])
 	    if (!is.null(temp[[".Label"]]))
@@ -87,19 +87,19 @@ read.S <- function (file)
 	    if (!is.null(temp[[".Dimnames"]]))
 		dimnames(result) <- temp[[".Dimnames"]]
 	}
-	else if (code %in% 257:321) {
-	    code <- SModeNames[code - 256]
+	else if (code %in% 257L:321L) {
+	    code <- SModeNames[code - 256L]
 	    if (code %in% c("name", "missing"))
-		result <- ReadSObj(5, len)
+		result <- ReadSObj(5L, len)
 	    else
-		result <- ReadSObj(6, len)
+		result <- ReadSObj(6L, len)
 	    if (code == "function")
 		try(result <- as.function(result, env=.GlobalEnv))
 	    else if (code %in% c("break", "if", "for", "return", "S.call",
 				 "while", "<-", "<<-", "(", "{"))
 		result <- as.call(c(as.name(code),result))
 	    else if (code == "call(...)")# these aren't special in R
-		result <- result[[1]]
+		result <- result[[1L]]
 	    else if (code == "comment") # ignore comments
 		result <- NULL
 	    else if (code == "comment.expression")# just keep the expression, not the comment
@@ -117,11 +117,11 @@ read.S <- function (file)
     }
     if(readheader(s)) {
 	code <- readBin(s, "int", endian = endian)
-	if (code < 0 | code > 65535) {
+	if (code < 0L | code > 65535L) {
 	    endian <- switch(endian, big = "little", little = "big")
-	    seek(s,  seek(s, NA) -4)
+	    seek(s,  seek(s, NA) - 4)
 	    code <- readBin(s, "int", endian = endian)
-	    if (code < 0 | code > 65535)
+	    if (code < 0L | code > 65535L)
 		stop("internal error - illegal S code value")
 	}
 	len <- readBin(s, "int", endian = endian)
@@ -137,10 +137,10 @@ data.restore <-
     on.exit(close(dump))
 
     ReadSdump <- function(top = FALSE, prefix) {
-	name <- readLines(dump, 1)
-	if(length(name) == 0) return(NULL)
-	code <- readLines(dump, 1)
-	len <- as.integer(readLines(dump, 1))
+	name <- readLines(dump, 1L)
+	if(length(name) == 0L) return(NULL)
+	code <- readLines(dump, 1L)
+	len <- as.integer(readLines(dump, 1L))
 	if (top && print)
 	    cat("\"", name, "\": ", code, "\n", sep="")
 	if (verbose)
@@ -175,7 +175,7 @@ data.restore <-
 		value <- thelist[[".Data"]]
 		attributes(value) <-
 		    thelist[-match(c(".Data", ".Dim", ".Dimnames", ".Label"),
-				   names(thelist), nomatch = 0)]
+				   names(thelist), nomatch = 0L)]
 		dim(value) <- thelist[[".Dim"]]
 		names(value) <- names(thelist[[".Data"]])
 		if (!is.null(thelist[[".Label"]]))
@@ -194,13 +194,13 @@ data.restore <-
                 value <- if (name != "") as.name(name)
             }
 	    else if (code == "call(...)")# these aren't special in R
-		value <- value[[1]]
+		value <- value[[1L]]
 	    else if (code == "comment") # ignore comments
 		value <- NULL
 	    else if (code == "comment.expression")# just keep the expression, not the comment
-		value <- value[unlist(lapply(value,function(y) !is.null(y)))][[1]]
+		value <- value[unlist(lapply(value,function(y) !is.null(y)))][[1L]]
 	    else if (code == "internal")
-		value <- as.call(list(as.name(".Internal"),value[[1]]))
+		value <- as.call(list(as.name(".Internal"), value[[1L]]))
 
 	    else try(mode(value) <- code)
 	}

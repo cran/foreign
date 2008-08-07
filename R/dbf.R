@@ -74,21 +74,21 @@ write.dbf <- function(dataframe, file, factor2char = TRUE, max_nchar = 254)
         nlen <- nchar(dfnames[i], "b")
         x <- dataframe[, i]
         if (is.logical(x)) {
-            precision[i] <- 1
-            scale[i] <- 0
+            precision[i] <- 1L
+            scale[i] <- 0L
         } else if (is.integer(x)) {
             rx <- range(x, na.rm = TRUE)
             rx[!is.finite(rx)] <- 0 # added RSB 2005-04-17
 	    if (any(rx == 0)) rx <- rx + 1 # added RSB 2005-03-10
-            mrx <- as.integer(max(ceiling(log10(abs(rx))))+3)
-            precision[i] <- min(max(nlen, mrx), 19)
-            scale[i] <- 0
+            mrx <- as.integer(max(ceiling(log10(abs(rx))))+3L)
+            precision[i] <- min(max(nlen, mrx), 19L)
+            scale[i] <- 0L
         } else if (is.double(x)) {
-            precision[i] <- 19
+            precision[i] <- 19L
             rx <- range(x, na.rm = TRUE)
             rx[!is.finite(rx)] <- 0 # added RSB 2005-04-17
             mrx <- max(ceiling(log10(abs(rx))))
-            scale[i] <- min(precision[i] - ifelse(mrx > 0, mrx+3, 3), 15)
+            scale[i] <- min(precision[i] - ifelse(mrx > 0L, mrx+3L, 3L), 15L)
                     # modified RSB 2005-03-10 and 2005-04-17
         } else if (is.character(x)) {
             mf <- max(nchar(x[!is.na(x)], "b"))

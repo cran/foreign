@@ -23,28 +23,28 @@ read.dta <- function(file, convert.dates = TRUE,
         names(rval) <- gsub("_", ".", names(rval))
 
     types <- attr(rval, "types")
-    stata.na <- data.frame(type = 251:255,
+    stata.na <- data.frame(type = 251L:255L,
                            min = c(101, 32741, 2147483621, 2^127, 2^1023),
                            inc = c(1,1,1,2^115,2^1011)
                            )
 
 
     if(!missing.type) {
-        if (abs(attr(rval,"version")) >= 8){
-            for(v in which(types > 250)){
-                this.type <- types[v] - 250
+        if (abs(attr(rval,"version")) >= 8L){
+            for(v in which(types > 250L)){
+                this.type <- types[v] - 250L
                 rval[[v]][rval[[v]] >= stata.na$min[this.type]] <- NA
             }
         }
     } else {
-        if (abs(attr(rval, "version")) >= 8){
+        if (abs(attr(rval, "version")) >= 8L){
             missings <- vector("list", length(rval))
             names(missings) <- names(rval)
-            for(v in which(types > 250)){
-                this.type <- types[v] - 250
+            for(v in which(types > 250L)){
+                this.type <- types[v] - 250L
                 nas <- is.na(rval[[v]]) |  rval[[v]] >= stata.na$min[this.type]
                 natype <- (rval[[v]][nas] - stata.na$min[this.type])/stata.na$inc[this.type]
-                natype[is.na(natype)] <- 0
+                natype[is.na(natype)] <- 0L
                 missings[[v]] <- rep(NA, NROW(rval))
                 missings[[v]][nas] <- natype
                 rval[[v]][nas] <- NA
@@ -57,11 +57,12 @@ read.dta <- function(file, convert.dates = TRUE,
     if (convert.dates){
         ff <- attr(rval,"formats")
         dates <- grep("%-*d", ff)
-        for(v in dates)
-            rval[[v]] <- as.Date("1960-1-1")+rval[[v]]
+        ## avoid as.Date in case strptime is screwed up
+        base <- structure(-3653, class="Date")
+        for(v in dates) rval[[v]] <- base+rval[[v]]
     }
     if (convert.factors %in% c(TRUE, NA)) {
-        if (attr(rval, "version") == 5)
+        if (attr(rval, "version") == 5L)
             warning("cannot read factor labels from Stata 5 files")
         else {
             ll <- attr(rval, "val.labels")
@@ -95,22 +96,22 @@ read.dta <- function(file, convert.dates = TRUE,
 }
 
 write.dta <-
-    function(dataframe, file, version = 7,
+    function(dataframe, file, version = 7L,
              convert.dates = TRUE, tz = "GMT",
              convert.factors = c("labels","string","numeric","codes"))
 {
 
-    if (version < 6) stop("Version must be 6-10")
-    if (version == 9) version <- 8
-    if (version > 10) {
+    if (version < 6L) stop("Version must be 6-10")
+    if (version == 9L) version <- 8L
+    if (version > 10L) {
         warning("Version must be 6-10: using 7")
-        version <- 7
+        version <- 7L
     }
 
 
     ## assume this is in chars: probably only works for ASCII
     ## But Stata formats are ASCII only
-    namelength <- if (version == 6) 8 else 31
+    namelength <- if (version == 6L) 8L else 31L
     oldn <- names(dataframe)
     nn <- abbreviate(oldn, namelength)
     if (any(nchar(nn) > namelength))
@@ -125,7 +126,7 @@ write.dta <-
                               function(x) inherits(x, "Date")))
         for(v in dates)
             dataframe[[v]] <- as.vector(julian(dataframe[[v]],
-                                               as.Date("1960-1-1")))
+                                               as.Date("1960-1-1", tz="GMT")))
         dates <- which(sapply(dataframe,
                               function(x) inherits(x, "POSIXt")))
         for(v in dates)
@@ -148,7 +149,7 @@ write.dta <-
     shortlevels <- function(f) {
         ll <- levels(f)
         if (is.null(ll)) return(NULL)
-        abbreviate(ll,80 )
+        abbreviate(ll, 80L)
     }
     leveltable <- lapply(dataframe,shortlevels)
 

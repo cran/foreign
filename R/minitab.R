@@ -28,7 +28,7 @@
 
 "read.mtp" <-
 function (file) {
-    clean <- function(x) if(is.numeric(x)) signif(x, 6) else x
+    clean <- function(x) if(is.numeric(x)) signif(x, 6L) else x
     val <- .Call(read_mtp, file)
     lapply(val, clean)
 }

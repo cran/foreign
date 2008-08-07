@@ -173,7 +173,7 @@ static char* nameMangle(char *stataname, int len){
 SEXP R_LoadStataData(FILE *fp)
 {
     int i, j = 0, nvar, nobs, charlen, version, swapends, 
-	varnamelength, nlabels, totlen;
+	varnamelength, nlabels, totlen, res;
     unsigned char abyte;
     /* timestamp is used for timestamp and for variable formats */
     char datalabel[81], timestamp[50], aname[33];
@@ -454,10 +454,11 @@ SEXP R_LoadStataData(FILE *fp)
 	/* There may be up to nvar value labels, but possibly 0 */
 	PROTECT(labeltable = allocVector(VECSXP, nvar));
 	PROTECT(tmp = allocVector(STRSXP, nvar));
-	for(j = 0; j < nvar; j++){
+	for(j = 0; j < nvar; j++) {
 	    /* first int not needed, use fread directly to trigger EOF */
-	    fread((int *) aname, sizeof(int), 1, fp);
+	    res = fread((int *) aname, sizeof(int), 1, fp);
 	    if (feof(fp)) break;
+	    if (res != 1) warning(_("a binary read error occurred"));
 	    InStringBinary(fp, varnamelength+1, aname);
 	    SET_STRING_ELT(tmp, j, mkChar(aname));
 	    RawByteBinary(fp, 1); RawByteBinary(fp, 1); RawByteBinary(fp, 1); /*padding*/

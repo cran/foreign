@@ -1,5 +1,5 @@
 
-R version 2.7.1 Patched (2008-07-15 r46064)
+R version 2.7.1 Patched (2008-08-02 r46213)
 Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
@@ -288,17 +288,17 @@ List of 20
  Max.   :18.00   Max.   :515.0   Max.   :60.00   Max.   :77.00  
  NA's   :28.00                   NA's   : 1.00                  
       WT58           DAYOFWK     VITAL10    FAMHXCVR       CHD     
- Min.   :123.0   MISSING :130   ALIVE:179   NO :178   Min.   :0.0  
- 1st Qu.:156.0   SUNDAY  : 19   DEAD : 61   YES: 62   1st Qu.:0.0  
- Median :171.0   TUESDAY : 19                         Median :0.5  
- Mean   :173.4   WEDNSDAY: 17                         Mean   :0.5  
- 3rd Qu.:187.0   SATURDAY: 16                         3rd Qu.:1.0  
- Max.   :278.0   THURSDAY: 15                         Max.   :1.0  
-                 (Other) : 24                                      
+ Min.   :123.0   SUNDAY  : 19   ALIVE:179   NO :178   Min.   :0.0  
+ 1st Qu.:156.0   TUESDAY : 19   DEAD : 61   YES: 62   1st Qu.:0.0  
+ Median :171.0   WEDNSDAY: 17                         Median :0.5  
+ Mean   :173.4   SATURDAY: 16                         Mean   :0.5  
+ 3rd Qu.:187.0   THURSDAY: 15                         3rd Qu.:1.0  
+ Max.   :278.0   (Other) : 24                         Max.   :1.0  
+                 NA's    :130                                      
 > ii <- c(2,10)
 > vl <- list(FIRSTCHD = c("OTHER   CHD"= 6, "FATAL   MI"= 5, "NONFATALMI"= 3,
 + 			"SUDDEN  DEATH" = 2, "NO CHD" = 1),
-+ 	   DAYOFWK = c(MISSING=9, SATURDAY=7, FRIDAY=6, THURSDAY=5,
++ 	   DAYOFWK = c(SATURDAY=7, FRIDAY=6, THURSDAY=5,
 + 		       WEDNSDAY=4, TUESDAY=3, MONDAY=2, SUNDAY=1))
 > stopifnot(identical(electric.s,	     electric.p),
 + 	  identical(electric.s[-ii], electric.s4[-ii]),
@@ -309,8 +309,7 @@ List of 20
 > 
 > ## after "long label patch":
 > 
-> Sys.setlocale (locale="C")## to resolve locale problem
-[1] "LC_CTYPE=C;LC_NUMERIC=C;LC_TIME=C;LC_COLLATE=C;LC_MONETARY=C;LC_MESSAGES=de_CH.UTF-8;LC_PAPER=de_CH.UTF-8;LC_NAME=C;LC_ADDRESS=C;LC_TELEPHONE=C;LC_MEASUREMENT=de_CH.UTF-8;LC_IDENTIFICATION=C"
+> invisible(Sys.setlocale (locale="C")) ## to resolve locale problem
 > ldat <- read.spss("spss_long.sav", to.data.frame=TRUE)
 Warning message:
 In read.spss("spss_long.sav", to.data.frame = TRUE) :

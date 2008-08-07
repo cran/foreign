@@ -1,9 +1,26 @@
+2008-08-07 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-29.
+	* R/read.dta.R: avoid as.Date() after
+	https://stat.ethz.ch/pipermail/r-help/2008-August/170114.html
+	* R/*.R: use L for integer constants.
+
+2008-08-05 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/sfm-read.c, src/spss.c, man/read.spss.Rd: return information
+	on user-defined missing values.
+	* R/spss.R, man/read.spss.R: add argument 'use.missings'.
+	* tests/spss.R*: don't record the previous locale in output,
+	adapt for default mapping of missings with
+	read.spss(to.data.frame=TRUE).
+	* src/dbfopen.c, src/minitab.c, src/stataread.c: check return
+	values from fread etc.
+
 2008-07-29 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-28.
 	* src/sfm-read.c: endianness fix from
 	https://stat.ethz.ch/pipermail/r-devel/2008-July/050194.html
-
 
 2008-07-21 Brian Ripley <Brian.Ripley@R-project.org>
 
@@ -19,7 +36,7 @@
 
 2008-06-18 Brian Ripley <Brian.Ripley@R-project.org>
 
-	* src/SASxport.c, sas/minitab.c, sas/spss.c, sas/stataread.c: use
+	* src/SASxport.c, src/minitab.c, src/spss.c, src/stataread.c: use
 	sterrror(errno) to give reason for fopen failure.
 
 2008-06-13 Brian Ripley <Brian.Ripley@R-project.org>
@@ -834,4 +851,3 @@
 	name "foreign".
 
 	* R/zzz.R: Added the copyright stuff.
-

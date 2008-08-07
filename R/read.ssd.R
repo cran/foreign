@@ -35,12 +35,12 @@ read.ssd <- function(libname, sectionnames, tmpXport=tempfile(),
     {
         ## guess the name of the log file by stripping all
         ## path to the sas program (log will lie in executing dir)
-        expl <- strsplit(x, "")[[1]]
+        expl <- strsplit(x, "")[[1L]]
         rex <- rev(expl)
-        br <- match("/", rex)[1]
+        br <- match("/", rex)[1L]
         if (is.na(br))
             return(x)
-        return(paste(rev(rex[1:(br - 1)]), sep = "", collapse = ""))
+        return(paste(rev(rex[1L:(br - 1L)]), sep = "", collapse = ""))
     }
     st1 <- paste("libname src2rd '",libname,"';\n",sep="")
     st2 <- paste("libname rd xport '", tmpXport, "';\n", sep="")
@@ -56,7 +56,7 @@ read.ssd <- function(libname, sectionnames, tmpXport=tempfile(),
     if(.Platform$OS.type == "windows")
         sascmd <- paste(shQuote(sascmd), "-sysin")
     sasrun <- try(sysret <- system( paste( sascmd, tmpProg ) ))
-    if (!inherits(sasrun, "try-error") & sysret == 0)
+    if (!inherits(sasrun, "try-error") & sysret == 0L)
     {
         unlink( tmpProg )
         unlink( tmpProgLog )

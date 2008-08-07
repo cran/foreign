@@ -18,7 +18,7 @@
 
 make.SAS.names <- function(varnames, validvarname = c("V7", "V6")){
   validvarname <- match.arg(validvarname)
-  nmax <- if(validvarname == "V7") 32 else 8
+  nmax <- if(validvarname == "V7") 32L else 8L
 
   x <- sub("^([0-9])", "_\\1", varnames)
   x <- gsub("[^a-zA-Z0-9_]", "_", x)
@@ -35,9 +35,9 @@ make.SAS.formats <- function(varnames){
   x <- sub("^([0-9])", "_\\1", varnames)
   x <- gsub("[^a-zA-Z0-9_]", "_", x)
   x <- sub("([0-9])$", "\\1f", x) # can't end in digit so append 'f'
-  x <- abbreviate(x, minlength = 8)
+  x <- abbreviate(x, minlength = 8L)
 
-  if(any(nchar(x) > 8) || any(duplicated(x)))
+  if(any(nchar(x) > 8L) || any(duplicated(x)))
     stop("Cannot uniquely abbreviate format names to conform to ",
          " eight-character limit and not ending in a digit")
   names(x) <- varnames
@@ -74,7 +74,7 @@ writeForeignSAS<-function(df,datafile,codefile,dataname="rdata",
   lrecl<-max(sapply(readLines(datafile),nchar))+4
 
   cat("* Written by R;\n", file=codefile)
-  cat("* ",deparse(sys.call(-2))[1],";\n\n",file=codefile,append=TRUE)
+  cat("* ",deparse(sys.call(-2L))[1L],";\n\n",file=codefile,append=TRUE)
   if (any(factors)){
     cat("PROC FORMAT;\n",file=codefile,append=TRUE)
     fmtnames <- make.SAS.formats(varnames[factors])
@@ -122,21 +122,21 @@ writeForeignSAS<-function(df,datafile,codefile,dataname="rdata",
       file=codefile,append=TRUE)
 
   cat("INPUT",file=codefile,append=TRUE)
-  for(v in 1:ncol(df)){
+  for(v in 1L:ncol(df)){
     cat("\n",varnames[v],file=codefile,append=TRUE)
     if(strings[v])
       cat(" $ ",file=codefile,append=TRUE)
   }
   cat("\n;\n",file=codefile,append=TRUE)
 
-  for(v in 1:ncol(df)){
+  for(v in 1L:ncol(df)){
     if (varnames[v] != names(varnames)[v])
       cat("LABEL ",varnames[v],"=",adQuote(varlabels[v]),";\n",
           file=codefile,append=TRUE)
   }
 
   if (any(factors)){
-    for (f in 1:length(fmtnames))
+    for (f in 1L:length(fmtnames))
       cat("FORMAT", names(fmtnames)[f],paste(fmtnames[f],".",sep = ""),";\n",
           file=codefile,append=TRUE)
   }

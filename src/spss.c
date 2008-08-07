@@ -220,39 +220,32 @@ void *avlFlatten(const avl_tree *tree){
 static SEXP getSPSSvaluelabels(struct dictionary *dict)
 {
     SEXP ans, somelabels, somevalues;
-    int nlabels,nvars,i,j;
+    int nlabels, nvars, i, j;
     struct value_label **flattened_labels;
     struct avl_tree *labelset;
     unsigned char tmp[MAX_SHORT_STRING+1];
 
     nvars = dict->nvar;
-    if (nvars ==0 )      /* this would be dumb */
-	return R_NilValue;
+    if (nvars == 0) return R_NilValue;
     PROTECT(ans = allocVector(VECSXP, nvars));
 
-    for(i = 0; i < nvars; i++){
+    for(i = 0; i < nvars; i++) {
 	labelset = (dict->var)[i]->val_lab;
-	if (!labelset) { /* this is quite normal */
-	    SET_VECTOR_ELT(ans, i, R_NilValue);
-	    continue;
-	}
-
+	if (!labelset) continue;
 	nlabels = avl_count(labelset);
-	/* avl_flatten Callocs, we must Free*/
-	flattened_labels = avlFlatten( labelset );
-
+	flattened_labels = avlFlatten(labelset);
 	PROTECT(somelabels = allocVector(STRSXP, nlabels));
-
-	if ((dict->var)[i]->type == NUMERIC){
+	if ((dict->var)[i]->type == NUMERIC) {
+	    double *rx;
 	    PROTECT(somevalues = allocVector(REALSXP, nlabels));
-	    for(j = 0; j < nlabels; j++){
+	    rx = REAL(somevalues);
+	    for(j = 0; j < nlabels; j++) {
 		SET_STRING_ELT(somelabels, j, mkChar(flattened_labels[j]->s));
-		REAL(somevalues)[j] = flattened_labels[j]->v.f;
+		rx[j] = flattened_labels[j]->v.f;
 	    }
-	}
-	else {
+	} else {
 	    PROTECT(somevalues = allocVector(STRSXP, nlabels));
-	    for(j = 0;j < nlabels; j++){
+	    for(j = 0; j < nlabels; j++) {
 		SET_STRING_ELT(somelabels, j, mkChar(flattened_labels[j]->s));
 		memcpy(tmp,flattened_labels[j]->v.s, MAX_SHORT_STRING);
 		tmp[MAX_SHORT_STRING] = '\0';
@@ -260,15 +253,102 @@ static SEXP getSPSSvaluelabels(struct dictionary *dict)
 	    }
 	}
 	Free(flattened_labels);
-
 	namesgets(somevalues, somelabels);
 	SET_VECTOR_ELT(ans, i, somevalues);
 	UNPROTECT(2); /*somevalues, somelabels*/
     }
-    UNPROTECT(1); /*ans*/
+    UNPROTECT(1);
     return ans;
 }
 
+static SEXP getSPSSmissing(struct dictionary *dict, int *have_miss)
+{
+    SEXP ans, elt, nm, value;
+    int nvars, i;
+
+    nvars = dict->nvar;
+    if (nvars == 0) return R_NilValue;
+    PROTECT(ans = allocVector(VECSXP, nvars));
+
+    for(i = 0; i < nvars; i++) {
+	struct variable *v = dict->var[i];
+	int j, n = 0;
+	const char *type="unknown";
+	switch (v->miss_type) {
+	case MISSING_NONE:
+	    type = "none";
+	    break;
+	case MISSING_1:
+	    n = 1;
+	    type = "one";
+	    break;
+	case MISSING_2:
+	    n = 2;
+	    type = "two";
+	    break;
+	case MISSING_3:
+	    n = 3;
+	    type = "three";
+	    break;
+	case MISSING_RANGE:
+	    n = 2;
+	    type = "range";
+	    break;
+	case MISSING_LOW:
+	    n = 1;
+	    type = "low";
+	    break;
+	case MISSING_HIGH:
+	    n = 1;
+	    type = "high";
+	    break;
+	case MISSING_RANGE_1:
+	    n = 3;
+	    type = "range+1";
+	    break;
+	case MISSING_LOW_1:
+	    n = 2;
+	    type = "low+1";
+	    break;
+	case MISSING_HIGH_1:
+	    n = 2;
+	    type = "high+1";
+	    break;
+	default:
+	    type = "unknown";
+	}
+	if (strcmp(type, "none")) (*have_miss)++;
+	if (n > 0) {
+	    elt = allocVector(VECSXP, 2);
+	    SET_VECTOR_ELT(ans, i, elt);
+	    PROTECT(nm = allocVector(STRSXP, 2));
+	    SET_STRING_ELT(nm, 0, mkChar("type"));
+	    SET_STRING_ELT(nm, 1, mkChar("value"));
+	    setAttrib(elt, R_NamesSymbol, nm);
+	    SET_VECTOR_ELT(elt, 0, mkString(type));
+	    if (v->type == NUMERIC) {
+		double *rx;
+		PROTECT(value = allocVector(REALSXP, n));
+		rx = REAL(value);
+		for(j = 0; j < n; j++) rx[j] = v->missing[j].f;
+	    } else {
+		PROTECT(value = allocVector(STRSXP, n));
+		for(j = 0; j < n; j++)
+		    SET_STRING_ELT(value, j, 
+				   mkChar((const char *)v->missing[j].s));
+	    }
+	    SET_VECTOR_ELT(elt, 1, value);	
+	    UNPROTECT(2);
+	} else {
+	    elt = allocVector(VECSXP, 1);
+	    SET_VECTOR_ELT(ans, i, elt);
+	    setAttrib(elt, R_NamesSymbol, mkString("type"));
+	    SET_VECTOR_ELT(elt, 0, mkString(type));
+	}
+    }
+    UNPROTECT(1); 
+    return ans;
+}
 
 static SEXP
 read_SPSS_PORT(const char *filename)
@@ -286,6 +366,7 @@ read_SPSS_PORT(const char *filename)
     int nvar_label;
     SEXP val_labels;
     SEXP variable_labels;
+    SEXP miss_labels; int have_miss = 0;
 
     /* Set the fv and lv elements of all variables in the
        dictionary. */
@@ -352,13 +433,13 @@ read_SPSS_PORT(const char *filename)
     fh_close_handle(fh);
 
     /* get all the value labels */
-    PROTECT(val_labels=getSPSSvaluelabels(dict));
-    namesgets(val_labels,ans_names);
-    setAttrib(ans,install("label.table"), val_labels);
+    PROTECT(val_labels = getSPSSvaluelabels(dict));
+    namesgets(val_labels, ans_names);
+    setAttrib(ans, install("label.table"), val_labels);
     UNPROTECT(1);
 
     /* get SPSS variable labels */
-    PROTECT(variable_labels=allocVector(STRSXP, dict->nvar));
+    PROTECT(variable_labels = allocVector(STRSXP, dict->nvar));
     nvar_label = 0;
     for (i = 0; i < dict->nvar; i++) {
 	char *lab = dict->var[i]->label;
@@ -369,10 +450,18 @@ read_SPSS_PORT(const char *filename)
     }
     if (nvar_label > 0) {
 	namesgets(variable_labels, ans_names);
-	setAttrib(ans,install("variable.labels"), variable_labels);
+	setAttrib(ans, install("variable.labels"), variable_labels);
     }
     UNPROTECT(1);
 
+    /* report missingness */
+    PROTECT(miss_labels = getSPSSmissing(dict, &have_miss));
+    if(have_miss) {
+	namesgets(miss_labels, duplicate(ans_names));
+	setAttrib(ans, install("missings"), miss_labels);
+    }
+    UNPROTECT(1);
+   
     free_dictionary(dict);
     setAttrib(ans, R_NamesSymbol, ans_names);
     UNPROTECT(2);
@@ -393,6 +482,7 @@ read_SPSS_SAVE(const char *filename)
     int nval = 0;
     SEXP val_labels;
     SEXP variable_labels;
+    SEXP miss_labels; int have_miss = 0;
 
     /* Set the fv and lv elements of all variables in the
        dictionary. */
@@ -443,9 +533,9 @@ read_SPSS_SAVE(const char *filename)
     sfm_maybe_close(fh);
 
     /* get all the value labels */
-    PROTECT(val_labels=getSPSSvaluelabels(dict));
+    PROTECT(val_labels = getSPSSvaluelabels(dict));
     namesgets(val_labels, duplicate(ans_names));
-    setAttrib(ans,install("label.table"), val_labels);
+    setAttrib(ans, install("label.table"), val_labels);
     UNPROTECT(1);
 
     /* get SPSS variable labels */
@@ -461,6 +551,14 @@ read_SPSS_SAVE(const char *filename)
     if (nvar_label > 0) {
 	namesgets(variable_labels, ans_names);
 	setAttrib(ans,install("variable.labels"), variable_labels);
+    }
+    UNPROTECT(1);
+
+    /* report missingness */
+    PROTECT(miss_labels = getSPSSmissing(dict, &have_miss));
+    if(have_miss) {
+	namesgets(miss_labels, duplicate(ans_names));
+	setAttrib(ans, install("missings"), miss_labels);
     }
     UNPROTECT(1);
 

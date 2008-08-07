@@ -5,15 +5,15 @@
 \alias{write.dta}
 \title{Write Files in Stata Binary Format}
 \usage{
-write.dta(dataframe, file, version = 7,
+write.dta(dataframe, file, version = 7L,
           convert.dates = TRUE, tz = "GMT",
           convert.factors = c("labels", "string", "numeric", "codes"))
 }
 \arguments{
   \item{dataframe}{a data frame.}
   \item{file}{character string giving filename.}
-  \item{version}{Stata version: 6, 7, 8 and 10 are supported, and 9 is
-    mapped to 8.}
+  \item{version}{integer: Stata version: 6, 7, 8 and 10 are supported,
+    and 9 is mapped to 8.}
   \item{convert.dates}{Convert \code{Date} and \code{POSIXt} objects
     to Stata dates?}
   \item{tz}{timezone for date conversion}
@@ -27,7 +27,7 @@ write.dta(dataframe, file, version = 7,
   The major differences between Stata versions is that 7.0 and later
   allows 32-character variable names (5 and 6 were restricted to
   8-character name). The \code{abbreviate} function is used to trim long
-  variables to the permitted length. A warning is given if this is
+  variables to the permitted length.  A warning is given if this is
   needed and it is an error for the abbreviated names not to be unique.
 
   The columns in the data frame become variables in the Stata data set.

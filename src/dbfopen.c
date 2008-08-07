@@ -188,6 +188,7 @@
 
 #include "shapefil.h"
 #include <R_ext/Arith.h> /* for NA_INTEGER, NA_REAL */
+#include <R_ext/Error.h>
 #include <math.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -270,8 +271,10 @@ static void DBFWriteHeader(DBFHandle psDBF)
 /*      descriptions.		*/
 /* -------------------------------------------------------------------- */
     fseek( psDBF->fp, 0, 0 );
-    fwrite( abyHeader, XBASE_FLDHDR_SZ, 1, psDBF->fp );
-    fwrite( psDBF->pszHeader, XBASE_FLDHDR_SZ, psDBF->nFields, psDBF->fp );
+    if (fwrite( abyHeader, XBASE_FLDHDR_SZ, 1, psDBF->fp ) != 1)
+	error("binary write error");
+    if (fwrite( psDBF->pszHeader, XBASE_FLDHDR_SZ, psDBF->nFields, psDBF->fp )
+	!= psDBF->nFields) error("binary write error");
 
 /* -------------------------------------------------------------------- */
 /*      Write out the newline character if there is room for it.        */
@@ -281,7 +284,8 @@ static void DBFWriteHeader(DBFHandle psDBF)
 	char	cNewline;
 
 	cNewline = 0x0d;
-	fwrite( &cNewline, 1, 1, psDBF->fp );
+	if (fwrite( &cNewline, 1, 1, psDBF->fp ) != 1)
+	    error("binary write error");
     }
 }
 
@@ -304,7 +308,8 @@ static void DBFFlushRecord( DBFHandle psDBF )
 						     + psDBF->nHeaderLength;
 
 	fseek( psDBF->fp, nRecordOffset, 0 );
-	fwrite( psDBF->pszCurrentRecord, psDBF->nRecordLength, 1, psDBF->fp );
+	if (fwrite( psDBF->pszCurrentRecord, psDBF->nRecordLength, 1, 
+		    psDBF->fp ) != 1) error("binary write error");
     }
 }
 
@@ -324,7 +329,8 @@ DBFUpdateHeader( DBFHandle psDBF )
     DBFFlushRecord( psDBF );
 
     fseek( psDBF->fp, 0, 0 );
-    fread( abyFileHeader, 32, 1, psDBF->fp );
+    if(fread( abyFileHeader, 32, 1, psDBF->fp ) != 1)
+	error("binary read error");
 
     abyFileHeader[4] = psDBF->nRecords % 256;
     abyFileHeader[5] = (psDBF->nRecords/256) % 256;
@@ -332,7 +338,8 @@ DBFUpdateHeader( DBFHandle psDBF )
     abyFileHeader[7] = (psDBF->nRecords/(256*256*256)) % 256;
 
     fseek( psDBF->fp, 0, 0 );
-    fwrite( abyFileHeader, 32, 1, psDBF->fp );
+    if (fwrite( abyFileHeader, 32, 1, psDBF->fp ) != 1)
+	error("binary write error");
 
     fflush( psDBF->fp );
 }
@@ -1036,7 +1043,8 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
 	nRecordOffset = psDBF->nRecordLength * hEntity + psDBF->nHeaderLength;
 
 	fseek( psDBF->fp, nRecordOffset, 0 );
-	fread( psDBF->pszCurrentRecord, psDBF->nRecordLength, 1, psDBF->fp );
+	if (fread( psDBF->pszCurrentRecord, psDBF->nRecordLength, 1, 
+		   psDBF->fp ) != 1) error("binary read error");
 
 	psDBF->nCurrentRecord = hEntity;
     }
@@ -1205,7 +1213,8 @@ int DBFWriteAttributeDirectly(DBFHandle psDBF, int hEntity, int iField,
 	nRecordOffset = psDBF->nRecordLength * hEntity + psDBF->nHeaderLength;
 
 	fseek( psDBF->fp, nRecordOffset, 0 );
-	fread( psDBF->pszCurrentRecord, psDBF->nRecordLength, 1, psDBF->fp );
+	if (fread( psDBF->pszCurrentRecord, psDBF->nRecordLength, 
+		   1, psDBF->fp ) != 1) error("binary read error");
 
 	psDBF->nCurrentRecord = hEntity;
     }
@@ -1351,7 +1360,8 @@ DBFWriteTuple(DBFHandle psDBF, int hEntity, void * pRawTuple )
 	nRecordOffset = psDBF->nRecordLength * hEntity + psDBF->nHeaderLength;
 
 	fseek( psDBF->fp, nRecordOffset, 0 );
-	fread( psDBF->pszCurrentRecord, psDBF->nRecordLength, 1, psDBF->fp );
+	if (fread( psDBF->pszCurrentRecord, psDBF->nRecordLength, 
+		   1, psDBF->fp ) != 1) error("binary read error");
 
 	psDBF->nCurrentRecord = hEntity;
     }
@@ -1395,7 +1405,8 @@ DBFReadTuple(DBFHandle psDBF, int hEntity )
 	nRecordOffset = psDBF->nRecordLength * hEntity + psDBF->nHeaderLength;
 
 	fseek( psDBF->fp, nRecordOffset, 0 );
-	fread( psDBF->pszCurrentRecord, psDBF->nRecordLength, 1, psDBF->fp );
+	if (fread( psDBF->pszCurrentRecord, psDBF->nRecordLength, 
+		   1, psDBF->fp ) != 1) error("binary read error");
 
 	psDBF->nCurrentRecord = hEntity;
     }

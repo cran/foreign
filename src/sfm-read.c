@@ -1358,76 +1358,76 @@ dump_dictionary (struct dictionary * dict)
 {
   int i;
 
-  debug_printf (("dictionary:\n"));
+  printf ("dictionary:\n");
   for (i = 0; i < dict->nvar; i++)
     {
       char print[32];
       struct variable *v = dict->var[i];
       int n, j;
 
-      debug_printf (("	 var %s", v->name));
-      /*debug_printf (("(indices:%d,%d)", v->index, v->foo));*/
-      debug_printf (("(type:%s,%d)", (v->type == NUMERIC ? "num"
-				 : (v->type == ALPHA ? ("str" : "!!!")),
-		     v->width));
-      debug_printf (("(fv:%d,%d)", v->fv, v->nv));
-      /*debug_printf (("(get.fv:%d,%d)", v->get.fv, v->get.nv));*/
-      debug_printf (("(left:%s)(miss:", v->left ? "left" : "right"));
+      printf ("	 var %s", v->name);
+      /*printf ("(indices:%d,%d)", v->index, v->foo);*/
+      printf("(type:%s,%d)", v->type == NUMERIC ? "num" : 
+	     (v->type == ALPHA ? "str" : "!!!"),
+	     v->width);
+      printf ("(fv:%d,%d)", v->fv, v->nv);
+      /*printf ("(get.fv:%d,%d)", v->get.fv, v->get.nv);*/
+      printf ("(left:%s)(miss:", v->left ? "left" : "right");
 
       switch (v->miss_type)
 	{
 	case MISSING_NONE:
 	  n = 0;
-	  debug_printf (("none"));
+	  printf ("none");
 	  break;
 	case MISSING_1:
 	  n = 1;
-	  debug_printf (("one"));
+	  printf ("one");
 	  break;
 	case MISSING_2:
 	  n = 2;
-	  debug_printf (("two"));
+	  printf ("two");
 	  break;
 	case MISSING_3:
 	  n = 3;
-	  debug_printf (("three"));
+	  printf ("three");
 	  break;
 	case MISSING_RANGE:
 	  n = 2;
-	  debug_printf (("range"));
+	  printf ("range");
 	  break;
 	case MISSING_LOW:
 	  n = 1;
-	  debug_printf (("low"));
+	  printf ("low");
 	  break;
 	case MISSING_HIGH:
 	  n = 1;
-	  debug_printf (("high"));
+	  printf ("high");
 	  break;
 	case MISSING_RANGE_1:
 	  n = 3;
-	  debug_printf (("range+1"));
+	  printf ("range+1");
 	  break;
 	case MISSING_LOW_1:
 	  n = 2;
-	  debug_printf (("low+1"));
+	  printf ("low+1");
 	  break;
 	case MISSING_HIGH_1:
 	  n = 2;
-	  debug_printf (("high+1"));
+	  printf ("high+1");
 	  break;
 	default:
-	  if (!(0)) error("assert failed : 0");
+          if (!(0)) warning("assert failed : 0");
 	}
       for (j = 0; j < n; j++)
 	if (v->type == NUMERIC)
-	  debug_printf ((",%g", v->missing[j].f));
+	  printf (",%g", v->missing[j].f);
 	else
-	  debug_printf ((",\"%.*s\"", v->width, v->missing[j].s));
+	  printf (",\"%.*s\"", v->width, v->missing[j].s);
       strcpy (print, fmt_to_string (&v->print));
-      debug_printf ((")(fmt:%s,%s)(lbl:%s)\n",
+      printf (")(fmt:%s,%s)(lbl:%s)\n",
 		     print, fmt_to_string (&v->write),
-		     v->label ? v->label : "nolabel"));
+		     v->label ? v->label : "nolabel");
     }
 }
 #endif

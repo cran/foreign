@@ -31,13 +31,13 @@ read.epiinfo <- function (file, read.deleted = FALSE,
         open(file, "rt")
         on.exit(close(file))
     }
-    line <- readLines(file, 1, ok = TRUE)
+    line <- readLines(file, 1L, ok = TRUE)
     headerlength <- na.omit(sapply(strsplit(line, " ")[[1]], as.numeric))[1]
-    if (headerlength <= 0)
+    if (headerlength <= 0L)
         stop("file has zero or fewer variables: probably not an EpiInfo file")
     headerlines <- readLines(file, n = headerlength)
     pushBack(headerlines, file)
-    comments <- sapply(headerlines, function(s) substring(s, 46, 46 + 80))
+    comments <- sapply(headerlines, function(s) substring(s, 46L, 46L + 80L))
     #
     # Added comment = ""  to fix '#' as entrychar being read as a comment
     #
@@ -46,14 +46,14 @@ read.epiinfo <- function (file, read.deleted = FALSE,
                    y1 = 0, type = 0, len = 0, color = 0),
                    flush = TRUE, quiet = TRUE, comment = "")
     header <- as.data.frame(lapply(header, I))
-    header$start <- cumsum(c(1, header$len))[1:headerlength]
+    header$start <- cumsum(c(1L, header$len))[1:headerlength]
     header$stop <- cumsum(header$len)
-    multiline <- ceiling(max(header$stop) / 78)
+    multiline <- ceiling(max(header$stop) / 78L)
     really.variables <- header$len != 0
     header <- header[really.variables, ]
-    entrychar <- substr(header$name, 1, 1)
+    entrychar <- substr(header$name, 1L, 1L)
     if (all(entrychar %in% c("#", "_")))
-        header$name <- substr(header$name, 2, 12)
+        header$name <- substr(header$name, 2L, 12L)
     comments <- comments[really.variables]
     #
     # Added support for EpiData introduced field types:
@@ -62,19 +62,19 @@ read.epiinfo <- function (file, read.deleted = FALSE,
     #   16  European (i.e. dd/mm/yyyy) format automatic date
     #   17  SOUNDEX field
     #
-    numbers <- (header$len > 0) & ((header$type %in% c(0, 6, 12)) | (header$type > 12)) & !(header$type %in% c(16, 17))
+    numbers <- (header$len > 0L) & ((header$type %in% c(0L, 6L, 12L)) | (header$type > 12L)) & !(header$type %in% c(16L, 17L))
     datalines <- scan(file, what = "", sep = "\n", quote = "", quiet = TRUE, blank.lines.skip = TRUE, comment = "")
     #
     # Added check for empty file
     #
-    if (length(datalines) == 0)
+    if (length(datalines) == 0L)
       stop("no records in file")
     if (length(datalines)%%multiline)
         warning("wrong number of records")
     datalines <- matrix(datalines, nrow = multiline)
-    if (multiline > 1)
-        datalines[-multiline, ] <- substr(datalines[-multiline, ], 1, 78)
-    datalines <- apply(datalines, 2, paste, collapse = "")
+    if (multiline > 1L)
+        datalines[-multiline, ] <- substr(datalines[-multiline, ], 1L, 78L)
+    datalines <- apply(datalines, 2L, paste, collapse = "")
     deleted <- substr(datalines, nchar(datalines), nchar(datalines)) == "?"
     nvars <- NROW(header)
     data <- as.data.frame(lapply(1:nvars, function(i) I(substring(datalines, header$start[i], header$stop[i]))))
@@ -97,26 +97,26 @@ read.epiinfo <- function (file, read.deleted = FALSE,
     for (i in 1:nvars) {
         if (numbers[i])
             data[[i]] <- as.numeric(data[[i]])
-        else if (header$type[i] == 5)
+        else if (header$type[i] == 5L)
             data[[i]] <- ifelse(data[[i]] %in% c("Y", "N"), data[[i]] == "Y", NA)
-        else if (header$type[i] %in% c(11, 16) && header$len[i] == 5 && guess.broken.dates)
+        else if (header$type[i] %in% c(11L, 16L) && header$len[i] == 5L && guess.broken.dates)
             data[[i]] <- as.Date(strptime(paste(data[[i]], thisyear, sep = "/"), format = "%d/%m/%Y"))
-        else if (header$type[i] %in% c(11, 16) && header$len[i] == 8 && guess.broken.dates)
+        else if (header$type[i] %in% c(11L, 16L) && header$len[i] == 8L && guess.broken.dates)
             data[[i]] <- as.Date(strptime(data[[i]], format = "%d/%m/%y"))
-        else if (header$type[i] %in% c(11, 16) && header$len[i] == 10)
+        else if (header$type[i] %in% c(11L, 16L) && header$len[i] == 10L)
             data[[i]] <- as.Date(strptime(data[[i]], format = "%d/%m/%Y"))
-        else if (header$type[i] %in% c(2, 10) && header$len[i] == 5 && guess.broken.dates)
+        else if (header$type[i] %in% c(2L, 10L) && header$len[i] == 5L && guess.broken.dates)
             data[[i]] <- as.Date(strptime(paste(data[[i]], thisyear, sep = "/"), format = "%m/%d/%Y"))
-        else if (header$type[i] %in% c(2, 10) && header$len[i] == 8 && guess.broken.dates)
+        else if (header$type[i] %in% c(2L, 10L) && header$len[i] == 8L && guess.broken.dates)
             data[[i]] <- as.Date(strptime(data[[i]], format = "%m/%d/%y"))
-        else if (header$type[i] %in% c(2, 10) && header$len[i] == 10)
+        else if (header$type[i] %in% c(2L, 10L) && header$len[i] == 10L)
             data[[i]] <- as.Date(strptime(data[[i]], format = "%m/%d/%Y"))
         #
         # SOUNDEX (type 17) fields
         #
-        else if (header$type[i] == 17) {
-            data[[i]][substr(data[[i]], 1, 1) == " "] <- NA
-            data[[i]] <- substr(data[[i]], 1, 5)
+        else if (header$type[i] == 17L) {
+            data[[i]][substr(data[[i]], 1L, 1L) == " "] <- NA
+            data[[i]] <- substr(data[[i]], 1L, 5L)
             }
         else {
             blanks <- grep("^[[:blank:]]*$", data[[i]])
@@ -132,5 +132,4 @@ read.epiinfo <- function (file, read.deleted = FALSE,
     if (lower.case.names)
       names(data) <- tolower(names(data))
     data
-  }
-
+}
