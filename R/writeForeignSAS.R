@@ -44,113 +44,110 @@ make.SAS.formats <- function(varnames){
   x
 }
 
-writeForeignSAS<-function(df,datafile,codefile,dataname="rdata",
-                          validvarname = c("V7", "V6")){
-  factors <- sapply(df, is.factor)
-  strings <- sapply(df, is.character)
-  dates <- sapply(df, FUN = function(x) inherits(x, "Date") || inherits(x, "dates") || inherits(x, "date"))
-  xdates <- sapply(df, FUN = function(x)  inherits(x, "dates") || inherits(x, "date"))
-  datetimes <- sapply(df, FUN = function(x) inherits(x, "POSIXt"))
+writeForeignSAS <- function(df, datafile, codefile, dataname="rdata",
+                          validvarname = c("V7", "V6"))
+{
+    ## FIXME: re-write this to hold a connection open
+    factors <- sapply(df, is.factor)
+    strings <- sapply(df, is.character)
+    dates <- sapply(df, FUN = function(x) inherits(x, "Date") || inherits(x, "dates") || inherits(x, "date"))
+    xdates <- sapply(df, FUN = function(x)  inherits(x, "dates") || inherits(x, "date"))
+    datetimes <- sapply(df, FUN = function(x) inherits(x, "POSIXt"))
 
-  varlabels <- names(df)
-  varnames <- make.SAS.names(names(df), validvarname = validvarname)
-  if (any(varnames != varlabels))
-    message("Some variable names were abbreviated or otherwise altered.")
+    varlabels <- names(df)
+    varnames <- make.SAS.names(names(df), validvarname = validvarname)
+    if (any(varnames != varlabels))
+        message("Some variable names were abbreviated or otherwise altered.")
 
 
-  dfn<-df
-  if (any(factors))
-    dfn[factors]<-lapply(dfn[factors], as.numeric)
-  if (any(datetimes))
-    dfn[datetimes] <- lapply(dfn[datetimes],
-                             function(x) format(x, "%d%b%Y %H:%M:%S"))
-  if(any(xdates)){
-    dfn[xdates]<-lapply(dfn[xdates],
-                        function(x) as.Date(as.POSIXct(x)))
-  }
+    dfn < -df
+    if (any(factors))
+        dfn[factors] <- lapply(dfn[factors], as.numeric)
+    if (any(datetimes))
+        dfn[datetimes] <- lapply(dfn[datetimes],
+                                 function(x) format(x, "%d%b%Y %H:%M:%S"))
+    if(any(xdates))
+        dfn[xdates] <- lapply(dfn[xdates], function(x) as.Date(as.POSIXct(x)))
 
-  write.table(dfn, file = datafile, row = FALSE, col = FALSE,
-              sep = ",", quote = TRUE, na = "")
-  lrecl<-max(sapply(readLines(datafile),nchar))+4
+    write.table(dfn, file = datafile, row = FALSE, col = FALSE,
+                sep = ",", quote = TRUE, na = "")
+    lrecl <- max(sapply(readLines(datafile),nchar)) + 4L
 
-  cat("* Written by R;\n", file=codefile)
-  cat("* ",deparse(sys.call(-2L))[1L],";\n\n",file=codefile,append=TRUE)
-  if (any(factors)){
-    cat("PROC FORMAT;\n",file=codefile,append=TRUE)
-    fmtnames <- make.SAS.formats(varnames[factors])
-    fmt.values <- lapply(df[, factors, drop = FALSE], levels)
-    names(fmt.values) <- fmtnames
-    for (f in fmtnames){
-      cat("value",f,"\n",file=codefile,append = TRUE)
-      values<-fmt.values[[f]]
-        for(i in 1:length(values)){
-          cat("    ",i,"=",adQuote(values[i]),"\n",file=codefile,append=TRUE)
+    cat("* Written by R;\n", file = codefile)
+    cat("* ", deparse(sys.call(-2L))[1L], ";\n\n",
+        file = codefile, append = TRUE)
+    if (any(factors)) {
+        cat("PROC FORMAT;\n", file=codefile, append=TRUE)
+        fmtnames <- make.SAS.formats(varnames[factors])
+        fmt.values <- lapply(df[, factors, drop = FALSE], levels)
+        names(fmt.values) <- fmtnames
+        for (f in fmtnames) {
+            cat("value", f, "\n", file = codefile, append = TRUE)
+            values <- fmt.values[[f]]
+            for(i in 1L:length(values)){
+                cat("    ", i,"=", adQuote(values[i]), "\n",
+                    file=codefile, append=TRUE)
+            }
+            cat(";\n\n",file=codefile,append=TRUE)
         }
-        cat(";\n\n",file=codefile,append=TRUE)
-     }
-  }
+    }
 
-  cat("DATA ",dataname,";\n",file=codefile,append=TRUE)
+    cat("DATA ", dataname, ";\n", file = codefile, append = TRUE)
 
-  if (any(strings)){
-    cat("LENGTH", file = codefile, append = TRUE)
-    lengths <- sapply(df[,strings, drop = FALSE],
-                      FUN = function(x) max(nchar(x)))
-    names(lengths) <- varnames[strings]
-    for(v in varnames[strings])
-      cat("\n", v, "$", lengths[v],file=codefile,append=TRUE)
-    cat("\n;\n\n", file = codefile, append = TRUE)
-  }
+    if (any(strings)) {
+        cat("LENGTH", file = codefile, append = TRUE)
+        lengths <- sapply(df[,strings, drop = FALSE],
+                          FUN = function(x) max(nchar(x)))
+        names(lengths) <- varnames[strings]
+        for(v in varnames[strings])
+            cat("\n", v, "$", lengths[v], file = codefile, append = TRUE)
+        cat("\n;\n\n", file = codefile, append = TRUE)
+    }
 
-  if (any(dates)){
-    cat("INFORMAT", file = codefile, append = TRUE)
-    for(v in varnames[dates])
-      cat("\n", v, file = codefile, append = TRUE)
-    cat("\n YYMMDD10.\n;\n\n", file = codefile, append = TRUE)
-  }
+    if (any(dates)) {
+        cat("INFORMAT", file = codefile, append = TRUE)
+        for(v in varnames[dates])
+            cat("\n", v, file = codefile, append = TRUE)
+        cat("\n YYMMDD10.\n;\n\n", file = codefile, append = TRUE)
+    }
 
-  if (any(datetimes)){
-    cat("INFORMAT", file = codefile, append = TRUE)
-    for(v in varnames[datetimes])
-      cat("\n", v, file = codefile, append = TRUE)
-    cat("\n DATETIME18.\n;\n\n", file = codefile, append = TRUE)
-  }
+    if (any(datetimes)) {
+        cat("INFORMAT", file = codefile, append = TRUE)
+        for(v in varnames[datetimes])
+            cat("\n", v, file = codefile, append = TRUE)
+        cat("\n DATETIME18.\n;\n\n", file = codefile, append = TRUE)
+    }
 
-  cat("INFILE ",adQuote(datafile),
-      "\n     DSD",
-      "\n     LRECL=",lrecl,";\n",
-      file=codefile,append=TRUE)
+    cat("INFILE ",adQuote(datafile),
+        "\n     DSD",
+        "\n     LRECL=", lrecl, ";\n",
+        file = codefile ,append = TRUE)
 
-  cat("INPUT",file=codefile,append=TRUE)
-  for(v in 1L:ncol(df)){
-    cat("\n",varnames[v],file=codefile,append=TRUE)
-    if(strings[v])
-      cat(" $ ",file=codefile,append=TRUE)
-  }
-  cat("\n;\n",file=codefile,append=TRUE)
+    cat("INPUT", file = codefile, append = TRUE)
+    for(v in 1L:ncol(df))
+        cat("\n", varnames[v], file = codefile, append = TRUE)
+        if(strings[v]) cat(" $ ", file = codefile, append = TRUE)
 
-  for(v in 1L:ncol(df)){
-    if (varnames[v] != names(varnames)[v])
-      cat("LABEL ",varnames[v],"=",adQuote(varlabels[v]),";\n",
-          file=codefile,append=TRUE)
-  }
+    cat("\n;\n", file = codefile, append = TRUE)
 
-  if (any(factors)){
-    for (f in 1L:length(fmtnames))
-      cat("FORMAT", names(fmtnames)[f],paste(fmtnames[f],".",sep = ""),";\n",
-          file=codefile,append=TRUE)
-  }
+    for(v in 1L:ncol(df))
+        if (varnames[v] != names(varnames)[v])
+            cat("LABEL ", varnames[v],"=", adQuote(varlabels[v]), ";\n",
+                file = codefile, append = TRUE)
 
-  if (any(dates)){
-    for(v in varnames[dates])
-      cat("FORMAT", v, "yymmdd10.;\n", file = codefile, append = TRUE)
-  }
+    if (any(factors))
+        for (f in 1L:length(fmtnames))
+            cat("FORMAT", names(fmtnames)[f], paste(fmtnames[f],".", sep = ""),
+                ";\n", file = codefile, append = TRUE)
 
-  if (any(datetimes)){
-    for(v in varnames[datetimes])
-      cat("FORMAT", v, "datetime18.;\n", file = codefile, append = TRUE)
-  }
+    if (any(dates))
+        for(v in varnames[dates])
+            cat("FORMAT", v, "yymmdd10.;\n", file = codefile, append = TRUE)
 
-  cat("RUN;\n",file=codefile,append=TRUE)
+    if (any(datetimes))
+        for(v in varnames[datetimes])
+            cat("FORMAT", v, "datetime18.;\n", file = codefile, append = TRUE)
+
+    cat("RUN;\n", file=  codefile, append = TRUE)
 }
 

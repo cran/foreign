@@ -28,9 +28,9 @@ read.ssd <- function(libname, sectionnames, tmpXport=tempfile(),
     ## tries to clean up interim results
     ##
     ## works for sas v8
-    ##
-    ## require(foreign)
-    on.exit(unlink(tmpXport))
+
+    tmpFiles <- tmpXport
+    on.exit(unlink(tmpFiles))
     logGuess <- function (x)
     {
         ## guess the name of the log file by stripping all
@@ -42,6 +42,39 @@ read.ssd <- function(libname, sectionnames, tmpXport=tempfile(),
             return(x)
         return(paste(rev(rex[1L:(br - 1L)]), sep = "", collapse = ""))
     }
+    fileExtension <- function(string)
+    {
+        n <- nchar(string)
+        chars <- substring(string, 1L:n, 1L:n)
+        lastDot <- n + 1L - match(".", rev(chars), nomatch = n + 1L)
+        substring(string, lastDot + 1L, n)
+    }
+    sn <- sectionnames
+    if(any(nchar(sn) > 8L)) {
+        oldDir   <- libname
+        libname  <- tempdir()
+        allFiles <- list.files(oldDir)
+        oldNames <- character(0L)
+        for(i in 1L:length(sn)){
+            fName <- grep(sn[i], allFiles, value = TRUE)
+            if(length(fName) == 0L)
+                stop(gettextf("sectionname %s not found", sn[i]), domain = NA)
+            oldNames <- c(oldNames, fName)
+        }
+        sectionnames <- linkNames <- character(length(oldNames))
+        for(i in 1L:length(oldNames)) {
+            sectionnames[i] <- paste("sn", i, sep = "")
+            linkNames[i] <- paste(sectionnames[i],
+                                  fileExtension(oldNames[i]),
+                                  sep = ".")
+            oldPath  <- file.path(oldDir,  oldNames[i])
+            linkPath <- file.path(libname, linkNames[i])
+            file.symlink(oldPath, linkPath)
+
+            tmpFiles <- c(tmpFiles, linkPath)
+        }
+    }
+    st0 <- "option validvarname = v6;"
     st1 <- paste("libname src2rd '",libname,"';\n",sep="")
     st2 <- paste("libname rd xport '", tmpXport, "';\n", sep="")
     st3 <- paste("proc copy in=src2rd out=rd;\n")
@@ -49,10 +82,11 @@ read.ssd <- function(libname, sectionnames, tmpXport=tempfile(),
     tmpProg <- paste(tmpProgLoc, ".sas", sep="")
     tmpProgLogBase <- logGuess(tmpProgLoc)
     tmpProgLog <- paste(tmpProgLogBase, ".log", sep="")
-    cat(st1, file=tmpProg)
-    cat(st2, file=tmpProg, append=TRUE)
-    cat(st3, file=tmpProg, append=TRUE)
-    cat(st4, file=tmpProg, append=TRUE)
+    cat(st0, file=tmpProg)
+    cat(st1, file = tmpProg, append = TRUE)
+    cat(st2, file = tmpProg, append = TRUE)
+    cat(st3, file = tmpProg, append = TRUE)
+    cat(st4, file = tmpProg, append = TRUE)
     if(.Platform$OS.type == "windows")
         sascmd <- paste(shQuote(sascmd), "-sysin")
     sasrun <- try(sysret <- system( paste( sascmd, tmpProg ) ))
@@ -60,7 +94,12 @@ read.ssd <- function(libname, sectionnames, tmpXport=tempfile(),
     {
         unlink( tmpProg )
         unlink( tmpProgLog )
-        return( read.xport( tmpXport ) )
+        if(length(sectionnames) == 1L) return( read.xport( tmpXport ) )
+        else {
+            zz <- read.xport(tmpXport)
+            names(zz) <- sn
+            return(zz)
+        }
     }
     else
     {

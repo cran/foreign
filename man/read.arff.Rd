@@ -20,7 +20,8 @@ read.arff(file)
 }
 \references{
   Attribute-Relation File Format
-  \url{http://www.cs.waikato.ac.nz/~ml/weka/arff.html}
+  \url{http://www.cs.waikato.ac.nz/~ml/weka/arff.html}\cr
+  \url{http://weka.sourceforge.net/wekadoc/index.php/en:ARFF_(3.5.1)}
 }
 \seealso{
   \code{\link{write.arff}}

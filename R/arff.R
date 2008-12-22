@@ -40,9 +40,8 @@ function(file)
     col_types <- NULL
     col_dfmts <- character()
     line <- readLines(file, n = 1L)
-    while(length(line) > 0L &&
-          (regexpr('^[[:space:]]*@(?i)data', line,
-                   perl = TRUE) == -1L)) {
+    while(length(line) &&
+          regexpr('^[[:space:]]*@(?i)data', line, perl = TRUE) == -1L) {
         if(regexpr('^[[:space:]]*@(?i)attribute', line,
                    perl = TRUE) > 0L) {
             con <- textConnection(line)
@@ -96,13 +95,13 @@ function(file)
 }
 
 write.arff <-
-function(x, file, eol = "\n")
+function(x, file, eol = "\n", relation = deparse(substitute(x)))
 {
     ## See write.table().
     if(file == "")
         file <- stdout()
     else if(is.character(file)) {
-        file <- file(file, 'w')
+        file <- file(file, "wb")
         on.exit(close(file))
     }
     if(!inherits(file, "connection"))
@@ -111,7 +110,7 @@ function(x, file, eol = "\n")
     if (!is.data.frame(x) && !is.matrix(x))
         x <- data.frame(x)
 
-    ## We need to quote ourselves, as write.table() escapes the quote
+    ## We need to quote for ourselves, as write.table() escapes the quote
     ## char but not the backslash.  Weka seems to prefer backslash
     ## escapes inside single quotes, so we provide that ...
     squote <- function(s) {
@@ -119,27 +118,33 @@ function(x, file, eol = "\n")
         ifelse(is.na(s), s,
                sprintf("'%s'", gsub("(['\\])", "\\\\\\1", s)))
     }
+    spquote <- function(s) {
+        if (length(grep("^[[:alpha:]]", s)) == 0L) s <- paste("X", s, sep="")
+        if (length(grep(" ", s))) s <- paste('"', s, '"', sep="")
+        s
+    }
 
-    ## Write header.
-    text <- paste('@relation', deparse(substitute(x)))
+    ## Write header.  Quote, mangle if necessary.
+    text <- paste('@relation', spquote(make.names(relation)))
     writeLines(text, file, sep = eol)
-    for(name in names(x)) {
-        text <- paste('@attribute', name)
-        if(is.factor(x[[name]])) {
+    for (name in colnames(x)) {
+        ## Attribute names need to start with a letter, quoted if contain spaces.
+        text <- paste('@attribute', spquote(name))
+        if (is.data.frame(x) && is.factor(x[[name]])) {
             lev <- squote(levels(x[[name]]))
             levels(x[[name]]) <- lev
-            text <- paste(text, " {",
-                          paste(lev, collapse = ","), "}",
-                          sep = "")
-        } else if(is.character(x[[name]])) {
-            text <- paste(text, "string")
-            x[[name]] <- squote((x[[name]]))
-        } else if(inherits(x[[name]], "POSIXt")) {
-            text <- paste(text, "date \"yyyy-MM-dd hh:mm:ss\"")
-            x[[name]] <- squote(format(x[[name]]))
-        } else {
-            text <- paste(text, "numeric")
+            text <- paste(text, " {", paste(lev, collapse = ","), "}", sep = "")
         }
+        else if (is.character(x[,name])) {
+            text <- paste(text, "string")
+            x[,name] <- squote((x[,name]))
+        }
+        else if (inherits(x[,name], "POSIXt")) {
+            text <- paste(text, "date \"yyyy-MM-dd hh:mm:ss\"")
+            x[,name] <- squote(format(x[,name]))
+        }
+        else
+            text <- paste(text, "numeric")
         writeLines(text, file, sep = eol)
     }
 
@@ -173,7 +178,7 @@ function(x)
     x <- sub("hh", "%H", x)
     x <- sub("mm", "%M", x)
     x <- sub("ss", "%S", x)
-    ## Is there a POSIX format string for fractions of seconds?
+    ## Is there a POSIX format string for fractions of seconds? [No]
 
     x
 }

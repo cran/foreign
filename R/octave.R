@@ -73,7 +73,7 @@ function(file)
             ## # columns: 15
             ## followed by 15 rows of data ...
             nr <- as.integer(gsub("# rows: ", "", line))
-            nc <- as.integer(gsub("# columns: ", "", readLines(con, 1)))
+            nc <- as.integer(gsub("# columns: ", "", readLines(con, 1L)))
             data <- scan(con, nlines = nr, quiet = TRUE)
             matrix(data, nrow = nr, ncol = nc, byrow = TRUE)
         }
@@ -129,7 +129,7 @@ function(file)
     read_octave_string_array <- function(con) {
         ## Helper function: read in a string array.
         elements <- as.numeric(gsub("# elements: ", "",
-                                    readLines(con, 1)))
+                                    readLines(con, 1L)))
         d <- readLines(con, n = 2L * elements)
         ## Remove the odd-numbered lines, they just store "length".
         d[seq.int(from = 2L, by = 2L, length.out = length(d)/2L)]
@@ -154,7 +154,7 @@ function(file)
 
     read_octave_range <- function(con) {
         ## Helper function: read in a range.
-        d <- readLines(con, n = 1) # Skip over "# base, limit, increment".
+        d <- readLines(con, n = 1L) # Skip over "# base, limit, increment".
         d <- as.numeric(scan(con, nlines = 1L, quiet = TRUE))
         stopifnot(length(d) == 3L)
         seq.int(from = d[1L], to = d[2L], by = d[3L])
@@ -174,11 +174,11 @@ function(file)
     read_octave_list <- function(con) {
         ## Helper function: read in a list.
         ## Note that lists are deprecated now in favor of cells.
-        n <- as.numeric(gsub("# length: ", "", readLines(con, 1)))
+        n <- as.numeric(gsub("# length: ", "", readLines(con, 1L)))
         out <- vector("list", n)
         for(i in seq_len(n)) {
             ## Skip over "# name: _val" lines.
-            readLines(con, 1)
+            readLines(con, 1L)
             out[[i]] <- read_item(con)
         }
         out
@@ -207,11 +207,11 @@ function(file)
 
     read_octave_struct <- function(con) {
         ## Helper function: read in a struct.
-        n <- as.numeric(gsub("# length: ", "", readLines(con, 1)))
+        n <- as.numeric(gsub("# length: ", "", readLines(con, 1L)))
         out <- vector("list", n)
         for(i in seq_len(n)) {
             ## Skip over "# name: _val" lines.
-            name <- gsub("# name: ", "", readLines(con, 1))
+            name <- gsub("# name: ", "", readLines(con, 1L))
             out[[i]] <- read_item(con)
             names(out)[i] <- name
         }

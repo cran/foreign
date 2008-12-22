@@ -24,7 +24,7 @@ read.systat <- function(file, to.data.frame=TRUE)
     if (to.data.frame) {
         comment <- NULL
         if (!is.null(attr(res, "comment")) &&
-            (nchar(attr(res, "comment")) > 0L))
+            nzchar(attr(res, "comment")))
             comment <- attr(res, "comment")
         res <- as.data.frame(res)
         if (!is.null(comment)) comment(res) <- comment

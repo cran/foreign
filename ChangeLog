@@ -1,3 +1,28 @@
+2008-12-19 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-30.
+	* R/*.R: more code cleanup.
+	* man/read.ssd.R, man/read.xport.Rd: correct \email format
+
+2008-12-15 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* R/*R: make more use of integer constants.
+	* tests/stata.Rout.save: update for str() changes in R 2.8.0.
+	* R/spss.R, man/read.spss.Rd, src/sfm-read.c: assume 
+	codepage 65001 is UTF-8, others >= 2000 are unknown to iconv().
+	
+2008-08-21 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* R/read.dta.R, man/write.dta.Rd: allow arrays in write.dta with
+	all dims but the first equal to one.
+	* R/arff.R: improvements by Martin C. Martin (PR#12574),
+	corrected.  Use "wb" to open file (and so preserve eol on Windows).
+	* man/{read,write}.arff.Rd: update URL
+
+2008-08-07 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* R/read.ssd.R: allow long var names, PR#9631/2.
+
 2008-08-07 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-29.

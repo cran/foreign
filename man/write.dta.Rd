@@ -21,35 +21,40 @@ write.dta(dataframe, file, version = 7L,
   } 
 \description{
   Writes the data frame to file in the Stata binary
-  format.  Does not write matrix variables.
+  format.  Does not write array variables unless they can be
+  \code{\link{drop}}-ed to a vector.
 }
 \details{
-  The major differences between Stata versions is that 7.0 and later
-  allows 32-character variable names (5 and 6 were restricted to
-  8-character name). The \code{abbreviate} function is used to trim long
-  variables to the permitted length.  A warning is given if this is
-  needed and it is an error for the abbreviated names not to be unique.
+  The major differences between file formats in Stata versions is that
+  version 7.0 and later allow 32-character variable names (5 and 6 were
+  restricted to 8-character name).  The \code{abbreviate} function is
+  used to trim long variables to the permitted length.  A warning is
+  given if this is needed and it is an error for the abbreviated names
+  not to be unique.
 
   The columns in the data frame become variables in the Stata data set.
-  Missing values are correctly handled.  Optionally, R date/time objects
-  (\code{POSIXt} classes) are converted into the Stata format.  This loses
-  information -- Stata dates are in days since 1960-1-1.  \code{POSIXct}
-  objects can be written without conversion but will not be understood as
-  dates by Stata;  \code{POSIXlt} objects cannot be written without
-  conversion.
+  Missing values are correctly handled.
 
-  There are four options for handling factors. The default is to use
-  Stata \code{value labels} for the factor levels.
-  With \code{convert.factors="string"}, the factor levels are written as
-  strings. With \code{convert.factors="numeric"} the numeric values
-  of the levels are written, or \code{NA} if they cannot be coerced to
-  numeric. Finally, \code{convert.factors="codes"} writes the underlying
-  integer codes of the factors. This last used to be the only available
-  method and is provided largely for backwards compatibility.
+  Unless deselected, R date and date-time objects (\code{POSIXt}
+  classes) are converted into the Stata format.  For date-time objects
+  this may lose information -- Stata dates are in days since 1960-1-1.
+  \code{POSIXct} objects can be written without conversion but will not
+  be understood as dates by Stata; \code{POSIXlt} objects cannot be
+  written without conversion.
+
+  There are four options for handling factors.  The default is to use
+  Stata \code{value labels} for the factor levels. With
+  \code{convert.factors="string"}, the factor levels are written as
+  strings.  With \code{convert.factors="numeric"} the numeric values of
+  the levels are written, or \code{NA} if they cannot be coerced to
+  numeric.  Finally, \code{convert.factors="codes"} writes the
+  underlying integer codes of the factors.  This last used to be the
+  only available method and is provided largely for backwards
+  compatibility.
 
   For Stata 8 or later use the default \code{version=7} -- the only
   advantage of Stata 8 format is that it can represent multiple
-  different missing value types, and R doesn't have them. Stata 10
+  different missing value types, and R doesn't have them.  Stata 10
   allows longer format lists, but R does not make use of them.
 
   Note that the Stata formats are documented to be use ASCII strings --
@@ -57,7 +62,7 @@ write.dta(dataframe, file, version = 7L,
   not be portable as the encoding is not recorded.
 
   Stata uses some large numerical values to represent missing
-  values. This function does not currently check, and hence integers
+  values.  This function does not currently check, and hence integers
   greater than \code{2147483620} and doubles greater than
   \code{8.988e+307} may be misinterpreted by Stata.
 }

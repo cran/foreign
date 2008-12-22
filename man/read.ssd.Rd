@@ -40,7 +40,7 @@ read.ssd(libname, sectionnames,
   enduring side effects (log file for auditing)
 }
 \author{
-  For Unix: VJ Carey \email{<stvjc@channing.harvard.edu>}
+  For Unix: VJ Carey \email{stvjc@channing.harvard.edu}
 }
 \note{
   \strong{This requires SAS to be available.}  If you have a SAS dataset

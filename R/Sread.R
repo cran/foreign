@@ -47,7 +47,7 @@ read.S <- function (file)
 	else if (code == 2L)
 	    result <- readBin(s, "int", len, endian = endian)
 	else if (code == 3L)
-	    result <- readBin(s, "numeric", len, size=4, endian = endian)
+	    result <- readBin(s, "numeric", len, size=4L, endian = endian)
 	else if (code == 4L)
 	    result <- readBin(s, "numeric", len, endian = endian)
 	else if (code == 5L) {
@@ -58,7 +58,7 @@ read.S <- function (file)
 	}
 	else if (code == 6L) {
 	    result <- list()
-	    if (len > 0L) {
+	    if (len) {
 		names <- ReadSObj(5L, len)
 		codes <- ReadSObj(2L, len)
 		lens <- ReadSObj(2L, len)
@@ -103,9 +103,9 @@ read.S <- function (file)
 	    else if (code == "comment") # ignore comments
 		result <- NULL
 	    else if (code == "comment.expression")# just keep the expression, not the comment
-		result <- result[unlist(lapply(result,function(y) !is.null(y)))][[1]]
+		result <- result[unlist(lapply(result,function(y) !is.null(y)))][[1L]]
 	    else if (code == "internal")
-		result <- as.call(list(as.name(".Internal"), result[[1]]))
+		result <- as.call(list(as.name(".Internal"), result[[1L]]))
 	    else if (code == "missing")
 		result <- call("stop", "Argument is missing")
 	    else try(mode(result) <- code)
@@ -183,7 +183,7 @@ data.restore <-
 		if (!is.null(thelist[[".Dimnames"]]))
 		    try(dimnames(value) <- thelist[[".Dimnames"]])
 		if (!is.null(tsp <- thelist[[".Tsp"]]))# valid R ts()
-		    try(value <- stats::ts(c(value),tsp[1],tsp[2],tsp[3]))
+		    try(value <- stats::ts(c(value),tsp[1L],tsp[2L],tsp[3L]))
 	    }
 	    else if (code == "function")
 		try(value <- as.function(value,env=env))

@@ -84,6 +84,14 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
   strings and the value labels had different amounts of padding.  See
   the examples for \code{\link{sub}} for ways to remove trailing spaces
   in character data.
+  
+  URL \url{http://msdn.microsoft.com/en-us/library/ms776446(VS.85).aspx}
+  provides a list of translations from Windows codepage numbers to
+  encoding names that \code{\link{iconv}} is likely to know about and so
+  suitable values for \code{reencode}.  Automatic re-encoding is
+  attempted for codepages 501--2000 and 65001 (UTF-8)in a UTF-8 locale:
+  some other high-numbered codepages can be re-encoded on most systems,
+  but the encoding names are platform-dependent (see \code{\link{iconvlist}}.
 }
 \note{
   If SPSS value labels are converted to factors the underlying numerical

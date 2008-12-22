@@ -38,10 +38,12 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
     if(is.character(reencode)) {
         cp <- reencode
         reencode <- TRUE
-    } else if(codepage <= 500) {
+    } else if(codepage <= 500 || codepage >= 2000) {
         attr(rval, "codepage") <- NULL
         reencode <- FALSE
-    } else cp <- paste("CP", codepage, sep="")
+        # http://msdn.microsoft.com/en-us/library/ms776446(VS.85).aspx
+    } else if(codepage == 65001) cp <- "UTF-8"
+    else cp <- paste("CP", codepage, sep="")
     if(is.na(reencode)) reencode <- l10n_info()[["UTF-8"]]
 
     if(reencode) {

@@ -30,17 +30,17 @@ read.dta <- function(file, convert.dates = TRUE,
 
 
     if(!missing.type) {
-        if (abs(attr(rval,"version")) >= 8L){
-            for(v in which(types > 250L)){
+        if (abs(attr(rval,"version")) >= 8L) {
+            for(v in which(types > 250L)) {
                 this.type <- types[v] - 250L
                 rval[[v]][rval[[v]] >= stata.na$min[this.type]] <- NA
             }
         }
     } else {
-        if (abs(attr(rval, "version")) >= 8L){
+        if (abs(attr(rval, "version")) >= 8L) {
             missings <- vector("list", length(rval))
             names(missings) <- names(rval)
-            for(v in which(types > 250L)){
+            for(v in which(types > 250L)) {
                 this.type <- types[v] - 250L
                 nas <- is.na(rval[[v]]) |  rval[[v]] >= stata.na$min[this.type]
                 natype <- (rval[[v]][nas] - stata.na$min[this.type])/stata.na$inc[this.type]
@@ -54,7 +54,7 @@ read.dta <- function(file, convert.dates = TRUE,
             warning("'missing.type' only applicable to version >= 8 files")
     }
 
-    if (convert.dates){
+    if (convert.dates) {
         ff <- attr(rval,"formats")
         dates <- grep("%-*d", ff)
         ## avoid as.Date in case strptime is screwed up
@@ -68,14 +68,14 @@ read.dta <- function(file, convert.dates = TRUE,
             ll <- attr(rval, "val.labels")
             tt <- attr(rval, "label.table")
             factors <- which(ll != "")
-            for(v in factors){
+            for(v in factors) {
                 labels <- tt[[ll[v]]]
                 if (warn.missing.labels && is.null(labels)) {
                     warning("value labels (", ll[v], ") for ", names(rval)[v],
                             " are missing")
                     next
                 }
-                if(!is.na(convert.factors)){
+                if(!is.na(convert.factors)) {
                     ## some levels don't have labels, so skip
                     if (!all(rval[[v]] %in% c(NA, NaN, tt[[ll[v]]])))
                         next
@@ -153,7 +153,10 @@ write.dta <-
     }
     leveltable <- lapply(dataframe,shortlevels)
 
-    if (any(sapply(dataframe, function(x) !is.null(dim(x)))))
+    if (any(sapply(dataframe, function(x) {
+        d <- dim(x)
+        !is.null(d) && d[1L] < length(x)
+        })))
         stop("cannot handle multicolumn columns")
     invisible(.External(do_writeStata, file, dataframe, version, leveltable))
 }

@@ -32,7 +32,7 @@ read.epiinfo <- function (file, read.deleted = FALSE,
         on.exit(close(file))
     }
     line <- readLines(file, 1L, ok = TRUE)
-    headerlength <- na.omit(sapply(strsplit(line, " ")[[1]], as.numeric))[1]
+    headerlength <- na.omit(sapply(strsplit(line, " ")[[1L]], as.numeric))[1L]
     if (headerlength <= 0L)
         stop("file has zero or fewer variables: probably not an EpiInfo file")
     headerlines <- readLines(file, n = headerlength)
@@ -46,7 +46,7 @@ read.epiinfo <- function (file, read.deleted = FALSE,
                    y1 = 0, type = 0, len = 0, color = 0),
                    flush = TRUE, quiet = TRUE, comment = "")
     header <- as.data.frame(lapply(header, I))
-    header$start <- cumsum(c(1L, header$len))[1:headerlength]
+    header$start <- cumsum(c(1L, header$len))[1L:headerlength]
     header$stop <- cumsum(header$len)
     multiline <- ceiling(max(header$stop) / 78L)
     really.variables <- header$len != 0
@@ -77,7 +77,7 @@ read.epiinfo <- function (file, read.deleted = FALSE,
     datalines <- apply(datalines, 2L, paste, collapse = "")
     deleted <- substr(datalines, nchar(datalines), nchar(datalines)) == "?"
     nvars <- NROW(header)
-    data <- as.data.frame(lapply(1:nvars, function(i) I(substring(datalines, header$start[i], header$stop[i]))))
+    data <- as.data.frame(lapply(1L:nvars, function(i) I(substring(datalines, header$start[i], header$stop[i]))))
     names(data) <- header$name
     names(comments) <- header$name
     if (is.na(read.deleted))
@@ -94,7 +94,7 @@ read.epiinfo <- function (file, read.deleted = FALSE,
     #   16  European (i.e. dd/mm/yyyy) format automatic date (EpiData)
     #   17  SOUNDEX field (EpiData)
     #
-    for (i in 1:nvars) {
+    for (i in 1L:nvars) {
         if (numbers[i])
             data[[i]] <- as.numeric(data[[i]])
         else if (header$type[i] == 5L)
