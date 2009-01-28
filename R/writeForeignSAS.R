@@ -60,7 +60,7 @@ writeForeignSAS <- function(df, datafile, codefile, dataname="rdata",
         message("Some variable names were abbreviated or otherwise altered.")
 
 
-    dfn < -df
+    dfn <- df
     if (any(factors))
         dfn[factors] <- lapply(dfn[factors], as.numeric)
     if (any(datetimes))

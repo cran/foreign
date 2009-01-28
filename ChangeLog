@@ -1,3 +1,12 @@
+2009-01-28 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-31.
+	* tests/{minitab,octave,spss}.Rout.save: update output
+	
+2009-01-04 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* R/writeforeignSAS: fix typo (PR#13425)
+
 2008-12-19 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-30.
