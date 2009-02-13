@@ -6,7 +6,7 @@
 ### Copyright 2000-2002 Saikat DebRoy <saikat$stat.wisc.edu>
 ###			Douglas M. Bates <bates$stat.wisc.edu>,
 ###			Thomas Lumley
-### Copyright 2007-8 R Core Development Team
+### Copyright 2007-9 R Core Development Team
 ### This file is part of the `foreign' package for R and related languages.
 ### It is made available under the terms of the GNU General Public
 ### License, version 2, or at your option, any later version,
@@ -31,6 +31,15 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
     trim <- function(strings, trim=TRUE)
 	if (trim) sub(" +$","",strings) else strings
 
+    ## mappings taken from win-iconv
+    knownCP <- c("UCS-2LE" = 1200, "UCS-2BE" = 1201,
+                 "macroman" = 10000, " UCS-4LE" = 12000, "UCS-4BE" = 12001,
+                 "koi8-r" = 20866, "koi8=u" = 21866,
+                 "latin1" = 28591, "latin2" = 28592, "latin3" = 28593,
+                 "latin4" = 28594, "latin9" = 28605,
+                 "ISO-2022-JP" = 50221, "eci-jp" = 51932,
+                 "UTF-8" = 65001)
+
     rval <- .Call(do_read_SPSS, file)
     codepage <- attr(rval, "codepage")
     if(is.null(codepage)) codepage <- 2 # .por files
@@ -41,8 +50,7 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
     } else if(codepage <= 500 || codepage >= 2000) {
         attr(rval, "codepage") <- NULL
         reencode <- FALSE
-        # http://msdn.microsoft.com/en-us/library/ms776446(VS.85).aspx
-    } else if(codepage == 65001) cp <- "UTF-8"
+    } else if(m <- match(cp, knownCP, 0L)) cp <-names(knownCP)[m]
     else cp <- paste("CP", codepage, sep="")
     if(is.na(reencode)) reencode <- l10n_info()[["UTF-8"]]
 

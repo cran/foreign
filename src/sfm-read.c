@@ -641,7 +641,7 @@ read_long_var_names (struct file_handle * h, struct dictionary * dict
     p = &endp[1]; /* put to next */
   } while (endp);
 
-  free(data);
+  Free(data);
   return 1;
 }
 

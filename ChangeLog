@@ -1,3 +1,9 @@
+2009-02-09 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* ESCRIPTION: Version is 0.8-32.
+	* src/sfm-read.c: correct 'free' to 'Free' in contributed code.
+	* R/spss.R: interpret more code pages.
+
 2009-01-28 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-31.
