@@ -1,3 +1,8 @@
+2009-02-18 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-33.
+	* R/spss.R: improvements to interpreting codepages
+
 2009-02-09 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* ESCRIPTION: Version is 0.8-32.

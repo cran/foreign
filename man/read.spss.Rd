@@ -89,14 +89,15 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
   provides a list of translations from Windows codepage numbers to
   encoding names that \code{\link{iconv}} is likely to know about and so
   suitable values for \code{reencode}.  Automatic re-encoding is
-  attempted for codepages 501--2000 and 65001 (UTF-8)in a UTF-8 locale:
+  attempted for apparent codepages of 200 or more in a UTF-8 locale:
   some other high-numbered codepages can be re-encoded on most systems,
-  but the encoding names are platform-dependent (see \code{\link{iconvlist}}.
+  but the encoding names are platform-dependent (see
+  \code{\link{iconvlist}}.
 }
 \note{
   If SPSS value labels are converted to factors the underlying numerical
   codes will not in general be the same as the SPSS numerical
-  values, since the numerical codes in R are always 1,2,3,\dots.
+  values, since the numerical codes in R are always \eqn{1,2,3,\dots}.
 
   You may see warnings about the file encoding for SPSS \code{save}
   files: it is possible such files contain non-ASCII character data

@@ -37,33 +37,54 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
                  "koi8-r" = 20866, "koi8=u" = 21866,
                  "latin1" = 28591, "latin2" = 28592, "latin3" = 28593,
                  "latin4" = 28594, "latin9" = 28605,
-                 "ISO-2022-JP" = 50221, "eci-jp" = 51932,
-                 "UTF-8" = 65001)
+                 "ISO-2022-JP" = 50221, "euc-jp" = 51932,
+                 "UTF-8" = 65001,
+                 "ASCII" = 20127,
+                 ## pages known to glibc and libiconv
+                 "CP1250" = 1250,
+                 "CP1251" = 1251,
+                 "CP1252" = 1252,
+                 "CP1253" = 1253,
+                 "CP1254" = 1254,
+                 "CP1255" = 1255,
+                 "CP1256" = 1256,
+                 "CP1257" = 1257,
+                 "CP1258" = 1258,
+                 "CP874" = 874,
+                 "CP936" = 936)
 
     rval <- .Call(do_read_SPSS, file)
     codepage <- attr(rval, "codepage")
     if(is.null(codepage)) codepage <- 2 # .por files
     if(!capabilities("iconv")) reencode <- FALSE
-    if(is.character(reencode)) {
-        cp <- reencode
-        reencode <- TRUE
-    } else if(codepage <= 500 || codepage >= 2000) {
-        attr(rval, "codepage") <- NULL
-        reencode <- FALSE
-    } else if(m <- match(cp, knownCP, 0L)) cp <-names(knownCP)[m]
-    else cp <- paste("CP", codepage, sep="")
-    if(is.na(reencode)) reencode <- l10n_info()[["UTF-8"]]
+    if(!identical(reencode, FALSE)) {
+        cp <- "unknown"
+        if(is.character(reencode)) {
+            cp <- reencode
+            reencode <- TRUE
+        } else if(codepage == 20127) {
+            reencode <- FALSE # ASCII
+        } else if(m <- match(codepage, knownCP, 0L)) {
+            cp <-names(knownCP)[m]
+        } else if (codepage < 200) {
+            ## small numbers are not codepages, and real codepages are large
+            attr(rval, "codepage") <- NULL
+            reencode <- FALSE
+        } else cp <- paste("CP", codepage, sep="")
+        if(is.na(reencode)) reencode <- l10n_info()[["UTF-8"]]
 
-    if(reencode) {
-        names(rval) <- iconv(names(rval), cp, "")
-        vl <- attr(rval, "variable.labels")
-        nm <- names(vl)
-        vl <- iconv(vl, cp, "")
-        names(vl) <- iconv(nm, cp, "")
-        attr(rval, "variable.labels") <- vl
-        for(i in seq_along(rval)) {
-            xi <- rval[[i]]
-            if(is.character(xi)) rval[[i]] <- iconv(xi, cp, "")
+        if(reencode) {
+            message("re-encoding from ", cp)
+            names(rval) <- iconv(names(rval), cp, "")
+            vl <- attr(rval, "variable.labels")
+            nm <- names(vl)
+            vl <- iconv(vl, cp, "")
+            names(vl) <- iconv(nm, cp, "")
+            attr(rval, "variable.labels") <- vl
+            for(i in seq_along(rval)) {
+                xi <- rval[[i]]
+                if(is.character(xi)) rval[[i]] <- iconv(xi, cp, "")
+            }
         }
     }
 
