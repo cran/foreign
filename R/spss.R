@@ -53,6 +53,12 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
                  "CP874" = 874,
                  "CP936" = 936)
 
+    if(length(grep("^(http|ftp|https)://", file))) {
+        tmp <- tempfile()
+        download.file(file, tmp, quiet = TRUE, mode = "wb")
+        file <- tmp
+        on.exit(unlink(file))
+    }
     rval <- .Call(do_read_SPSS, file)
     codepage <- attr(rval, "codepage")
     if(is.null(codepage)) codepage <- 2 # .por files

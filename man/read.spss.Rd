@@ -14,7 +14,7 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
           trim_values = TRUE, reencode = NA, use.missings = to.data.frame)
 }
 \arguments{
-  \item{file}{Character string: the name of the file to read.}
+  \item{file}{Character string: the name of the file or URL to read.}
   \item{use.value.labels}{Convert variables with value labels into \R
     factors with those levels?}
   \item{to.data.frame}{return a data frame?}
@@ -63,6 +63,11 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
 \details{
   This uses modified code from the PSPP project
   (\url{http://www.gnu.org/software/pspp/} for reading the SPSS formats.
+
+  If the filename appears to be a URL (of schemes \samp{http:},
+  \samp{ftp:} or \samp{https:}) the URL is first downloaded to a
+  temporary fiie and then read.  (\samp{https:} is only supported on
+  some platforms.)
   
   Occasionally in SPSS value labels will be added to some values of a
   continuous variable (eg to distinguish different types of missing

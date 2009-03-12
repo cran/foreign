@@ -84,14 +84,14 @@ fh_get_handle_by_filename (const char *filename)
   strcpy (&name[1], fn);
 
   f.name = name;
-  fp = avl_find (files, &f);
+  fp = R_avl_find (files, &f);
   if (!fp)
     {
       fp = Calloc (1, struct file_handle);
       init_file_handle (fp);
       fp->name = name;
       fp->where.filename = fp->fn = fp->norm_fn = fn;
-      avl_force_insert (files, fp);
+      R_avl_insert (files, fp);
     }
   else
     {
@@ -108,7 +108,7 @@ fh_get_handle_by_name (const char name[9])
 {
   struct file_handle f, *fp;
   f.name = (char *) name;
-  fp = avl_find (files, &f);
+  fp = R_avl_find (files, &f);
 
   if (!fp)
     error (_("file handle `%s' has not been previously declared on FILE HANDLE"), name);
@@ -184,7 +184,7 @@ void
 fh_init_files (void)
 {
   /* Create AVL tree. */
-  files = avl_create (cmp_file_handle, NULL);
+  files = R_avl_create (cmp_file_handle, NULL);
 
   /* Insert inline file. */
   inline_file = Calloc (1, struct file_handle);
@@ -193,7 +193,7 @@ fh_init_files (void)
   inline_file->where.filename
       = inline_file->fn = inline_file->norm_fn = inline_filename;
   inline_file->where.line_number = 0;
-  avl_force_insert (files, inline_file);
+  R_avl_insert (files, inline_file);
 }
 
 /* Returns the (normalized) filename associated with file handle H. */

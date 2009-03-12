@@ -49,7 +49,7 @@ static void Free_fn(void *x)
    data to be stored in the tree.  PARAM is arbitrary data that
    becomes an argument to the comparison function. */
 avl_tree *
-avl_create (MAYBE_POOL avl_comparison_func cmp, void *param)
+R_avl_create (MAYBE_POOL avl_comparison_func cmp, void *param)
 {
   avl_tree *tree;
 
@@ -82,7 +82,7 @@ avl_create (MAYBE_POOL avl_comparison_func cmp, void *param)
    Do not attempt to reuse the tree after it has been freed.  Create a
    new one.  */
 void
-avl_destroy (avl_tree *tree, avl_node_func free_func)
+R_avl_destroy (avl_tree *tree, avl_node_func free_func)
 {
   if (!(tree != NULL)) error("assert failed : tree != NULL");
 
@@ -143,14 +143,14 @@ avl_destroy (avl_tree *tree, avl_node_func free_func)
 
 /* avl_destroy() with FREE_FUNC hardcoded as free(). */
 void
-avl_free (avl_tree *tree)
+R_avl_free (avl_tree *tree)
 {
-  avl_destroy (tree, (avl_node_func) Free_fn);
+  R_avl_destroy (tree, (avl_node_func) Free_fn);
 }
 
 /* Return the number of nodes in TREE. */
 int
-avl_count (const avl_tree *tree)
+R_avl_count (const avl_tree *tree)
 {
   if (!(tree != NULL)) error("assert failed : tree != NULL");
   return tree->count;
@@ -178,13 +178,14 @@ new_node (void)
 	new_node ()
 #endif
 
+#ifdef UNUSED 
 /* Copy the contents of TREE to a new tree in POOL.  If COPY is
    non-NULL, then each data item is passed to function COPY, and the
    return values are inserted into the new tree; otherwise, the items
    are copied verbatim from the old tree to the new tree.  Returns the
    new tree. */
 avl_tree *
-avl_copy (MAYBE_POOL const avl_tree *tree, avl_copy_func copy)
+R_avl_copy (MAYBE_POOL const avl_tree *tree, avl_copy_func copy)
 {
   /* This is a combination of Knuth's Algorithm 2.3.1C (copying a
      binary tree) and Algorithm 2.3.1T as modified by exercise 12
@@ -204,9 +205,9 @@ avl_copy (MAYBE_POOL const avl_tree *tree, avl_copy_func copy)
 
   if (!(tree != NULL)) error("assert failed : tree != NULL");
 #if PSPP
-  new_tree = avl_create (pool, tree->cmp, tree->param);
+  new_tree = R_avl_create (pool, tree->cmp, tree->param);
 #else
-  new_tree = avl_create (tree->cmp, tree->param);
+  new_tree = R_avl_create (tree->cmp, tree->param);
 #endif
   new_tree->count = tree->count;
   q = &new_tree->root;
@@ -270,10 +271,11 @@ avl_copy (MAYBE_POOL const avl_tree *tree, avl_copy_func copy)
     }
 }
 
+
 /* Walk tree TREE in inorder, calling WALK_FUNC at each node.  Passes
    PARAM to WALK_FUNC.  */
 void
-avl_walk (const avl_tree *tree, avl_node_func walk_func, void *param)
+R_avl_walk (const avl_tree *tree, avl_node_func walk_func, void *param)
 {
   /* Uses Knuth's algorithm 2.3.1T (inorder traversal). */
   if (!(tree && walk_func)) error("assert failed : tree && walk_func");
@@ -311,7 +313,7 @@ avl_walk (const avl_tree *tree, avl_node_func walk_func, void *param)
    TRAV (init) to 0 before calling the first time.  Returns NULL when
    out of elements.  */
 void *
-avl_traverse (const avl_tree *tree, avl_traverser *trav)
+R_avl_traverse (const avl_tree *tree, avl_traverser *trav)
 {
   if (!(tree && trav)) error("assert failed : tree && trav");
 
@@ -349,6 +351,7 @@ avl_traverse (const avl_tree *tree, avl_traverser *trav)
       return trav->p->data;
     }
 }
+#endif
 
 /* Search TREE for an item matching ITEM.  If found, returns a pointer
    to the address of the item.  If none is found, ITEM is inserted
@@ -356,7 +359,7 @@ avl_traverse (const avl_tree *tree, avl_traverser *trav)
    In either case, the pointer returned can be changed by the caller,
    or the returned data item can be directly edited, but the key data
    in the item must not be changed. */
-void **
+static void **
 avl_probe (avl_tree *tree, void *item)
 {
   /* Uses Knuth's Algorithm 6.2.3A (balanced tree search and
@@ -535,7 +538,7 @@ avl_probe (avl_tree *tree, void *item)
 
 /* Search TREE for an item matching ITEM, and return it if found. */
 void *
-avl_find (const avl_tree *tree, const void *item)
+R_avl_find (const avl_tree *tree, const void *item)
 {
   const avl_node *p;
 
@@ -555,12 +558,13 @@ avl_find (const avl_tree *tree, const void *item)
   return NULL;
 }
 
+#ifdef UNUSED
 /* Searches AVL tree TREE for an item matching ITEM.  If found, the
    item is removed from the tree and the actual item found is returned
    to the caller.  If no item matching ITEM exists in the tree,
    returns NULL. */
 void *
-avl_delete (avl_tree *tree, const void *item)
+R_avl_delete (avl_tree *tree, const void *item)
 {
   /* Uses my Algorithm D, which can be found at
      http://www.msu.edu/user/pfaffben/avl.  Algorithm D is based on
@@ -789,11 +793,12 @@ avl_delete (avl_tree *tree, const void *item)
 
   return (void *) item;
 }
+#endif
 
 /* Inserts ITEM into TREE.  Returns NULL if the item was inserted,
    otherwise a pointer to the duplicate item. */
 void *
-avl_insert (avl_tree *tree, void *item)
+R_avl_insert (avl_tree *tree, void *item)
 {
   void **p;
 
@@ -808,7 +813,7 @@ avl_insert (avl_tree *tree, void *item)
    replaced is returned.  The caller is responsible for freeing the
    item returned. */
 void *
-avl_replace (avl_tree *tree, void *item)
+R_avl_replace (avl_tree *tree, void *item)
 {
   void **p;
 
@@ -825,267 +830,3 @@ avl_replace (avl_tree *tree, void *item)
     }
 }
 
-/* Delete ITEM from TREE when you know that ITEM must be in TREE.  For
-   debugging purposes. */
-void *
-(avl_force_delete) (avl_tree *tree, void *item)
-{
-  void *found = avl_delete (tree, item);
-  if (!(found != NULL)) error("assert failed : found != NULL");
-  return found;
-}
-
-#if SELF_TEST
-
-/* Used to flag delayed aborting. */
-int done = 0;
-
-/* Print the structure of node NODE of an avl tree, which is LEVEL
-   levels from the top of the tree.  Uses different delimiters to
-   visually distinguish levels. */
-void
-print_structure (avl_node *node, int level)
-{
-  char lc[] = "([{`/";
-  char rc[] = ")]}'\\";
-
-  if (!(level <= 10)) error("assert failed : level <= 10");
-
-  if (node == NULL)
-    {
-      printf (" nil");
-      return;
-    }
-  printf (" %c%d", lc[level % 5], (int) node->data);
-  if (node->link[0] || node->link[1])
-    print_structure (node->link[0], level + 1);
-  if (node->link[1])
-    print_structure (node->link[1], level + 1);
-  printf ("%c", rc[level % 5]);
-}
-
-/* Compare two integers A and B and return a strcmp()-type result. */
-int
-compare_ints (const void *a, const void *b, void *param unused)
-{
-  return ((int) a) - ((int) b);
-}
-
-/* Print the value of integer A. */
-void
-print_int (void *a, void *param unused)
-{
-  printf (" %d", (int) a);
-}
-
-/* Linearly print contents of TREE. */
-void
-print_contents (avl_tree *tree)
-{
-  avl_walk (tree, print_int, NULL);
-  printf ("\n");
-}
-
-/* Examine NODE in a avl tree.  *COUNT is increased by the number of
-   nodes in the tree, including the current one.  If the node is the
-   root of the tree, PARENT should be INT_MIN, otherwise it should be
-   the parent node value.  DIR is the direction that the current node
-   is linked from the parent: -1 for left child, +1 for right child;
-   it is not used if PARENT is INT_MIN.  Returns the height of the
-   tree rooted at NODE. */
-int
-recurse_tree (avl_node *node, int *count, int parent, int dir)
-{
-  if (node)
-    {
-      int d = (int) node->data;
-      int nl = node->link[0] ? recurse_tree (node->link[0], count, d, -1) : 0;
-      int nr = node->link[1] ? recurse_tree (node->link[1], count, d, 1) : 0;
-      (*count)++;
-
-      if (nr - nl != node->bal)
-	{
-	  printf (" Node %d is unbalanced: right height=%d, left height=%d, "
-		"difference=%d, but balance factor=%d.\n",
-		  d, nr, nl, nr - nl, node->bal);
-	  done = 1;
-	}
-
-      if (parent != INT_MIN)
-	{
-	  if (!(dir == -1 || dir == +1)) error("assert failed : dir == -1 || dir == +1");
-	  if (dir == -1 && d > parent)
-	    {
-	      printf (" Node %d is smaller than its left child %d.\n",
-		      parent, d);
-	      done = 1;
-	    }
-	  else if (dir == +1 && d < parent)
-	    {
-	      printf (" Node %d is larger than its right child %d.\n",
-		      parent, d);
-	      done = 1;
-	    }
-	}
-      if (!(node->bal >= -1 && node->bal <= 1)) error("assert failed : node->bal >= -1 && node->bal <= 1");
-      return 1 + (nl > nr ? nl : nr);
-    }
-  else return 0;
-}
-
-/* Check that everything about TREE is kosher. */
-void
-verify_tree (avl_tree *tree)
-{
-  int count = 0;
-  recurse_tree (tree->root.link[0], &count, INT_MIN, 0);
-  if (count != tree->count)
-    {
-      printf (" Tree has %d nodes, but tree count is %d.\n",
-	      count, tree->count);
-      done = 1;
-    }
-  if (done)
-    abort ();
-}
-
-/* Arrange the N elements of ARRAY in random order. */
-void
-shuffle (int *array, int n)
-{
-  int i;
-
-  for (i = 0; i < n; i++)
-    {
-      int j = i + rand () % (n - i);
-      int t = array[j];
-      array[j] = array[i];
-      array[i] = t;
-    }
-}
-
-/* Compares avl trees rooted at A and B, making sure that they are
-   identical. */
-void
-compare_trees (avl_node *a, avl_node *b)
-{
-  if (a == NULL || b == NULL)
-    {
-      if (!(a == NULL && b == NULL)) error("assert failed : a == NULL && b == NULL");
-      return;
-    }
-  if (a->data != b->data || a->bal != b->bal
-      || ((a->link[0] != NULL) ^ (b->link[0] != NULL))
-      || ((a->link[1] != NULL) ^ (b->link[1] != NULL)))
-    {
-      printf (" Copied nodes differ: %d b=%d a->bal=%d b->bal=%d a:",
-	      (int) a->data, (int) b->data, a->bal, b->bal);
-      if (a->link[0])
-	printf ("l");
-      if (a->link[1])
-	printf ("r");
-      printf (" b:");
-      if (b->link[0])
-	printf ("l");
-      if (b->link[1])
-	printf ("r");
-      printf ("\n");
-      abort ();
-    }
-  if (a->link[0] != NULL)
-    compare_trees (a->link[0], b->link[0]);
-  if (a->link[1] != NULL)
-    compare_trees (a->link[1], b->link[1]);
-}
-
-/* Simple stress test procedure for the AVL tree routines.  Does the
-   following:
-
-   * Generate a random number seed.  By default this is generated from
-   the current time.  You can also pass a seed value on the command
-   line if you want to test the same case.  The seed value is
-   displayed.
-
-   * Create a tree and insert the integers from 0 up to TREE_SIZE - 1
-   into it, in random order.  Verify the tree structure after each
-   insertion.
-
-   * Remove each integer from the tree, in a different random order.
-   After each deletion, verify the tree structure; also, make a copy
-   of the tree into a new tree, verify the copy and compare it to the
-   original, then destroy the copy.
-
-   * Destroy the tree, increment the random seed value, and start over.
-
-   If you make any modifications to the avl tree routines, then you
-   might want to insert some calls to print_structure() at strategic
-   places in order to be able to see what's really going on.  Also,
-   memory debuggers like Checker or Purify are very handy. */
-#define TREE_SIZE 1024
-#define N_ITERATIONS 16
-int
-main (int argc, char **argv)
-{
-  int array[TREE_SIZE];
-  int seed;
-  int iteration;
-
-  if (argc == 2)
-    seed = atoi (argv[1]);
-  else
-    seed = time (0) * 257 % 32768;
-
-  fputs ("Testing avl...\n", stdout);
-
-  for (iteration = 1; iteration <= N_ITERATIONS; iteration++)
-    {
-      avl_tree *tree;
-      int i;
-
-      printf ("Iteration %4d/%4d: seed=%5d", iteration, N_ITERATIONS, seed);
-      fflush (stdout);
-
-      srand (seed++);
-
-      for (i = 0; i < TREE_SIZE; i++)
-	array[i] = i;
-      shuffle (array, TREE_SIZE);
-
-      tree = avl_create (compare_ints, NULL);
-      for (i = 0; i < TREE_SIZE; i++)
-	avl_force_insert (tree, (void *) (array[i]));
-      verify_tree (tree);
-
-      shuffle (array, TREE_SIZE);
-      for (i = 0; i < TREE_SIZE; i++)
-	{
-	  avl_tree *copy;
-
-	  avl_delete (tree, (void *) (array[i]));
-	  verify_tree (tree);
-
-	  copy = avl_copy (tree, NULL);
-	  verify_tree (copy);
-	  compare_trees (tree->root.link[0], copy->root.link[0]);
-	  avl_destroy (copy, NULL);
-
-	  if (i % 128 == 0)
-	    {
-	      putchar ('.');
-	      fflush (stdout);
-	    }
-	}
-      fputs (" good.\n", stdout);
-
-      avl_destroy (tree, NULL);
-    }
-
-  return 0;
-}
-#endif /* SELF_TEST */
-
-/*
-  Local variables:
-  compile-command: "gcc -DSELF_TEST=1 -W -Wall -I. -o ./avl-test avl.c"
-  End:
-*/

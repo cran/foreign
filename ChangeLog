@@ -1,3 +1,20 @@
+2009-03-12 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-34
+	* R/read.{dta,spss}.R: files specified as URLs are downloaded to a
+	temporary file and then read.  (Suggestion of Jeffrey Racine.)
+	* tests/download.R: tests for download in read.dta and read.spss.
+	* src/sfm-read.c: Remove some warnings that seem innocent (Windows
+	codepages, record type 7 subtype 20).
+
+2009-03-07 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/avl.[ch]: comment out/remove unused functions, make external
+	symbols R_avl_* since Jeff Long managed to link against Solaris'
+	libavl by a very non-standard build.   Remove attempt to use
+	inlining under gcc (since it was the GCC not C99 model).
+	* src/{file-handle,pfm-read,sfm-read,spss}.c: use R_avl_ prefix.
+
 2009-02-18 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-33.

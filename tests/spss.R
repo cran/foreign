@@ -45,7 +45,6 @@ stopifnot(identical(electric.s,	     electric.p),
 
 invisible(Sys.setlocale (locale="C")) ## to resolve locale problem
 ldat <- read.spss("spss_long.sav", to.data.frame=TRUE)
-## -->  warning about character representation code (20127)
 ldat
 nnms <- nms <- names(ldat)
 names(nnms) <- nms

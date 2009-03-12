@@ -13,7 +13,7 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
          convert.underscore = FALSE, warn.missing.labels = TRUE)
 }
 \arguments{
-  \item{file}{a filename as a character string.}
+  \item{file}{a filename or URL as a character string.}
   \item{convert.dates}{Convert Stata dates to \code{Date} class?}
   \item{convert.factors}{Use Stata value labels to create factors?
     (version 6.0 or later).}
@@ -25,6 +25,11 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
     labels and those value labels are not present in the file.}
 }
 \details{
+  If the filename appears to be a URL (of schemes \samp{http:},
+  \samp{ftp:} or \samp{https:}) the URL is first downloaded to a
+  temporary fiie and then read.  (\samp{https:} is only supported on
+  some platforms.)
+  
   The variables in the Stata data set become the columns of the data
   frame.  Missing values are correctly handled.  The data label,
   variable labels, and timestamp are stored as attributes of the data

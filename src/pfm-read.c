@@ -964,9 +964,9 @@ read_value_label (struct file_handle *h)
 
 	  /* Create AVL tree if necessary. */
 	  if (!var->val_lab)
-	    var->val_lab = avl_create (val_lab_cmp, (void *) &width);
+	    var->val_lab = R_avl_create (val_lab_cmp, (void *) &width);
 
-	  old = avl_replace (var->val_lab, vl);
+	  old = R_avl_replace (var->val_lab, vl);
 	  if (old == NULL)
 	    continue;
 

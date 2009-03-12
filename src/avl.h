@@ -82,63 +82,24 @@ avl_tree;
 #endif
 
 /* General functions. */
-avl_tree *avl_create (MAYBE_POOL avl_comparison_func, void *param);
-void avl_destroy (avl_tree *, avl_node_func);
-void avl_free (avl_tree *);
-int avl_count (const avl_tree *);
-avl_tree *avl_copy (MAYBE_POOL const avl_tree *, avl_copy_func);
+avl_tree *R_avl_create (MAYBE_POOL avl_comparison_func, void *param);
+void R_avl_destroy (avl_tree *, avl_node_func);
+void R_avl_free (avl_tree *);
+int R_avl_count (const avl_tree *);
+#ifdef UNUSED
+avl_tree *R_avl_copy (MAYBE_POOL const avl_tree *, avl_copy_func);
 
 /* Walk the tree. */
-void avl_walk (const avl_tree *, avl_node_func, void *param);
-void *avl_traverse (const avl_tree *, avl_traverser *);
+void R_avl_walk (const avl_tree *, avl_node_func, void *param);
+void *R_avl_traverse (const avl_tree *, avl_traverser *);
+#endif
 
 /* Search for a given item. */
-void **avl_probe (avl_tree *, void *);
-void *avl_delete (avl_tree *, const void *);
-void *avl_find (const avl_tree *, const void *);
+/* static void **R_avl_probe (avl_tree *, void *);
+void *R_avl_delete (avl_tree *, const void *); */
 
-#if __GCC__ >= 2
-extern inline void *
-avl_insert (avl_tree *tree, void *item)
-{
-  void **p = avl_probe (tree, item);
-  return (*p == item) ? NULL : *p;
-}
-
-extern inline void *
-avl_replace (avl_tree *tree, void *item)
-{
-  void **p = avl_probe (tree, item);
-  if (*p == item)
-    return NULL;
-  else
-    {
-      void *r = *p;
-      *p = item;
-      return r;
-    }
-}
-#else /* not gcc */
-void *avl_insert (avl_tree *tree, void *item);
-void *avl_replace (avl_tree *tree, void *item);
-#endif /* not gcc */
-
-/* Easy assertions on insertion & deletion. */
-#ifndef NDEBUG
-#define avl_force_insert(A, B)			\
-	do					\
-	  {					\
-	    void *r = avl_insert (A, B);	\
-	    if (r != NULL)			\
-	      error("assert failed : r == NULL"); \
-	  }					\
-	while (0)
-void *avl_force_delete (avl_tree *, void *);
-#else
-#define avl_force_insert(A, B)			\
-	avl_insert (A, B)
-#define avl_force_delete(A, B)			\
-	avl_delete (A, B)
-#endif
+void *R_avl_find (const avl_tree *, const void *);
+void *R_avl_insert (avl_tree *tree, void *item);
+void *R_avl_replace (avl_tree *tree, void *item);
 
 #endif /* avl_h */

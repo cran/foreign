@@ -311,10 +311,6 @@ List of 20
 > 
 > invisible(Sys.setlocale (locale="C")) ## to resolve locale problem
 > ldat <- read.spss("spss_long.sav", to.data.frame=TRUE)
-Warning message:
-In read.spss("spss_long.sav", to.data.frame = TRUE) :
-  spss_long.sav: File-indicated character representation code (20127) looks like a Windows codepage
-> ## -->  warning about character representation code (20127)
 > ldat
   variable1 variable2
 1         1         1

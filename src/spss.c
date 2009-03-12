@@ -51,7 +51,7 @@ new_dictionary (int copy)
   struct dictionary *d = Calloc (1, struct dictionary);
 
   d->var = NULL;
-  d->var_by_name = avl_create (cmp_variable, NULL);
+  d->var_by_name = R_avl_create (cmp_variable, NULL);
   d->nvar = 0;
 
   d->N = 0;
@@ -79,7 +79,7 @@ new_dictionary (int copy)
 struct variable *
 find_dict_variable (const struct dictionary *d, const char *name)
 {
-  return avl_find (d->var_by_name, (struct variable *) name);
+  return R_avl_find (d->var_by_name, (struct variable *) name);
 }
 
 /* Initialize fields in variable V inside dictionary D with name NAME,
@@ -92,7 +92,7 @@ common_init_stuff (struct dictionary *dict, struct variable *v,
     /* Avoid problems with overlap. */
     strcpy (v->name, name);
 
-  avl_force_insert (dict->var_by_name, v);
+  R_avl_insert (dict->var_by_name, v);
 
   v->type = type;
   v->left = name[0] == '#';
@@ -190,7 +190,7 @@ void *avlFlatten(const avl_tree *tree){
   const avl_node **ap = an;		/* Stack A: stack pointer. */
   const avl_node *p = tree->root.link[0];
 
-  n=avl_count(tree);
+  n=R_avl_count(tree);
   ans=Calloc(n, void * );
 
   for (;;)  /* from avl.c:avl_walk */
@@ -232,7 +232,7 @@ static SEXP getSPSSvaluelabels(struct dictionary *dict)
     for(i = 0; i < nvars; i++) {
 	labelset = (dict->var)[i]->val_lab;
 	if (!labelset) continue;
-	nlabels = avl_count(labelset);
+	nlabels = R_avl_count(labelset);
 	flattened_labels = avlFlatten(labelset);
 	PROTECT(somelabels = allocVector(STRSXP, nlabels));
 	if ((dict->var)[i]->type == NUMERIC) {

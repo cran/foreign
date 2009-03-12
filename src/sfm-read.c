@@ -226,7 +226,7 @@ free_value_label (struct value_label * v)
 }
 
 /* Frees value label P.  PARAM is ignored.  Used as a callback with
-   avl_destroy(). */
+   R_avl_destroy(). */
 void
 free_val_lab (void *p, void *param)
 {
@@ -244,7 +244,7 @@ free_dictionary (struct dictionary * d)
   d->splits = NULL;
 
   if (d->var_by_name)
-    avl_destroy (d->var_by_name, NULL);
+    R_avl_destroy (d->var_by_name, NULL);
 
   for (i = 0; i < d->nvar; i++)
     {
@@ -252,7 +252,7 @@ free_dictionary (struct dictionary * d)
 
       if (v->val_lab)
 	{
-	  avl_destroy (v->val_lab, free_val_lab);
+	  R_avl_destroy (v->val_lab, free_val_lab);
 	  v->val_lab = NULL;
 	}
       if (v->label)
@@ -433,6 +433,10 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 		skip = 1;
 		break;
 
+	      case 20:
+		skip = 1;
+		break;
+
 	      default:
 		warning(_("%s: Unrecognized record type 7, subtype %d encountered in system file"), h->fn, data.subtype);
 		skip = 1;
@@ -543,10 +547,8 @@ We just deal with the cases we know are wrong (2 and 3 are OK).
   if (data[7] == 1 || data[7] == 4)
     lose ((_("%s: File-indicated character representation code (%s) is not ASCII"), h->fn,
        data[7] == 1 ? "EBCDIC" : (data[7] == 4 ? "DEC Kanji" : "Unknown")));
-  if(data[7] == 65001)
-      warning(_("%s: File-indicated character representation code (65001) looks like UTF-8"), h->fn);
-  else if(data[7] >= 500)
-      warning(_("%s: File-indicated character representation code (%d) looks like a Windows codepage"), h->fn, data[7]);
+  if(data[7] >= 200)
+      /* warning(_("%s: File-indicated character representation code (%d) looks like a Windows codepage"), h->fn, data[7]) */;
   else if(data[7] > 4)
       warning(_("%s: File-indicated character representation code (%d) is unknown"), h->fn, data[7]);
   return 1;
@@ -1059,9 +1061,9 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 
   /* Construct AVL tree of dictionary in order to speed up later
      processing and to check for duplicate varnames. */
-  dict->var_by_name = avl_create (cmp_variable, NULL);
+  dict->var_by_name = R_avl_create (cmp_variable, NULL);
   for (i = 0; i < dict->nvar; i++)
-    if (NULL != avl_insert (dict->var_by_name, dict->var[i]))
+    if (NULL != R_avl_insert (dict->var_by_name, dict->var[i]))
       lose ((_("%s: Duplicate variable name `%s' within system file"),
 	     h->fn, dict->var[i]->name));
 
@@ -1075,7 +1077,7 @@ lossage:
     }
   Free (dict->var);
   if (dict->var_by_name)
-    avl_destroy (dict->var_by_name, NULL);
+    R_avl_destroy (dict->var_by_name, NULL);
   Free (dict);
   ext->dict = NULL;
 
@@ -1257,12 +1259,12 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
 
       /* Create AVL tree if necessary. */
       if (!v->val_lab)
-	v->val_lab = avl_create (val_lab_cmp, (void *) (void *) (void *) (void *) (void *) (void *) (void *) (void *) (void *) &width);
+	v->val_lab = R_avl_create (val_lab_cmp, (void *) (void *) (void *) (void *) (void *) (void *) (void *) (void *) (void *) &width);
 
       /* Add each label to the variable. */
       for (j = 0; j < n_labels; j++)
 	{
-	  struct value_label *old = avl_replace (v->val_lab, cooked_label[j]);
+	  struct value_label *old = R_avl_replace (v->val_lab, cooked_label[j]);
 	  if (old == NULL)
 	    continue;
 
