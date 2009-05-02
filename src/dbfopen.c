@@ -897,15 +897,25 @@ DBFIsAttributeNULL( DBFHandle psDBF, int iRecord, int iField )
 
 {
     const char	*pszValue;
+    int i;
 
     pszValue = DBFReadStringAttribute( psDBF, iRecord, iField );
+
+    if(pszValue == NULL) return TRUE;
 
     switch(psDBF->pachFieldType[iField])
     {
       case 'N':
       case 'F':
-	/* NULL numeric fields have value "****************" */
-	return strlen(pszValue) == 0 || pszValue[0] == '*';
+	/*
+        ** We accept all asterisks or all blanks as NULL
+        ** though according to the spec I think it should be all
+        ** asterisks.
+	*/	
+	if(pszValue[0] == '*') return TRUE;
+	for(i = 0; pszValue[i] != '\0'; i++)
+             if(pszValue[i] != ' ') return FALSE;
+	return TRUE;
 
       case 'D':
 	/* NULL date fields have value "00000000" */

@@ -1,3 +1,12 @@
+2009-05-02 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-35
+	* src/dbfopen.c: make a blank field valid as a NULL numeric type
+	as per current dbfopen (if not per the spec).
+	* src/Rdfopen.c: when promoting a column to numeric from integer,
+	need to convert NA_INTEGER to NA_REAL, not to -2^31+1.  And columns
+	were promoted unnecessarily because of a typo.
+
 2009-03-12 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-34
