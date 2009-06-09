@@ -22,10 +22,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: R 2.3.0\n"
+"Project-Id-Version: R 2.10.0\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2005-12-08 20:27\n"
-"PO-Revision-Date: 2005-12-08 20:27\n"
+"POT-Creation-Date: 2009-05-24 07:59\n"
+"PO-Revision-Date: 2009-05-24 07:59\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -54,6 +54,30 @@ msgstr "(near byte offset"
 msgid ") not supported"
 msgstr ") not supported"
 
+msgid "Argument 'file' must be a character string or connection."
+msgstr "Argument ‘file’ must be a character string or connection."
+
+msgid "Invalid attribute specification."
+msgstr "Invalid attribute specification."
+
+msgid "Type 'relational' currently not implemented."
+msgstr "Type ‘relational’ currently not implemented."
+
+msgid "Missing data section."
+msgstr "Missing data section."
+
+msgid "Missing attribute section."
+msgstr "Missing attribute section."
+
+msgid "Invalid type specification."
+msgstr "Invalid type specification."
+
+msgid "Field name:"
+msgstr "Field name:"
+
+msgid "changed to:"
+msgstr "changed to:"
+
 msgid "cannot handle matrix/array columns"
 msgstr "cannot handle matrix/array columns"
 
@@ -62,6 +86,9 @@ msgstr "data frame contains columns of unsupported class(es)"
 
 msgid ","
 msgstr ","
+
+msgid "character column %d will be truncated to %d bytes"
+msgstr "character column %d will be truncated to %d bytes"
 
 msgid "unknown column type in data frame"
 msgstr "unknown column type in data frame"
@@ -75,11 +102,8 @@ msgstr "NA in scale"
 msgid "cannot handle unknown type"
 msgstr "cannot handle unknown type"
 
-msgid "'missing.type' only applicable to version 8 files"
-msgstr "‘missing.type’ only applicable to version 8 files"
-
-msgid "argument tz= is no longer needed and will soon be removed"
-msgstr "argument tz= is no longer needed and will soon be removed"
+msgid "'missing.type' only applicable to version >= 8 files"
+msgstr "‘missing.type’ only applicable to version >= 8 files"
 
 msgid "cannot read factor labels from Stata 5 files"
 msgstr "cannot read factor labels from Stata 5 files"
@@ -93,11 +117,11 @@ msgstr ") for"
 msgid "are missing"
 msgstr "are missing"
 
-msgid "Version must be 6-8"
-msgstr "Version must be 6-8"
+msgid "Version must be 6-10"
+msgstr "Version must be 6-10"
 
-msgid "Version must be 6-8: using 7"
-msgstr "Version must be 6-8: using 7"
+msgid "Version must be 6-10: using 7"
+msgstr "Version must be 6-10: using 7"
 
 msgid "cannot uniquely abbreviate variable names"
 msgstr "cannot uniquely abbreviate variable names"
@@ -120,8 +144,17 @@ msgstr "no records in file"
 msgid "wrong number of records"
 msgstr "wrong number of records"
 
+msgid "sectionname %s not found"
+msgstr "sectionname %s not found"
+
 msgid "SAS return code was"
 msgstr "SAS return code was"
+
+msgid "re-encoding from"
+msgstr "re-encoding from"
+
+msgid "missingness type %s is not handled"
+msgstr "missingness type %s is not handled"
 
 msgid "I cannot abbreviate the variable names to eight or fewer letters"
 msgstr "I cannot abbreviate the variable names to eight or fewer letters"
@@ -129,8 +162,20 @@ msgstr "I cannot abbreviate the variable names to eight or fewer letters"
 msgid "some variable names were abbreviated"
 msgstr "some variable names were abbreviated"
 
-msgid "Cannot abbreviate the variable names to eight or fewer letters"
-msgstr "Cannot abbreviate the variable names to eight or fewer letters"
+msgid "Cannot handle character variables longer than 255"
+msgstr "Cannot handle character variables longer than 255"
 
-msgid "Some variable names were abbreviated."
-msgstr "Some variable names were abbreviated."
+msgid "Cannot uniquely abbreviate the variable names to"
+msgstr "Cannot uniquely abbreviate the variable names to"
+
+msgid "or fewer characters"
+msgstr "or fewer characters"
+
+msgid "Cannot uniquely abbreviate format names to conform to"
+msgstr "Cannot uniquely abbreviate format names to conform to"
+
+msgid "eight-character limit and not ending in a digit"
+msgstr "eight-character limit and not ending in a digit"
+
+msgid "Some variable names were abbreviated or otherwise altered."
+msgstr "Some variable names were abbreviated or otherwise altered."

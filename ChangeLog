@@ -1,3 +1,18 @@
+2009-06-09 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-36
+        * po/de.po, po/R-de.po: updates
+
+2009-05-28 Brian Ripley <Brian.Ripley@R-project.org>
+
+        * po/de.po, po/R-de.po: first pass at German translations
+	from Chris Leick
+	* po/fr.po, po/R-fr.po: updates from Phillipe Grosjean
+
+2009-05-11 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* man/read.dbf.Rd: update wotsit.org URL (thanks to Peter Konings).
+	
 2009-05-02 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-35
@@ -31,7 +46,7 @@
 
 2009-02-09 Brian Ripley <Brian.Ripley@R-project.org>
 
-	* ESCRIPTION: Version is 0.8-32.
+	* DESCRIPTION: Version is 0.8-32.
 	* src/sfm-read.c: correct 'free' to 'Free' in contributed code.
 	* R/spss.R: interpret more code pages.
 

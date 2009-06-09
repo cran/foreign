@@ -32,7 +32,7 @@ read.dbf(file, as.is = FALSE)
   \sQuote{XBASE} specification.  It can convert fields of type
   \code{"L"} (logical), \code{"N"} and \code{"F"} (numeric and float)
   and \code{"D"} (dates): all other field types are read as-is as
-  character vectors.  A numeric field are read as an \R integer vector if
+  character vectors.  A numeric field is read as an \R integer vector if
   it is encoded to have no decimals, otherwise as a numeric vector.  However,
   if the numbers are too large to fit into an integer vector, it is
   changed to numeric.  Note that is possible to read integers that cannot be
@@ -51,8 +51,8 @@ read.dbf(file, as.is = FALSE)
 \references{
   \url{http://shapelib.maptools.org/}.
 
-  The Borland file specification \emph{via}
-  \url{http://www.wotsit.org/search.asp?s=database}.
+  The Borland file specification \emph{via} \url{http://www.wotsit.org},
+  currently at \url{http://www.wotsit.org/list.asp?fc=6}.
 }
 
 \author{
