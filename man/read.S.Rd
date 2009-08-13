@@ -23,9 +23,9 @@
   \item{env}{environment within which to create the restored object(s).}
 }
 \value{
-  for \code{read.S}, an R version of the S3 object.
+  For \code{read.S}, an R version of the S3 object.
 
-  for \code{data.restore}, the name of the file.
+  For \code{data.restore}, the name of the file.
 }
 \details{
   \code{read.S} can read the binary files produced in some older

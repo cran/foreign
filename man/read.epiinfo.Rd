@@ -19,7 +19,7 @@ read.epiinfo(file, read.deleted = FALSE, guess.broken.dates = FALSE,
   \item{read.deleted}{Deleted records are read if \code{TRUE}, omitted
     if \code{FALSE} or replaced with \code{NA} if \code{NA}.}
   \item{guess.broken.dates}{Attempt to convert dates with 0 or 2 digit
-    year information (see Details below).}
+    year information (see \sQuote{Details}).}
   \item{thisyear}{A 4-digit year to use for dates with no year. Defaults
     to the current year.}
   \item{lower.case.names}{Convert variable names to lowercase?}

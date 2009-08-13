@@ -1,3 +1,14 @@
+2009-06-13 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-37, for release with 2.9.2
+
+2009-06-09 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/stataread.c, man/write.dta.Rd: truncate character data in
+	write.dta at 244 bytes. (PR##13820)
+	* src/stataread.c: allow for up to 244 bytes in character string
+	and check.  Previously assumed up to 128 and did not check.
+
 2009-06-09 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-36

@@ -27,7 +27,7 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
 \details{
   If the filename appears to be a URL (of schemes \samp{http:},
   \samp{ftp:} or \samp{https:}) the URL is first downloaded to a
-  temporary fiie and then read.  (\samp{https:} is only supported on
+  temporary file and then read.  (\samp{https:} is only supported on
   some platforms.)
   
   The variables in the Stata data set become the columns of the data

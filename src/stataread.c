@@ -177,7 +177,7 @@ SEXP R_LoadStataData(FILE *fp)
     unsigned char abyte;
     /* timestamp is used for timestamp and for variable formats */
     char datalabel[81], timestamp[50], aname[33];
-    char stringbuffer[129], *txt;
+    char stringbuffer[245], *txt;
     SEXP df, names, tmp, varlabels, types, row_names;
     SEXP levels, labels, labeltable, sversion;
     int *off;
@@ -411,6 +411,10 @@ SEXP R_LoadStataData(FILE *fp)
 		    break;
 		default:
 		    charlen = INTEGER(types)[j] - STATA_STRINGOFFSET;
+		    if(charlen > 244) {
+			warning("invalid character string length -- truncating to 244 bytes");
+			charlen = 244;
+		    }
 		    InStringBinary(fp, charlen, stringbuffer);
 		    stringbuffer[charlen] = 0;
 		    SET_STRING_ELT(VECTOR_ELT(df, j), i, mkChar(stringbuffer));
@@ -439,6 +443,10 @@ SEXP R_LoadStataData(FILE *fp)
 		    break;
 		default:
 		    charlen = INTEGER(types)[j]-STATA_SE_STRINGOFFSET;
+		    if(charlen > 244) {
+			warning("invalid character string length -- truncating to 244 bytes");
+			charlen = 244;
+		    }
 		    InStringBinary(fp, charlen, stringbuffer);
 		    stringbuffer[charlen] = 0;
 		    SET_STRING_ELT(VECTOR_ELT(df,j), i, mkChar(stringbuffer));
@@ -661,11 +669,15 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 		OutByteBinary(STATA_DOUBLE, fp);
 		break;
 	    case STRSXP:
+		/* NB: there is a 244 byte limit on strings */
 		charlen = 0;
 		for(j = 0; j < nobs; j++){
 		    k = strlen(CHAR(STRING_ELT(VECTOR_ELT(df, i), j)));
 		    if (k > charlen) charlen = k;
 		}
+		if(charlen > 244)
+		    warning("character strings of >244 bytes in column %d will be truncated", i+1);
+		charlen =  (charlen < 244) ? charlen : 244;
 		OutByteBinary((unsigned char)(charlen+STATA_STRINGOFFSET), fp);
 		INTEGER(types)[i] = charlen;
 		break;
@@ -687,11 +699,15 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 		OutByteBinary(STATA_SE_DOUBLE,fp);
 		break;
 	    case STRSXP:
+		/* NB: there is a 244 byte limit on strings */
 		charlen = 0;
 		for(j = 0;j < nobs; j++){
 		    k = strlen(CHAR(STRING_ELT(VECTOR_ELT(df, i),j)));
 		    if (k > charlen) charlen = k;
 		}
+		if(charlen > 244)
+		    warning("character strings of >244 bytes in column %d will be truncated", i+1);
+		charlen =  (charlen < 244) ? charlen : 244;
 		OutByteBinary((unsigned char)(charlen+STATA_SE_STRINGOFFSET), fp);
 		INTEGER(types)[i] = charlen;
 		break;
@@ -701,7 +717,7 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 	    }
 	}
     }
-    /** names truncated to 8 (or 32 for v7-8) characters**/
+    /** names truncated to 8 (or 32 for v>=7) characters**/
 
     PROTECT(names = getAttrib(df, R_NamesSymbol));
     for (i = 0; i < nvar;i ++){
@@ -717,9 +733,9 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 
     /** format list: arbitrarily write numbers as %9g format
 	but strings need accurate types */
-    for (i = 0; i < nvar; i++){
+    for (i = 0; i < nvar; i++) {
 	if (TYPEOF(VECTOR_ELT(df,i)) == STRSXP){
-	    /* string types are at most 128 characters
+	    /* string types are at most 244 characters
 	       so we can't get a buffer overflow in sprintf **/
 	    sprintf(strformat,"%%%ds",INTEGER(types)[i]);
 	    OutStringBinary(strformat, fp, fmtlist_len);
@@ -780,7 +796,9 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 		OutDoubleBinary(REAL(VECTOR_ELT(df,j))[i], fp, 0);
 		break;
 	    case STRSXP:
+		/* Up to 244 bytes should be written, zero-padded */
 		k = length(STRING_ELT(VECTOR_ELT(df, j), i));
+		if(k > 244) k = 244;
 		OutStringBinary(CHAR(STRING_ELT(VECTOR_ELT(df, j), i)), fp, k);
 		for(l = INTEGER(types)[j]-k; l > 0; l--) OutByteBinary(0, fp);
 		break;

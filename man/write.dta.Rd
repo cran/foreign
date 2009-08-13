@@ -59,7 +59,9 @@ write.dta(dataframe, file, version = 7L,
 
   Note that the Stata formats are documented to be use ASCII strings --
   \R does not enforce this, but use of non-ASCII character strings will
-  not be portable as the encoding is not recorded.
+  not be portable as the encoding is not recorded.  Up to 244 bytes are
+  allowed in character data, and longer strings will be truncated with a
+  warning.
 
   Stata uses some large numerical values to represent missing
   values.  This function does not currently check, and hence integers

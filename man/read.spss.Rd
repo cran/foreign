@@ -66,11 +66,11 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
 
   If the filename appears to be a URL (of schemes \samp{http:},
   \samp{ftp:} or \samp{https:}) the URL is first downloaded to a
-  temporary fiie and then read.  (\samp{https:} is only supported on
+  temporary file and then read.  (\samp{https:} is only supported on
   some platforms.)
   
   Occasionally in SPSS value labels will be added to some values of a
-  continuous variable (eg to distinguish different types of missing
+  continuous variable (e.g. to distinguish different types of missing
   data), and you will not want these variables converted to factors.  By
   setting \code{max.val.labels} you can specify that variables with a
   large number of distinct values are not converted to factors even if
