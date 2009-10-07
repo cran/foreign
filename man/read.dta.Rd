@@ -52,7 +52,7 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
   returned value.
 }
 \value{
-  a data frame with attributes.  These will include \code{"datalabel"},
+  A data frame with attributes.  These will include \code{"datalabel"},
   \code{"time.stamp"}, \code{"formats"}, \code{"types"},
   \code{"val.labels"}, \code{"var.labels"} and \code{"version"} and may
   include \code{"label.table"}.  Possible versions are \code{5, 6, 7},

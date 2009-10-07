@@ -473,9 +473,9 @@ read_SPSS_SAVE(const char *filename)
 {
     struct file_handle *fh = fh_get_handle_by_filename(filename);
     struct sfm_read_info inf;
-    struct dictionary *dict = sfm_read_dictionary(fh, &inf);
-    SEXP ans = PROTECT(allocVector(VECSXP, dict->nvar));
-    SEXP ans_names = PROTECT(allocVector(STRSXP, dict->nvar));
+    struct dictionary *dict;
+    SEXP ans;
+    SEXP ans_names;
     union value *case_vals;
     int i;
     int nvar_label;
@@ -484,6 +484,12 @@ read_SPSS_SAVE(const char *filename)
     SEXP variable_labels;
     SEXP miss_labels; int have_miss = 0;
 
+    /* package multcomp has an example in which this does not get
+       initialized */
+    inf.encoding = 0;
+    dict = sfm_read_dictionary(fh, &inf);
+    ans = PROTECT(allocVector(VECSXP, dict->nvar));
+    ans_names = PROTECT(allocVector(STRSXP, dict->nvar));
     /* Set the fv and lv elements of all variables in the
        dictionary. */
     for (i = 0; i < dict->nvar; i++) {

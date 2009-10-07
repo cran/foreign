@@ -1,3 +1,17 @@
+2009-10-07 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-38, for release with 2.10.0
+
+2009-09-15 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* R/spss.R: 'latin-9' is more portable than 'latin9', as libiconv
+	does not know about the latter.
+
+2009-06-13 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/spss.c: uninitialized codepage in an example from 
+	multcomp's chfls1.Rnw
+
 2009-06-13 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-37, for release with 2.9.2

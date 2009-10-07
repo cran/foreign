@@ -34,9 +34,11 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
     ## mappings taken from win-iconv
     knownCP <- c("UCS-2LE" = 1200, "UCS-2BE" = 1201,
                  "macroman" = 10000, " UCS-4LE" = 12000, "UCS-4BE" = 12001,
-                 "koi8-r" = 20866, "koi8=u" = 21866,
+                 "koi8-r" = 20866, "koi8-u" = 21866,
                  "latin1" = 28591, "latin2" = 28592, "latin3" = 28593,
-                 "latin4" = 28594, "latin9" = 28605,
+                 ## latin-9 seems most portable, but only on Windows
+                 ## R >= 2.10.0.  libiconv doesn't know latin9.
+                 "latin4" = 28594, "latin-9" = 28605,
                  "ISO-2022-JP" = 50221, "euc-jp" = 51932,
                  "UTF-8" = 65001,
                  "ASCII" = 20127,
