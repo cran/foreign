@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bugs@R-project.org\n"
-"POT-Creation-Date: 2009-05-08 14:08+0100\n"
+"POT-Creation-Date: 2009-10-12 15:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,7 +151,7 @@ msgid "unable to open file"
 msgstr ""
 
 #: Rdbfwrite.c:95 Rdbfwrite.c:133 stataread.c:282 stataread.c:303
-#: stataread.c:673 stataread.c:699
+#: stataread.c:685 stataread.c:715
 msgid "unknown data type"
 msgstr ""
 
@@ -176,7 +176,7 @@ msgstr ""
 msgid "problem accessing SAS XPORT file"
 msgstr ""
 
-#: SASxport.c:505 SASxport.c:598 spss.c:662 stataread.c:533
+#: SASxport.c:505 SASxport.c:598 spss.c:668 stataread.c:541
 #, c-format
 msgid "unable to open file: '%s'"
 msgstr ""
@@ -769,22 +769,22 @@ msgstr ""
 msgid "%s: Partial record at end of system file"
 msgstr ""
 
-#: spss.c:381 spss.c:497
+#: spss.c:381 spss.c:503
 msgid "nval is 0"
 msgstr ""
 
-#: spss.c:665
+#: spss.c:671
 #, c-format
 msgid "problem in reading file '%s'"
 msgstr ""
 
-#: spss.c:675
+#: spss.c:681
 #, c-format
 msgid "file '%s' is not in any supported SPSS format"
 msgstr ""
 
 #: stataread.c:86 stataread.c:96 stataread.c:104 stataread.c:129
-#: stataread.c:139 stataread.c:148 stataread.c:461
+#: stataread.c:139 stataread.c:148 stataread.c:469
 msgid "a binary read error occurred"
 msgstr ""
 
@@ -798,44 +798,44 @@ msgid ""
 " (Type 0 characteristic of nonzero length)"
 msgstr ""
 
-#: stataread.c:525
+#: stataread.c:533
 msgid "can not yet read Stata .dta on this platform"
 msgstr ""
 
-#: stataread.c:529 stataread.c:847
+#: stataread.c:537 stataread.c:865
 msgid "first argument must be a file name\n"
 msgstr ""
 
-#: stataread.c:547 stataread.c:554 stataread.c:560 stataread.c:575
-#: stataread.c:577 stataread.c:585 stataread.c:593
+#: stataread.c:555 stataread.c:562 stataread.c:568 stataread.c:583
+#: stataread.c:585 stataread.c:593 stataread.c:601
 msgid "a binary write error occurred"
 msgstr ""
 
-#: stataread.c:788
+#: stataread.c:806
 msgid "this should not happen."
 msgstr ""
 
-#: stataread.c:828
+#: stataread.c:846
 msgid "this should happen: overrun"
 msgstr ""
 
-#: stataread.c:830
+#: stataread.c:848
 msgid "this should happen: underrun"
 msgstr ""
 
-#: stataread.c:843
+#: stataread.c:861
 msgid "cannot yet read write .dta on this platform"
 msgstr ""
 
-#: stataread.c:851
+#: stataread.c:869
 #, c-format
 msgid "unable to open file for writing: '%s'"
 msgstr ""
 
-#: stataread.c:855
+#: stataread.c:873
 msgid "data to be saved must be in a data frame"
 msgstr ""
 
-#: stataread.c:860
+#: stataread.c:878
 msgid "can only write version 6-10 formats"
 msgstr ""

@@ -1,14 +1,14 @@
-# Translation of foreign to German
-# Copyright (C) 2005 The R Foundation
+# Translation of src/library/Recommended/foreign/po/foreign.pot to German
+# Copyright (C) 2005-2009 The R Foundation
 # This file is distributed under the same license as the foreign package.
 # Chris Leick <c.leick@vollbio.de>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: R 2.3.0 / foreign 0.8.34-1\n"
+"Project-Id-Version: R 2.10.0 / foreign 0.8-38\n"
 "Report-Msgid-Bugs-To: bugs@R-project.org\n"
-"POT-Creation-Date: 2009-05-08 14:08+0100\n"
-"PO-Revision-Date: 2009-05-25 14:48+0100\n"
+"POT-Creation-Date: 2009-10-12 15:40+0100\n"
+"PO-Revision-Date: 2009-10-11 13:18+0200\n"
 "Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -151,7 +151,7 @@ msgid "unable to open file"
 msgstr "Datei kann nicht geöffnet werden"
 
 #: Rdbfwrite.c:95 Rdbfwrite.c:133 stataread.c:282 stataread.c:303
-#: stataread.c:673 stataread.c:699
+#: stataread.c:685 stataread.c:715
 msgid "unknown data type"
 msgstr "unbekannter Datentyp"
 
@@ -176,7 +176,7 @@ msgstr "SAS-Übertragungsdatei hat falsche Element-Header"
 msgid "problem accessing SAS XPORT file"
 msgstr "Problem beim Zugriff auf SAS-XPORT-Datei"
 
-#: SASxport.c:505 SASxport.c:598 spss.c:662 stataread.c:533
+#: SASxport.c:505 SASxport.c:598 spss.c:668 stataread.c:541
 #, c-format
 msgid "unable to open file: '%s'"
 msgstr "Datei kann nicht geöffnet werden: »%s«"
@@ -553,8 +553,8 @@ msgid ""
 "%s: Floating-point representation in system file is not IEEE-754.  read.spss "
 "cannot convert between floating-point formats"
 msgstr ""
-"%s: Gleitkommadarstellung in Systemdatei entspricht nicht IEEE-754. "
-"read.spss kann nicht zwischen Gleitkommaformaten konvertieren"
+"%s: Gleitkommadarstellung in Systemdatei entspricht nicht IEEE-754. read."
+"spss kann nicht zwischen Gleitkommaformaten konvertieren"
 
 #: sfm-read.c:536
 #, c-format
@@ -574,8 +574,7 @@ msgstr ""
 #: sfm-read.c:553
 #, c-format
 msgid "%s: File-indicated character representation code (%d) is unknown"
-msgstr ""
-"%s: Durch Datei angegebener Zeichendarstellungskode (%d) ist unbekannt"
+msgstr "%s: Durch Datei angegebener Zeichendarstellungskode (%d) ist unbekannt"
 
 #: sfm-read.c:571
 #, c-format
@@ -612,8 +611,8 @@ msgid ""
 "%s: File layout code has unexpected value %d.  Value should be 2 or 3, in "
 "big-endian or little-endian format"
 msgstr ""
-"%s: Dateilayoutkode hat unerwarteten Wert %d. Der Wert sollte 2 oder 3 "
-"sein, entweder im Big-endian- oder im Little-endian-Format."
+"%s: Dateilayoutkode hat unerwarteten Wert %d. Der Wert sollte 2 oder 3 sein, "
+"entweder im Big-endian- oder im Little-endian-Format."
 
 #: sfm-read.c:750
 #, c-format
@@ -857,22 +856,22 @@ msgstr ""
 msgid "%s: Partial record at end of system file"
 msgstr "%s: Unvollständiger Datensatz am Ende der Systemdatei"
 
-#: spss.c:381 spss.c:497
+#: spss.c:381 spss.c:503
 msgid "nval is 0"
 msgstr "nval ist 0"
 
-#: spss.c:665
+#: spss.c:671
 #, c-format
 msgid "problem in reading file '%s'"
 msgstr "Problem beim Lesen der Datei »%s«"
 
-#: spss.c:675
+#: spss.c:681
 #, c-format
 msgid "file '%s' is not in any supported SPSS format"
 msgstr "Datei »%s« ist nicht in einem unterstützten SPSS-Format"
 
 #: stataread.c:86 stataread.c:96 stataread.c:104 stataread.c:129
-#: stataread.c:139 stataread.c:148 stataread.c:461
+#: stataread.c:139 stataread.c:148 stataread.c:469
 msgid "a binary read error occurred"
 msgstr "ein binärer Lesefehler ist aufgetreten"
 
@@ -888,45 +887,45 @@ msgstr ""
 "etwas ist eigenartig in der Datei\n"
 " (Typ-0-charakteristisch von Länge ungleich Null)"
 
-#: stataread.c:525
+#: stataread.c:533
 msgid "can not yet read Stata .dta on this platform"
 msgstr "Auf dieser Plattform kann Stata-».dta« noch nicht gelesen werden"
 
-#: stataread.c:529 stataread.c:847
+#: stataread.c:537 stataread.c:865
 msgid "first argument must be a file name\n"
 msgstr "erstes Argument muss ein Dateiname sein\n"
 
-#: stataread.c:547 stataread.c:554 stataread.c:560 stataread.c:575
-#: stataread.c:577 stataread.c:585 stataread.c:593
+#: stataread.c:555 stataread.c:562 stataread.c:568 stataread.c:583
+#: stataread.c:585 stataread.c:593 stataread.c:601
 msgid "a binary write error occurred"
 msgstr "ein binärer Schreibfehler ist aufgetreten"
 
-#: stataread.c:788
+#: stataread.c:806
 msgid "this should not happen."
 msgstr "das sollte nicht vorkommen."
 
-#: stataread.c:828
+#: stataread.c:846
 msgid "this should happen: overrun"
 msgstr "das sollte vorkommen: Überlauf"
 
-#: stataread.c:830
+#: stataread.c:848
 msgid "this should happen: underrun"
 msgstr "das sollte vorkommen: Unterlauf"
 
-#: stataread.c:843
+#: stataread.c:861
 msgid "cannot yet read write .dta on this platform"
 msgstr ""
 "Auf dieser Plattform kann Stata-».dta« noch nicht gelesen/geschrieben werden"
 
-#: stataread.c:851
+#: stataread.c:869
 #, c-format
 msgid "unable to open file for writing: '%s'"
 msgstr "Datei kann nicht zum Schreiben geöffnet werden: »%s«"
 
-#: stataread.c:855
+#: stataread.c:873
 msgid "data to be saved must be in a data frame"
 msgstr "Daten zum Sichern müssen in einem Daten-Frame sein"
 
-#: stataread.c:860
+#: stataread.c:878
 msgid "can only write version 6-10 formats"
 msgstr "nur Formate der Versionen 6-10 können geschrieben werden"

@@ -5,7 +5,7 @@
 \alias{read.dta}
 \title{Read Stata Binary Files}
 \description{
-  Reads a file in Stata version 5--10 binary format into a data frame. 
+  Reads a file in Stata version 5--11 binary format into a data frame. 
 }
 \usage{
 read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
@@ -57,7 +57,7 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
   \code{"val.labels"}, \code{"var.labels"} and \code{"version"} and may
   include \code{"label.table"}.  Possible versions are \code{5, 6, 7},
   \code{-7} (Stata 7SE, \sQuote{format-111}), \code{8} (Stata 8 and 9,
-  \sQuote{format-113}) and \code{10} (Stata 10, \sQuote{format-114}).
+  \sQuote{format-113}) and \code{10} (Stata 10 and 11, \sQuote{format-114}).
 
   The value labels in attribute \code{"val.labels"} name a table for
   each variable, or are an empty string.  The tables are elements of the
@@ -66,12 +66,12 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
 }
 \references{
   Stata Users Manual (versions 5 & 6), Programming manual (version 7),
-  or online help (version 8, 9, 10) describe the format of the files.
+  or online help (version 8 and later) describe the format of the files.
   Or at \url{http://www.stata.com/help.cgi?dta} and
   \url{http://www.stata.com/help.cgi?dta_113}
 }
 
-\author{Thomas Lumley}
+\author{Thomas Lumley and R-core members}
 \seealso{
   \code{\link{write.dta}},
   \code{\link{attributes}}

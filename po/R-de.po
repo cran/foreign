@@ -1,14 +1,14 @@
-# Translation of foreign to German
-# Copyright (C) 2005 The R Foundation
+# Translation of src/library/foreign/po/R-foreign.pot to German
+# Copyright (C) 2005-2009 The R Foundation
 # This file is distributed under the same license as the foreign package.
 # Chris Leick <c.leick@vollbio.de>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: R 2.3.0 / foreign 0.8.34-1\n"
+"Project-Id-Version: R 2.10.0 / foreign 0.8-38\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2009-05-24 07:59\n"
-"PO-Revision-Date: 2009-05-25 14:50+0100\n"
+"POT-Creation-Date: 2010-01-03 10:12\n"
+"PO-Revision-Date: 2009-10-11 13:19+0200\n"
 "Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -100,11 +100,11 @@ msgstr ") für"
 msgid "are missing"
 msgstr "fehlen"
 
-msgid "Version must be 6-10"
-msgstr "Version muss 6-10 sein"
+msgid "Version must be 6-11"
+msgstr "Version muss 6-11 sein"
 
-msgid "Version must be 6-10: using 7"
-msgstr "Version muss 6-10 sein: 7 wird benutzt"
+msgid "Version must be 6-11: using 7"
+msgstr "Version muss 6-11 sein: 7 wird benutzt"
 
 msgid "cannot uniquely abbreviate variable names"
 msgstr "Variablennamen können nicht eindeutig abgekürzt werden"

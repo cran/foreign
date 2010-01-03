@@ -107,10 +107,11 @@ write.dta <-
              convert.factors = c("labels","string","numeric","codes"))
 {
 
-    if (version < 6L) stop("Version must be 6-10")
+    if (version < 6L) stop("Version must be 6-11")
     if (version == 9L) version <- 8L
-    if (version > 10L) {
-        warning("Version must be 6-10: using 7")
+    if (version == 11L) version <- 10L
+    if (version > 11L) {
+        warning("Version must be 6-11: using 7")
         version <- 7L
     }
 

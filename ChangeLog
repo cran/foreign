@@ -1,3 +1,20 @@
+2010-01-03  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-39
+	* R/read.R.dta, man/write.dta.Rd: Stata 11 uses the same format as
+	Stata 10, so map 11 to 10.
+	* po/R*: update.
+	* tests/octave.Rout.save: update for str() change.
+
+2009-12-18  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: add BugReports field.
+	* man/read.dta.Rd: Stata 11 uses the same format as Stata 10.
+
+2009-10-12  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* po/R-de.po, po/de.po: update
+
 2009-10-07 Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-38, for release with 2.10.0

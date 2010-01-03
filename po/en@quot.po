@@ -1,7 +1,7 @@
 # English translations for R package.
-# Copyright (C) 2009 The R Foundation
+# Copyright (C) 2010 The R Foundation
 # This file is distributed under the same license as the R package.
-# Automatically generated, 2009.
+# Automatically generated, 2010.
 #
 # All this catalog "translates" are quotation characters.
 # The msgids must be ASCII and therefore cannot contain real quotation
@@ -27,10 +27,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: R 2.10.0\n"
+"Project-Id-Version: R 2.11.0\n"
 "Report-Msgid-Bugs-To: bugs@R-project.org\n"
-"POT-Creation-Date: 2009-05-08 14:08+0100\n"
-"PO-Revision-Date: 2009-05-08 14:08+0100\n"
+"POT-Creation-Date: 2009-10-12 15:40+0100\n"
+"PO-Revision-Date: 2009-10-12 15:40+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -173,7 +173,7 @@ msgid "unable to open file"
 msgstr "unable to open file"
 
 #: Rdbfwrite.c:95 Rdbfwrite.c:133 stataread.c:282 stataread.c:303
-#: stataread.c:673 stataread.c:699
+#: stataread.c:685 stataread.c:715
 msgid "unknown data type"
 msgstr "unknown data type"
 
@@ -198,7 +198,7 @@ msgstr "SAS transfer file has incorrect member header"
 msgid "problem accessing SAS XPORT file"
 msgstr "problem accessing SAS XPORT file"
 
-#: SASxport.c:505 SASxport.c:598 spss.c:662 stataread.c:533
+#: SASxport.c:505 SASxport.c:598 spss.c:668 stataread.c:541
 #, c-format
 msgid "unable to open file: '%s'"
 msgstr "unable to open file: ‘%s’"
@@ -847,22 +847,22 @@ msgstr "%s: Compressed data is corrupted.  Data ends partway through a case"
 msgid "%s: Partial record at end of system file"
 msgstr "%s: Partial record at end of system file"
 
-#: spss.c:381 spss.c:497
+#: spss.c:381 spss.c:503
 msgid "nval is 0"
 msgstr "nval is 0"
 
-#: spss.c:665
+#: spss.c:671
 #, c-format
 msgid "problem in reading file '%s'"
 msgstr "problem in reading file ‘%s’"
 
-#: spss.c:675
+#: spss.c:681
 #, c-format
 msgid "file '%s' is not in any supported SPSS format"
 msgstr "file ‘%s’ is not in any supported SPSS format"
 
 #: stataread.c:86 stataread.c:96 stataread.c:104 stataread.c:129
-#: stataread.c:139 stataread.c:148 stataread.c:461
+#: stataread.c:139 stataread.c:148 stataread.c:469
 msgid "a binary read error occurred"
 msgstr "a binary read error occurred"
 
@@ -878,44 +878,44 @@ msgstr ""
 "something strange in the file\n"
 " (Type 0 characteristic of nonzero length)"
 
-#: stataread.c:525
+#: stataread.c:533
 msgid "can not yet read Stata .dta on this platform"
 msgstr "can not yet read Stata .dta on this platform"
 
-#: stataread.c:529 stataread.c:847
+#: stataread.c:537 stataread.c:865
 msgid "first argument must be a file name\n"
 msgstr "first argument must be a file name\n"
 
-#: stataread.c:547 stataread.c:554 stataread.c:560 stataread.c:575
-#: stataread.c:577 stataread.c:585 stataread.c:593
+#: stataread.c:555 stataread.c:562 stataread.c:568 stataread.c:583
+#: stataread.c:585 stataread.c:593 stataread.c:601
 msgid "a binary write error occurred"
 msgstr "a binary write error occurred"
 
-#: stataread.c:788
+#: stataread.c:806
 msgid "this should not happen."
 msgstr "this should not happen."
 
-#: stataread.c:828
+#: stataread.c:846
 msgid "this should happen: overrun"
 msgstr "this should happen: overrun"
 
-#: stataread.c:830
+#: stataread.c:848
 msgid "this should happen: underrun"
 msgstr "this should happen: underrun"
 
-#: stataread.c:843
+#: stataread.c:861
 msgid "cannot yet read write .dta on this platform"
 msgstr "cannot yet read write .dta on this platform"
 
-#: stataread.c:851
+#: stataread.c:869
 #, c-format
 msgid "unable to open file for writing: '%s'"
 msgstr "unable to open file for writing: ‘%s’"
 
-#: stataread.c:855
+#: stataread.c:873
 msgid "data to be saved must be in a data frame"
 msgstr "data to be saved must be in a data frame"
 
-#: stataread.c:860
+#: stataread.c:878
 msgid "can only write version 6-10 formats"
 msgstr "can only write version 6-10 formats"

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: R 2.10.0\n"
+"Project-Id-Version: R 2.11.0\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2009-05-24 07:59\n"
+"POT-Creation-Date: 2010-01-03 10:12\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,10 +95,10 @@ msgstr ""
 msgid "are missing"
 msgstr ""
 
-msgid "Version must be 6-10"
+msgid "Version must be 6-11"
 msgstr ""
 
-msgid "Version must be 6-10: using 7"
+msgid "Version must be 6-11: using 7"
 msgstr ""
 
 msgid "cannot uniquely abbreviate variable names"

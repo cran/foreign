@@ -13,7 +13,7 @@ write.dta(dataframe, file, version = 7L,
   \item{dataframe}{a data frame.}
   \item{file}{character string giving filename.}
   \item{version}{integer: Stata version: 6, 7, 8 and 10 are supported,
-    and 9 is mapped to 8.}
+    and 9 is mapped to 8, 11 to 10.}
   \item{convert.dates}{Convert \code{Date} and \code{POSIXt} objects
     to Stata dates?}
   \item{tz}{timezone for date conversion}
@@ -54,7 +54,7 @@ write.dta(dataframe, file, version = 7L,
 
   For Stata 8 or later use the default \code{version=7} -- the only
   advantage of Stata 8 format is that it can represent multiple
-  different missing value types, and R doesn't have them.  Stata 10
+  different missing value types, and R doesn't have them.  Stata 10/11
   allows longer format lists, but R does not make use of them.
 
   Note that the Stata formats are documented to be use ASCII strings --
@@ -72,10 +72,11 @@ write.dta(dataframe, file, version = 7L,
   \code{NULL}
 }
 \references{
-  Stata 6.0 Users Manual, Stata 7.0 Programming manual, Stata 8.0, 9.0 online
-  help describe the file formats.
+  Stata 6.0 Users Manual, Stata 7.0 Programming manual, Stata online
+  help (version 8 and later, also \url{http://www.stata.com/help.cgi?dta}
+  and \url{http://www.stata.com/help.cgi?dta_113}) describe the file formats.
 } 
-\author{Thomas Lumley}
+\author{Thomas Lumley and R-core members}
 \seealso{
   \code{\link{read.dta}},
   \code{\link{attributes}},

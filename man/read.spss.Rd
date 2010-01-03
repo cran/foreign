@@ -53,7 +53,7 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
   character vector giving the type of missingness, and may also have an
   element \code{value} with the values corresponding to missingness.
   This is a complex subject (where the \R and C source code for
-  \code{read.spss}) is the main documentation), but the simplest cases
+  \code{read.spss} is the main documentation), but the simplest cases
   are types \code{"one"}, \code{"two"} and \code{"three"} with a
   corresponding number of (real or string) values whose labels can be
   found from the \code{"label.table"} attribute.  Other possibilities are
