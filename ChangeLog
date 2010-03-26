@@ -1,7 +1,15 @@
+2010-03-26  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-40
+	* src/dbfopen.c: Remove the undocumented restriction of
+	read.dbf() to extensions .dbf or .DBF. (And change DESCRIPTION to
+	match.)
+	* tests/octave.Rout.save: update for str() change (bugfix).
+
 2010-01-03  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-39
-	* R/read.R.dta, man/write.dta.Rd: Stata 11 uses the same format as
+	* R/read.dta.R, man/write.dta.Rd: Stata 11 uses the same format as
 	Stata 10, so map 11 to 10.
 	* po/R*: update.
 	* tests/octave.Rout.save: update for str() change.

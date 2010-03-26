@@ -357,7 +357,9 @@ DBFOpen( const char * pszFilename, const char * pszAccess )
     DBFHandle		psDBF;
     unsigned char		*pabyBuf;
     int			nFields, nHeadLen, nRecLen, iField, i;
+#if 0
     char		*pszBasename, *pszFullname;
+#endif
 
 /* -------------------------------------------------------------------- */
 /*      We only allow the access strings "rb" and "r+".                  */
@@ -373,6 +375,7 @@ DBFOpen( const char * pszFilename, const char * pszAccess )
     if( strcmp(pszAccess,"r+") == 0 )
 	pszAccess = "rb+";
 
+#if 0
 /* -------------------------------------------------------------------- */
 /*	Compute the base (layer) name.  If there is any extension	*/
 /*	on the passed in filename we will strip it off.			*/
@@ -401,6 +404,11 @@ DBFOpen( const char * pszFilename, const char * pszAccess )
 
     free( pszBasename );
     free( pszFullname );
+#endif
+
+/* Changed in 0.8-40 to use name as supplied */
+    psDBF = (DBFHandle) calloc( 1, sizeof(DBFInfo) );
+    psDBF->fp = fopen( pszFilename, pszAccess );
 
     if( psDBF->fp == NULL )
     {
