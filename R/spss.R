@@ -100,7 +100,6 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
     if(!is.null(miss)) {
         if(reencode) {
             nm <- names(miss)
-            nm <- iconv(nm, cp, "")
             names(miss) <- iconv(nm, cp, "")
             for(i in seq_along(miss))
                 if(is.character(miss[[i]]$value))

@@ -33,17 +33,17 @@ write.dta(dataframe, file, version = 7L,
   not to be unique.
 
   The columns in the data frame become variables in the Stata data set.
-  Missing values are correctly handled.
+  Missing values are handled correctly.
 
-  Unless deselected, R date and date-time objects (\code{POSIXt}
-  classes) are converted into the Stata format.  For date-time objects
-  this may lose information -- Stata dates are in days since 1960-1-1.
-  \code{POSIXct} objects can be written without conversion but will not
-  be understood as dates by Stata; \code{POSIXlt} objects cannot be
-  written without conversion.
+  Unless deselected by argument \code{convert.dates}, \R date and
+  date-time objects (\code{POSIXt} classes) are converted into the Stata
+  format.  For date-time objects this may lose information -- Stata
+  dates are in days since 1960-1-1.  \code{POSIXct} objects can be
+  written without conversion but will not be understood as dates by
+  Stata; \code{POSIXlt} objects cannot be written without conversion.
 
   There are four options for handling factors.  The default is to use
-  Stata \code{value labels} for the factor levels. With
+  Stata \sQuote{value labels} for the factor levels.  With
   \code{convert.factors="string"}, the factor levels are written as
   strings.  With \code{convert.factors="numeric"} the numeric values of
   the levels are written, or \code{NA} if they cannot be coerced to
@@ -54,10 +54,10 @@ write.dta(dataframe, file, version = 7L,
 
   For Stata 8 or later use the default \code{version=7} -- the only
   advantage of Stata 8 format is that it can represent multiple
-  different missing value types, and R doesn't have them.  Stata 10/11
-  allows longer format lists, but R does not make use of them.
+  different missing value types, and \R doesn't have them.  Stata 10/11
+  allows longer format lists, but \R does not make use of them.
 
-  Note that the Stata formats are documented to be use ASCII strings --
+  Note that the Stata formats are documented to use ASCII strings --
   \R does not enforce this, but use of non-ASCII character strings will
   not be portable as the encoding is not recorded.  Up to 244 bytes are
   allowed in character data, and longer strings will be truncated with a

@@ -1,3 +1,12 @@
+2010-09-23  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-41
+	* R/spss.R: Fix to PR#14382
+
+2010-06-29  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* man/write.dta.Rd: Improve wording
+
 2010-03-26  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-40
