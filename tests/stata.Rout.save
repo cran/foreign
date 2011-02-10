@@ -1,6 +1,6 @@
 
-R version 2.8.1 beta (2008-12-13 r47193)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.13.0 Under development (unstable) (2011-01-02 r53896)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -224,10 +224,10 @@ In read.dta("pc5.dta") : cannot read factor labels from Stata 5 files
 > summary(df)
       hlth159         id            adate           
  EXCELLENT: 0   Min.   : 1.00   Min.   :1960-01-02  
- VERY GOOD: 6   1st Qu.: 8.25   1st Qu.:1960-01-10  
- GOOD     : 8   Median :15.50   Median :1960-01-17  
- FAIR     : 4   Mean   :15.50   Mean   :1960-01-17  
- POOR     : 1   3rd Qu.:22.75   3rd Qu.:1960-01-24  
+ VERY GOOD: 6   1st Qu.: 8.25   1st Qu.:1960-01-09  
+ GOOD     : 8   Median :15.50   Median :1960-01-16  
+ FAIR     : 4   Mean   :15.50   Mean   :1960-01-16  
+ POOR     : 1   3rd Qu.:22.75   3rd Qu.:1960-01-23  
  NA's     :11   Max.   :30.00   Max.   :1960-01-31  
 > data(esoph)
 > write.dta(esoph,esophile<-tempfile())

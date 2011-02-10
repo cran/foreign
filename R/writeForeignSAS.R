@@ -69,7 +69,7 @@ writeForeignSAS <- function(df, datafile, codefile, dataname="rdata",
     if(any(xdates))
         dfn[xdates] <- lapply(dfn[xdates], function(x) as.Date(as.POSIXct(x)))
 
-    write.table(dfn, file = datafile, row = FALSE, col = FALSE,
+    write.table(dfn, file = datafile, row.names = FALSE, col.names = FALSE,
                 sep = ",", quote = TRUE, na = "")
     lrecl <- max(sapply(readLines(datafile),nchar)) + 4L
 

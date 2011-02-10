@@ -44,7 +44,7 @@ read.epiinfo <- function (file, read.deleted = FALSE,
     header <- scan(file, nlines = headerlength,
                    what = list(name = "", x = 0, y = 0, color = 0, x1 = 0,
                    y1 = 0, type = 0, len = 0, color = 0),
-                   flush = TRUE, quiet = TRUE, comment = "")
+                   flush = TRUE, quiet = TRUE, comment.char = "")
     header <- as.data.frame(lapply(header, I))
     header$start <- cumsum(c(1L, header$len))[1L:headerlength]
     header$stop <- cumsum(header$len)
@@ -63,7 +63,7 @@ read.epiinfo <- function (file, read.deleted = FALSE,
     #   17  SOUNDEX field
     #
     numbers <- (header$len > 0L) & ((header$type %in% c(0L, 6L, 12L)) | (header$type > 12L)) & !(header$type %in% c(16L, 17L))
-    datalines <- scan(file, what = "", sep = "\n", quote = "", quiet = TRUE, blank.lines.skip = TRUE, comment = "")
+    datalines <- scan(file, what = "", sep = "\n", quote = "", quiet = TRUE, blank.lines.skip = TRUE, comment.char = "")
     #
     # Added check for empty file
     #

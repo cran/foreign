@@ -148,7 +148,7 @@ function(file)
         str <- gsub("\\)", "", str)
         nums <- as.numeric(unlist(strsplit(str, ",")))
         stopifnot(length(nums) == 2L)
-        complex(real = nums[1L], imag = nums[2L])
+        complex(real = nums[1L], imaginary = nums[2L])
     }
 
 

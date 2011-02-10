@@ -25,7 +25,7 @@ writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL)
 {
     ## FIXME: re-write this to hold a connection open
     dfn <- lapply(df, function(x) if (is.factor(x)) as.numeric(x) else x)
-    write.table(dfn, file=datafile, row=FALSE, col=FALSE,
+    write.table(dfn, file=datafile, row.names=FALSE, col.names=FALSE,
                 sep=",", quote=FALSE, na="",eol=",\n")
 
     varlabels <- names(df)
@@ -73,8 +73,8 @@ writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL)
 
 writeForeignStata <- function(df, datafile, codefile)
 {
-    write.table(df, file=datafile, row=FALSE, col=FALSE, sep=",",
-                quote=FALSE, na=".")
+    write.table(df, file=datafile, row.names=FALSE, col.names=FALSE,
+                sep=",", quote=FALSE, na=".")
     nms <- names(df)
     factors <- sapply(df,is.factor) | sapply(df, is.character)
     formats <- paste(nms,"fmt",sep="_")

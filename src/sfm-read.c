@@ -905,6 +905,8 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
       vv->label = NULL;
       vv->val_lab = NULL;
 
+      /* FIXME: much of this is incorrect if the file is encoded in a MBCS */
+
       /* Copy first character of variable name. */
       if (!isalpha ((unsigned char) sv.name[0])
 	  && sv.name[0] != '@' && sv.name[0] != '#')
@@ -935,7 +937,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	    vv->name[j] = c;
 	  else
 	    lose ((_("%s: position %d: character `\\%03o' (%c) is not valid in a variable name"),
-		   h->fn, i, c, c));
+		   h->fn, j, c, c)); /* changed from 'i', PR#14465 */
 	}
       vv->name[j] = 0;
 

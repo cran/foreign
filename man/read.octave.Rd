@@ -2,7 +2,7 @@
 % It is distributed under the GPL version 2 or later
 
 % Original copyright (c) 2004 Stephen Eglen
-% Changes copyright (c) 2004 R Development Core Team
+% Changes copyright (c) 2004-10 R Development Core Team
 
 \name{read.octave}
 \alias{read.octave}
@@ -18,7 +18,7 @@ read.octave(file)
 }
 \details{
   This function is used to read in files in Octave text data format, as
-  created by \code{save -ascii} in Octave.  It knows about most of the
+  created by \code{save -text} in Octave.  It knows about most of the
   common types of variables, including the standard atomic (real and
   complex scalars, matrices, and \eqn{N}-d arrays, strings, ranges, and
   boolean scalars and matrices) and recursive (structs, cells, and

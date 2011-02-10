@@ -1473,6 +1473,7 @@ DBFGetNativeFieldType( DBFHandle psDBF, int iField )
 /*                            str_to_upper()                            */
 /************************************************************************/
 
+/* FIXME: this is incorrect in a MBCS */
 static void str_to_upper (char *string)
 {
     int len;
