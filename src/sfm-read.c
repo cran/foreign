@@ -1,8 +1,7 @@
 /* PSPP - computes sample statistics.
    Copyright (C) 1997-9, 2000 Free Software Foundation, Inc.
    Written by Ben Pfaff <blp@gnu.org>.
-   Modified for R foreign package by Saikat DebRoy <saikat@stat.wisc.edu>
-   Patches by the R Core Team 2001-2017.
+   Modified for R foreign library by Saikat DebRoy <saikat@stat.wisc.edu>.
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License as
@@ -24,7 +23,6 @@
 #include <errno.h>
 #include <float.h>
 #include <limits.h>
-#include <string.h>
 #include "foreign.h"
 #include "avl.h"
 #include "file-handle.h"
@@ -68,7 +66,7 @@
 /*#define DEBUGGING 1*/
 
 static double
-second_lowest_double_val(void)
+second_lowest_double_val()
 {
   /* PORTME: Set the value for second_lowest_value, which is the
      "second lowest" possible value for a double.  This is the value
@@ -151,8 +149,6 @@ void dump_dictionary (struct dictionary * dict);
 #define bswap_int32(x) reverse_int(*x)
 
 /* Reverse the byte order of 64-bit floating point *X. */
-/* FIXME: it would be safer to read the floating point data as byte arrays and
-          reverse the bytes before interpreting them as "double" */
 #define bswap_flt64(x) reverse_double(*x)
 
 /* Closes a system file after we're done with it. */
@@ -163,7 +159,7 @@ sfm_close (struct file_handle * h)
 
   ext->opened--;
   if (!(ext->opened == 0)) error("assert failed : ext->opened == 0");
-  R_Free (ext->buf);
+  Free (ext->buf);
   if (EOF == fclose (ext->file))
     error(_("%s: Closing system file: %s"), h->fn, strerror (errno));
 }
@@ -224,12 +220,12 @@ free_value_label (struct value_label * v)
   if (!(v->ref_count >= 1)) error("assert failed : v->ref_count >= 1");
   if (--v->ref_count == 0)
     {
-      R_Free (v->s);
-      R_Free (v);
+      Free (v->s);
+      Free (v);
     }
 }
 
-/* R_Frees value label P.  PARAM is ignored.  Used as a callback with
+/* Frees value label P.  PARAM is ignored.  Used as a callback with
    R_avl_destroy(). */
 void
 free_val_lab (void *p, void *param)
@@ -244,7 +240,7 @@ free_dictionary (struct dictionary * d)
   int i;
 
   d->n_splits = 0;
-  R_Free (d->splits);
+  Free (d->splits);
   d->splits = NULL;
 
   if (d->var_by_name)
@@ -261,17 +257,17 @@ free_dictionary (struct dictionary * d)
 	}
       if (v->label)
 	{
-	  R_Free (v->label);
+	  Free (v->label);
 	  v->label = NULL;
 	}
-      R_Free (d->var[i]);
+      Free (d->var[i]);
     }
-  R_Free (d->var);
+  Free (d->var);
 
-  R_Free (d->label);
-  R_Free (d->documents);
+  Free (d->label);
+  Free (d->documents);
 
-  R_Free (d);
+  Free (d);
 }
 
 /* Reads the dictionary from file with handle H, and returns it in a
@@ -306,11 +302,11 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 #endif
 
   /* Open the physical disk file. */
-  ext = (struct sfm_fhuser_ext *) R_Calloc(1, struct sfm_fhuser_ext);
+  ext = (struct sfm_fhuser_ext *) Calloc(1, struct sfm_fhuser_ext);
   ext->file = fopen (R_ExpandFileName(h->norm_fn), "rb");
   if (ext->file == NULL)
     {
-      R_Free (ext);
+      Free (ext);
       error(_("An error occurred while opening '%s' for reading as a system file: %s"),
 	    h->fn, strerror (errno));
     }
@@ -406,39 +402,24 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 
 	    switch (data.subtype)
 	      {
-			  
-		/* subtypes as specified by PSPP documentation at
-			  https://www.gnu.org/software/pspp/pspp-dev/html_node/System-File-Format.html#System-File-Format
-		*/
-			  
-	      case 3: /* Machine integer information */
+	      case 3:
 		  if (!read_machine_int32_info (h, data.size, data.count,
 						&(inf->encoding)))
 		  goto lossage;
 		break;
 
-	      case 4: /* Machine floating point information */
+	      case 4:
 		if (!read_machine_flt64_info (h, data.size, data.count))
 		  goto lossage;
 		break;
 
-	      case 5:  /* grouped variables */ 
+	      case 5:
+	      case 6:
+	      case 11: /* ?? Used by SPSS 8.0. */
 		skip = 1;
 		break;
 
-	      case 6: /* some rarely used date information */
-		skip = 1;
-		break;
-
-	      case 7: /* Multiple-response sets */
-		skip = 1;
-		break;
-
-	      case 11: /*Variable Display Parameter Record */
-		skip = 1;
-		break;
-
-	      case 12: /* UUID, rarely used */
+	      case 7: /* Multiple-response sets (later versions of SPSS). */
 		skip = 1;
 		break;
 
@@ -448,45 +429,14 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 		  goto lossage;
 		break;
 
-	      case 14: /* Very Long String Record */
-		warning(_("%s: Very long string record(s) found (record type 7, subtype %d), each will be imported in consecutive separate variables"), h->fn, data.subtype);
+	      case 16: /* See http://www.nabble.com/problem-loading-SPSS-15.0-save-files-t2726500.html */
 		skip = 1;
 		break;
 
-	      case 16: /* Extended Number of Cases Record (64-bit integer to represent ncases rather than 32-bit in system file header) */
-		  skip = 1;
-		break;
-
-	      case 17: /* Data File Attributes Record */
-		skip = 1;
-		break;
-		  
-	      case 18: /* Variable Attributes Records */
+	      case 20:
 		skip = 1;
 		break;
 
-	      case 19: /* bninary multiple-response sets */
-		skip = 1;
-		break;
-		  
-	      case 20: /* another codepage information */
-		skip = 1;
-		break;
-
-	      case 21: /* Long String Value Labels Record */
-		warning(_("%s: Long string value labels record found (record type 7, subtype %d), but ignored"), h->fn, data.subtype);
-		skip = 1;
-		break;
-
-	      case 22: /* Long String Missing Values Record */
-		warning(_("%s: Long string missing values record found (record type 7, subtype %d), but ignored"), h->fn, data.subtype);
-		skip = 1;
-		break;
-		  
-	      case 24: /* XML that describes how data in the file should be displayed on-screen */
-		skip = 1;
-		break;
-						  
 	      default:
 		warning(_("%s: Unrecognized record type 7, subtype %d encountered in system file"), h->fn, data.subtype);
 		skip = 1;
@@ -497,7 +447,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 		void *x = bufread (h, NULL, data.size * data.count, 0);
 		if (x == NULL)
 		  goto lossage;
-		R_Free (x);
+		Free (x);
 	      }
 	  }
 	  break;
@@ -522,17 +472,17 @@ break_out_of_loop:
   warning ("Read system-file dictionary successfully");
   dump_dictionary (ext->dict);
 #endif
-  R_Free (var_by_index);
+  Free (var_by_index);
   return ext->dict;
 
 lossage:
   /* Come here on unsuccessful completion. */
 
-  R_Free (var_by_index);
+  Free (var_by_index);
   fclose (ext->file);
   if (ext && ext->dict)
     free_dictionary (ext->dict);
-  R_Free (ext);
+  Free (ext);
   h->class = NULL;
   h->ext = NULL;
   error(_("error reading system-file header"));
@@ -551,7 +501,7 @@ read_machine_int32_info (struct file_handle * h, int size, int count, int *encod
   int i;
 
   if (size != sizeof (R_int32) || count != 8)
-    lose ((_("%s: Bad size (%d or count (%u) field on record type 7, subtype 3.	Expected size %ld, count 8"),
+    lose ((_("%s: Bad size (%d) or count (%d) field on record type 7, subtype 3.	Expected size %d, count 8"),
 	h->fn, size, count, sizeof (R_int32)));
 
   assertive_bufread(h, data, sizeof data, 0);
@@ -618,7 +568,7 @@ read_machine_flt64_info (struct file_handle * h, int size, int count)
   int i;
 
   if (size != sizeof (R_flt64) || count != 3)
-    lose ((_("%s: Bad size (%d) or count (%u) field on record type 7, subtype 4.	Expected size %lu, count 8"),
+    lose ((_("%s: Bad size (%d) or count (%d) field on record type 7, subtype 4.	Expected size %d, count 8"),
 	   h->fn, size, count, sizeof (R_flt64)));
 
   assertive_bufread(h, data, sizeof data, 0);
@@ -658,13 +608,13 @@ read_long_var_names (struct file_handle * h, struct dictionary * dict
   char * endp;
   char * val;
   if ((1 != size)||(0 == count)) {
-    warning("%s: strange record info seen, size=%lu, count=%u"
+    warning("%s: strange record info seen, size=%u, count=%u"
       ", ignoring long variable names"
       , h->fn, size, count);
     return 0;
   }
   size *= count;
-  data = R_Calloc (size +1, char);
+  data = Calloc (size +1, char);
   bufread(h, data, size, 0);
   /* parse */
   end = &dict->var[dict->nvar];
@@ -680,8 +630,7 @@ read_long_var_names (struct file_handle * h, struct dictionary * dict
       /* now, p is key, val is long name */
       for (lp = dict->var; lp < end; ++lp) {
         if (!strcmp(lp[0]->name, p)) {
-          strncpy(lp[0]->name, val, 64);
-	  lp[0]->name[64] = '\0';
+          strncpy(lp[0]->name, val, sizeof(lp[0]->name));
           break;
         }
       }
@@ -691,11 +640,10 @@ read_long_var_names (struct file_handle * h, struct dictionary * dict
         , h->fn, p, val);
       }
     }
-    //p = &endp[1]; /* put to next */
-    if(endp) p = endp + 1;
+    p = &endp[1]; /* put to next */
   } while (endp);
 
-  R_Free(data);
+  Free(data);
   return 1;
 }
 
@@ -710,7 +658,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
   int i;
 
   /* Create the dictionary. */
-  dict = ext->dict = R_Calloc (1, struct dictionary);
+  dict = ext->dict = Calloc (1, struct dictionary);
   dict->var = NULL;
   dict->var_by_name = NULL;
   dict->nvar = 0;
@@ -771,7 +719,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
     for (i = 0; i < N_PREFIXES; i++)
       if (!strncmp (prefix[i], hdr.prod_name, strlen (prefix[i])))
 	{
-	    skip_amt = (int) strlen (prefix[i]);
+	  skip_amt = strlen (prefix[i]);
 	  break;
 	}
   }
@@ -799,7 +747,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
   ext->case_size = hdr.case_size;
   if (hdr.case_size <= 0 || ext->case_size > (INT_MAX
 					      / (int) sizeof (union value) / 2))
-    lose ((_("%s: Number of elements per case (%d) is not between 1 and %ld"),
+    lose ((_("%s: Number of elements per case (%d) is not between 1 and %d"),
 	   h->fn, hdr.case_size, INT_MAX / sizeof (union value) / 2));
 
   ext->compressed = hdr.compressed;
@@ -829,7 +777,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
       if (!isspace ((unsigned char) hdr.file_label[i])
 	  && hdr.file_label[i] != 0)
 	{
-	  dict->label = R_Calloc (i + 2, char);
+	  dict->label = Calloc (i + 2, char);
 	  memcpy (dict->label, hdr.file_label, i + 1);
 	  dict->label[i + 1] = 0;
 	  break;
@@ -895,8 +843,8 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
   int next_value = 0;		/* Index to next `value' structure. */
 
   /* Allocate variables. */
-  dict->var = R_Calloc (ext->case_size, struct variable *);
-  *var_by_index = R_Calloc (ext->case_size, struct variable *);
+  dict->var = Calloc (ext->case_size, struct variable *);
+  *var_by_index = Calloc (ext->case_size, struct variable *);
 
   /* Read in the entry for each variable and use the info to
      initialize the dictionary. */
@@ -951,7 +899,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 
       /* Construct internal variable structure, initialize critical bits. */
       vv = (*var_by_index)[i] = dict->var[dict->nvar++] =
-	  R_Calloc (1, struct variable);
+	  Calloc (1, struct variable);
       vv->index = dict->nvar - 1;
       vv->foo = -1;
       vv->label = NULL;
@@ -960,18 +908,16 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
       /* FIXME: much of this is incorrect if the file is encoded in a MBCS */
 
       /* Copy first character of variable name. */
-
-    /* it seems in a comparison on 1338 SPSS files, that this is always a false positive:
       if (!isalpha ((unsigned char) sv.name[0])
 	  && sv.name[0] != '@' && sv.name[0] != '#')
 	lose ((_("%s: position %d: Variable name begins with invalid character"), h->fn, i));
-	  if (islower ((unsigned char) sv.name[0]))
+      if (islower ((unsigned char) sv.name[0]))
 	warning(_("%s: position %d: Variable name begins with lowercase letter %c"),
-		h->fn, i, sv.name[0]);  */
+		h->fn, i, sv.name[0]);
       if (sv.name[0] == '#')
 	warning(_("%s: position %d: Variable name begins with octothorpe ('#').  Scratch variables should not appear in system files"),
 		  h->fn, i);
-      vv->name[0] = (char) (sv.name[0]);
+      vv->name[0] = toupper ((unsigned char) (sv.name[0]));
 
       /* Copy remaining characters of variable name. */
       for (j = 1; j < 8; j++)
@@ -982,14 +928,13 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	    break;
 	  else if (islower (c))
 	    {
-		/* it seems in a comparison on 1338 SPSS files, that this is always a false positive:
-		warning(_("%s: position %d: Variable name character %d is lowercase letter %c"),
-		      h->fn, i, j + 1, sv.name[j]);*/
-	      vv->name[j] = (char) (c);
+	      warning(_("%s: position %d: Variable name character %d is lowercase letter %c"),
+		      h->fn, i, j + 1, sv.name[j]);
+	      vv->name[j] = toupper ((unsigned char) (c));
 	    }
 	  else if (isalnum (c) || c == '.' || c == '@'
 		   || c == '#' || c == '$' || c == '_' || c > 127)
-	      vv->name[j] = (char) c;
+	    vv->name[j] = c;
 	  else
 	    lose ((_("%s: position %d: character `\\%03o' (%c) is not valid in a variable name"),
 		   h->fn, j, c, c)); /* changed from 'i', PR#14465 */
@@ -1102,15 +1047,9 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
       else
 	vv->miss_type = MISSING_NONE;
 
-      if (!parse_format_spec (h, sv.print, &vv->print, vv))
+      if (!parse_format_spec (h, sv.print, &vv->print, vv)
+	  || !parse_format_spec (h, sv.write, &vv->write, vv))
 	goto lossage;
-/*	We do not need this part in the if() condition:
-	  || !parse_format_spec (h, sv.write, &vv->write, vv))  
-	 as this produces some uncertainty about the format type given 
-	  https://www.gnu.org/software/pspp/pspp-dev/html_node/Variable-Record.html#Variable-Record
-	  tells us on June 9, 2017:
-	  "A few system files have been observed in the wild with invalid write fields, in particular with value 0. Readers should probably treat invalid print or write fields as some default format. "
-*/
     }
 
   /* Some consistency checks. */
@@ -1120,7 +1059,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
   if (next_value != ext->case_size)
     lose ((_("%s: System file header indicates %d variable positions but %d were read from file"),
 	   h->fn, ext->case_size, next_value));
-  dict->var = R_Realloc (dict->var, dict->nvar, struct variable *);
+  dict->var = Realloc (dict->var, dict->nvar, struct variable *);
 
   /* Construct AVL tree of dictionary in order to speed up later
      processing and to check for duplicate varnames. */
@@ -1135,13 +1074,13 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 lossage:
   for (i = 0; i < dict->nvar; i++)
     {
-      R_Free (dict->var[i]->label);
-      R_Free (dict->var[i]);
+      Free (dict->var[i]->label);
+      Free (dict->var[i]);
     }
-  R_Free (dict->var);
+  Free (dict->var);
   if (dict->var_by_name)
     R_avl_destroy (dict->var_by_name, NULL);
-  R_Free (dict);
+  Free (dict);
   ext->dict = NULL;
 
   return 0;
@@ -1204,10 +1143,10 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
     bswap_int32 (&n_labels);
 
   /* Allocate memory. */
-  raw_label = R_Calloc (n_labels, R_flt64);
-  cooked_label = R_Calloc (n_labels, struct value_label *);
+  raw_label = Calloc (n_labels, R_flt64);
+  cooked_label = Calloc (n_labels, struct value_label *);
   for (i = 0; i < n_labels; i++)
-      cooked_label[i] = NULL;  /* But R_Calloc just zeroed it */
+      cooked_label[i] = NULL;  /* But Calloc just zeroed it */
 
   /* Read each value/label tuple. */
   for (i = 0; i < n_labels; i++)
@@ -1223,13 +1162,13 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
       memcpy (&raw_label[i], &value, sizeof value);
 
       /* Read label. */
-      cooked_label[i] = R_Calloc (1, struct value_label);
-      cooked_label[i]->s = R_Calloc (label_len + 1, char);
+      cooked_label[i] = Calloc (1, struct value_label);
+      cooked_label[i]->s = Calloc (label_len + 1, char);
       assertive_bufread(h, cooked_label[i]->s, label_len, 0);
       cooked_label[i]->s[label_len] = 0;
 
       /* Skip padding. */
-      rem = (int) REM_RND_UP (label_len + 1, sizeof (R_flt64));
+      rem = REM_RND_UP (label_len + 1, sizeof (R_flt64));
       if (rem)
 	assertive_bufread(h, &value, rem, 0);
     }
@@ -1259,7 +1198,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
 	   h->fn, n_vars, ext->dict->nvar));
 
   /* Allocate storage. */
-  var = R_Calloc (n_vars, struct variable *);
+  var = Calloc (n_vars, struct variable *);
 
   /* Read the list of variables. */
   for (i = 0; i < n_vars; i++)
@@ -1343,9 +1282,9 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
 	}
     }
 
-  R_Free (cooked_label);
-  R_Free (raw_label);
-  R_Free (var);
+  Free (cooked_label);
+  Free (raw_label);
+  Free (var);
   return 1;
 
 lossage:
@@ -1353,11 +1292,11 @@ lossage:
     for (i = 0; i < n_labels; i++)
       if (cooked_label[i])
 	{
-	  R_Free (cooked_label[i]->s);
-	  R_Free (cooked_label[i]);
+	  Free (cooked_label[i]->s);
+	  Free (cooked_label[i]);
 	}
-  R_Free (raw_label);
-  R_Free (var);
+  Free (raw_label);
+  Free (var);
   return 0;
 }
 
@@ -1371,7 +1310,7 @@ bufread (struct file_handle * h, void *buf, size_t nbytes, size_t minalloc)
   struct sfm_fhuser_ext *ext = h->ext;
 
   if (buf == NULL)
-    buf = R_Calloc (max (nbytes, minalloc), char);
+    buf = Calloc (max (nbytes, minalloc), char);
   if ((nbytes != 0) && (1 != fread (buf, nbytes, 1, ext->file)))
     {
       if (ferror (ext->file))
@@ -1504,14 +1443,14 @@ dump_dictionary (struct dictionary * dict)
 /* Reads compressed data into H->BUF and sets other pointers
    appropriately.  Returns nonzero only if both no errors occur and
    data was read. */
-static size_t
+static int
 buffer_input (struct file_handle * h)
 {
   struct sfm_fhuser_ext *ext = h->ext;
   size_t amt;
 
   if (ext->buf == NULL)
-    ext->buf = R_Calloc (128, R_flt64);
+    ext->buf = Calloc (128, R_flt64);
   amt = fread (ext->buf, sizeof *ext->buf, 128, ext->file);
   if (ferror (ext->file))
     {
@@ -1644,7 +1583,7 @@ sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * d
      file.  (Cases in the data file have no particular relationship to
      cases in the active file.) */
   nbytes = sizeof *temp * ext->case_size;
-  temp = R_Calloc(ext->case_size, R_flt64);
+  temp = Calloc(ext->case_size, R_flt64);
 
   if (ext->compressed == 0)
     {
@@ -1682,11 +1621,11 @@ sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * d
 	memcpy (perm[v->fv].c, &temp[v->get.fv], v->width);
     }
 
-  R_Free (temp);
+  Free (temp);
   return 1;
 
 lossage:
-  R_Free (temp);
+  Free (temp);
   return 0;
 }
 

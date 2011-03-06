@@ -23,11 +23,14 @@
 
 #include "format.h"
 
+#define SIZEOF_DOUBLE 8
+#define SIZEOF_LONG 4
+
 /* Values. */
 
 /* Definition of the max length of a short string value, generally
    eight characters.  */
-#define MAX_SHORT_STRING 8 // ((SIZEOF_DOUBLE)>=8 ? ((SIZEOF_DOUBLE)+1)/2*2 : 8)
+#define MAX_SHORT_STRING ((SIZEOF_DOUBLE)>=8 ? ((SIZEOF_DOUBLE)+1)/2*2 : 8)
 #define MIN_LONG_STRING (MAX_SHORT_STRING+1)
 
 /* FYI: It is a bad situation if sizeof(R_flt64) < MAX_SHORT_STRING:
@@ -71,7 +74,7 @@ union value
     unsigned char *c;
 
     /* Sometimes we insert value's in a hash table. */
-    unsigned long hash[sizeof(double) / sizeof(long)];
+    unsigned long hash[SIZEOF_DOUBLE / SIZEOF_LONG];
   };
 
 /* Describes one value label. */

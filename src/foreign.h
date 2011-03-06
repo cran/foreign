@@ -26,7 +26,6 @@
 #ifndef FOREIGN_H
 #define FOREIGN_H
 
-#include <stddef.h>
 #include <R.h>
 #include <Rinternals.h>
 

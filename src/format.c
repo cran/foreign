@@ -87,9 +87,9 @@ fmt_to_string (const struct fmt_spec *f)
   static char buf[32];
 
   if (formats[f->type].n_args >= 2)
-      snprintf (buf, 32, "%s%d.%d", formats[f->type].name, f->w, f->d);
+    sprintf (buf, "%s%d.%d", formats[f->type].name, f->w, f->d);
   else
-      snprintf (buf, 32, "%s%d", formats[f->type].name, f->w);
+    sprintf (buf, "%s%d", formats[f->type].name, f->w);
   return buf;
 }
 

@@ -19,12 +19,8 @@ read.mtp(file)
   A list with one component for each column, matrix, or constant stored
   in the Minitab worksheet.
 }
-\note{
-  This function was written around 1990 for the format current
-  then. Later versions of Minitab appear to have added to the format.
-}
 \references{
-  \url{https://www.minitab.com/}
+  \url{http://www.minitab.com/}
 }
 \author{Douglas M. Bates}
 \examples{

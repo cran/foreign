@@ -3,7 +3,7 @@
  *
  *  Copyright 2000-2000 Saikat DebRoy <saikat@stat.wisc.edu>
  *                      Thomas Lumley <tlumley@u.washington.edu>
- *  Copyright 2005-2014 R Core Development Team
+ *  Copyright 2005-8 R Core Development Team
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -20,7 +20,6 @@
  *  http://www.r-project.org/Licenses/
  */
 
-#include <string.h>
 #include "foreign.h"
 #include "file-handle.h"
 #include "pfm.h"
@@ -39,8 +38,8 @@
 char *
 xstrdup(const char *s)
 {
-    int len = (int) strlen(s);
-    char *c = R_Calloc(len + 1, char);
+    int len = strlen(s);
+    char *c = Calloc(len + 1, char);
     strcpy(c, s);
     return c;
 }
@@ -49,7 +48,7 @@ xstrdup(const char *s)
 struct dictionary *
 new_dictionary (int copy)
 {
-  struct dictionary *d = R_Calloc (1, struct dictionary);
+  struct dictionary *d = Calloc (1, struct dictionary);
 
   d->var = NULL;
   d->var_by_name = R_avl_create (cmp_variable, NULL);
@@ -144,8 +143,8 @@ create_variable (struct dictionary *dict, const char *name,
   {
     struct variable *new_var;
 
-    dict->var = R_Realloc (dict->var, dict->nvar + 1, struct variable *);
-    new_var = dict->var[dict->nvar] = R_Calloc (1, struct variable);
+    dict->var = Realloc (dict->var, dict->nvar + 1, struct variable *);
+    new_var = dict->var[dict->nvar] = Calloc (1, struct variable);
 
     new_var->index = dict->nvar;
     dict->nvar++;
@@ -167,8 +166,8 @@ val_lab_cmp (const void *a, const void *b, void *param)
 		    width);
   else
     {
-      double temp = (((struct value_label *) a)->v.f
-		     - ((struct value_label *) b)->v.f);
+      int temp = (((struct value_label *) a)->v.f
+		  - ((struct value_label *) b)->v.f);
       if (temp > 0)
 	return 1;
       else if (temp < 0)
@@ -192,7 +191,7 @@ void *avlFlatten(const avl_tree *tree){
   const avl_node *p = tree->root.link[0];
 
   n=R_avl_count(tree);
-  ans=R_Calloc(n, void * );
+  ans=Calloc(n, void * );
 
   for (;;)  /* from avl.c:avl_walk */
     {
@@ -253,7 +252,7 @@ static SEXP getSPSSvaluelabels(struct dictionary *dict)
 		SET_STRING_ELT(somevalues, j, mkChar((char *)tmp));
 	    }
 	}
-	R_Free(flattened_labels);
+	Free(flattened_labels);
 	namesgets(somevalues, somelabels);
 	SET_VECTOR_ELT(ans, i, somevalues);
 	UNPROTECT(2); /*somevalues, somelabels*/
@@ -522,7 +521,7 @@ read_SPSS_SAVE(const char *filename)
     }
     for (i = 0; i < inf.ncases; i++) {
 	int j;
-	sfm_read_case(fh, case_vals, dict);  // should check return value
+	sfm_read_case(fh, case_vals, dict);
 	for (j = 0; j < dict->nvar; j++) {
 	    struct variable *v = dict->var[j];
 
@@ -569,10 +568,9 @@ read_SPSS_SAVE(const char *filename)
     }
     UNPROTECT(1);
 
-    SEXP cpsym = install("codepage");
     free_dictionary(dict);
     setAttrib(ans, R_NamesSymbol, ans_names);
-    setAttrib(ans, cpsym, ScalarInteger(inf.encoding));
+    setAttrib(ans, install("codepage"), ScalarInteger(inf.encoding));
     UNPROTECT(2);
     return ans;
 }
@@ -599,7 +597,7 @@ fread_pfm(void *ptr, size_t size, size_t nobj, FILE *stream)
 	    fgetc(stream);
 	if (c == EOF)
 	    break;
-	*c_ptr++ = (char) c;
+	*c_ptr++ = c;
     }
     if (i % size != 0) {
 	i -= i % size;

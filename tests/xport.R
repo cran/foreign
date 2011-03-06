@@ -1,6 +1,6 @@
 library(foreign)
 lookup.xport("Alfalfa.xpt")
-Alfalfa <- read.xport("Alfalfa.xpt", stringsAsFactors = TRUE)
+Alfalfa <- read.xport("Alfalfa.xpt")
 summary(Alfalfa)
 ## test data provided by FRohde@birchdavis.com
 lookup.xport("test.xpt")

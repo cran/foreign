@@ -37,7 +37,7 @@ read.epiinfo <- function (file, read.deleted = FALSE,
         stop("file has zero or fewer variables: probably not an EpiInfo file")
     headerlines <- readLines(file, n = headerlength)
     pushBack(headerlines, file)
-    comments <- vapply(headerlines, function(s) substring(s, 46L, 46L + 80L), "")
+    comments <- sapply(headerlines, function(s) substring(s, 46L, 46L + 80L))
     #
     # Added comment = ""  to fix '#' as entrychar being read as a comment
     #
