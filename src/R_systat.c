@@ -405,7 +405,7 @@ description on failure,
 static void getlab(struct SysFilev3 *u)
 {
 
-    char mes[ERRMES], tmp1[ERRMES], combuf[MYBUFSIZ];
+    char mes[ERRMES], tmp1[ERRMES];
     char label[LABELSIZ+1], tmp[LABELSIZ+1];
     char var[30];
     int i, j, o, len, isDollar;
@@ -453,11 +453,8 @@ static void getlab(struct SysFilev3 *u)
 		if(getoctal(&o, u->h.fd) != 1) {
 		    sprintf(tmp1, _("getlab: comment = %c"), o);
 		    error(tmp1); }
-		if(len < MYBUFSIZ) combuf[len] = o;
 		if (j == 0) isDollar = (o == '$');
 	    }
-	    /* read the comment into combuf */
-
 	    if(getoctal(&o, u->h.fd) != 1 || o != 0110) {
 		sprintf(tmp1, _("getlab: comment end byte = %o"), o);
 		error(tmp1); }
@@ -472,6 +469,7 @@ static void getlab(struct SysFilev3 *u)
 	    strncpy(u->h.comment, combuf, (len - 72));
 	}
 	else u->h.comment = NULL; */
+
 	/* If comment on record(s) before the one beginning
 	   with a $, allocate space and squirrel away */
 

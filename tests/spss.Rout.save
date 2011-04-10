@@ -1,7 +1,8 @@
 
-R version 2.9.0 Under development (unstable) (2009-01-28 r47758)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.13.0 Under development (unstable) (2011-03-05 r54672)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -170,27 +171,27 @@ List of 20
  Mean   : 3.221   Mean   : 248.2   Mean   :0.1196   Mean   :0.1005  
  3rd Qu.: 3.400   3rd Qu.: 347.8   3rd Qu.:0.0000   3rd Qu.:0.0000  
  Max.   :28.000   Max.   :1775.0   Max.   :1.0000   Max.   :1.0000  
-     HEPMEG            TIME         PLATELET        PROTIME     
- Min.   :-9.000   Min.   :  41   Min.   : -9.0   Min.   : 9.00  
- 1st Qu.:-9.000   1st Qu.:1093   1st Qu.:181.0   1st Qu.:10.00  
- Median : 0.000   Median :1730   Median :248.0   Median :10.60  
- Mean   :-1.900   Mean   :1918   Mean   :250.0   Mean   :10.73  
- 3rd Qu.: 1.000   3rd Qu.:2614   3rd Qu.:315.5   3rd Qu.:11.10  
- Max.   : 1.000   Max.   :4795   Max.   :721.0   Max.   :18.00  
-      SEX              SGOT           SPIDERS           STAGE         
- Min.   :-9.000   Min.   : -9.00   Min.   :-9.000   Min.   :-9.00000  
- 1st Qu.:-9.000   1st Qu.: -9.00   1st Qu.:-9.000   1st Qu.:-9.00000  
- Median : 1.000   Median : 90.45   Median : 0.000   Median : 3.00000  
- Mean   :-1.622   Mean   : 89.20   Mean   :-2.067   Mean   :-0.01914  
- 3rd Qu.: 1.000   3rd Qu.:135.75   3rd Qu.: 0.000   3rd Qu.: 4.00000  
- Max.   : 1.000   Max.   :457.25   Max.   : 1.000   Max.   : 4.00000  
-     STATUS            TRT              TRIG           COPPER     
- Min.   :0.0000   Min.   :-9.000   Min.   : -9.0   Min.   : -9.0  
- 1st Qu.:0.0000   1st Qu.:-9.000   1st Qu.: -9.0   1st Qu.: -9.0  
- Median :0.0000   Median : 1.000   Median : 85.0   Median : 50.5  
- Mean   :0.3852   Mean   :-1.167   Mean   : 81.2   Mean   : 70.1  
- 3rd Qu.:1.0000   3rd Qu.: 2.000   3rd Qu.:127.8   3rd Qu.:100.8  
- Max.   :1.0000   Max.   : 2.000   Max.   :598.0   Max.   :588.0  
+     HEPMEG          TIME         PLATELET        PROTIME           SEX        
+ Min.   :-9.0   Min.   :  41   Min.   : -9.0   Min.   : 9.00   Min.   :-9.000  
+ 1st Qu.:-9.0   1st Qu.:1093   1st Qu.:181.0   1st Qu.:10.00   1st Qu.:-9.000  
+ Median : 0.0   Median :1730   Median :248.0   Median :10.60   Median : 1.000  
+ Mean   :-1.9   Mean   :1918   Mean   :250.0   Mean   :10.73   Mean   :-1.622  
+ 3rd Qu.: 1.0   3rd Qu.:2614   3rd Qu.:315.5   3rd Qu.:11.10   3rd Qu.: 1.000  
+ Max.   : 1.0   Max.   :4795   Max.   :721.0   Max.   :18.00   Max.   : 1.000  
+      SGOT           SPIDERS           STAGE              STATUS      
+ Min.   : -9.00   Min.   :-9.000   Min.   :-9.00000   Min.   :0.0000  
+ 1st Qu.: -9.00   1st Qu.:-9.000   1st Qu.:-9.00000   1st Qu.:0.0000  
+ Median : 90.45   Median : 0.000   Median : 3.00000   Median :0.0000  
+ Mean   : 89.20   Mean   :-2.067   Mean   :-0.01914   Mean   :0.3852  
+ 3rd Qu.:135.75   3rd Qu.: 0.000   3rd Qu.: 4.00000   3rd Qu.:1.0000  
+ Max.   :457.25   Max.   : 1.000   Max.   : 4.00000   Max.   :1.0000  
+      TRT              TRIG           COPPER      
+ Min.   :-9.000   Min.   : -9.0   Min.   : -9.00  
+ 1st Qu.:-9.000   1st Qu.: -9.0   1st Qu.: -9.00  
+ Median : 1.000   Median : 85.0   Median : 50.50  
+ Mean   :-1.167   Mean   : 81.2   Mean   : 70.09  
+ 3rd Qu.: 2.000   3rd Qu.:127.8   3rd Qu.:100.75  
+ Max.   : 2.000   Max.   :598.0   Max.   :588.00  
 > pbco <- read.spss("pbcold.sav",FALSE)
 > stopifnot(identical(pbc, pbco))
 > ## summary(pbco)

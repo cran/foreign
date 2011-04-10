@@ -1,3 +1,21 @@
+2011-04-10  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-44
+	* src/R_systat.c: remove set-but-unused variable
+
+2011-04-04  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* man/read.mtp.Rd: note not for current (>= 15) Minitab
+
+2011-03-26  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/SASxport.c: remove set-but-unused variable
+
+2011-03-05  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-43, depends R >= 2.13.0
+	* tests/stata.Rout.save: update for R 2.13.0
+
 2011-02-10  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-42

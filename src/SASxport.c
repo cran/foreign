@@ -273,7 +273,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 {
     char *tmp;
     char record[81];
-    int i, n, nbytes, totwidth, nlength, restOfCard;
+    int i, n, totwidth, nlength, restOfCard;
     struct SAS_XPORT_namestr *nam_head;
 
     nam_head = Calloc(nvars, struct SAS_XPORT_namestr);
@@ -342,7 +342,6 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
     for(i = 0; i < nvars; i++)
 	totwidth += nlng[i];
 
-    nbytes = 0;
     nlength = 0;
     tmp = Calloc(totwidth <= 80 ? 81 : (totwidth+1), char);
     restOfCard = 0;

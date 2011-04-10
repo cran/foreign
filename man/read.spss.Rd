@@ -97,7 +97,7 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
   attempted for apparent codepages of 200 or more in a UTF-8 locale:
   some other high-numbered codepages can be re-encoded on most systems,
   but the encoding names are platform-dependent (see
-  \code{\link{iconvlist}}.
+  \code{\link{iconvlist}}).
 }
 \note{
   If SPSS value labels are converted to factors the underlying numerical
