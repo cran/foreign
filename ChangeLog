@@ -1,3 +1,15 @@
+2011-09-23  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-46
+	* R/writeForeignSAS.R: write out logicals (patch from Patrick
+	McCormick).
+	* R/writeForeignCode.R: give invisible return value.
+	* man/write.foreign.Rd: update documentation.
+
+2011-08-28  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/dbfopen.c: Use REprintf.
+
 2011-07-12  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-45

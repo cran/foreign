@@ -50,6 +50,7 @@ writeForeignSAS <- function(df, datafile, codefile, dataname="rdata",
     ## FIXME: re-write this to hold a connection open
     factors <- sapply(df, is.factor)
     strings <- sapply(df, is.character)
+    logicals <- sapply(df, is.logical)
     dates <- sapply(df, FUN = function(x) inherits(x, "Date") || inherits(x, "dates") || inherits(x, "date"))
     xdates <- sapply(df, FUN = function(x)  inherits(x, "dates") || inherits(x, "date"))
     datetimes <- sapply(df, FUN = function(x) inherits(x, "POSIXt"))
@@ -63,6 +64,8 @@ writeForeignSAS <- function(df, datafile, codefile, dataname="rdata",
     dfn <- df
     if (any(factors))
         dfn[factors] <- lapply(dfn[factors], as.numeric)
+    if (any(logicals))
+        dfn[logicals] <- lapply(dfn[logicals], as.numeric)
     if (any(datetimes))
         dfn[datetimes] <- lapply(dfn[datetimes],
                                  function(x) format(x, "%d%b%Y %H:%M:%S"))
