@@ -1,7 +1,7 @@
 23230f6ef6d4252d57567773a3f09154 *BUGS
 2cae1cab7185cc4d1db10a8c020d4dce *COPYRIGHTS
-e16deb8cb1ba7eabbaf2a616a60c2f87 *ChangeLog
-74e3bf0444df5569ed1f63b41202c1dd *DESCRIPTION
+2c9e090a2390f56c6a859f8edce43afb *ChangeLog
+377f3e2fe1a6a7c77294e85d8a56d201 *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 043ace19c6a2fac73b63de2f63af4c63 *LICENCE
 194430b212cbb64455c034ba36711636 *NAMESPACE
@@ -11,7 +11,7 @@ c4ecd34e35c77f561ceaaf64eb283cf0 *R/arff.R
 dc5b54d1456e50a3d729246bea60ccc1 *R/dbf.R
 b7e7d712506f5c522860a934f332cd43 *R/minitab.R
 1c08834646e48b78cabbdf024be43f62 *R/octave.R
-309bedfa66e5e29bce1b6633aa0ec5bd *R/read.dta.R
+b0626576ef0b4a7df2543c6f19bd249f *R/read.dta.R
 825a5bc34931831a333db909055b3f0c *R/read.epiinfo.R
 96ab1dca980831b30a1d9a136df5d8b3 *R/read.ssd.R
 b105675bd60fd552be1f7db100d18e44 *R/spss.R
@@ -37,11 +37,11 @@ e927a59cd9d26c6a1058cff4e1993856 *man/lookup.xport.Rd
 ade888287f7121bef13c1ce590cf9036 *man/read.S.Rd
 357a16f7c492feba1c41f2421b58c175 *man/read.arff.Rd
 a570aeca11a6ab3ceaafb837ad22ba0f *man/read.dbf.Rd
-e5210025330200df64e40d3b2c0470db *man/read.dta.Rd
+77cc8f87cd7b5764d1eb137b9af770d4 *man/read.dta.Rd
 95bfcd50fb9ea6a9f304561ae8b7c490 *man/read.epiinfo.Rd
 237a05c9be9b5783fc45f4b4fccecdfd *man/read.mtp.Rd
 db1bc6e2fb3330ae5d265b0a36d5f58a *man/read.octave.Rd
-7e3822bc611af1a4dd5f37fd0b199bd9 *man/read.spss.Rd
+aed4a063e6a3882029025d592ce810f7 *man/read.spss.Rd
 adeba4b840585168f1904e3c879d88ab *man/read.ssd.Rd
 146b4ae1fc1dee5b33cd2f1958b7b72c *man/read.systat.Rd
 ff73b1a8c612c1ba54bf67c205f13d00 *man/read.xport.Rd
@@ -81,7 +81,7 @@ c7d9f5bf01d7d4dac3f6a5cc401fba29 *src/sfm-read.c
 415d9a842df63d8f5aa2f30dee9a3897 *src/sfmP.h
 7170823cb63ff57d1656d137fcbd9a88 *src/shapefil.h
 fe9d8268c79f4b25a0b6ce7a51a8691c *src/spss.c
-532b2b2e325da00bec510f522ea80f79 *src/stataread.c
+e1c03fb3747b6ae4212bff61a597b38d *src/stataread.c
 ed27b31142a650cc584605927ec066be *src/swap_bytes.h.in
 7deb347b2bd625e593bb6d7f84541e52 *src/var.h.in
 67b90739aaf9a0327571426c1c634bf4 *tests/Alfalfa.xpt
