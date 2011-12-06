@@ -1,3 +1,28 @@
+2011-12-06  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-48.
+
+2011-12-03  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/writeForeignSAS.R, man/write.foreign.Rd: add 'libpath'
+	argument contributed by Xiaobo Gu.
+
+2011-11-23  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/var.h.in: this assumed values for sizes, ignoring those
+	computed by configure.  And we know sizeof(double) is always 8.
+	
+	* configure, configure.ac, src/Makevars.in, src/swap_bytes.h.in,
+	cleanup:  The header had always #undef-ed HAVE_GLIBC_SWAP, so
+	remove never-used code branches.  This means that 'long long' is
+	never used and so no warning needs to be suppressed, so
+	src/Makevars and all configuration are not needed.
+
+2011-11-22  Kurt Hornik <Kurt.Hornik@R-project.org>
+
+	* R/arff.R: handle "Date" objects in addition to "POSIXt" ones.
+	(Spotted by Xiaobo Gu <guxiaobo1982@gmail.com>.)
+
 2011-11-08  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-47, use Authors@R field

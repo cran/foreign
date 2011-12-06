@@ -44,8 +44,8 @@ make.SAS.formats <- function(varnames){
   x
 }
 
-writeForeignSAS <- function(df, datafile, codefile, dataname="rdata",
-                          validvarname = c("V7", "V6"))
+writeForeignSAS <- function(df, datafile, codefile, dataname = "rdata",
+                          validvarname = c("V7", "V6"), libpath = NULL)
 {
     ## FIXME: re-write this to hold a connection open
     factors <- sapply(df, is.factor)
@@ -95,7 +95,12 @@ writeForeignSAS <- function(df, datafile, codefile, dataname="rdata",
         }
     }
 
-    cat("DATA ", dataname, ";\n", file = codefile, append = TRUE)
+    if (!is.null(libpath)) {
+    	cat("libname ROutput '", libpath, "';\n", file = codefile,
+            append = TRUE, sep = "")
+    	cat("DATA ROutput.", dataname, ";\n", file = codefile,
+            append = TRUE, sep = "")
+    } else cat("DATA ", dataname, ";\n", file = codefile, append = TRUE)
 
     if (any(strings)) {
         cat("LENGTH", file = codefile, append = TRUE)

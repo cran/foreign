@@ -34,9 +34,12 @@ times (\code{Date}, \code{dates}, \code{date}, and \code{POSIXt}
 classes) and logical vectors are also supported for SAS and characters
 are supported for SPSS.
 
-For \code{package="SAS"} there are optional arguments \code{dataname="rdata"}
-taking a string that will be the SAS data set name and
-\code{validvarname} taking either \code{"V6"} or \code{"V7"}.
+For \code{package="SAS"} there are optional arguments
+\code{dataname = "rdata"} taking a string that will be the SAS data set
+name, \code{validvarname} taking either \code{"V6"} or \code{"V7"},
+and \code{libpath = NULL} taking a string that will be the directory where
+the target SAS datset will be written when the generated SAS code been
+run.
 }
 \value{
   Invisible \code{NULL}.
