@@ -1,10 +1,10 @@
 Package: foreign
 Priority: recommended
-Version: 0.8-48
-Date: 2011-12-06
+Version: 0.8-49
+Date: 2012-02-10
 Title: Read Data Stored by Minitab, S, SAS, SPSS, Stata, Systat, dBase,
         ...
-Depends: R (>= 2.13.0), stats
+Depends: R (>= 2.14.0), stats
 Imports: methods, utils
 Authors@R: c(person("R-core", email = "R-core@R-project.org", role =
         c("aut", "cre")), person("Saikat", "DebRoy", role = "ctb"),
@@ -21,6 +21,4 @@ Description: Functions for reading and writing data stored by statistical
 LazyLoad: yes
 License: GPL (>= 2)
 BugReports: http://bugs.r-project.org
-Packaged: 2011-12-06 07:33:06 UTC; ripley
-Repository: CRAN
-Date/Publication: 2011-12-07 13:57:17
+Packaged: 2012-02-10 17:04:54 UTC; ripley
