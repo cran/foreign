@@ -77,8 +77,9 @@ read.dta <- function(file, convert.dates = TRUE,
             for(v in factors) {
                 labels <- tt[[ll[v]]]
                 if (warn.missing.labels && is.null(labels)) {
-                    warning("value labels (", ll[v], ") for ", names(rval)[v],
-                            " are missing")
+                    warning(gettextf("value labels (%s) for %s are missing",
+                                     ll[v], names(rval)[v]),
+                            domain = NA)
                     next
                 }
                 if(!is.na(convert.factors)) {

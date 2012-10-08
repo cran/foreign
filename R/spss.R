@@ -82,7 +82,7 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
         if(is.na(reencode)) reencode <- l10n_info()[["UTF-8"]]
 
         if(reencode) {
-            message("re-encoding from ", cp)
+            message(gettextf("re-encoding from %s", cp), domain = NA)
             names(rval) <- iconv(names(rval), cp, "")
             vl <- attr(rval, "variable.labels")
             nm <- names(vl)

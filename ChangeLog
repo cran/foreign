@@ -1,3 +1,17 @@
+2012-10-08  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-51.
+	* R: work on translations
+	* po: update translations
+
+2012-09-01  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* po: add Polish translations.
+	
+2012-08-30  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/init.c: force use of registered symbols in R >= 2.16.0
+
 2011-05-21  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-50.
