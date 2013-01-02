@@ -1,9 +1,8 @@
 23230f6ef6d4252d57567773a3f09154 *BUGS
-2cae1cab7185cc4d1db10a8c020d4dce *COPYRIGHTS
-6387e42247ab4cce3b854606dc719955 *ChangeLog
-1fca171514814da39feb0f1bdad36bf3 *DESCRIPTION
+f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
+501bf619209522cd8cb3de0f5f12e3de *ChangeLog
+822b69b68ddb5b2e61a3624fa89ed821 *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
-043ace19c6a2fac73b63de2f63af4c63 *LICENCE
 194430b212cbb64455c034ba36711636 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
 ea95d085c2d57992edec696c52bc43c9 *R/Sread.R
@@ -14,12 +13,12 @@ b7e7d712506f5c522860a934f332cd43 *R/minitab.R
 e4bb90fa97d916b203eb422f0197a257 *R/read.dta.R
 825a5bc34931831a333db909055b3f0c *R/read.epiinfo.R
 1086e6cc7c1c3bbb16f5681d88801b7d *R/read.ssd.R
-ca5d1eb3e2366b06f28eb44179ab655c *R/spss.R
+34a2f0a28fca401b2b8dea03dc308721 *R/spss.R
 cf77f7b859ec5d9c26117378d66bea21 *R/writeForeignCode.R
 22d7da62037b3d096509ef1ea100aff8 *R/writeForeignSAS.R
 7424cbf0a5229f99040b9611365117f3 *R/xport.R
-ff1d5949508856c259c7904469a9503a *R/zzz.R
-8ba54446fcc2acce19de5fef252e3734 *inst/LICENCE
+0337f989613243d0134c33eb5584953b *R/zzz.R
+f87d40597e85fd95afb45eb64c651832 *inst/COPYRIGHTS
 03fec511a5a02a497bd959ee50ab290b *inst/files/HillRace.SYD
 3335f0e1dd6812968776cc757a22ea78 *inst/files/Iris.syd
 739845e11f7e69826b04ca22a7d45568 *inst/files/sids.dbf
@@ -39,7 +38,7 @@ a570aeca11a6ab3ceaafb837ad22ba0f *man/read.dbf.Rd
 95bfcd50fb9ea6a9f304561ae8b7c490 *man/read.epiinfo.Rd
 237a05c9be9b5783fc45f4b4fccecdfd *man/read.mtp.Rd
 db1bc6e2fb3330ae5d265b0a36d5f58a *man/read.octave.Rd
-aed4a063e6a3882029025d592ce810f7 *man/read.spss.Rd
+dbf9560102ebc2bb31f8ce7f89748eb6 *man/read.spss.Rd
 adeba4b840585168f1904e3c879d88ab *man/read.ssd.Rd
 146b4ae1fc1dee5b33cd2f1958b7b72c *man/read.systat.Rd
 ff73b1a8c612c1ba54bf67c205f13d00 *man/read.xport.Rd
@@ -68,7 +67,7 @@ d02d47548899b3e792c96b15299cdbe2 *src/avl.c
 3cb1a4820e3e61d1ac87ea2a37369993 *src/foreign.h
 76dc30dd66eb04eb31e109a571048d6c *src/format.c
 ba57918d9812b0751713e905c53c5d46 *src/format.h
-7f0ece6b7c59085f0776d37c74826353 *src/init.c
+53811febcf159132a6d53935d70c9caf *src/init.c
 ebd9bc0804c79a980a11baf3b7863893 *src/minitab.c
 c898f6c9f0375de2191996c919bf9cbe *src/pfm-read.c
 0b155bb697ace4fd196dd0282a787752 *src/pfm.h
@@ -98,6 +97,9 @@ d7265f41a6bfebc1e1d593e211eaf107 *tests/create-dumpdata.S
 859e5cbbd74fd94775c2c7f111ae2d71 *tests/ex1-51.mtp
 a175ed9be624fb4d92b3ca53bd88a9e5 *tests/minitab.R
 57c6e64dd8bc3b41be2e7b6e698f46c2 *tests/minitab.Rout.save
+11479e9961cac6c3c8b5b6f2834a04ae *tests/mval_bug.R
+7498681a467a110896932e128a293808 *tests/mval_bug.Rout.save
+fd75debed7f0899ba5020e2a7312658b *tests/mval_bug.sav
 d3c1fe7fba4ac4890fede6da3c62bbea *tests/mySobj
 e220c5057046bcc051a300ed2e593ae9 *tests/octave.R
 950a8fd57a47e577fe22cecf08baa9df *tests/octave.Rout.save

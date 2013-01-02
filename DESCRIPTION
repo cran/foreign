@@ -1,7 +1,7 @@
 Package: foreign
 Priority: recommended
-Version: 0.8-51
-Date: 2012-10-08
+Version: 0.8-52
+Date: 2013-01-02
 Title: Read Data Stored by Minitab, S, SAS, SPSS, Stata, Systat, dBase,
         ...
 Depends: R (>= 2.14.0), stats
@@ -18,22 +18,23 @@ Authors@R: structure( c(person("R Core Team", email =
         "Pfaff", role = "ctb"), person("Frank", "Warmerdam", role =
         c("ctb", "cph")), person("Stephen", "Weigand", role = c("ctb",
         "cph")), person("Free Software Foundation, Inc.", role =
-        "cph")), footer = "See the COPYRIGHTS file in the sources for
-        details on contributions and copyrights.")
+        "cph")))
+Copyright: see file COPYRIGHTS
 Description: Functions for reading and writing data stored by
         statistical packages such as Minitab, S, SAS, SPSS, Stata,
         Systat, ..., and for reading and writing dBase files.
-LazyLoad: yes
+ByteCompile: yes
+Biarch: yes
 License: GPL (>= 2)
 BugReports: http://bugs.r-project.org
-Packaged: 2012-10-11 13:26:23 UTC; ripley
+Packaged: 2013-03-11 10:42:43 UTC; ripley
 Author: R Core Team [aut, cph, cre], Roger Bivand [ctb, cph], Vincent
         J. Carey [ctb, cph], Saikat DebRoy [ctb, cph], Stephen Eglen
         [ctb, cph], Rajarshi Guha [ctb, cph], Nicholas Lewin-Koh [ctb,
         cph], Mark Myatt [ctb, cph], Ben Pfaff [ctb], Frank Warmerdam
         [ctb, cph], Stephen Weigand [ctb, cph], Free Software
-        Foundation, Inc. [cph].  See the COPYRIGHTS file in the sources
-        for details on contributions and copyrights.
+        Foundation, Inc. [cph]
 Maintainer: R Core Team <R-core@R-project.org>
+NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2012-10-11 13:26:38
+Date/Publication: 2013-03-11 11:58:04

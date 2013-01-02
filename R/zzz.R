@@ -14,7 +14,7 @@
 ### License along with this program; if not, a copy is available at
 ### http://www.r-project.org/Licenses/
 
-.onLoad <- .First.lib <- function(lib, pkg) .C(spss_init)
+.onLoad <- function(lib, pkg) .C(spss_init)
 
 .onUnload <- function(libpath) library.dynam.unload("foreign", libpath)
 

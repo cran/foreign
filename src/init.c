@@ -68,7 +68,7 @@ void R_init_foreign(DllInfo *dll)
 {
     R_registerRoutines(dll, CEntries, CallEntries, NULL, ExtEntries);
     R_useDynamicSymbols(dll, FALSE);
-#if defined(R_VERSION) && R_VERSION >= R_Version(2, 16, 0)
+#if defined(R_VERSION) && R_VERSION >= R_Version(3, 0, 0)
     R_forceSymbols(dll, TRUE);
 #endif
 }
