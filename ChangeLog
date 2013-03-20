@@ -1,3 +1,10 @@
+2013-03-20  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-53.
+
+	* src/avl.c: Free_fn had wrong number of arguments, 
+	reported by OS X's toolchain.
+
 2013-03-03,10  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* LICENCE, inst/LICENCE: remove old files
