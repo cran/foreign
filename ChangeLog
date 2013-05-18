@@ -1,3 +1,18 @@
+2013-05-18  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-54.
+
+	* R/read.dta.R: avoid abbreviate() in write.dta if not needed.
+
+2013-04-28, 2013-05-06  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/stataread.c, man/{read,write}.dta.Rd: 
+	allow write.dta() to write value labels, and read.dta() to read
+	all the labels (contributed by Brian Quistorff).
+	
+	* tests/stata.R, tests/stata.Rout.save, 
+	tests/MLLabelsWithNotesChar.dta: regression tests for above.
+	
 2013-03-20  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-53.
