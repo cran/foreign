@@ -1,7 +1,7 @@
 
-R version 3.0.0 Patched (2013-05-02 r62711) -- "Masked Marvel"
+R Under development (unstable) (2013-09-02 r63797) -- "Unsuffered Consequences"
 Copyright (C) 2013 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin12.3.0 (64-bit)
+Platform: x86_64-apple-darwin12.4.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -306,12 +306,9 @@ In read.dta("pc5.dta") : cannot read factor labels from Stata 5 files
   ..$ testmiss    : num  18 18 18 18 18 18 18 18 18 18 ...
 > 
 > bq <- read.dta("MLLabelsWithNotesChar.dta")
-Warning message:
-In read.dta("MLLabelsWithNotesChar.dta") :
-  value labels ('female_lbl_def') for 'female' are missing
 > str(bq)
 'data.frame':	0 obs. of  1 variable:
- $ female: int 
+ $ female: Factor w/ 2 levels "No","Yes": 
  - attr(*, "datalabel")= chr "datalabelBQ"
  - attr(*, "time.stamp")= chr "27 Apr 2013 16:16"
  - attr(*, "formats")= chr "%8.0g"
@@ -331,19 +328,21 @@ In read.dta("MLLabelsWithNotesChar.dta") :
   ..$ : chr  "female" "note1" "FemaleNoteTxt"
   ..$ : chr  "_dta" "_lang_list" "default spanish"
  - attr(*, "version")= int 12
- - attr(*, "label.table")=List of 1
-  ..$ female_lbl_es: Named int  0 1
+ - attr(*, "label.table")=List of 2
+  ..$ female_lbl_es : Named int  0 1
   .. ..- attr(*, "names")= chr  "No" "Si"
+  ..$ female_lbl_def: Named int  0 1
+  .. ..- attr(*, "names")= chr  "No" "Yes"
 > write.dta(bq, "bq.dta", version = 12)
 > str(read.dta('bq.dta'))
 'data.frame':	0 obs. of  1 variable:
- $ female: int 
+ $ female: Factor w/ 2 levels "No","Yes": 
  - attr(*, "datalabel")= chr "datalabelBQ"
  - attr(*, "time.stamp")= chr ""
  - attr(*, "formats")= chr "%9.0g"
  - attr(*, "types")= int 253
- - attr(*, "val.labels")= chr ""
- - attr(*, "var.labels")= chr "female"
+ - attr(*, "val.labels")= chr "female_lbl_def"
+ - attr(*, "var.labels")= chr "Is it female"
  - attr(*, "expansion.fields")=List of 11
   ..$ : chr  "female" "question" "Are you Female?"
   ..$ : chr  "_dta" "_lang_c" "default"
@@ -357,9 +356,33 @@ In read.dta("MLLabelsWithNotesChar.dta") :
   ..$ : chr  "female" "note1" "FemaleNoteTxt"
   ..$ : chr  "_dta" "_lang_list" "default spanish"
  - attr(*, "version")= int 12
- - attr(*, "label.table")=List of 1
-  ..$ female_lbl_es: Named int  0 1
+ - attr(*, "label.table")=List of 2
+  ..$ female_lbl_def: Named int  1 2
+  .. ..- attr(*, "names")= chr  "No" "Yes"
+  ..$ female_lbl_es : Named int  0 1
   .. ..- attr(*, "names")= chr  "No" "Si"
 > unlink("bq.dta")
+> 
+> ## PR#15290
+> bq <- read.dta("OneVarTwoValLabels.dta")
+> str(bq)
+'data.frame':	0 obs. of  1 variable:
+ $ female: Factor w/ 2 levels "Male","Female": 
+ - attr(*, "datalabel")= chr ""
+ - attr(*, "time.stamp")= chr "25 Apr 2013 21:40"
+ - attr(*, "formats")= chr "%9.0g"
+ - attr(*, "types")= int 251
+ - attr(*, "val.labels")= chr "fem_lbl_val_en"
+ - attr(*, "var.labels")= chr ""
+ - attr(*, "expansion.fields")=List of 3
+  ..$ : chr  "_dta" "_lang_c" "default"
+  ..$ : chr  "female" "_lang_l_spanish" "fem_lbl_val_es"
+  ..$ : chr  "_dta" "_lang_list" "default spanish"
+ - attr(*, "version")= int 12
+ - attr(*, "label.table")=List of 2
+  ..$ fem_lbl_val_es: Named int  0 1
+  .. ..- attr(*, "names")= chr  "Masculino" "Femenino"
+  ..$ fem_lbl_val_en: Named int  0 1
+  .. ..- attr(*, "names")= chr  "Male" "Female"
 > 
 > q()

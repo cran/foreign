@@ -497,14 +497,22 @@ SEXP R_LoadStataData(FILE *fp)
 
     /** value labels **/
     if (abs(version) > 5) {
-	/* There may be up to nvar value labels, but possibly 0 */
-	PROTECT(labeltable = allocVector(VECSXP, nvar));
-	PROTECT(tmp = allocVector(STRSXP, nvar));
-	for(j = 0; j < nvar; j++) {
+	PROTECT(labeltable = allocVector(VECSXP, 0));
+	PROTECT(tmp = allocVector(STRSXP, 0));
+	for(j = 0; ; j++) {
 	    /* first int not needed, use fread directly to trigger EOF */
 	    res = fread((int *) aname, sizeof(int), 1, fp);
 	    if (feof(fp)) break;
 	    if (res != 1) warning(_("a binary read error occurred"));
+
+	    //resize the vectors
+	    labeltable = lengthgets(labeltable, j+1);
+	    UNPROTECT(1);
+	    PROTECT(labeltable);
+	    tmp = lengthgets(tmp, j+1);
+	    UNPROTECT(1);
+	    PROTECT(tmp);
+
 	    InStringBinary(fp, varnamelength+1, aname);
 	    SET_STRING_ELT(tmp, j, mkChar(aname));
 	    RawByteBinary(fp, 1); RawByteBinary(fp, 1); RawByteBinary(fp, 1); /*padding*/
@@ -529,11 +537,6 @@ SEXP R_LoadStataData(FILE *fp)
 	}
 	namesgets(labeltable, tmp);
 	UNPROTECT(1); /*tmp*/
-	if(j > 0 && j < nvar) {
-	    labeltable = lengthgets(labeltable, j);
-	    UNPROTECT(1);
-	    PROTECT(labeltable);
-	}
     }
 
     /** tidy up **/
@@ -719,7 +722,7 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
     char datalabel[81]="Written by R.              ", timestamp[18], aname[33];
     char format9g[50]="%9.0g", strformat[50]="";
     const char *thisnamechar;
-    SEXP names,types,theselabels,orig_names,dlabel,exp_fields,exp_field,curr_val_labels,label_table,names_lt,theselabelslevels;
+    SEXP names,types,theselabels,orig_names,vlabels,dlabel,exp_fields,exp_field,curr_val_labels,label_table,names_lt,theselabelslevels;
 
     int namelength = 8;
     int fmtlist_len = 12;
@@ -879,14 +882,25 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
     UNPROTECT(1);
 
 
-    /** Variable Labels -- full R name of column**/
-    /** FIXME: this is now just the same abbreviated name **/
-
-    PROTECT(orig_names = getAttrib(df,install("orig.names")));
-    for(i = 0; i < nvar; i++) {
-	strncpy(datalabel,CHAR(STRING_ELT(orig_names,i)),81);
-	datalabel[80] = (char) 0;
-	OutStringBinary(datalabel, fp, 81);
+    /** Variable Labels -- Uses "var.labels" attribute
+	if is a string vector of the right length, otherwise the
+	the variable name (FIXME: this is now just the same abbreviated name) **/
+    PROTECT(vlabels = getAttrib(df, install("var.labels")));
+    if(!isNull(vlabels) && isString(vlabels) && LENGTH(vlabels)==nvar){
+        for(i = 0; i < nvar; i++) {
+	    strncpy(datalabel,CHAR(STRING_ELT(vlabels,i)),81);
+	    datalabel[80] = (char) 0;
+	    OutStringBinary(datalabel, fp, 81);
+        }
+    }
+    else{
+        PROTECT(orig_names = getAttrib(df,install("orig.names")));
+        for(i = 0; i < nvar; i++) {
+	    strncpy(datalabel,CHAR(STRING_ELT(orig_names,i)),81);
+	    datalabel[80] = (char) 0;
+	    OutStringBinary(datalabel, fp, 81);
+        }
+        UNPROTECT(1);
     }
     UNPROTECT(1);
 
@@ -940,6 +954,8 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 	    case STRSXP:
 		/* Up to 244 bytes should be written, zero-padded */
 		k = length(STRING_ELT(VECTOR_ELT(df, j), i));
+		if (k == 0)
+		    error("empty string is not valid in Stata's documented format");
 		if(k > 244) k = 244;
 		OutStringBinary(CHAR(STRING_ELT(VECTOR_ELT(df, j), i)), fp, k);
 		for(l = INTEGER(types)[j]-k; l > 0; l--) OutByteBinary(0, fp);

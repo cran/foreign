@@ -1,17 +1,28 @@
-2013-05-18  Brian Ripley <Brian.Ripley@R-project.org>
+2013-09-02 Brian Ripley <Brian.Ripley@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-55, depends on R (>= 3.0.0).
+
+2013-07-15  Brian Ripley <Brian.Ripley@R-project.org>
+
+	* src/SASxport.c, tests/testEmpty.R: fix for PR#15346 (empty datasets).
+
+	* src/stataread.c: trap invalid empty strings (PR#15166)
+
+2013-05-07  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-54.
 
-	* R/read.dta.R: avoid abbreviate() in write.dta if not needed.
+	* R/read.dta.R: avoid abbreviate() in write.dta() if not needed.
 
-2013-04-28, 2013-05-06  Brian Ripley <Brian.Ripley@R-project.org>
+2013-04-28, 2013-05-06, 2013-09-02  Brian Ripley <Brian.Ripley@R-project.org>
 
 	* src/stataread.c, man/{read,write}.dta.Rd: 
 	allow write.dta() to write value labels, and read.dta() to read
 	all the labels (contributed by Brian Quistorff).
 	
 	* tests/stata.R, tests/stata.Rout.save, 
-	tests/MLLabelsWithNotesChar.dta: regression tests for above.
+	tests/MLLabelsWithNotesChar.dta, tests/OneVarTwoValLabels.dta: 
+	regression tests for above.
 	
 2013-03-20  Brian Ripley <Brian.Ripley@R-project.org>
 

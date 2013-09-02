@@ -36,4 +36,8 @@ write.dta(bq, "bq.dta", version = 12)
 str(read.dta('bq.dta'))
 unlink("bq.dta")
 
+## PR#15290
+bq <- read.dta("OneVarTwoValLabels.dta")
+str(bq)
+
 q()
