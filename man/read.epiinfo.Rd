@@ -36,9 +36,9 @@ read.epiinfo(file, read.deleted = FALSE, guess.broken.dates = FALSE,
   If \code{read.deleted} is \code{TRUE} the \code{"deleted"} attribute
   of the data frame indicates the deleted records.
 }
-\note{  Epi Info 2000, the current version, uses the Microsoft Access file
-  format to store data. This may be readable with the \code{RODBC} or
-  \code{RDCOM} packages.
+\note{
+  Some later versions of Epi Info use the Microsoft Access file
+  format to store data. That may be readable with the \pkg{RODBC} package.
 }
 \value{
   A data frame.
@@ -54,7 +54,7 @@ read.epiinfo(file, read.deleted = FALSE, guess.broken.dates = FALSE,
 
 \examples{
 \dontrun{
-data<-read.epiinfo("oswego.rec",guess.broken.dates=TRUE,thisyear="1972")
+read.epiinfo("oswego.rec", guess.broken.dates = TRUE, thisyear = "1972")
 }
 }
 \keyword{ file }

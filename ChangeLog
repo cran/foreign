@@ -1,20 +1,28 @@
-2013-09-02 Brian Ripley <Brian.Ripley@R-project.org>
+2013-10-07 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-56
+	* man/{read,write}.dta: Freeze Stata support.
+	* man/read.{dbf,spss}.Rd: add comments on status to fend off
+	non-bug reports.
+	* inst/COPYRIGHTS, man/read.epiinfo.Rd, src/stataread.c: update.
+
+2013-09-02 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-55, depends on R (>= 3.0.0).
 
-2013-07-15  Brian Ripley <Brian.Ripley@R-project.org>
+2013-07-15  Brian Ripley
 
 	* src/SASxport.c, tests/testEmpty.R: fix for PR#15346 (empty datasets).
 
 	* src/stataread.c: trap invalid empty strings (PR#15166)
 
-2013-05-07  Brian Ripley <Brian.Ripley@R-project.org>
+2013-05-07  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-54.
 
 	* R/read.dta.R: avoid abbreviate() in write.dta() if not needed.
 
-2013-04-28, 2013-05-06, 2013-09-02  Brian Ripley <Brian.Ripley@R-project.org>
+2013-04-28, 2013-05-06, 2013-09-02  Brian Ripley
 
 	* src/stataread.c, man/{read,write}.dta.Rd: 
 	allow write.dta() to write value labels, and read.dta() to read
@@ -24,18 +32,18 @@
 	tests/MLLabelsWithNotesChar.dta, tests/OneVarTwoValLabels.dta: 
 	regression tests for above.
 	
-2013-03-20  Brian Ripley <Brian.Ripley@R-project.org>
+2013-03-20  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-53.
 
 	* src/avl.c: Free_fn had wrong number of arguments, 
 	reported by OS X's toolchain.
 
-2013-03-03,10  Brian Ripley <Brian.Ripley@R-project.org>
+2013-03-03,10  Brian Ripley
 
 	* LICENCE, inst/LICENCE: remove old files
 
-2013-01-02  Brian Ripley <Brian.Ripley@R-project.org>
+2013-01-02  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-52.
 
@@ -56,25 +64,25 @@
 
 	* tests/mval_bug.{R,sav,Rout.save}: tests for above.
 
-2012-12-14  Brian Ripley <Brian.Ripley@R-project.org>
+2012-12-14  Brian Ripley
 
 	* DESCRIPTION: add 'Biarch' field
 
-2012-10-08  Brian Ripley <Brian.Ripley@R-project.org>
+2012-10-08  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-51.
 	* R: work on translations
 	* po: update translations
 
-2012-09-01  Brian Ripley <Brian.Ripley@R-project.org>
+2012-09-01  Brian Ripley
 
 	* po: add Polish translations.
 	
-2012-08-30  Brian Ripley <Brian.Ripley@R-project.org>
+2012-08-30  Brian Ripley
 
 	* src/init.c: force use of registered symbols in R >= 2.16.0
 
-2011-05-21  Brian Ripley <Brian.Ripley@R-project.org>
+2011-05-21  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-50.
 
@@ -82,22 +90,22 @@
 
 	* DESCRIPTION: Improve Authors@R
 
-2012-02-10  Brian Ripley <Brian.Ripley@R-project.org>
+2012-02-10  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-49.
 	* R/read.dta.R, src/stataread: patch from PR#14799
 	* tests/spss.Rout.save: update output for R 2.15.0
 
-2011-12-06  Brian Ripley <Brian.Ripley@R-project.org>
+2011-12-06  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-48.
 
-2011-12-03  Brian Ripley <Brian.Ripley@R-project.org>
+2011-12-03  Brian Ripley
 
 	* src/writeForeignSAS.R, man/write.foreign.Rd: add 'libpath'
 	argument contributed by Xiaobo Gu.
 
-2011-11-23  Brian Ripley <Brian.Ripley@R-project.org>
+2011-11-23  Brian Ripley
 
 	* src/var.h.in: this assumed values for sizes, ignoring those
 	computed by configure.  And we know sizeof(double) is always 8.
@@ -113,21 +121,21 @@
 	* R/arff.R: handle "Date" objects in addition to "POSIXt" ones.
 	(Spotted by Xiaobo Gu <guxiaobo1982@gmail.com>.)
 
-2011-11-08  Brian Ripley <Brian.Ripley@R-project.org>
+2011-11-08  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-47, use Authors@R field
 
-2011-10-15  Brian Ripley <Brian.Ripley@R-project.org>
+2011-10-15  Brian Ripley
 
 	* R/read.dta.R, man/read.data.Rd, src/stataread.c: read Stata 12
 	files as if they were format_114: the description is unchanged.
 
-2011-09-26  Brian Ripley <Brian.Ripley@R-project.org>
+2011-09-26  Brian Ripley
 
 	* man/read.dta.Rd: refer to package 'memisc'.
 	* man/read.spss.Rd: tweak wording, refer to package 'memisc'.
 
-2011-09-23  Brian Ripley <Brian.Ripley@R-project.org>
+2011-09-23  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-46
 	* R/writeForeignSAS.R: write out logicals (patch from Patrick
@@ -135,62 +143,62 @@
 	* R/writeForeignCode.R: give invisible return value.
 	* man/write.foreign.Rd: update documentation.
 
-2011-08-28  Brian Ripley <Brian.Ripley@R-project.org>
+2011-08-28  Brian Ripley
 
 	* src/dbfopen.c: Use REprintf.
 
-2011-07-12  Brian Ripley <Brian.Ripley@R-project.org>
+2011-07-12  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-45
 	* COPYING: rename to GPL-2
 	* LICENCE: reflect that change.
 	* COPYRIGHTS: library -> package
 
-2011-05-04  Brian Ripley <Brian.Ripley@R-project.org>
+2011-05-04  Brian Ripley
 
 	* src/file-handle.c: plug memory leaks in read.spss()
 
-2011-04-10  Brian Ripley <Brian.Ripley@R-project.org>
+2011-04-10  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-44
 	* src/R_systat.c: remove set-but-unused variable
 
-2011-04-04  Brian Ripley <Brian.Ripley@R-project.org>
+2011-04-04  Brian Ripley
 
 	* man/read.mtp.Rd: note not for current (>= 15) Minitab
 
-2011-03-26  Brian Ripley <Brian.Ripley@R-project.org>
+2011-03-26  Brian Ripley
 
 	* src/SASxport.c: remove set-but-unused variable
 
-2011-03-05  Brian Ripley <Brian.Ripley@R-project.org>
+2011-03-05  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-43, depends R >= 2.13.0
 	* tests/stata.Rout.save: update for R 2.13.0
 
-2011-02-10  Brian Ripley <Brian.Ripley@R-project.org>
+2011-02-10  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-42
 
-2011-01-01  Brian Ripley <Brian.Ripley@R-project.org>
+2011-01-01  Brian Ripley
 
 	* src/sfm-read.c: wrong index reported in error message. (PR#14465)
 	* tests/stata.Rout.save: update for rounding of < 1970-01-01 dates.
 
-2010-10-22  Brian Ripley <Brian.Ripley@R-project.org>
+2010-10-22  Brian Ripley
 
 	* man/read.octave.Rd: Octave changed since 2004. (PR#14420)
 
-2010-09-23  Brian Ripley <Brian.Ripley@R-project.org>
+2010-09-23  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-41
 	* R/spss.R: Fix to PR#14382
 
-2010-06-29  Brian Ripley <Brian.Ripley@R-project.org>
+2010-06-29  Brian Ripley
 
 	* man/write.dta.Rd: Improve wording
 
-2010-03-26  Brian Ripley <Brian.Ripley@R-project.org>
+2010-03-26  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-40
 	* src/dbfopen.c: Remove the undocumented restriction of
@@ -198,7 +206,7 @@
 	match.)
 	* tests/octave.Rout.save: update for str() change (bugfix).
 
-2010-01-03  Brian Ripley <Brian.Ripley@R-project.org>
+2010-01-03  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-39
 	* R/read.dta.R, man/write.dta.Rd: Stata 11 uses the same format as
@@ -206,56 +214,56 @@
 	* po/R*: update.
 	* tests/octave.Rout.save: update for str() change.
 
-2009-12-18  Brian Ripley <Brian.Ripley@R-project.org>
+2009-12-18  Brian Ripley
 
 	* DESCRIPTION: add BugReports field.
 	* man/read.dta.Rd: Stata 11 uses the same format as Stata 10.
 
-2009-10-12  Brian Ripley <Brian.Ripley@R-project.org>
+2009-10-12  Brian Ripley
 
 	* po/R-de.po, po/de.po: update
 
-2009-10-07 Brian Ripley <Brian.Ripley@R-project.org>
+2009-10-07 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-38, for release with 2.10.0
 
-2009-09-15 Brian Ripley <Brian.Ripley@R-project.org>
+2009-09-15 Brian Ripley
 
 	* R/spss.R: 'latin-9' is more portable than 'latin9', as libiconv
 	does not know about the latter.
 
-2009-06-13 Brian Ripley <Brian.Ripley@R-project.org>
+2009-06-13 Brian Ripley
 
 	* src/spss.c: uninitialized codepage in an example from 
 	multcomp's chfls1.Rnw
 
-2009-06-13 Brian Ripley <Brian.Ripley@R-project.org>
+2009-06-13 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-37, for release with 2.9.2
 
-2009-06-09 Brian Ripley <Brian.Ripley@R-project.org>
+2009-06-09 Brian Ripley
 
 	* src/stataread.c, man/write.dta.Rd: truncate character data in
 	write.dta at 244 bytes. (PR##13820)
 	* src/stataread.c: allow for up to 244 bytes in character string
 	and check.  Previously assumed up to 128 and did not check.
 
-2009-06-09 Brian Ripley <Brian.Ripley@R-project.org>
+2009-06-09 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-36
         * po/de.po, po/R-de.po: updates
 
-2009-05-28 Brian Ripley <Brian.Ripley@R-project.org>
+2009-05-28 Brian Ripley
 
         * po/de.po, po/R-de.po: first pass at German translations
 	from Chris Leick
 	* po/fr.po, po/R-fr.po: updates from Phillipe Grosjean
 
-2009-05-11 Brian Ripley <Brian.Ripley@R-project.org>
+2009-05-11 Brian Ripley
 
 	* man/read.dbf.Rd: update wotsit.org URL (thanks to Peter Konings).
 	
-2009-05-02 Brian Ripley <Brian.Ripley@R-project.org>
+2009-05-02 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-35
 	* src/dbfopen.c: make a blank field valid as a NULL numeric type
@@ -264,7 +272,7 @@
 	need to convert NA_INTEGER to NA_REAL, not to -2^31+1.  And columns
 	were promoted unnecessarily because of a typo.
 
-2009-03-12 Brian Ripley <Brian.Ripley@R-project.org>
+2009-03-12 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-34
 	* R/read.{dta,spss}.R: files specified as URLs are downloaded to a
@@ -273,7 +281,7 @@
 	* src/sfm-read.c: Remove some warnings that seem innocent (Windows
 	codepages, record type 7 subtype 20).
 
-2009-03-07 Brian Ripley <Brian.Ripley@R-project.org>
+2009-03-07 Brian Ripley
 
 	* src/avl.[ch]: comment out/remove unused functions, make external
 	symbols R_avl_* since Jeff Long managed to link against Solaris'
@@ -281,40 +289,40 @@
 	inlining under gcc (since it was the GCC not C99 model).
 	* src/{file-handle,pfm-read,sfm-read,spss}.c: use R_avl_ prefix.
 
-2009-02-18 Brian Ripley <Brian.Ripley@R-project.org>
+2009-02-18 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-33.
 	* R/spss.R: improvements to interpreting codepages
 
-2009-02-09 Brian Ripley <Brian.Ripley@R-project.org>
+2009-02-09 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-32.
 	* src/sfm-read.c: correct 'free' to 'Free' in contributed code.
 	* R/spss.R: interpret more code pages.
 
-2009-01-28 Brian Ripley <Brian.Ripley@R-project.org>
+2009-01-28 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-31.
 	* tests/{minitab,octave,spss}.Rout.save: update output
 	
-2009-01-04 Brian Ripley <Brian.Ripley@R-project.org>
+2009-01-04 Brian Ripley
 
 	* R/writeforeignSAS: fix typo (PR#13425)
 
-2008-12-19 Brian Ripley <Brian.Ripley@R-project.org>
+2008-12-19 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-30.
 	* R/*.R: more code cleanup.
 	* man/read.ssd.R, man/read.xport.Rd: correct \email format
 
-2008-12-15 Brian Ripley <Brian.Ripley@R-project.org>
+2008-12-15 Brian Ripley
 
 	* R/*R: make more use of integer constants.
 	* tests/stata.Rout.save: update for str() changes in R 2.8.0.
 	* R/spss.R, man/read.spss.Rd, src/sfm-read.c: assume 
 	codepage 65001 is UTF-8, others >= 2000 are unknown to iconv().
 	
-2008-08-21 Brian Ripley <Brian.Ripley@R-project.org>
+2008-08-21 Brian Ripley
 
 	* R/read.dta.R, man/write.dta.Rd: allow arrays in write.dta with
 	all dims but the first equal to one.
@@ -322,18 +330,18 @@
 	corrected.  Use "wb" to open file (and so preserve eol on Windows).
 	* man/{read,write}.arff.Rd: update URL
 
-2008-08-07 Brian Ripley <Brian.Ripley@R-project.org>
+2008-08-07 Brian Ripley
 
 	* R/read.ssd.R: allow long var names, PR#9631/2.
 
-2008-08-07 Brian Ripley <Brian.Ripley@R-project.org>
+2008-08-07 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-29.
 	* R/read.dta.R: avoid as.Date() after
 	https://stat.ethz.ch/pipermail/r-help/2008-August/170114.html
 	* R/*.R: use L for integer constants.
 
-2008-08-05 Brian Ripley <Brian.Ripley@R-project.org>
+2008-08-05 Brian Ripley
 
 	* src/sfm-read.c, src/spss.c, man/read.spss.Rd: return information
 	on user-defined missing values.
@@ -344,13 +352,13 @@
 	* src/dbfopen.c, src/minitab.c, src/stataread.c: check return
 	values from fread etc.
 
-2008-07-29 Brian Ripley <Brian.Ripley@R-project.org>
+2008-07-29 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-28.
 	* src/sfm-read.c: endianness fix from
 	https://stat.ethz.ch/pipermail/r-devel/2008-July/050194.html
 
-2008-07-21 Brian Ripley <Brian.Ripley@R-project.org>
+2008-07-21 Brian Ripley
 
 	* src/minitab.c, src/sfm-read.c: clean up last changes.
 
@@ -362,16 +370,16 @@
 	* tests/spss_long.sav : added example for those by Ilse Laurijssen
 	* tests/spss.R : add stringent tests; also testing the above.
 
-2008-06-18 Brian Ripley <Brian.Ripley@R-project.org>
+2008-06-18 Brian Ripley
 
 	* src/SASxport.c, src/minitab.c, src/spss.c, src/stataread.c: use
 	sterrror(errno) to give reason for fopen failure.
 
-2008-06-13 Brian Ripley <Brian.Ripley@R-project.org>
+2008-06-13 Brian Ripley
 
 	* tests/sas.R: make optional, controlled by env variable.
 
-2008-05-29 Brian Ripley <Brian.Ripley@R-project.org>
+2008-05-29 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-26.
 	* src/stataread.c: increase buffer size for version 10 files.
@@ -392,17 +400,17 @@
 	large integer and numeric values.
 	* tests/stata.Rout.save: update. [NB: will need updating for R 2.8.0]
 
-2008-04-10 Brian Ripley <Brian.Ripley@R-project.org>
+2008-04-10 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-25.
 	* R/zzz.R: add .onUnload() to unload the DLL.
 
-2008-04-04 Brian Ripley <Brian.Ripley@R-project.org>
+2008-04-04 Brian Ripley
 
 	* tests/sas.R: precautionary use of binary mode -- needed to test
 	under Windows in R < 2.7.0.
 
-2008-03-27 Brian Ripley <Brian.Ripley@R-project.org>
+2008-03-27 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-24.
 	* src/SASxport.c: Patch from PD for case where record
@@ -418,12 +426,12 @@
 	* R/spss.R, src/sfm-read.c, src/sfmP.h, pfm-read.c,
 	man/read.spss.Rd: add 'reencode' argument to read.spss.
 
-2008-03-22 Brian Ripley <Brian.Ripley@R-project.org>
+2008-03-22 Brian Ripley
 
 	* src/dbfopen.c: Use R_atof where available, for
 	locale-independence.
 
-2008-03-18 Brian Ripley <Brian.Ripley@R-project.org>
+2008-03-18 Brian Ripley
 
 	* R/read.dta.R, src/stataread.c, man/read.dta.Rd,
 	man/write.dta.Rd.  Add support for Stata 10 (aka 114) format.
@@ -432,12 +440,12 @@
 
 	* R/read.epiinfo.R:  bad regexp for blanks fixed.
 
-2008-01-23 Brian Ripley <Brian.Ripley@R-project.org>
+2008-01-23 Brian Ripley
 
 	* src/minitab.c: force text-mode opening (embedded uses of R can
 	change the default on Windows).
 
-2007-09-17 Brian Ripley <Brian.Ripley@R-project.org>
+2007-09-17 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-23, use approved license abbreviation.
 	* R/spss.R, man/read.spss.Rd, tests/spss.Rout.save:
@@ -445,18 +453,18 @@
 	padding in the value labels table and not in the data.  One
 	example is in PR#9896.
 
-2007-08-12 Brian Ripley <Brian.Ripley@R-project.org>
+2007-08-12 Brian Ripley
 
 	* man/read.spss.Rd: Clarifications, including
 	'Unrecognized record type 7, subtype 16' message.
 	Add URL for PSPP project.
 
-2007-08-02 Brian Ripley <Brian.Ripley@R-project.org>
+2007-08-02 Brian Ripley
 
 	* src/pfm-read.c, src/sfm-read.c: include headers conditionally
 	provided via R.h.
 
-2007-07-27 Brian Ripley <Brian.Ripley@R-project.org>
+2007-07-27 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-22
 	* R/*.R, src/*.[ch]: Add licence statement, or update source for GPL.
@@ -465,24 +473,24 @@
 	* COPYRIGHTS: update some dates.
 	* LICENCE: Clarify that this package is licensed under GPL >= 2.
 
-2007-06-06 Brian Ripley <Brian.Ripley@R-project.org>
+2007-06-06 Brian Ripley
 
 	* src/sfm-read.c: remove Solaris compiler warning.
 
-2007-06-01 Brian Ripley <Brian.Ripley@R-project.org>
+2007-06-01 Brian Ripley
 
 	* src/foreign.h: remove duplicate definition of R_ExpandFileName.
 	* src/R_systat.c, src/Rdfread.c, src/SASexport.c, src/spss.c,
 	src/stataread.c: issues with CHAR being made (const char *).
 	* DESCRIPTION: Version is 0.8-21, depends on R >=2.6.0
 
-2007-05-29 Brian Ripley <Brian.Ripley@R-project.org>
+2007-05-29 Brian Ripley
 
 	* R/dbf.R, R/read.dta.R: comments on meaning of nchar()
 	- probably always ASCII
 	* tests/stata.Rout.save: update for R 2.6.x
 
-2007-05-20 Brian Ripley <Brian.Ripley@R-project.org>
+2007-05-20 Brian Ripley
 
 	* R/Sread.R, R/octave.R, tests/stata.*: partial matching issues,
 	use seq.int.
@@ -491,7 +499,7 @@
 
 	* DESCRIPTION: Version is 0.8-20
 
-2007-04-06 Brian Ripley <Brian.Ripley@R-project.org>
+2007-04-06 Brian Ripley
 
 	* src/sfm-read.c: warning not error on unknown character
 	representation code.
@@ -505,7 +513,7 @@
 	* man/write.arff.Rd:
 	Add functionality for reading and writing Weka ARFF files.
 
-2007-03-23 Brian Ripley <Brian.Ripley@R-project.org>
+2007-03-23 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-19, depends on 2.5.0.
 	* NAMESPACE: remove conditionality
@@ -515,24 +523,24 @@
 
 	* R/read.dta.R: avoid as.data.frame.list, for efficiency
 
-2006-12-22 Brian Ripley <Brian.Ripley@R-project.org>
+2006-12-22 Brian Ripley
 
 	* man/read.epiinfo.Rd: spelling
 
-2006-11-30 Brian Ripley <Brian.Ripley@R-project.org>
+2006-11-30 Brian Ripley
 
 	* NAMESPACE: Conditional on R>=2.5.0, import write.table
 	* DESCRIPTION: Declare imports from utils, although only needed for R>=2.5.0
 
-2006-11-29 Brian Ripley <Brian.Ripley@R-project.org>
+2006-11-29 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-18.
 
-2006-11-04 Brian Ripley <Brian.Ripley@R-project.org>
+2006-11-04 Brian Ripley
 
 	* man/read.S.Rd: several corrections, mainly re data.restore.
 
-2006-09-06 Brian Ripley <Brian.Ripley@R-project.org>
+2006-09-06 Brian Ripley
 
 	* DESCRIPTION: needs to depends on stats, for na.omit.
 	  It does use methods::as
@@ -549,7 +557,7 @@
 
 	* src/writeForeignCode.R: fixes for PR#8936,  PR#8927, PR#9006
 
-2006-08-31 Brian Ripley <Brian.Ripley@R-project.org>
+2006-08-31 Brian Ripley
 
 	* DESCRIPTION: there are no imports, from methods or elsewhere.
 	  Version is 0.8-16.
@@ -558,7 +566,7 @@
 
 	* src/minitab.c: only use Rinternals.h.
 
-2006-08-11 Brian Ripley <Brian.Ripley@R-project.org>
+2006-08-11 Brian Ripley
 
 	* tests/stata.Rout.save: update for str() change.
 
@@ -566,22 +574,22 @@
 
 	* R/writeForeignSAS.R, COPYRIGHTS: Add Stephen Weigand's modifications
 
-2006-05-26 Brian Ripley <Brian.Ripley@R-project.org>
+2006-05-26 Brian Ripley
 
 	* R/dbf.R, man/writedbf.Rd: new argument max_nchar to write.dbf()
 	to allow longer character fields.
 
-2006-03-29 Brian Ripley <Brian.Ripley@R-project.org>
+2006-03-29 Brian Ripley
 
 	* DESCRIPTION: version is 0.8-15
 
 	* src/R_systat.c: Don't try to parse comments.
 
-2006-02-25 Brian Ripley <Brian.Ripley@R-project.org>
+2006-02-25 Brian Ripley
 
 	* src/init.c: use const for tables.
 
-2006-01-26 Brian Ripley <Brian.Ripley@R-project.org>
+2006-01-26 Brian Ripley
 
 	* DESCRIPTION: version is 0.8-14
 
@@ -590,7 +598,7 @@
 
 	* R/zzz.R: update FSF address.
 
-2005-12-30  Brian Ripley <Brian.Ripley@R-project.org>
+2005-12-30  Brian Ripley
 
 	* DESCRIPTION: version is 0.8-13
 
@@ -598,21 +606,21 @@
 
 	* COPYING: update FSF address
 
-2005-12-19  Brian Ripley <Brian.Ripley@R-project.org>
+2005-12-19  Brian Ripley
 
 	* src/SASxport.[ch]: better ways to avoid alignment problems.
 
 	* src/sfmP.h, src/sfm-read.c: remove packing as it causes
 	alignment problems on 64-bit platforms.
 
-2005-12-14  Brian Ripley <Brian.Ripley@R-project.org>
+2005-12-14  Brian Ripley
 
 	* DESCRIPTION: version is 0.8-12
 
 	* src/SASxport.c: force alignment of char *, as apparently
 	gcc4's memcpy requires this.
 
-2005-12-12  Brian Ripley <Brian.Ripley@R-project.org>
+2005-12-12  Brian Ripley
 
 	* src/sfm-read.c, src/SASxport.h: use int not long.  First is
 	harmless, the second may not be on 64-bit platforms.
@@ -620,17 +628,17 @@
 	alignment is adding no padding, which is not the case on Sparc
 	Solaris's native compilers.
 
-2005-12-08  Brian Ripley <Brian.Ripley@R-project.org>
+2005-12-08  Brian Ripley
 
 	* DESCRIPTION: version is 0.8-11
 
 	* po/R-fr.po, po/fr.po: add French translations.
 
-2005-11-16  Brian Ripley <Brian.Ripley@R-project.org>
+2005-11-16  Brian Ripley
 
 	* src/init.c: new file, add symbol registration.
 
-2005-08-26  Brian Ripley <Brian.Ripley@R-project.org>
+2005-08-26  Brian Ripley
 
 	* DESCRIPTION: version is 0.8-10
 
@@ -638,7 +646,7 @@
 	abuse of casting an int to/from void *, which correctly warned on
 	64-bit platforms.
 
-2005-08-19  Brian Ripley <Brian.Ripley@R-project.org>
+2005-08-19  Brian Ripley
 
 	* src/Rdbfread.c, man/read.dbf.Rd: read over-wide numeric fields as
 	doubles.
@@ -652,7 +660,7 @@
 
 	* DESCRIPTION: version is 0.8-9
 
-2005-07-13  Brian Ripley <Brian.Ripley@R-project.org>
+2005-07-13  Brian Ripley
 
 	* R/writeForeignCode.R:
 	* R/writeForeignSAS.R:
@@ -666,7 +674,7 @@
 
 	* R/writeForeignCode.R: extra punctuation in SPSS code files.
 
-2005-06-08  Brian Ripley <Brian.Ripley@R-project.org>
+2005-06-08  Brian Ripley
 
 	* src/dbfopen.c: suppress a couple of warnings on Solaris.
 
@@ -684,13 +692,13 @@
 	record type 7, subtype 13" warning caused by long variable names
 	in SPSS files.
 
-2005-04-17  Brian Ripley <Brian.Ripley@R-project.org>
+2005-04-17  Brian Ripley
 
 	* DESCRIPTION (Version): New version is 0.8-7.
 
 	* R/dbf.R: further patch from Roger Bivand for all-NA fields.
 
-2005-04-04 Brian Ripley <Brian.Ripley@R-project.org>
+2005-04-04 Brian Ripley
 
 	* DESCRIPTION (Version): New version is 0.8-6.
 
@@ -699,7 +707,7 @@
 
 	* src/pfm-read.c: match -> pfm_match to avoid warning.
 
-2005-02-05 Brian Ripley <Brian.Ripley@R-project.org>
+2005-02-05 Brian Ripley
 
 	* DESCRIPTION (Version): New version is 0.8-5.
 
@@ -739,7 +747,7 @@
 	* tests/octave.dat:
 	New files for testing read.octave().
 
-2004-12-27 Brian Ripley <Brian.Ripley@R-project.org>
+2004-12-27 Brian Ripley
 
 	* test/stata.Rout.save: update for str() changes in R-devel
 
@@ -766,14 +774,14 @@
 
 	* R/Sread.R (data.restore): handle `ts()' objects properly
 
-2004-11-24 Brian Ripley <Brian.Ripley@R-project.org>
+2004-11-24 Brian Ripley
 
 	* DESCRIPTION: New version is 0.8-2.
 
 	* src/SASxport.c Definition of numerical missing values was
 	applied to character fields. (PR#7389)
 
-2004-11-17 Brian Ripley <Brian.Ripley@R-project.org>
+2004-11-17 Brian Ripley
 
 	* DESCRIPTION: New version is 0.8-1.
 
@@ -789,11 +797,11 @@
 	* read.spss.Rd: Mention the apparently harmless warning given for
 	 recent versions of SPSS files.
 
-2004-10-28 Brian Ripley <Brian.Ripley@R-project.org>
+2004-10-28 Brian Ripley
 
 	* DESCRIPTION: Mention read/write .dbf files
 
-2004-10-25 Brian Ripley <Brian.Ripley@R-project.org>
+2004-10-25 Brian Ripley
 
 	* DESCRIPTION: New version is 0.8-0.
 

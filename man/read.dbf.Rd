@@ -10,6 +10,9 @@
 \description{
   The function reads a DBF file into a data frame, converting character
   fields to factors, and trying to respect NULL fields.
+
+  The DBF format is documented but not much adhered to.  There is is no
+  guarantee this will read all DBF files.
 }
 \usage{
 read.dbf(file, as.is = FALSE)
@@ -57,6 +60,11 @@ read.dbf(file, as.is = FALSE)
 
 \author{
   Nicholas Lewin-Koh and Roger Bivand; shapelib by Frank Warmerdam
+}
+
+\note{
+  Not to be able to read a particular \sQuote{DBF} file is not a bug:
+  this is a convenience function especially for shapefiles.
 }
 
 \seealso{

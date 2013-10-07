@@ -82,17 +82,18 @@ Copyright 2000 Saikat DebRoy <saikat@stat.wisc.edu>
                Thomas Lumley <tlumley@u.washington.edu>
 
 
-src/stata.c
+src/stataread.c
 
 (c) 1999, 2000, 2001, 2002 Thomas Lumley.
     2000 Saikat DebRoy
+  Patches by the R Core Team and Brian Quistorff.
 
 
 man/read.dta.Rd
 man/write.dta.Rd
 man/write.foreign.Rd
 
-Thomas Lumley
+Thomas Lumley (Patches by the R Core Team)
 
 
 man/read.mtp.Rd

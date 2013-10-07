@@ -5,7 +5,9 @@
 \alias{read.dta}
 \title{Read Stata Binary Files}
 \description{
-  Reads a file in Stata version 5--11 binary format into a data frame. 
+  Reads a file in Stata version 5--12 binary format into a data frame. 
+  
+  Frozen: will not support Stata formats after 12.
 }
 \usage{
 read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
@@ -70,11 +72,14 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
 \references{
   Stata Users Manual (versions 5 & 6), Programming manual (version 7),
   or online help (version 8 and later) describe the format of the files.
-  Or at \url{http://www.stata.com/help.cgi?dta} and
+  Or at \url{http://www.stata.com/help.cgi?dta_114} and
   \url{http://www.stata.com/help.cgi?dta_113}.
 }
 
-\author{Thomas Lumley and R-core members}
+\author{
+  Thomas Lumley and R-core members: support for value labels by
+  Brian Quistorff.
+}
 \seealso{
   A different approach is available in package \pkg{memisc}: see its
   help for \code{Stata.file}.

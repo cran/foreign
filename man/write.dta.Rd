@@ -23,6 +23,8 @@ write.dta(dataframe, file, version = 7L,
   Writes the data frame to file in the Stata binary
   format.  Does not write array variables unless they can be
   \code{\link{drop}}-ed to a vector.
+
+  Frozen: will not support Stata formats after 10 (aka 11).
 }
 \details{
   The major differences between file formats in Stata versions is that
@@ -96,10 +98,13 @@ write.dta(dataframe, file, version = 7L,
 }
 \references{
   Stata 6.0 Users Manual, Stata 7.0 Programming manual, Stata online
-  help (version 8 and later, also \url{http://www.stata.com/help.cgi?dta}
+  help (version 8 and later, also \url{http://www.stata.com/help.cgi?dta_114}
   and \url{http://www.stata.com/help.cgi?dta_113}) describe the file formats.
 } 
-\author{Thomas Lumley and R-core members}
+\author{
+  Thomas Lumley and R-core members: support for value labels by
+  Brian Quistorff.
+}
 \seealso{
   \code{\link{read.dta}},
   \code{\link{attributes}},

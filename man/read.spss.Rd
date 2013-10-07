@@ -7,6 +7,9 @@
 \description{
   \code{read.spss} reads a file stored by the SPSS \code{save} or
   \code{export} commands.
+
+  This was orignally written in 2000 and has limited support for changes
+  in SPSS format since (which have not been many).
 }
 \usage{
 read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
