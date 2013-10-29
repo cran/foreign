@@ -1,12 +1,12 @@
 23230f6ef6d4252d57567773a3f09154 *BUGS
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-89d7b1ff37a447ccfdadc2f630b0d9d4 *ChangeLog
-818e0047c5a4a064045b5e5f54c47285 *DESCRIPTION
+e2598ca5d61a1474b07a5125b46159d4 *ChangeLog
+b3f4a4e05e3403b05254d68856288ad4 *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 194430b212cbb64455c034ba36711636 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
 ea95d085c2d57992edec696c52bc43c9 *R/Sread.R
-c77bbd67fe331e888b7162bf4d1f9a63 *R/arff.R
+fe9264456fd8aa175971d74b69e4d48a *R/arff.R
 9cfefd5c764b14552a99b608771848c3 *R/dbf.R
 b7e7d712506f5c522860a934f332cd43 *R/minitab.R
 9edf2143c1d156c9b385593f2d66d4bb *R/octave.R
@@ -34,7 +34,7 @@ e927a59cd9d26c6a1058cff4e1993856 *man/lookup.xport.Rd
 ade888287f7121bef13c1ce590cf9036 *man/read.S.Rd
 357a16f7c492feba1c41f2421b58c175 *man/read.arff.Rd
 a077c1a8ed9058bec5a731c7751e6b77 *man/read.dbf.Rd
-b7a9bfb4088aa34e06c96a0e0d547da1 *man/read.dta.Rd
+6fb90b1672e62ae012a42bb8357e7a70 *man/read.dta.Rd
 646ac73454904350d85998a4a1716da2 *man/read.epiinfo.Rd
 237a05c9be9b5783fc45f4b4fccecdfd *man/read.mtp.Rd
 db1bc6e2fb3330ae5d265b0a36d5f58a *man/read.octave.Rd
@@ -77,7 +77,7 @@ c7d9f5bf01d7d4dac3f6a5cc401fba29 *src/sfm-read.c
 415d9a842df63d8f5aa2f30dee9a3897 *src/sfmP.h
 7170823cb63ff57d1656d137fcbd9a88 *src/shapefil.h
 fe9d8268c79f4b25a0b6ce7a51a8691c *src/spss.c
-b0593a9390719bffd0a2bfac277ed749 *src/stataread.c
+4edfd7a9559a5f0f4ba9abf57da85055 *src/stataread.c
 3188f3e6a43723261e86b62d080777f7 *src/swap_bytes.h
 755f0cbaa53ae02237c1748aba1b372e *src/var.h
 67b90739aaf9a0327571426c1c634bf4 *tests/Alfalfa.xpt

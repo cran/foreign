@@ -503,8 +503,9 @@ SEXP R_LoadStataData(FILE *fp)
 
     /** value labels **/
     if (abs(version) > 5) {
-	PROTECT(labeltable = allocVector(VECSXP, 0));
-	PROTECT(tmp = allocVector(STRSXP, 0));
+	PROTECT_INDEX ipl, ipt;
+	PROTECT_WITH_INDEX(labeltable = allocVector(VECSXP, 0), &ipl);
+	PROTECT_WITH_INDEX(tmp = allocVector(STRSXP, 0), &ipt);
 	for(j = 0; ; j++) {
 	    /* first int not needed, use fread directly to trigger EOF */
 	    res = (int) fread((int *) aname, sizeof(int), 1, fp);
@@ -512,12 +513,8 @@ SEXP R_LoadStataData(FILE *fp)
 	    if (res != 1) warning(_("a binary read error occurred"));
 
 	    //resize the vectors
-	    labeltable = lengthgets(labeltable, j+1);
-	    UNPROTECT(1);
-	    PROTECT(labeltable);
-	    tmp = lengthgets(tmp, j+1);
-	    UNPROTECT(1);
-	    PROTECT(tmp);
+	    REPROTECT(labeltable = lengthgets(labeltable, j+1), ipl);
+	    REPROTECT(tmp = lengthgets(tmp, j+1), ipt);
 
 	    InStringBinary(fp, varnamelength+1, aname);
 	    SET_STRING_ELT(tmp, j, mkChar(aname));

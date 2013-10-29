@@ -1,7 +1,7 @@
 Package: foreign
 Priority: recommended
-Version: 0.8-56
-Date: 2013-10-07
+Version: 0.8-57
+Date: 2013-10-29
 Title: Read Data Stored by Minitab, S, SAS, SPSS, Stata, Systat, Weka,
         dBase, ...
 Depends: R (>= 3.0.0), stats
@@ -29,7 +29,7 @@ ByteCompile: yes
 Biarch: yes
 License: GPL (>= 2)
 BugReports: http://bugs.r-project.org
-Packaged: 2013-10-07 08:49:56 UTC; ripley
+Packaged: 2013-10-29 16:30:29 UTC; martyn
 Author: R Core Team [aut, cph, cre],
   Roger Bivand [ctb, cph],
   Vincent J. Carey [ctb, cph],
@@ -46,4 +46,4 @@ Author: R Core Team [aut, cph, cre],
 Maintainer: R Core Team <R-core@R-project.org>
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2013-10-07 11:09:56
+Date/Publication: 2013-10-29 18:05:06

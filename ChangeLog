@@ -1,9 +1,21 @@
+2013-10-29 Martyn Plummer
+	* DESCRIPTION: Version is 0.8-57
+
+	* src/stataread.c: Fix for PR#15477
+
+2013-10-27 Brian Ripley
+
+	* man/read.dta: Add comment on Stata's confusion on v12 format.
+
 2013-10-07 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-56
+	
 	* man/{read,write}.dta: Freeze Stata support.
+	
 	* man/read.{dbf,spss}.Rd: add comments on status to fend off
 	non-bug reports.
+	
 	* inst/COPYRIGHTS, man/read.epiinfo.Rd, src/stataread.c: update.
 
 2013-09-02 Brian Ripley

@@ -144,7 +144,7 @@ function(x, file, eol = "\n", relation = deparse(substitute(x)))
             x[,name] <- squote(format(x[,name]))
         }
         else if (inherits(x[,name], "POSIXt")) {
-            text <- paste(text, "date \"yyyy-MM-dd hh:mm:ss\"")
+            text <- paste(text, "date \"yyyy-MM-dd HH:mm:ss\"")
             x[,name] <- squote(format(x[,name]))
         }
         else
