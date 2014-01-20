@@ -1,7 +1,7 @@
 23230f6ef6d4252d57567773a3f09154 *BUGS
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-e2598ca5d61a1474b07a5125b46159d4 *ChangeLog
-b3f4a4e05e3403b05254d68856288ad4 *DESCRIPTION
+eed4ed2fa7232e9ae2766f39b56eaad2 *ChangeLog
+d4c25bc4d99216e1ad7789c701bcf200 *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 194430b212cbb64455c034ba36711636 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -10,11 +10,11 @@ fe9264456fd8aa175971d74b69e4d48a *R/arff.R
 9cfefd5c764b14552a99b608771848c3 *R/dbf.R
 b7e7d712506f5c522860a934f332cd43 *R/minitab.R
 9edf2143c1d156c9b385593f2d66d4bb *R/octave.R
-f64dbb2bdd22e4e24b829be136bb82c0 *R/read.dta.R
+6104a24593b976f96c2a0af23c4ec8fd *R/read.dta.R
 825a5bc34931831a333db909055b3f0c *R/read.epiinfo.R
 1086e6cc7c1c3bbb16f5681d88801b7d *R/read.ssd.R
 34a2f0a28fca401b2b8dea03dc308721 *R/spss.R
-cf77f7b859ec5d9c26117378d66bea21 *R/writeForeignCode.R
+312d28edc443cefac72b1b787773dd14 *R/writeForeignCode.R
 22d7da62037b3d096509ef1ea100aff8 *R/writeForeignSAS.R
 7424cbf0a5229f99040b9611365117f3 *R/xport.R
 0337f989613243d0134c33eb5584953b *R/zzz.R
@@ -34,12 +34,12 @@ e927a59cd9d26c6a1058cff4e1993856 *man/lookup.xport.Rd
 ade888287f7121bef13c1ce590cf9036 *man/read.S.Rd
 357a16f7c492feba1c41f2421b58c175 *man/read.arff.Rd
 a077c1a8ed9058bec5a731c7751e6b77 *man/read.dbf.Rd
-6fb90b1672e62ae012a42bb8357e7a70 *man/read.dta.Rd
+acb9ea9483cc0c4a2821ec4b4e1c1191 *man/read.dta.Rd
 646ac73454904350d85998a4a1716da2 *man/read.epiinfo.Rd
 237a05c9be9b5783fc45f4b4fccecdfd *man/read.mtp.Rd
 db1bc6e2fb3330ae5d265b0a36d5f58a *man/read.octave.Rd
 dae7692e731b5712c810b37dea6292cd *man/read.spss.Rd
-adeba4b840585168f1904e3c879d88ab *man/read.ssd.Rd
+8ae8a221884b6c1016146c1ccdf53ecb *man/read.ssd.Rd
 146b4ae1fc1dee5b33cd2f1958b7b72c *man/read.systat.Rd
 ff73b1a8c612c1ba54bf67c205f13d00 *man/read.xport.Rd
 c07453b5e358e42c3ff7fda522d115f4 *man/write.arff.Rd
@@ -97,6 +97,8 @@ d7265f41a6bfebc1e1d593e211eaf107 *tests/create-dumpdata.S
 57ccf646d2c4ad366eb179b7e914312b *tests/electric.por
 724515c420fe1c87636dab0a8753bbac *tests/electric.sav
 859e5cbbd74fd94775c2c7f111ae2d71 *tests/ex1-51.mtp
+9c6c8cffb5c06ed0db857e22b3bcf510 *tests/keep/codefile.sps
+85becb8dd1c037ccdd4072bcfbf5e6d9 *tests/keep/datafile.dat
 a175ed9be624fb4d92b3ca53bd88a9e5 *tests/minitab.R
 57c6e64dd8bc3b41be2e7b6e698f46c2 *tests/minitab.Rout.save
 11479e9961cac6c3c8b5b6f2834a04ae *tests/mval_bug.R
@@ -128,5 +130,7 @@ b1705c3736380cf0ff7e32c6f474b4bd *tests/testEmpty.R
 f09e2ae8f13f085e70344d2d7d4698b5 *tests/testEmpty.Rout.save
 53e16b74c3ef55e5467204bd89549487 *tests/testEmpty.xpt
 8faa47e7d4da52cbb2b3d0b411ec8bdd *tests/tsdumpdata
+54096f7e190e583b4a94841f104623d1 *tests/writeForeignSPSS.R
+a5ef9e1cb5d8ea4deb3ac9ba7894ecae *tests/writeForeignSPSS.Rout.save
 340ec0c5a314f501dd332fe84b194cb1 *tests/xport.R
 7f6bc1e5f6a819bea52389a0c0922db5 *tests/xport.Rout.save

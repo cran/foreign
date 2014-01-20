@@ -28,15 +28,15 @@ writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL)
 {
     ## FIXME: re-write this to hold a connection open
     dfn <- lapply(df, function(x) if (is.factor(x)) as.numeric(x) else x)
-    write.table(dfn, file=datafile, row.names=FALSE, col.names=FALSE,
-                sep=",", quote=FALSE, na="",eol=",\n")
+    write.table(dfn, file = datafile, row.names = FALSE, col.names = FALSE,
+                sep = ",", quote = FALSE, na = "",eol = ",\n")
 
     varlabels <- names(df)
     if (is.null(varnames)) {
         varnames <- abbreviate(names(df), 8L)
         if (any(sapply(varnames, nchar) > 8L))
             stop("I cannot abbreviate the variable names to eight or fewer letters")
-        if (any(varnames!=varlabels))
+        if (any(varnames != varlabels))
             warning("some variable names were abbreviated")
     }
 
@@ -47,8 +47,9 @@ writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL)
         lengths <- sapply(df[chv],function(v) max(nchar(v)))
         if(any(lengths > 255L))
             stop("Cannot handle character variables longer than 255")
-        lengths <- paste("(A", lengths, ")", sep="")
-        star <- ifelse(c(FALSE, diff(which(chv) > 1L))," *", " ")
+        lengths <- paste0("(A", lengths, ")")
+        # corrected by PR#15583
+        star <- ifelse(c(TRUE, diff(which(chv) > 1L))," *", " ")
         dl.varnames[chv] <- paste(star, dl.varnames[chv], lengths)
   }
 
@@ -63,7 +64,7 @@ writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL)
         cat("\nVALUE LABELS\n", file = codefile, append = TRUE)
         for(v in which(factors)){
             cat("/\n", file = codefile, append = TRUE)
-            cat(varnames[v]," \n", file = codefile, append = TRUE)
+            cat(varnames[v]," \n", file = codefile, append = TRUE, sep = "")
             levs <- levels(df[[v]])
             cat(paste(seq_along(levs), adQuote(levs), "\n", sep = " "),
                 file = codefile, append = TRUE)
@@ -76,12 +77,12 @@ writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL)
 
 writeForeignStata <- function(df, datafile, codefile)
 {
-    write.table(df, file=datafile, row.names=FALSE, col.names=FALSE,
-                sep=",", quote=FALSE, na=".")
+    write.table(df, file = datafile, row.names = FALSE, col.names = FALSE,
+                sep = ",", quote = FALSE, na = ".")
     nms <- names(df)
     factors <- sapply(df,is.factor) | sapply(df, is.character)
-    formats <- paste(nms,"fmt",sep="_")
-    nms <- ifelse(factors,paste(nms,formats,sep=":"),nms)
+    formats <- paste(nms, "fmt", sep = "_")
+    nms <- ifelse(factors, paste(nms,formats, sep = ":"), nms)
 
-    cat("infile",nms," using ",datafile,", automatic\n", file=codefile)
+    cat("infile", nms, " using ", datafile,", automatic\n", file = codefile)
 }

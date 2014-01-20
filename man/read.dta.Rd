@@ -18,7 +18,7 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
   \item{file}{a filename or URL as a character string.}
   \item{convert.dates}{Convert Stata dates to \code{Date} class?}
   \item{convert.factors}{Use Stata value labels to create factors?
-    (version 6.0 or later).}
+    (Version 6.0 or later).}
   \item{missing.type}{For version 8 or later, store information about
     different types of missing data?}
   \item{convert.underscore}{Convert \code{"_"} in Stata variable names
@@ -37,13 +37,15 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
   variable labels, timestamp, and variable/dataset characteristics
   are stored as attributes of the data frame.
 
-  By default Stata dates (\%d and \%td formats) are converted to \R's
-  \code{Date} class and variables with Stata value labels are
+  By default Stata dates (\%d and \%t formats) are converted to \R's
+  \code{Date} class, and variables with Stata value labels are
   converted to factors.  Ordinarily, \code{read.dta} will not convert
   a variable to a factor unless a label is present for every level.  Use
   \code{convert.factors = NA} to override this.  In any case the value
   label and format information is stored as attributes on the returned
-  data frame.
+  data frame.  Stata's date formats are sketchily documented: if
+  necessary use \code{convert.dates = FALSE} and examine the attributes
+  to work out how to post-process the dates.
   
   Stata 8.0 introduced a system of 27 different missing data values.  If
   \code{missing.type} is \code{TRUE} a separate list is created with the
@@ -62,9 +64,7 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
   \code{-7} (Stata 7SE, \sQuote{format-111}), \code{8} (Stata 8 and 9,
   \sQuote{format-113}) and \code{10} (Stata 10 and 11, \sQuote{format-114}).
   Stata 12 by default uses \sQuote{format-115}, which is read as
-  \sQuote{format-114} (the Stata documentation says its structure is
-  identical; this means means that \sQuote{business dates} will not be
-  recognized as dates).
+  \sQuote{format-114}.
   
   The value labels in attribute \code{"val.labels"} name a table for
   each variable, or are an empty string.  The tables are elements of the
@@ -74,7 +74,7 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
 \references{
   Stata Users Manual (versions 5 & 6), Programming manual (version 7),
   or online help (version 8 and later) describe the format of the files.
-  Or at \url{http://www.stata.com/help.cgi?dta_114} and
+  Or directly at \url{http://www.stata.com/help.cgi?dta_114} and
   \url{http://www.stata.com/help.cgi?dta_113}.
 }
 
