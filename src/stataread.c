@@ -617,11 +617,11 @@ static void OutShortIntBinary(int i,FILE * fp)
   unsigned char first,second;
 
 #ifdef WORDS_BIGENDIAN
-    first = (i >> 8);
+    first = (unsigned char)(i >> 8);
     second = i & 0xff;
 #else
     first = i & 0xff;
-    second = i >> 8;
+    second = (unsigned char)(i >> 8);
 #endif
   if (fwrite(&first, sizeof(char), 1, fp) != 1)
     error(_("a binary write error occurred"));
@@ -677,7 +677,7 @@ writeStataValueLabel(const char *labelName, const SEXP theselabels,
     for (i = 0; i < length(theselabels); i++)
 	txtlen += strlen(CHAR(STRING_ELT(theselabels, i))) + 1;
     len += txtlen;
-    OutIntegerBinary(len, fp, 0); /* length of table */
+    OutIntegerBinary((int)len, fp, 0); /* length of table */
     char labelName2[strlen(labelName) + 1];
     strcpy(labelName2, labelName);
     OutStringBinary(nameMangleOut(labelName2, namelength), fp, namelength);
@@ -688,7 +688,7 @@ writeStataValueLabel(const char *labelName, const SEXP theselabels,
     /* offsets */
     len = 0;
     for (i = 0; i < length(theselabels); i++){
-	OutIntegerBinary(len, fp, 0);
+	OutIntegerBinary((int)len, fp, 0);
 	len += strlen(CHAR(STRING_ELT(theselabels,i))) + 1;
     }
     /* values: just 1,2,3,...*/
@@ -707,9 +707,9 @@ writeStataValueLabel(const char *labelName, const SEXP theselabels,
 	}
     }
     /* the actual labels */
-    for(i = 0; i < length(theselabels); i++){
+    for(i = 0; i < length(theselabels); i++) {
 	len = strlen(CHAR(STRING_ELT(theselabels, i)));
-	OutStringBinary(CHAR(STRING_ELT(theselabels,i)), fp, len);
+	OutStringBinary(CHAR(STRING_ELT(theselabels,i)), fp, (int)len);
 	OutByteBinary(0, fp);
 	txtlen -= len+1;
 	if (txtlen < 0) error(_("this should happen: overrun"));

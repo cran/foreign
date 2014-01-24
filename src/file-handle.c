@@ -70,7 +70,7 @@ fh_get_handle_by_filename (const char *filename)
   struct file_handle f, *fp;
   char *fn;
   char *name;
-  int len;
+  size_t len;
 
   /* Get filename. */
   len = strlen (filename);
@@ -136,7 +136,7 @@ fh_handle_name (struct file_handle *h)
 
   if (h->name[0] == '*')
     {
-      int len = strlen (h->fn);
+      size_t len = strlen (h->fn);
 
       buf = Calloc (len + 3, char);
       strcpy (&buf[1], h->fn);

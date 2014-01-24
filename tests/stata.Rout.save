@@ -1,7 +1,7 @@
 
-R Under development (unstable) (2013-09-02 r63797) -- "Unsuffered Consequences"
-Copyright (C) 2013 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin12.4.0 (64-bit)
+R Under development (unstable) (2014-01-23 r64859) -- "Unsuffered Consequences"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.0.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -384,5 +384,19 @@ In read.dta("pc5.dta") : cannot read factor labels from Stata 5 files
   .. ..- attr(*, "names")= chr  "Masculino" "Femenino"
   ..$ fem_lbl_val_en: Named int  0 1
   .. ..- attr(*, "names")= chr  "Male" "Female"
+> 
+> ## Dates and date-times in Stata12
+> read.dta("xxx12.dta")
+                     x                  xc               xbigc      xdate
+1  2014-01-23 20:07:16 2014-01-23 20:07:16 2014-01-23 20:07:16 2014-01-23
+2  2014-01-23 20:07:17 2014-01-23 20:07:17 2014-01-23 20:07:17 2014-01-23
+3  2014-01-23 20:07:18 2014-01-23 20:07:18 2014-01-23 20:07:18 2014-01-23
+4  2014-01-23 20:07:19 2014-01-23 20:07:19 2014-01-23 20:07:19 2014-01-23
+5  2014-01-23 20:07:20 2014-01-23 20:07:20 2014-01-23 20:07:20 2014-01-23
+6  2014-01-23 20:07:21 2014-01-23 20:07:21 2014-01-23 20:07:21 2014-01-23
+7  2014-01-23 20:07:22 2014-01-23 20:07:22 2014-01-23 20:07:22 2014-01-23
+8  2014-01-23 20:07:23 2014-01-23 20:07:23 2014-01-23 20:07:23 2014-01-23
+9  2014-01-23 20:07:24 2014-01-23 20:07:24 2014-01-23 20:07:24 2014-01-23
+10 2014-01-23 20:07:25 2014-01-23 20:07:25 2014-01-23 20:07:25 2014-01-23
 > 
 > q()

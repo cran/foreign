@@ -420,7 +420,7 @@ read_int (struct file_handle *h)
     goto lossage;
   if (floor (f) != f || f >= INT_MAX || f <= INT_MIN)
     lose ((_("Bad integer format")));
-  return f;
+  return (int) f;
 
  lossage:
   return NA_INTEGER;
@@ -456,7 +456,7 @@ read_string (struct file_handle *h)
 
     for (i = 0; i < n; i++)
       {
-	buf[i] = ext->cc;
+	  buf[i] = (unsigned char) ext->cc;
 	advance ();
       }
   }
@@ -505,7 +505,7 @@ read_header (struct file_handle *h)
 
     ext->trans = Calloc (256, unsigned char);
     for (i = 0; i < 256; i++)
-      ext->trans[i] = trans_temp[i] == -1 ? 0 : trans_temp[i];
+	ext->trans[i] = trans_temp[i] == -1 ? 0 : (unsigned char) trans_temp[i];
 
     /* Translate the input buffer. */
     for (i = 0; i < 80; i++)
@@ -773,7 +773,7 @@ read_variables (struct file_handle *h)
 	  else if ((c >= 64 /* 0 */ && c <= 99 /* Z */)
 		   || c == 127 /* . */ || c == 152 /* @ */
 		   || c == 136 /* $ */ || c == 146 /* _ */)
-	    name[j] = c;
+	      name[j] = (unsigned char) c;
 	  else
 	    lose ((_("position %d: character `\\%03o' is not valid in a variable name"),
 		   i, c));

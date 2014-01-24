@@ -3,7 +3,7 @@
  *
  *  Copyright 2000-2000 Saikat DebRoy <saikat@stat.wisc.edu>
  *                      Thomas Lumley <tlumley@u.washington.edu>
- *  Copyright 2005-8 R Core Development Team
+ *  Copyright 2005-2014 R Core Development Team
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -38,7 +38,7 @@
 char *
 xstrdup(const char *s)
 {
-    int len = strlen(s);
+    int len = (int) strlen(s);
     char *c = Calloc(len + 1, char);
     strcpy(c, s);
     return c;
@@ -166,8 +166,8 @@ val_lab_cmp (const void *a, const void *b, void *param)
 		    width);
   else
     {
-      int temp = (((struct value_label *) a)->v.f
-		  - ((struct value_label *) b)->v.f);
+      double temp = (((struct value_label *) a)->v.f
+		     - ((struct value_label *) b)->v.f);
       if (temp > 0)
 	return 1;
       else if (temp < 0)
@@ -597,7 +597,7 @@ fread_pfm(void *ptr, size_t size, size_t nobj, FILE *stream)
 	    fgetc(stream);
 	if (c == EOF)
 	    break;
-	*c_ptr++ = c;
+	*c_ptr++ = (char) c;
     }
     if (i % size != 0) {
 	i -= i % size;

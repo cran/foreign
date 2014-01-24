@@ -1,3 +1,4 @@
+## This site was unresponsive in Jan 2014
 if(!nzchar(Sys.getenv("R_FOREIGN_FULL_TEST"))) q("no")
 library("foreign")
 setwd(tempdir())

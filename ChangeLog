@@ -1,3 +1,21 @@
+2014-01-24 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-59
+
+	* R/read.dta.R, man/read.dta.Rd: add support for Stata date-times,
+	improve detection of date columns.
+
+	* tests/stata.{R,Rout.save}, tests/xxx12.dta: add regression test.
+
+2014-01-22 Brian Ripley
+
+	* tests/download.R: remove defunct URL.
+
+	* tests/sas.R: comment that URL was unresponsive.
+
+	* src/{file.handle.c,minitab.c,pfm-read.c,sfm-read.c,spss.c,stataread.c}: 
+	add casts or correct types.
+
 2014-01-21 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-58
@@ -10,6 +28,7 @@
 	* R/writeForeignCode.R: correction to write.foreign(package =
 	"SPSS") when writing data frames with character columns. (PR#15483)  
 	Also layout/legibility.
+
 	* tests/writeForeignCode.{R,Rout.save}, tests/keep: regression
 	test for above.
 

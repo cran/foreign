@@ -40,4 +40,7 @@ unlink("bq.dta")
 bq <- read.dta("OneVarTwoValLabels.dta")
 str(bq)
 
+## Dates and date-times in Stata12
+read.dta("xxx12.dta")
+
 q()

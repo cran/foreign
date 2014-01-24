@@ -50,7 +50,7 @@ static				/* trim white space from end of string */
 char *strtrim(char *str)
 {
     int i;
-    for (i = strlen(str) - 1; i >= 0 && isspace((int)str[i]); i--)
+    for (i = (int) strlen(str) - 1; i >= 0 && isspace((int)str[i]); i--)
 	str[i] = '\0';
     return str;
 }

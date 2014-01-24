@@ -719,7 +719,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
     for (i = 0; i < N_PREFIXES; i++)
       if (!strncmp (prefix[i], hdr.prod_name, strlen (prefix[i])))
 	{
-	  skip_amt = strlen (prefix[i]);
+	    skip_amt = (int) strlen (prefix[i]);
 	  break;
 	}
   }
@@ -917,7 +917,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
       if (sv.name[0] == '#')
 	warning(_("%s: position %d: Variable name begins with octothorpe ('#').  Scratch variables should not appear in system files"),
 		  h->fn, i);
-      vv->name[0] = toupper ((unsigned char) (sv.name[0]));
+      vv->name[0] = (char) toupper ((unsigned char) (sv.name[0]));
 
       /* Copy remaining characters of variable name. */
       for (j = 1; j < 8; j++)
@@ -930,11 +930,11 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	    {
 	      warning(_("%s: position %d: Variable name character %d is lowercase letter %c"),
 		      h->fn, i, j + 1, sv.name[j]);
-	      vv->name[j] = toupper ((unsigned char) (c));
+	      vv->name[j] = (char) toupper ((unsigned char) (c));
 	    }
 	  else if (isalnum (c) || c == '.' || c == '@'
 		   || c == '#' || c == '$' || c == '_' || c > 127)
-	    vv->name[j] = c;
+	      vv->name[j] = (char) c;
 	  else
 	    lose ((_("%s: position %d: character `\\%03o' (%c) is not valid in a variable name"),
 		   h->fn, j, c, c)); /* changed from 'i', PR#14465 */
@@ -1168,7 +1168,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
       cooked_label[i]->s[label_len] = 0;
 
       /* Skip padding. */
-      rem = REM_RND_UP (label_len + 1, sizeof (R_flt64));
+      rem = (int) REM_RND_UP (label_len + 1, sizeof (R_flt64));
       if (rem)
 	assertive_bufread(h, &value, rem, 0);
     }
@@ -1443,7 +1443,7 @@ dump_dictionary (struct dictionary * dict)
 /* Reads compressed data into H->BUF and sets other pointers
    appropriately.  Returns nonzero only if both no errors occur and
    data was read. */
-static int
+static size_t
 buffer_input (struct file_handle * h)
 {
   struct sfm_fhuser_ext *ext = h->ext;
