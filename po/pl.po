@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foreign 0.8-50\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-14 16:31+0100\n"
+"POT-Creation-Date: 2014-03-20 18:21+0000\n"
 "PO-Revision-Date: 2012-08-31 12:29+0100\n"
 "Last-Translator: Łukasz Daniel <lukasz.daniel@gmail.com>\n"
 "Language-Team: Łukasz Daniel <lukasz.daniel@gmail.com>\n"
@@ -242,7 +242,7 @@ msgstr "znaleziono wartość |%d| w polu logicznym"
 # Recommended/foreign/src/stataread.c: 875
 # error(_("first argument must be a file name\n
 # )
-#: Rdbfwrite.c:48 SASxport.c:501 SASxport.c:594
+#: Rdbfwrite.c:48 SASxport.c:506 SASxport.c:603
 msgid "first argument must be a file name"
 msgstr "pierwszy argument musi być nazwą pliku"
 
@@ -264,8 +264,8 @@ msgstr "nie można otworzyć pliku"
 # error(_("unknown data type"))
 # Recommended/foreign/src/stataread.c: 725
 # error(_("unknown data type"))
-#: Rdbfwrite.c:95 Rdbfwrite.c:133 stataread.c:291 stataread.c:312
-#: stataread.c:695 stataread.c:725
+#: Rdbfwrite.c:95 Rdbfwrite.c:133 stataread.c:297 stataread.c:318
+#: stataread.c:807 stataread.c:837
 msgid "unknown data type"
 msgstr "nieznany typ danych"
 
@@ -287,8 +287,8 @@ msgstr "niepoprawna długość pola w zmiennej liczbowej"
 # error(_("file not in SAS transfer format"))
 # Recommended/foreign/src/SASxport.c: 302
 # error(_("file not in SAS transfer format"))
-#: SASxport.c:146 SASxport.c:179 SASxport.c:224 SASxport.c:250 SASxport.c:294
-#: SASxport.c:302
+#: SASxport.c:148 SASxport.c:184 SASxport.c:229 SASxport.c:255 SASxport.c:299
+#: SASxport.c:307
 msgid "file not in SAS transfer format"
 msgstr "plik nie jest w formacie transferowym SAS"
 
@@ -296,13 +296,13 @@ msgstr "plik nie jest w formacie transferowym SAS"
 # error(_("SAS transfer file has incorrect library header"))
 # Recommended/foreign/src/SASxport.c: 284
 # error(_("SAS transfer file has incorrect library header"))
-#: SASxport.c:216 SASxport.c:284
+#: SASxport.c:221 SASxport.c:289
 msgid "SAS transfer file has incorrect library header"
 msgstr "plik transferowy SAS posiada niepoprawny nagłówek biblioteki"
 
 # Recommended/foreign/src/SASxport.c: 242
 # error(_("SAS transfer file has incorrect member header"))
-#: SASxport.c:242
+#: SASxport.c:247
 msgid "SAS transfer file has incorrect member header"
 msgstr "plik transferowy SAS posiada niepoprawny nagłówek członka"
 
@@ -312,7 +312,7 @@ msgstr "plik transferowy SAS posiada niepoprawny nagłówek członka"
 # error(_("problem accessing SAS XPORT file"))
 # Recommended/foreign/src/SASxport.c: 402
 # error(_("problem accessing SAS XPORT file"))
-#: SASxport.c:355 SASxport.c:396 SASxport.c:402
+#: SASxport.c:360 SASxport.c:401 SASxport.c:407
 msgid "problem accessing SAS XPORT file"
 msgstr "problem z dostępem do pliku SAS XPORT"
 
@@ -324,7 +324,7 @@ msgstr "problem z dostępem do pliku SAS XPORT"
 # error(_("unable to open file: '%s'"), strerror(errno))
 # Recommended/foreign/src/stataread.c: 551
 # error(_("unable to open file: '%s'"), strerror(errno))
-#: SASxport.c:504 SASxport.c:597 spss.c:668 stataread.c:551
+#: SASxport.c:509 SASxport.c:606 spss.c:668 stataread.c:585
 #, c-format
 msgid "unable to open file: '%s'"
 msgstr "nie można otworzyć pliku: '%s'"
@@ -332,14 +332,14 @@ msgstr "nie można otworzyć pliku: '%s'"
 # Recommended/foreign/src/SASxport.c: 599
 # error(_("problem reading SAS XPORT file '%s'"),
 # 	      CHAR(STRING_ELT(xportFile, 0)))
-#: SASxport.c:599
+#: SASxport.c:608
 #, c-format
 msgid "problem reading SAS XPORT file '%s'"
 msgstr "problem podczas czytania pliku SAS XPORT '%s'"
 
 # Recommended/foreign/src/SASxport.c: 628
 # error(_("problem reading SAS transport file"))
-#: SASxport.c:628
+#: SASxport.c:637
 msgid "problem reading SAS transport file"
 msgstr "problem podczas czytania pliku transportowego SAS"
 
@@ -1332,19 +1332,19 @@ msgstr "plik '%s' nie jest w żadnym wspieranym formacie SPSS"
 # error(_("a binary read error occurred"))
 # Recommended/foreign/src/stataread.c: 479
 # warning(_("a binary read error occurred"))
-#: stataread.c:88 stataread.c:98 stataread.c:106 stataread.c:131
-#: stataread.c:141 stataread.c:150 stataread.c:479
+#: stataread.c:94 stataread.c:104 stataread.c:112 stataread.c:137
+#: stataread.c:147 stataread.c:156 stataread.c:513
 msgid "a binary read error occurred"
 msgstr "wystąpił błąd odczytu binarnego"
 
-#: stataread.c:228
+#: stataread.c:234
 msgid "not a Stata version 5-12 .dta file"
 msgstr "to nie jest plik .dta Stata wersja 5-12"
 
 # Recommended/foreign/src/stataread.c: 398
 # error(_("something strange in the file\n
 # Type 0 characteristic of nonzero length)"))
-#: stataread.c:398
+#: stataread.c:432
 msgid ""
 "something strange in the file\n"
 " (Type 0 characteristic of nonzero length)"
@@ -1354,11 +1354,11 @@ msgstr ""
 
 # Recommended/foreign/src/stataread.c: 543
 # error(_("can not yet read Stata .dta on this platform"))
-#: stataread.c:543
+#: stataread.c:577
 msgid "can not yet read Stata .dta on this platform"
 msgstr "nie można na chwilę obecną odczytać pliku .dta Stata na tej platformie"
 
-#: stataread.c:547 stataread.c:875
+#: stataread.c:581 stataread.c:1031
 msgid "first argument must be a file name\n"
 msgstr "pierwszy argument musi być nazwą pliku\n"
 
@@ -1376,50 +1376,50 @@ msgstr "pierwszy argument musi być nazwą pliku\n"
 # error(_("a binary write error occurred"))
 # Recommended/foreign/src/stataread.c: 611
 # error(_("a binary write error occurred"))
-#: stataread.c:565 stataread.c:572 stataread.c:578 stataread.c:593
-#: stataread.c:595 stataread.c:603 stataread.c:611
+#: stataread.c:599 stataread.c:606 stataread.c:612 stataread.c:627
+#: stataread.c:629 stataread.c:637 stataread.c:645
 msgid "a binary write error occurred"
 msgstr "nastąpił błąd zapisu danych binarnych"
 
-# Recommended/foreign/src/stataread.c: 816
-# error(_("this should not happen."))
-#: stataread.c:816
-msgid "this should not happen."
-msgstr "to nie powinno się zdarzyć."
-
 # Recommended/foreign/src/stataread.c: 856
 # error(_("this should happen: overrun"))
-#: stataread.c:856
+#: stataread.c:714
 msgid "this should happen: overrun"
 msgstr "to nie powinno się zdarzyć: przeskakiwanie"
 
 # Recommended/foreign/src/stataread.c: 858
 # error(_("this should happen: underrun"))
-#: stataread.c:858
+#: stataread.c:716
 msgid "this should happen: underrun"
 msgstr "to nie powinno się zdarzyć: przepuszczanie"
 
+# Recommended/foreign/src/stataread.c: 816
+# error(_("this should not happen."))
+#: stataread.c:970
+msgid "this should not happen."
+msgstr "to nie powinno się zdarzyć."
+
 # Recommended/foreign/src/stataread.c: 871
 # error(_("cannot yet read write .dta on this platform"))
-#: stataread.c:871
+#: stataread.c:1027
 msgid "cannot yet read write .dta on this platform"
 msgstr "nie można na chwilę obecną zapisać pliku .dta Stata na tej platformie"
 
 # Recommended/foreign/src/stataread.c: 879
 # error(_("data to be saved must be in a data frame"))
-#: stataread.c:879
+#: stataread.c:1035
 msgid "data to be saved must be in a data frame"
 msgstr "zapisywane dane muszą być w formacie ramki danych"
 
 # Recommended/foreign/src/stataread.c: 882
 # error(_("unable to open file for writing: '%s'"), strerror(errno))
-#: stataread.c:882
+#: stataread.c:1038
 #, c-format
 msgid "unable to open file for writing: '%s'"
 msgstr "nie można otworzyć pliku do zapisu: '%s'"
 
 # Recommended/foreign/src/stataread.c: 887
 # error(_("can only write version 6-10 formats"))
-#: stataread.c:887
+#: stataread.c:1043
 msgid "can only write version 6-10 formats"
 msgstr "można zapisywać formaty w wersji 6-10"

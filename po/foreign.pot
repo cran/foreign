@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: foreign 0.8-51\n"
+"Project-Id-Version: foreign 0.8-60\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-02 11:48+0100\n"
+"POT-Creation-Date: 2014-03-20 18:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -143,7 +143,7 @@ msgstr ""
 msgid "value |%d| found in logical field"
 msgstr ""
 
-#: Rdbfwrite.c:48 SASxport.c:501 SASxport.c:594
+#: Rdbfwrite.c:48 SASxport.c:506 SASxport.c:603
 msgid "first argument must be a file name"
 msgstr ""
 
@@ -151,8 +151,8 @@ msgstr ""
 msgid "unable to open file"
 msgstr ""
 
-#: Rdbfwrite.c:95 Rdbfwrite.c:133 stataread.c:291 stataread.c:312
-#: stataread.c:695 stataread.c:725
+#: Rdbfwrite.c:95 Rdbfwrite.c:133 stataread.c:297 stataread.c:318
+#: stataread.c:807 stataread.c:837
 msgid "unknown data type"
 msgstr ""
 
@@ -160,34 +160,34 @@ msgstr ""
 msgid "invalid field length in numeric variable"
 msgstr ""
 
-#: SASxport.c:146 SASxport.c:179 SASxport.c:224 SASxport.c:250 SASxport.c:294
-#: SASxport.c:302
+#: SASxport.c:148 SASxport.c:184 SASxport.c:229 SASxport.c:255 SASxport.c:299
+#: SASxport.c:307
 msgid "file not in SAS transfer format"
 msgstr ""
 
-#: SASxport.c:216 SASxport.c:284
+#: SASxport.c:221 SASxport.c:289
 msgid "SAS transfer file has incorrect library header"
 msgstr ""
 
-#: SASxport.c:242
+#: SASxport.c:247
 msgid "SAS transfer file has incorrect member header"
 msgstr ""
 
-#: SASxport.c:355 SASxport.c:396 SASxport.c:402
+#: SASxport.c:360 SASxport.c:401 SASxport.c:407
 msgid "problem accessing SAS XPORT file"
 msgstr ""
 
-#: SASxport.c:504 SASxport.c:597 spss.c:668 stataread.c:551
+#: SASxport.c:509 SASxport.c:606 spss.c:668 stataread.c:585
 #, c-format
 msgid "unable to open file: '%s'"
 msgstr ""
 
-#: SASxport.c:599
+#: SASxport.c:608
 #, c-format
 msgid "problem reading SAS XPORT file '%s'"
 msgstr ""
 
-#: SASxport.c:628
+#: SASxport.c:637
 msgid "problem reading SAS transport file"
 msgstr ""
 
@@ -784,59 +784,59 @@ msgstr ""
 msgid "file '%s' is not in any supported SPSS format"
 msgstr ""
 
-#: stataread.c:88 stataread.c:98 stataread.c:106 stataread.c:131
-#: stataread.c:141 stataread.c:150 stataread.c:479
+#: stataread.c:94 stataread.c:104 stataread.c:112 stataread.c:137
+#: stataread.c:147 stataread.c:156 stataread.c:513
 msgid "a binary read error occurred"
 msgstr ""
 
-#: stataread.c:228
+#: stataread.c:234
 msgid "not a Stata version 5-12 .dta file"
 msgstr ""
 
-#: stataread.c:398
+#: stataread.c:432
 msgid ""
 "something strange in the file\n"
 " (Type 0 characteristic of nonzero length)"
 msgstr ""
 
-#: stataread.c:543
+#: stataread.c:577
 msgid "can not yet read Stata .dta on this platform"
 msgstr ""
 
-#: stataread.c:547 stataread.c:875
+#: stataread.c:581 stataread.c:1031
 msgid "first argument must be a file name\n"
 msgstr ""
 
-#: stataread.c:565 stataread.c:572 stataread.c:578 stataread.c:593
-#: stataread.c:595 stataread.c:603 stataread.c:611
+#: stataread.c:599 stataread.c:606 stataread.c:612 stataread.c:627
+#: stataread.c:629 stataread.c:637 stataread.c:645
 msgid "a binary write error occurred"
 msgstr ""
 
-#: stataread.c:816
-msgid "this should not happen."
-msgstr ""
-
-#: stataread.c:856
+#: stataread.c:714
 msgid "this should happen: overrun"
 msgstr ""
 
-#: stataread.c:858
+#: stataread.c:716
 msgid "this should happen: underrun"
 msgstr ""
 
-#: stataread.c:871
+#: stataread.c:970
+msgid "this should not happen."
+msgstr ""
+
+#: stataread.c:1027
 msgid "cannot yet read write .dta on this platform"
 msgstr ""
 
-#: stataread.c:879
+#: stataread.c:1035
 msgid "data to be saved must be in a data frame"
 msgstr ""
 
-#: stataread.c:882
+#: stataread.c:1038
 #, c-format
 msgid "unable to open file for writing: '%s'"
 msgstr ""
 
-#: stataread.c:887
+#: stataread.c:1043
 msgid "can only write version 6-10 formats"
 msgstr ""

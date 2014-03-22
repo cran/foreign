@@ -247,9 +247,9 @@ static void getuse(const char *fname, struct SysFilev3 *u)
 	u->ithstr[i] = -1;
 	u->ithdb[i] = -1;
 	if(strrchr(u->h.lab[i], '$') == NULL)
-	    u->ithdb[i] = j++;
+	    u->ithdb[i] = (short) j++;
 	else
-	    u->ithstr[i] = k++;
+	    u->ithstr[i] = (short) k++;
     }
 
     if (u->h.nd != j || u->h.nk != k)
@@ -322,7 +322,7 @@ static void getuse(const char *fname, struct SysFilev3 *u)
     if(fseek(u->h.fd, 0L, SEEK_END) != 0)
 	error(_("getuse: File access error"));
     /* seek to end of file */
-    end = ftell(u->h.fd);			/* and find value (int) */
+    end = (int) ftell(u->h.fd);			/* and find value (int) */
 
     i = 0;
     if(fseek(u->h.fd, -1L, SEEK_CUR) != 0)
@@ -525,7 +525,7 @@ static void getlab(struct SysFilev3 *u)
 	   until a blank is encountered */
 	tmp[o] = '\0';	/* terminate the string */
 
-	len=strlen(tmp);
+	len = (int)strlen(tmp);
 	sprintf(var, "u->h.lab[%d]", j);
 	u->h.lab[j] = (char *) R_alloc(len+1, sizeof(char));
 	strcpy(u->h.lab[j], tmp);
@@ -539,9 +539,9 @@ static void getlab(struct SysFilev3 *u)
 	   byte=014, i.e. LABELSIZ chars */
     }	/* j */
 
-    u->pos = ftell(u->h.fd);	/* find current position, should
-				   be at packet boundary of first
-				   data record */
+    u->pos = (int) ftell(u->h.fd);  /* find current position, should
+				       be at packet boundary of first
+				       data record */
 }	/* getlab */
 
 
@@ -744,13 +744,13 @@ at by o, returns 1 on success, otherwise != 1
 static int getoctal(int *o, FILE *fp)
 {
     char c;
-    int n;
+    size_t n;
     *o = 000;
-    if ((n = fread((char *)&c, sizeof(char), 1, fp)) != 1)
-	return(n);
+    if ((n = fread(&c, sizeof(char), 1, fp)) != 1)
+	return (int) n;
     else {
 	*o = c & 0377;
-	return(n);
+	return (int) n;
     }
 }	/* getoctal */
 

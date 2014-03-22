@@ -28,7 +28,7 @@
 #define swap_bytes_16(from, to)						\
 do {									\
     unsigned short __from16 = (from);					\
-    (to) = ((((__from16) >> 8) & 0xff) | (((__from16) & 0xff) << 8));	\
+    (to) = (unsigned short) ((((__from16) >> 8) & 0xff) | (((__from16) & 0xff) << 8)); \
 } while (0)
 
 #define swap_bytes_32(from, to)			\

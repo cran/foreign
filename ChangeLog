@@ -1,3 +1,27 @@
+2014-03-22 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-60
+
+	* src/stataread.c: 'writeStataValueLabel' used wrong length,
+	picked up by valgrind (on an instrumented build).  As did writing
+	expanison fields.
+
+	* src/SASexport.c: 'exponent' needs to be signed for Raspbian
+	(PR#15720).
+	
+2014-01-26 Brian Ripley
+
+	* tests/spss.{R,Rout.save}: avoid partial match in all.equal().
+
+2014-01-24 Brian Ripley
+
+	* man/write.dta.Rd: Add section with more explanation on date-times.
+
+	* src/{R_systat,SASxport.c,dbfopen.c,swap_bytes.h},:
+	add casts or correct types.
+
+	* src/stataread.c: legibility.
+
 2014-01-24 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-59

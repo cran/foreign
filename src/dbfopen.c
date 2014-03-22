@@ -261,11 +261,11 @@ static void DBFWriteHeader(DBFHandle psDBF)
 
     /* record count preset at zero */
 
-    abyHeader[8] = psDBF->nHeaderLength % 256;
-    abyHeader[9] = psDBF->nHeaderLength / 256;
+    abyHeader[8] = (unsigned char) (psDBF->nHeaderLength % 256);
+    abyHeader[9] = (unsigned char) (psDBF->nHeaderLength / 256);
 
-    abyHeader[10] = psDBF->nRecordLength % 256;
-    abyHeader[11] = psDBF->nRecordLength / 256;
+    abyHeader[10] = (unsigned char) (psDBF->nRecordLength % 256);
+    abyHeader[11] = (unsigned char) (psDBF->nRecordLength / 256);
 
 /* -------------------------------------------------------------------- */
 /*      Write the initial 32 byte file header, and all the field        */
@@ -333,10 +333,10 @@ DBFUpdateHeader( DBFHandle psDBF )
     if(fread( abyFileHeader, 32, 1, psDBF->fp ) != 1)
 	error("binary read error");
 
-    abyFileHeader[4] = psDBF->nRecords % 256;
-    abyFileHeader[5] = (psDBF->nRecords/256) % 256;
-    abyFileHeader[6] = (psDBF->nRecords/(256*256)) % 256;
-    abyFileHeader[7] = (psDBF->nRecords/(256*256*256)) % 256;
+    abyFileHeader[4] = (unsigned char) (psDBF->nRecords % 256);
+    abyFileHeader[5] = (unsigned char) ((psDBF->nRecords/256) % 256);
+    abyFileHeader[6] = (unsigned char) ((psDBF->nRecords/(256*256)) % 256);
+    abyFileHeader[7] = (unsigned char) ((psDBF->nRecords/(256*256*256)) % 256);
 
     fseek( psDBF->fp, 0, 0 );
     if (fwrite( abyFileHeader, 32, 1, psDBF->fp ) != 1)
@@ -519,7 +519,7 @@ DBFCreate( const char * pszFilename )
     DBFHandle	psDBF;
     FILE	*fp;
     char	*pszFullname, *pszBasename;
-    int		i;
+    size_t     	i;
 
 /* -------------------------------------------------------------------- */
 /*	Compute the base (layer) name.  If there is any extension	*/
@@ -668,13 +668,13 @@ DBFAddField(DBFHandle psDBF, const char * pszFieldName,
 
     if( eType == FTString )
     {
-	pszFInfo[16] = nWidth % 256;
-	pszFInfo[17] = nWidth / 256;
+	pszFInfo[16] = (char)(nWidth % 256);
+	pszFInfo[17] = (char)(nWidth / 256);
     }
     else
     {
-	pszFInfo[16] = nWidth;
-	pszFInfo[17] = nDecimals;
+	pszFInfo[16] = (char) nWidth;
+	pszFInfo[17] = (char) nDecimals;
     }
 
 /* -------------------------------------------------------------------- */
@@ -1136,7 +1136,7 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
 	{
 	    memset( pabyRec+psDBF->panFieldOffset[iField], ' ',
 		    psDBF->panFieldSize[iField] );
-	    j = strlen((char *) pValue);
+	    j = (int) strlen((char *) pValue);
 	}
 
 	strncpy((char *) (pabyRec+psDBF->panFieldOffset[iField]),
@@ -1213,7 +1213,7 @@ int DBFWriteAttributeDirectly(DBFHandle psDBF, int hEntity, int iField,
     {
 	memset( pabyRec+psDBF->panFieldOffset[iField], ' ',
 		psDBF->panFieldSize[iField] );
-	j = strlen((char *) pValue);
+	j = (int) strlen((char *) pValue);
     }
 
     strncpy((char *) (pabyRec+psDBF->panFieldOffset[iField]),
@@ -1475,14 +1475,14 @@ DBFGetNativeFieldType( DBFHandle psDBF, int iField )
 /* FIXME: this is incorrect in a MBCS */
 static void str_to_upper (char *string)
 {
-    int len;
+    size_t len;
     short i = -1;
 
     len = strlen (string);
 
     while (++i < len)
 	if (isalpha((int)string[i]) && islower((int)string[i]))
-	    string[i] = toupper ((int)string[i]);
+	    string[i] = (char)toupper ((int)string[i]);
 }
 
 /************************************************************************/

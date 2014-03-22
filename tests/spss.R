@@ -23,7 +23,7 @@ stopifnot(identical(pbc, pbco))
 pbc. <- read.spss("pbc.por",FALSE)
 summary(pbc.)
 str(pbc.) # has variable.labels
-stopifnot(all.equal(d.pbc, data.frame(pbc.), tol=1e-15))
+stopifnot(all.equal(d.pbc, data.frame(pbc.), tolerance = 1e-15))
 
 electric.s  <- read.spss("electric.sav",TRUE,TRUE)
 electric.p  <- read.spss("electric.por",TRUE,TRUE)

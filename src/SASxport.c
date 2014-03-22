@@ -46,7 +46,7 @@
 #define BLANK24 "                        "
 
 #define GET_RECORD(rec, fp, len) \
-	  fread((rec), sizeof(char), (size_t) (len), (fp))
+    (int) fread((rec), sizeof(char), (size_t) (len), (fp))
 
 #define IS_SASNA_CHAR(c) ((c) == 0x5f || (c) == 0x2e || \
 			  (0x41 <= (c) && (c) <= 0x5a))
@@ -78,9 +78,11 @@ static double get_IBM_double(char* c, size_t len)
 				/* exponent is expressed here as
 				   excess 70 (=64+6) to accomodate
 				   integer conversion of c[1] to c[4] */
-    char negative = c[0] & 0x80, exponent = (c[0] & 0x7f) - 70, buf[4];
+    char negative = c[0] & 0x80;
+    // needs to be signed: char is not on Raspbian
+    signed char exponent = (c[0] & 0x7f) - 70;
     double value;
-    char ibuf[8];
+    char buf[4], ibuf[8];
 
     if (len < 2 || len > 8)
       error(_("invalid field length in numeric variable"));
@@ -258,7 +260,7 @@ init_mem_info(FILE *fp, char *name)
     sscanf(record+54, "%d", &length);
 
     tmp = strchr(mem_head->sas_dsname, ' ');
-    n = tmp - mem_head->sas_dsname;
+    n = (int)(tmp - mem_head->sas_dsname);
     if(n > 0) {
 	if (n > 8)
 	    n = 8;
