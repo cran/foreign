@@ -97,7 +97,7 @@ write.dbf <- function(dataframe, file, factor2char = TRUE, max_nchar = 254)
             mf <- max(nchar(x[!is.na(x)], "b"))
             p <- max(nlen, mf)
             if(p > max_nchar)
-                warning(gettext("character column %d will be truncated to %d bytes", i, max_nchar), domain = NA)
+                warning(gettextf("character column %d will be truncated to %d bytes", i, max_nchar), domain = NA)
             precision[i] <- min(p, max_nchar)
             scale[i] <- 0L
         } else stop("unknown column type in data frame")

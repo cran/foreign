@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foreign 0.8-10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-20 18:21+0000\n"
+"POT-Creation-Date: 2014-03-27 21:46+0000\n"
 "PO-Revision-Date: 2012-10-03 15:24+0100\n"
 "Last-Translator: Philippe Grosjean <phgrosjean@sciviews.org>\n"
 "Language-Team: French <R-core@r-project.org>\n"
@@ -145,7 +145,7 @@ msgstr "aucun champ dans le fichier DBF"
 msgid "value |%d| found in logical field"
 msgstr "la valeur |%d| a été trouvée dans un champ booléen"
 
-#: Rdbfwrite.c:48 SASxport.c:506 SASxport.c:603
+#: Rdbfwrite.c:48 SASxport.c:508 SASxport.c:605
 msgid "first argument must be a file name"
 msgstr "le premier argument doit être un nom de fichier"
 
@@ -158,38 +158,38 @@ msgstr "impossible d'ouvrir le fichier"
 msgid "unknown data type"
 msgstr "type de donnée inconnu"
 
-#: SASxport.c:86
+#: SASxport.c:88
 msgid "invalid field length in numeric variable"
 msgstr "longueur de champ incorrecte dans une variable numérique"
 
-#: SASxport.c:148 SASxport.c:184 SASxport.c:229 SASxport.c:255 SASxport.c:299
-#: SASxport.c:307
+#: SASxport.c:150 SASxport.c:186 SASxport.c:231 SASxport.c:257 SASxport.c:301
+#: SASxport.c:309
 msgid "file not in SAS transfer format"
 msgstr "le fichier n'a pas un format de transfert SAS"
 
-#: SASxport.c:221 SASxport.c:289
+#: SASxport.c:223 SASxport.c:291
 msgid "SAS transfer file has incorrect library header"
 msgstr "le fichier de transfert SAS a une entête de librairie incorrecte"
 
-#: SASxport.c:247
+#: SASxport.c:249
 msgid "SAS transfer file has incorrect member header"
 msgstr "le fichier de transfert SAS a une entête de membre incorrecte"
 
-#: SASxport.c:360 SASxport.c:401 SASxport.c:407
+#: SASxport.c:362 SASxport.c:403 SASxport.c:409
 msgid "problem accessing SAS XPORT file"
 msgstr "problème lors de l'accès d'un fichier SAS XPORT"
 
-#: SASxport.c:509 SASxport.c:606 spss.c:668 stataread.c:585
+#: SASxport.c:511 SASxport.c:608 spss.c:668 stataread.c:585
 #, c-format
 msgid "unable to open file: '%s'"
 msgstr "impossible d'ouvrir le fichier '%s'"
 
-#: SASxport.c:608
+#: SASxport.c:610
 #, c-format
 msgid "problem reading SAS XPORT file '%s'"
 msgstr "problème à la lecture du fichier SAS XPORT '%s'"
 
-#: SASxport.c:637
+#: SASxport.c:639
 msgid "problem reading SAS transport file"
 msgstr "problème à la lecture d'un fichier SAS transport"
 
@@ -925,7 +925,7 @@ msgstr ""
 "la lecture des fichiers Stata .dta n'est pas encore possible sur cette "
 "architecture"
 
-#: stataread.c:581 stataread.c:1031
+#: stataread.c:581 stataread.c:1035
 msgid "first argument must be a file name\n"
 msgstr "le premier argument doit être un nom de fichier\n"
 
@@ -942,27 +942,27 @@ msgstr "ceci devrait se produire : dépassement par le haut."
 msgid "this should happen: underrun"
 msgstr "ceci devrait se produire : dépassement par le bas. "
 
-#: stataread.c:970
+#: stataread.c:974
 msgid "this should not happen."
 msgstr "ceci ne devrait pas se produire."
 
-#: stataread.c:1027
+#: stataread.c:1031
 msgid "cannot yet read write .dta on this platform"
 msgstr ""
 "la lecture ou l'écriture de fichiers Stata .dta n'est pas encore possible "
 "sur cette architecture"
 
-#: stataread.c:1035
+#: stataread.c:1039
 msgid "data to be saved must be in a data frame"
 msgstr ""
 "les données à sauvegarder doivent être contenues dans un objet \"data frame\""
 
-#: stataread.c:1038
+#: stataread.c:1042
 #, c-format
 msgid "unable to open file for writing: '%s'"
 msgstr "impossible d'ouvrir le fichier '%s' en écriture"
 
-#: stataread.c:1043
+#: stataread.c:1047
 msgid "can only write version 6-10 formats"
 msgstr ""
 "il est seulement possible d'écrire des fichiers aux formats version 6-10"
