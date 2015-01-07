@@ -1,4 +1,20 @@
-2014-03-27 Brian Ripley
+2015-01-07 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-62
+
+	* man/*.Rd: Add some explanation of the \dontrun sections.
+
+2015-01-02 Brian Ripley
+
+	* DESCRIPTION: Authors@R had a needless call to structure().
+
+2014-10-20 Brian Ripley
+
+	* R/octave.R: remove unused assignments.
+
+2014-03-28 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-61
 
 	* R/dbf.R, po/*pl.pp: updates
 
@@ -8,7 +24,7 @@
 
 	* src/stataread.c: 'writeStataValueLabel' used wrong length,
 	picked up by valgrind (on an instrumented build).  As did writing
-	expanison fields.
+	expansion fields.
 
 	* src/SASexport.c: 'exponent' needs to be signed for Raspbian
 	(PR#15720).

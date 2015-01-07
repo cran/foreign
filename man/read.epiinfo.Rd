@@ -53,7 +53,7 @@ read.epiinfo(file, read.deleted = FALSE, guess.broken.dates = FALSE,
 }
 
 \examples{
-\dontrun{
+\dontrun{## That file is not available
 read.epiinfo("oswego.rec", guess.broken.dates = TRUE, thisyear = "1972")
 }
 }

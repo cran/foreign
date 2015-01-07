@@ -121,7 +121,7 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
   package \pkg{memisc}: see its help for \code{spss.system.file}.
 }
 \examples{
-\dontrun{
+\dontrun{## if you have an SPSS file called 'datafile':
 read.spss("datafile")
 ## don't convert value labels to factor levels
 read.spss("datafile", use.value.labels = FALSE)

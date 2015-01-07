@@ -65,8 +65,8 @@ R> list.files("trialdata")
 [10] "form50.sas7bdat"   "form51.sas7bdat"   "form71.sas7bdat"  
 [13] "form72.sas7bdat"   "form8.sas7bdat"    "form9.sas7bdat"   
 [16] "form90.sas7bdat"   "form91.sas7bdat"  
-R> baseline <- read.ssd("trialdata","baseline")
-R> form90 <- read.ssd("trialdata","form90")
+R> baseline <- read.ssd("trialdata", "baseline")
+R> form90 <- read.ssd("trialdata", "form90")
 
 ## Or for a Windows example
 sashome <- "/Program Files/SAS/SAS 9.1"

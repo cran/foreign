@@ -39,8 +39,8 @@ read.xport(file)
   \code{\link{lookup.xport}}
 }
 \examples{
-\dontrun{
-read.xport("transport")
+\dontrun{## no XPORT file is installed
+read.xport("test.xpt")
 }
 }
 \keyword{file}

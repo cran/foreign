@@ -86,7 +86,7 @@ function(file)
             ## After reading in ndims (3 here), we read in the size of
             ## each dimension (15 x 15 x 6) and then read in the
             ## corresponding number of elements.
-            ndims <- as.integer(gsub("# ndims: ", "", line))
+##            ndims <- as.integer(gsub("# ndims: ", "", line))
             dims <- scan(con, nlines = 1L, quiet = TRUE)
             data <- scan(con, n = prod(dims), quiet = TRUE)
             array(data, dim = dims)
@@ -113,7 +113,7 @@ function(file)
                    nrow = nr, ncol = nc, byrow = TRUE)
         }
         else {
-            ndims <- as.integer(gsub("# ndims: ", "", line))
+##            ndims <- as.integer(gsub("# ndims: ", "", line))
             dims <- scan(con, nlines = 1L, quiet = TRUE)
             data <- readLines(con, n = prod(dims))
             data <- gsub("\\(", "", data)
