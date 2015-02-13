@@ -32,7 +32,7 @@ read.xport(file)
   SAS Technical Support document TS-140:
   ``The Record Layout of a Data Set in SAS Transport (XPORT) Format''
   available at
-  \url{http://ftp.sas.com/techsup/download/technote/ts140.html}.
+  \url{https://support.sas.com/techsup/technote/ts140.pdf}.
 }
 \author{Saikat DebRoy \email{saikat@stat.wisc.edu}}
 \seealso{

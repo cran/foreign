@@ -1,6 +1,6 @@
 ### This file is part of the 'foreign' package for R.
 
-# Copyright (c) 2004-5  R Development Core Team
+# Copyright (c) 2004-2015  R Development Core Team
 # Enhancements Copyright (c) 2006 Stephen Weigand
 
 #  This program is free software; you can redistribute it and/or modify
@@ -71,8 +71,9 @@ writeForeignSAS <- function(df, datafile, codefile, dataname = "rdata",
     if(any(xdates))
         dfn[xdates] <- lapply(dfn[xdates], function(x) as.Date(as.POSIXct(x)))
 
+    ## https://kb.iu.edu/d/aydn
     write.table(dfn, file = datafile, row.names = FALSE, col.names = FALSE,
-                sep = ",", quote = TRUE, na = "")
+                sep = ",", quote = TRUE, na = "", qmethod = "double")
     lrecl <- max(sapply(readLines(datafile),nchar)) + 4L
 
     cat("* Written by R;\n", file = codefile)

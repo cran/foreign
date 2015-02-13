@@ -9,7 +9,7 @@
   \code{export} commands.
 
   This was orignally written in 2000 and has limited support for changes
-  in SPSS format since (which have not been many).
+  in SPSS formats since (which have not been many).
 }
 \usage{
 read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
@@ -17,14 +17,16 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
           trim_values = TRUE, reencode = NA, use.missings = to.data.frame)
 }
 \arguments{
-  \item{file}{Character string: the name of the file or URL to read.}
-  \item{use.value.labels}{Convert variables with value labels into \R
-    factors with those levels?}
-  \item{to.data.frame}{return a data frame?}
-  \item{max.value.labels}{Only variables with value labels and at most this
-    many unique values will be converted to factors if
-    \code{use.value.labels = TRUE}.}
-  \item{trim.factor.names}{Logical: trim trailing spaces from factor levels?}
+  \item{file}{character string: the name of the file or URL to read.}
+  \item{use.value.labels}{logical: convert variables with value labels
+    into \R factors with those levels?  This is only done if there are
+    at least as many labels as values of the variable (when values
+    without a matching label are returned as \code{NA}).}
+  \item{to.data.frame}{logical: return a data frame?}
+  \item{max.value.labels}{logical: only variables with value labels and
+    at most this many unique values will be converted to factors if
+    \code{TRUE}.}
+  \item{trim.factor.names}{logical: trim trailing spaces from factor levels?}
   \item{trim_values}{logical: should values and value labels have
     trailing spaces ignored when matching for \code{use.value.labels = TRUE}?}
   \item{reencode}{logical: should character strings be re-encoded to the
@@ -32,12 +34,11 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
     locale, only.  Alternatively a character string specifying an encoding to
     assume for the file.}
   \item{use.missings}{logical: should information on user-defined
-    missing values be used to set the corresponding values to
-    \code{NA}?}
+    missing values be used to set the corresponding values to \code{NA}?}
 }
 \value{
-  A list (or data frame) with one component for each variable in
-  the saved data set.
+  A list (or optionally a data frame) with one component for each
+  variable in the saved data set.
 
   If what looks like a Windows codepage was recorded in the SPSS file,
   it is attached (as a number) as attribute \code{"codepage"} to the
@@ -46,9 +47,9 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
   There may be attributes \code{"label.table"} and
   \code{"variable.labels"}.  Attribute \code{"label.table"} is a named
   list of value labels with one element per variable, either \code{NULL}
-  or a named character vector.
-  Attribute \code{"variable.labels"} is a named character vector with
-  names the short variable names and elements the long names.
+  or a named character vector.  Attribute \code{"variable.labels"} is a
+  named character vector with names the short variable names and
+  elements the long names.
   
   If there are user-defined missing values, there will be a attribute
   \code{"Missings"}.  This is a named list with one list element per
@@ -69,8 +70,9 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
 
   If the filename appears to be a URL (of schemes \samp{http:},
   \samp{ftp:} or \samp{https:}) the URL is first downloaded to a
-  temporary file and then read.  (\samp{https:} is only supported on
-  some platforms.)
+  temporary file and then read.  (\samp{https:} is supported where
+  supported by \code{\link{download.file}} with its current default
+  \code{method}.)
   
   Occasionally in SPSS, value labels will be added to some values of a
   continuous variable (e.g. to distinguish different types of missing

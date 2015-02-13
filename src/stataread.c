@@ -20,7 +20,7 @@
   (c) 1999, 2000, 2001, 2002 Thomas Lumley.
   2000 Saikat DebRoy
 
-  Patches by the R Core Team and Brian Quistorff.
+  Patches by the R Core Team and Brian Quistorff, 2002, 2007-2015.
 
   Frozen 2013-10-07 at Stata version 10 aka 114 (11 is the same as 10,
   and 12 seems compatible despite being described separately as 115).
@@ -30,12 +30,12 @@
   currently, links to various versions).
 
   This code currently does not make use of the print format information in
-   a .dta file (except for dates). It cannot handle files with 'int'
+   a .dta file (except for dates). It cannot handle files with 'int',
   'float' or 'double' that differ from IEEE 4-byte integer, 4-byte
   real and 8-byte real respectively: it's not clear whether such files
   can exist.
 
-  Versions of Stata before 4.0 used different file formats.
+  Versions of Stata before 4.0 and after 12 used different file formats.
 
 **/
 
@@ -679,7 +679,8 @@ writeStataValueLabel(const char *labelName, const SEXP theselabels,
     OutIntegerBinary((int)len, fp, 0); /* length of table */
     char labelName2[namelength + 1];
     strncpy(labelName2, labelName, namelength + 1); // nameMangleOut changes its arg.
-    OutStringBinary(nameMangleOut(labelName2, strlen(labelName)), fp, namelength);
+    OutStringBinary(nameMangleOut(labelName2, (int)strlen(labelName)),
+		    fp, namelength);
     OutByteBinary(0, fp); /* label format name */
     OutByteBinary(0, fp); OutByteBinary(0, fp); OutByteBinary(0, fp); /*padding*/
     OutIntegerBinary(length(theselabels), fp, 0);

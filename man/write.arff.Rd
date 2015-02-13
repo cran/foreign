@@ -30,7 +30,7 @@ write.arff(x, file, eol = "\n", relation = deparse(substitute(x)))
 \references{
   Attribute-Relation File Format
   \url{http://www.cs.waikato.ac.nz/~ml/weka/arff.html}\cr
-  \url{http://weka.sourceforge.net/wekadoc/index.php/en:ARFF_(3.5.1)}
+  \url{http://sourceforge.net/projects/weka/files/documentation/}.
 }  
 \seealso{
   \code{\link{read.arff}}

@@ -6,8 +6,8 @@
 ### Copyright 2000-2002 Saikat DebRoy <saikat$stat.wisc.edu>
 ###			Douglas M. Bates <bates$stat.wisc.edu>,
 ###			Thomas Lumley
-### Copyright 2007-9 R Core Development Team
-### Pathed 2013-01-02 following PR#15073 by Peggy Overcashier
+### Copyright 2007-2015 R Core Development Team
+### Patched 2013-01-02 following PR#15073 by Peggy Overcashier
 
 ### This file is part of the `foreign' package for R and related languages.
 ### It is made available under the terms of the GNU General Public
@@ -75,13 +75,14 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
         } else if(codepage == 20127) {
             reencode <- FALSE # ASCII
         } else if(m <- match(codepage, knownCP, 0L)) {
-            cp <-names(knownCP)[m]
+            cp <- names(knownCP)[m]
         } else if (codepage < 200) {
             ## small numbers are not codepages, and real codepages are large
             attr(rval, "codepage") <- NULL
             reencode <- FALSE
         } else cp <- paste("CP", codepage, sep="")
-        if(is.na(reencode)) reencode <- l10n_info()[["UTF-8"]]
+        if(is.na(reencode))
+            reencode <- l10n_info()[["UTF-8"]] && (codepage != 65001)
 
         if(reencode) {
             message(gettextf("re-encoding from %s", cp), domain = NA)

@@ -1,3 +1,18 @@
+2015-02-13 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-63
+	* man/read.dta.Rd: mention new CRAN package 'readstata13'
+	* R/writeForeignSAS.R: use qmethod = "double" (PR#16199)
+	* man/read.spss.Rd: clarifications, especially now download.file()
+	has been enhanced.
+	* R/spss.R: do not report re-encoding from 65001 to UTF-8.
+	* src/stataread.c: cast to suppress conversion warning.
+
+2015-01-09 Brian Ripley
+
+	* man/{lookup.xport,read.arff,read.xport,write.arff}.Rd:
+	update URLs.
+
 2015-01-07 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-62

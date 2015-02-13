@@ -90,6 +90,8 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
   A different approach is available in package \pkg{memisc}: see its
   help for \code{Stata.file}, at the time of writing not for Stata 12 or
   later.
+  
+  Package \pkg{readstata13} for Stata 13 files.
 
   \code{\link{write.dta}},
   \code{\link{attributes}},
