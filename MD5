@@ -1,7 +1,7 @@
 23230f6ef6d4252d57567773a3f09154 *BUGS
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-0f299915778b543f897ef14e2f248960 *ChangeLog
-fd33c6a5736579971bda49a15c76aa79 *DESCRIPTION
+93e6b775d62532cc2c62da4e22d9c22c *ChangeLog
+7f0d2d681ee9493f49e5fe7aeeac5fd2 *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 ed8178a14789e97ce12174176eed1908 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -10,7 +10,7 @@ fe9264456fd8aa175971d74b69e4d48a *R/arff.R
 920cb1b5ca1d57cba314fe40b848bc3d *R/dbf.R
 b7e7d712506f5c522860a934f332cd43 *R/minitab.R
 be5998494ac5d02d73b8e4c8316aabd2 *R/octave.R
-7872796108492dbb9d74675b77691e2f *R/read.dta.R
+6bfc3bfc95408ad2c284cce192640b21 *R/read.dta.R
 825a5bc34931831a333db909055b3f0c *R/read.epiinfo.R
 1086e6cc7c1c3bbb16f5681d88801b7d *R/read.ssd.R
 a10d200cc97ffbc9b6609c0b3107c0e1 *R/spss.R
@@ -120,8 +120,8 @@ ee5f89b52abd011690b78c282ea43096 *tests/octave.m
 abe1e48f22097e9fc26cbca728a0d937 *tests/spss.R
 27790f43a43bdffb2fb15cbb48909ecc *tests/spss.Rout.save
 8f44f68889e702b80b267d274adf9cd6 *tests/spss_long.sav
-c8dd63e852615a72cebd8df8f6473088 *tests/stata.R
-30150dc9b7d3ec8f8d8060a14202f7e5 *tests/stata.Rout.save
+09d18fba44288fd040d464b4706ccb55 *tests/stata.R
+971fda7f61666c454d876e858a6955c8 *tests/stata.Rout.save
 a3ee1176251b594b3d33435335bbc674 *tests/stata7se.dta
 7528d02f1dc494b8518dde030e27f2cd *tests/stata8mac.dta
 21329582e511fbaf58110d5237422ec9 *tests/sun6.dta

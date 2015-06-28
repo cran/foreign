@@ -1,3 +1,14 @@
+2015-07-02 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-65
+	* R/read.dta.R: convert_dt_C used the wrong origin for leap seconds.
+	* tests/stata.R[out]: set timezone.
+
+2015-06-28 Kurt Hornik
+
+	* DESCRIPTION: Version is 0.8-64
+	* NAMESPACE: add missing imports from stats and utils.
+
 2015-02-13 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-63

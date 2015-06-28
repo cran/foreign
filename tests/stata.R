@@ -41,6 +41,7 @@ bq <- read.dta("OneVarTwoValLabels.dta")
 str(bq)
 
 ## Dates and date-times in Stata12
+Sys.setenv(TZ = "UTC") # avoid timezone differences: cannot unset so must be last
 read.dta("xxx12.dta")
 
 q()

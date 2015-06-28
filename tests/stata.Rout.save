@@ -1,7 +1,7 @@
 
-R Under development (unstable) (2014-01-23 r64859) -- "Unsuffered Consequences"
-Copyright (C) 2014 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin13.0.0 (64-bit)
+R Under development (unstable) (2015-07-02 r68622) -- "Unsuffered Consequences"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin14.3.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -386,6 +386,7 @@ In read.dta("pc5.dta") : cannot read factor labels from Stata 5 files
   .. ..- attr(*, "names")= chr  "Male" "Female"
 > 
 > ## Dates and date-times in Stata12
+> Sys.setenv(TZ = "UTC") # avoid timezone differences: cannot unset so must be last
 > read.dta("xxx12.dta")
                      x                  xc               xbigc      xdate
 1  2014-01-23 20:07:16 2014-01-23 20:07:16 2014-01-23 20:07:16 2014-01-23
