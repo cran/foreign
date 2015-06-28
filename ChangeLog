@@ -1,3 +1,7 @@
+2015-08-18 Luke Tierney
+	* DESCRIPTION: Version is 0.8-66
+	* src/spss.c: Moved install call to protect ScalarInteger result.
+
 2015-07-02 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-65

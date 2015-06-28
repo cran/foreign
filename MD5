@@ -1,7 +1,7 @@
 23230f6ef6d4252d57567773a3f09154 *BUGS
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-93e6b775d62532cc2c62da4e22d9c22c *ChangeLog
-7f0d2d681ee9493f49e5fe7aeeac5fd2 *DESCRIPTION
+b9b07226dd129f560bf89ea31298ad07 *ChangeLog
+d1de05d9624c9bf4fb6261eea641ac0a *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 ed8178a14789e97ce12174176eed1908 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -76,7 +76,7 @@ ffff86f2ad1eb5d4c3a2a7fa8bb072b2 *src/pfm-read.c
 57d2ead77446dcc448a46d6dda1a002a *src/sfm.h
 415d9a842df63d8f5aa2f30dee9a3897 *src/sfmP.h
 7170823cb63ff57d1656d137fcbd9a88 *src/shapefil.h
-92fe2299efde16f1ece1792aa5a03a86 *src/spss.c
+4e905b9f011dc86c36b9fbd0db99042c *src/spss.c
 ba958c362f945840c4c6ef48b1d9b8df *src/stataread.c
 24ca01dea57c87bcde95d4a2ccc113ef *src/swap_bytes.h
 755f0cbaa53ae02237c1748aba1b372e *src/var.h
