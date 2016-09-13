@@ -2,7 +2,7 @@
 % It is distributed under the GPL version 2 or later
 
 % Original by Nicholas Lewin-Koh and Roger Bivand,
-% Changes for the foreign package (C) 2004-6 R Development Core Team
+% Changes for the foreign package (C) 2004-15 R Core Team
 
 \name{read.dbf}
 \alias{read.dbf}
@@ -53,9 +53,10 @@ read.dbf(file, as.is = FALSE)
 
 \references{
   \url{http://shapelib.maptools.org/}.
-
-  The Borland file specification \emph{via} \url{http://www.wotsit.org},
-  currently at \url{http://www.wotsit.org/list.asp?fc=6}.
+  
+% site is 'unavailable' in Aug 2015.
+%  The Borland file specification \emph{via} \url{http://www.wotsit.org},
+%  currently at \url{http://www.wotsit.org/list.asp?fc=6}.
 }
 
 \author{

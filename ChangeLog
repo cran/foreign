@@ -1,3 +1,15 @@
+2016-09-13  Kurt Hornik  <Kurt.Hornik@wu.ac.at>
+
+	* DESCRIPTION: Version is 0.8-67
+
+2016-01-25 Brian Ripley
+
+	* src/*.c: include directly headers included via R.h.
+
+2015-08-29 Brian Ripley
+
+	* man/read.dbf.Rd: wotsit.org is unavailable and has been for weeks.
+
 2015-08-18 Luke Tierney
 	* DESCRIPTION: Version is 0.8-66
 	* src/spss.c: Moved install call to protect ScalarInteger result.

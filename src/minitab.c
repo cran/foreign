@@ -23,6 +23,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <stddef.h>
+#include <string.h>
 #include <R.h>
 #include <Rinternals.h>
 #include "foreign.h"

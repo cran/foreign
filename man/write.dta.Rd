@@ -50,7 +50,7 @@ write.dta(dataframe, file, version = 7L,
   only available method and is provided largely for backwards
   compatibility.
 
-  If the \code{"label.table"} attriburte contains value labels with
+  If the \code{"label.table"} attribute contains value labels with
   names not already attached to a variable (not the variable name or
   name from \code{"val.labels"}) then these will be written out as well.
 

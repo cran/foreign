@@ -20,6 +20,7 @@
  *  http://www.r-project.org/Licenses/
  */
 
+#include <string.h>
 #include "foreign.h"
 #include "file-handle.h"
 #include "pfm.h"

@@ -21,6 +21,7 @@
  *  http://www.r-project.org/Licenses/
  */
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 #include "shapefil.h"

@@ -26,6 +26,7 @@
 #include <math.h>
 #include <float.h>
 #include <limits.h>
+#include <string.h>
 #include "foreign.h"
 #include "avl.h"
 #include "file-handle.h"
