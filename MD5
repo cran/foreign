@@ -1,7 +1,7 @@
 23230f6ef6d4252d57567773a3f09154 *BUGS
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-c89afbfd611886ad4f78ef27ec1f49a6 *ChangeLog
-a997bfc198a04adbac80f3bc9278aa0d *DESCRIPTION
+fc3ac4a5a9bfed5e7413dbb1383a5a4c *ChangeLog
+9c99ca4fd624a17249b0b768465d64a3 *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 ed8178a14789e97ce12174176eed1908 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -34,7 +34,7 @@ ca70cbf948c2c788d9e8cbe34eae00cf *inst/po/pl/LC_MESSAGES/foreign.mo
 87a4728de4cc9fa5f10e1956bebf0436 *man/read.S.Rd
 e158337bb4c5753bee08025bb45c9901 *man/read.arff.Rd
 655ab7f82d12e58ad15e1c1dc14ca3ac *man/read.dbf.Rd
-7de8149ed19d445e4ebe589e99929803 *man/read.dta.Rd
+6755c81830967f1190cd204dba98ed92 *man/read.dta.Rd
 d00ca890c4b2dcf919525ab9bbd6c2c0 *man/read.epiinfo.Rd
 237a05c9be9b5783fc45f4b4fccecdfd *man/read.mtp.Rd
 db1bc6e2fb3330ae5d265b0a36d5f58a *man/read.octave.Rd
@@ -43,7 +43,7 @@ e986c2a68d601bf86d9c5a34d817efb0 *man/read.spss.Rd
 146b4ae1fc1dee5b33cd2f1958b7b72c *man/read.systat.Rd
 e4f1674e80a0d29e4f8bc60c0f27f1ea *man/read.xport.Rd
 6477fdb9c3c8f2ae4c5333ac8e084b0c *man/write.arff.Rd
-eacce6b42912cd4cced78dd15101620e *man/write.dbf.Rd
+f12b27b4608118b61146fab29f4ba101 *man/write.dbf.Rd
 d9dcbade32a8c855029f066a90e6e70d *man/write.dta.Rd
 eabbe51fb5b2fd3f9ed112c2d9c6b879 *man/write.foreign.Rd
 c98b1eba8c57558175b7adc46bcbf5d8 *po/R-de.po
@@ -67,12 +67,12 @@ ebcdf2857b396887f0ea3be29826f97f *src/SASxport.h
 4ab523323c1cdd3070b339621b08bb7e *src/foreign.h
 76dc30dd66eb04eb31e109a571048d6c *src/format.c
 ba57918d9812b0751713e905c53c5d46 *src/format.h
-6507e4dc9b4aec13c4a7c51ebe667abe *src/init.c
+9f9207714c9f77a05ed271202aaafe1a *src/init.c
 7d9abe6ee46aa33f6d397e0c4dd640ad *src/minitab.c
 8dd1d1534ae3a97c0d5e677500bc2460 *src/pfm-read.c
 0b155bb697ace4fd196dd0282a787752 *src/pfm.h
 913d1eacdc04e0139ed1309715e61306 *src/pspp-format-def.h
-d4bccbad890b09fd81576823bc52d1f5 *src/sfm-read.c
+56b93e5acf84240bf53895bac64271c6 *src/sfm-read.c
 57d2ead77446dcc448a46d6dda1a002a *src/sfm.h
 415d9a842df63d8f5aa2f30dee9a3897 *src/sfmP.h
 7170823cb63ff57d1656d137fcbd9a88 *src/shapefil.h

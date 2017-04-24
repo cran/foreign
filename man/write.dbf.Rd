@@ -81,7 +81,7 @@ write.dbf(warpbreaks, try2, factor2char = TRUE)
 in2 <- read.dbf(try2)
 str(in2)
 unlink(c(try1, try2))
-\testonly{
+\dontshow{
 DF <- data.frame(a=c(1:3, NA), b=c(NA, rep(pi, 3)),
                  c=c(TRUE,NA, FALSE, TRUE), d=c("aa", "bb", NA, "dd"),
                  e=I(c("a1", NA, NA, "a4")))

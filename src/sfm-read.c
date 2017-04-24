@@ -909,16 +909,18 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
       /* FIXME: much of this is incorrect if the file is encoded in a MBCS */
 
       /* Copy first character of variable name. */
+
+    /* it seems in a comparison on 1338 SPSS files, that this is always a false positive:
       if (!isalpha ((unsigned char) sv.name[0])
 	  && sv.name[0] != '@' && sv.name[0] != '#')
 	lose ((_("%s: position %d: Variable name begins with invalid character"), h->fn, i));
-      if (islower ((unsigned char) sv.name[0]))
+	  if (islower ((unsigned char) sv.name[0]))
 	warning(_("%s: position %d: Variable name begins with lowercase letter %c"),
-		h->fn, i, sv.name[0]);
+		h->fn, i, sv.name[0]);  */
       if (sv.name[0] == '#')
 	warning(_("%s: position %d: Variable name begins with octothorpe ('#').  Scratch variables should not appear in system files"),
 		  h->fn, i);
-      vv->name[0] = (char) toupper ((unsigned char) (sv.name[0]));
+      vv->name[0] = (char) (sv.name[0]);
 
       /* Copy remaining characters of variable name. */
       for (j = 1; j < 8; j++)
@@ -929,9 +931,10 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 	    break;
 	  else if (islower (c))
 	    {
-	      warning(_("%s: position %d: Variable name character %d is lowercase letter %c"),
-		      h->fn, i, j + 1, sv.name[j]);
-	      vv->name[j] = (char) toupper ((unsigned char) (c));
+		/* it seems in a comparison on 1338 SPSS files, that this is always a false positive:
+		warning(_("%s: position %d: Variable name character %d is lowercase letter %c"),
+		      h->fn, i, j + 1, sv.name[j]);*/
+	      vv->name[j] = (char) (c);
 	    }
 	  else if (isalnum (c) || c == '.' || c == '@'
 		   || c == '#' || c == '$' || c == '_' || c > 127)

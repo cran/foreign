@@ -1,3 +1,13 @@
+2017-04-22  Uwe Ligges <Uwe.Ligges@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-68
+	* src/sfm-read.c: no longer convert variable name characters to upper case nor give warnings
+	  (as this fails in multi byte encodings and seems not to be required)
+
+2016-09-24 Brian Ripley
+
+	* man/read.dta.Rd: mention package 'haven'.
+
 2016-09-13  Kurt Hornik  <Kurt.Hornik@wu.ac.at>
 
 	* DESCRIPTION: Version is 0.8-67
