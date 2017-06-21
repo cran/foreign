@@ -40,6 +40,17 @@ name, \code{validvarname} taking either \code{"V6"} or \code{"V7"},
 and \code{libpath = NULL} taking a string that will be the directory where
 the target SAS datset will be written when the generated SAS code been
 run.
+
+
+For \code{package="SPSS"} there is an optional argument \code{maxchars = 32L} 
+taking an integer that causes the variable names (not variable labels) 
+to be abbreviated to not more than \code{maxchars} chars.
+For compatibility with SPSS version 12 and before, change this to \code{maxchars = 8L}.
+In single byte locales with SPSS versions 13 or later, this can be set to \code{maxchars = 64L}.
+
+For \code{package="SPSS"}, as a side effect, the decimal indicator is always set by 
+\code{SET DECIMAL=DOT.} which may override user settings of the indicator or its default 
+derived from the current locale.
 }
 \value{
   Invisible \code{NULL}.
@@ -49,9 +60,9 @@ run.
   Thomas Lumley and Stephen Weigand
 }
 \examples{\dontrun{
-datafile<-tempfile()
-codefile<-tempfile()
-write.foreign(esoph,datafile,codefile,package="SPSS")
+datafile <- tempfile()
+codefile <- tempfile()
+write.foreign(esoph, datafile, codefile, package="SPSS")
 file.show(datafile)
 file.show(codefile)
 unlink(datafile)

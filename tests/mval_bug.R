@@ -1,7 +1,7 @@
 library(foreign)
 
-mydata <- read.spss("mval_bug.sav", use.value.labels = TRUE,
-                    to.data.frame = TRUE, use.missings = TRUE)
+mydata <- suppressMessages(read.spss("mval_bug.sav", use.value.labels = TRUE,
+                    to.data.frame = TRUE, use.missings = TRUE))
 
 levels(mydata$Q1_MISSING_NONE)
 table(mydata$Q1_MISSING_NONE)

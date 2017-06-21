@@ -1,3 +1,75 @@
+2017-06-21  Uwe Ligges <Uwe.Ligges@R-project.org>
+
+	* DESCRIPTION: Version is 0.8-69
+	* add more sophisticated test cases and new examples for read.spss
+
+2017-06-20  Uwe Ligges <Uwe.Ligges@R-project.org>
+
+	* R/spss.R: 
+	 - fix for R >= 3.4.0 not allowing duplicated factor labels, hence new arguments
+	   duplicated.value.labels and duplicated.value.labels.infix
+	   that control whether to make factor labels unique or to condence 
+	   all levels with identical factor labels into one level
+	 - new argument add.undeclared.levels: Many files observed in the wild
+	   have variables with one or more value labels and further 
+       non-missing values that have no value label. 
+	   We cann now sepcify whether the other levels should be appended or sorted
+	   into the declared labels, or not to convert to factor at all.
+	   This fixes several issues, e.g. that values without labels were 
+	   regarded as NA values before.
+
+2017-06-19  Uwe Ligges <Uwe.Ligges@R-project.org>
+	
+	* R/spss.R: 
+	 - allow to pass a "..." argument to as.data.frame,
+	   add argument "sub" for substituting invalid chars rather than returning NAs and 
+	   allowing for back compatibility
+	 - now also auto-reencodes if R is ruinning in a latin-1 locale and sav file's encoding is not.
+	* src/sfm-read.c: Update for format type 7 subtypes:
+	 - more comments and restructured
+	 - information from 
+	   https://www.gnu.org/software/pspp/pspp-dev/html_node/System-File-Format.html#System-File-Format
+	 - no longer warns for subtypes 12, 17, 18, 19, 20, 24 as these can be safely ignored
+	 - more informative warning messages for subtypes 14, 21, 22 (long strings)
+
+2017-06-12  Uwe Ligges <Uwe.Ligges@R-project.org>
+
+	* R/spss.R: use iconv(..., sub=".") so that character labels/names/values
+	  with invalid or non convertible chars are no longer silently coerced to NA
+
+2017-06-09  Uwe Ligges <Uwe.Ligges@R-project.org>
+
+	* src/sfm-read.c: Do not evaluate the write field for the format 
+	  type any more as this produces errors and given 
+	  https://www.gnu.org/software/pspp/pspp-dev/html_node/Variable-Record.html#Variable-Record
+	  tells us on June 9, 2017:
+	  "A few system files have been observed in the wild with invalid write fields, 
+	  in particular with value 0. Readers should probably treat invalid print or 
+	  write fields as some default format. "
+
+2017-05-04  Uwe Ligges <Uwe.Ligges@R-project.org>
+
+	* several bugfixes for writeForeignSPSS:
+	  add/correct declaration of factors and ordered factors (nominal, ordered);
+	  add/correct declaration of numeric (scale) variables;
+	  calculate length of character variables correctly, even if 
+	  all entries are NA and there is no longer a 255 char limit 
+	  (since SPSS 13); 
+	  data files are typically encoded in the current locale and not always ASCII;
+	  variable name list must not exceed 251 chars for each line of code 
+	  and had to be wrapped
+
+2017-04-29  Uwe Ligges <Uwe.Ligges@R-project.org>
+
+	* add maxchars = 32L argument to writeForeignSPSS
+      in order to allow for longer variable names for SPSS versions > 12
+	* bugfix in writeForeignSPSS for declaration of character variables by prefixed stars
+	
+2017-04-27  Uwe Ligges <Uwe.Ligges@R-project.org>
+
+	* writeForeignCode.R: SET DECIMAL=DOT. in SPSS required if 
+	  it runs in a locale with DECIMAL=comma
+
 2017-04-22  Uwe Ligges <Uwe.Ligges@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-68

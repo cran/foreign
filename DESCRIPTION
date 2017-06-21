@@ -1,9 +1,9 @@
 Package: foreign
 Priority: recommended
-Version: 0.8-68
-Date: 2017-04-22
-Title: Read Data Stored by Minitab, S, SAS, SPSS, Stata, Systat, Weka,
-        dBase, ...
+Version: 0.8-69
+Date: 2017-06-21
+Title: Read Data Stored by 'Minitab', 'S', 'SAS', 'SPSS', 'Stata',
+        'Systat', 'Weka', 'dBase', ...
 Depends: R (>= 3.0.0)
 Imports: methods, utils, stats
 Authors@R: c(
@@ -14,6 +14,7 @@ Authors@R: c(
     person("Saikat", "DebRoy", role = c("ctb", "cph")),
     person("Stephen", "Eglen", role = c("ctb", "cph")),
     person("Rajarshi", "Guha", role = c("ctb", "cph")),
+    person("Swetlana", "Herbrandt", role = "ctb"),
     person("Nicholas", "Lewin-Koh", role = c("ctb", "cph")),
     person("Mark", "Myatt", role = c("ctb", "cph")),
     person("Ben", "Pfaff", role = "ctb"),
@@ -22,21 +23,22 @@ Authors@R: c(
     person("Stephen", "Weigand", role = c("ctb", "cph")),
     person("Free Software Foundation, Inc.", role = "cph"))
 Copyright: see file COPYRIGHTS
-Description: Functions for reading and writing data stored by some versions of
-	Epi Info, Minitab, S, SAS, SPSS, Stata, Systat and Weka
-	and for reading and writing some dBase files.
+Description: Reading and writing data stored by some versions of
+	'Epi Info', 'Minitab', 'S', 'SAS', 'SPSS', 'Stata', 'Systat', 'Weka',
+	and for reading and writing some 'dBase' files.
 ByteCompile: yes
 Biarch: yes
 License: GPL (>= 2)
 BugReports: https://bugs.r-project.org
 NeedsCompilation: yes
-Packaged: 2017-04-24 09:25:01 UTC; ligges
+Packaged: 2017-06-21 15:59:59 UTC; ligges
 Author: R Core Team [aut, cph, cre],
   Roger Bivand [ctb, cph],
   Vincent J. Carey [ctb, cph],
   Saikat DebRoy [ctb, cph],
   Stephen Eglen [ctb, cph],
   Rajarshi Guha [ctb, cph],
+  Swetlana Herbrandt [ctb],
   Nicholas Lewin-Koh [ctb, cph],
   Mark Myatt [ctb, cph],
   Ben Pfaff [ctb],
@@ -46,4 +48,4 @@ Author: R Core Team [aut, cph, cre],
   Free Software Foundation, Inc. [cph]
 Maintainer: R Core Team <R-core@R-project.org>
 Repository: CRAN
-Date/Publication: 2017-04-24 14:06:53 UTC
+Date/Publication: 2017-06-21 18:03:34 UTC

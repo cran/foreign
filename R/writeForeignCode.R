@@ -24,18 +24,26 @@ write.foreign <-
 ## we want ASCII quotes, not UTF-8 quotes here
 adQuote <- function(x) paste("\"", x, "\"", sep = "")
 
-writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL)
+
+
+## FIXME: 
+# - Missing values
+# - Date/Time
+# - character variables > 255 chars
+# - wrapper to write .sav directly
+
+writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL, maxchars = 32L)
 {
     ## FIXME: re-write this to hold a connection open
     dfn <- lapply(df, function(x) if (is.factor(x)) as.numeric(x) else x)
     write.table(dfn, file = datafile, row.names = FALSE, col.names = FALSE,
-                sep = ",", quote = FALSE, na = "",eol = ",\n")
+                sep = ",", quote = FALSE, na = "", eol = ",\n")
 
     varlabels <- names(df)
     if (is.null(varnames)) {
-        varnames <- abbreviate(names(df), 8L)
-        if (any(sapply(varnames, nchar) > 8L))
-            stop("I cannot abbreviate the variable names to eight or fewer letters")
+        varnames <- abbreviate(names(df), maxchars)
+        if (any(sapply(varnames, nchar) > maxchars))
+            stop("I cannot abbreviate the variable names to 'maxchars' or fewer chars")
         if (any(varnames != varlabels))
             warning("some variable names were abbreviated")
     }
@@ -43,26 +51,38 @@ writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL)
     varnames <- gsub("[^[:alnum:]_\\$@#]", "\\.", varnames)
 
     dl.varnames <- varnames
-    if (any(chv <- sapply(df,is.character))) {
-        lengths <- sapply(df[chv],function(v) max(nchar(v)))
-        if(any(lengths > 255L))
-            stop("Cannot handle character variables longer than 255")
+    chv <- sapply(df, is.character)
+    fav <- sapply(df, is.factor)
+    if (any(chv)) {
+        lengths <- sapply(df[chv],function(v) max(c(nchar(v),8), na.rm=TRUE))                         
         lengths <- paste0("(A", lengths, ")")
-        # corrected by PR#15583
-        star <- ifelse(c(TRUE, diff(which(chv) > 1L))," *", " ")
-        dl.varnames[chv] <- paste(star, dl.varnames[chv], lengths)
-  }
-
+        dl.varnames[chv] <- paste(dl.varnames[chv], lengths)
+    }
+    if (any(fav)) {
+        dl.varnames[fav] <- paste(dl.varnames[fav], "(F8.0)")  # Factor-Format    
+    }    
+    if (any(chv) || any(fav)) {
+        ## actually the rule is: prepend a star if a variable with type/size declaration
+        ## follows on a variable without declaration; no star for first variable or variables 
+        ## following other variables with declarations
+        star <- ifelse(c(FALSE, diff(chv | fav) == 1)[chv | fav], " *", " ")
+        dl.varnames[chv | fav] <- paste(star,  dl.varnames[chv | fav])
+    }
+  
+    cat("SET DECIMAL=DOT.\n\n", file = codefile) # required if SPSS runs in a locale with DECIMAL=comma
     cat("DATA LIST FILE=", adQuote(datafile), " free (\",\")\n",
-        file = codefile)
-    cat("/",  dl.varnames, " .\n\n", file = codefile, append = TRUE)
+        file = codefile, append = TRUE)
+    cat('ENCODING="Locale"\n', file = codefile, append = TRUE)
+
+    ## No line longer than 251 chars:
+    cat("/", paste(strwrap(paste(dl.varnames, collapse=" "), width=70), "\n"), " .\n\n", 
+        file = codefile, append = TRUE)
     cat("VARIABLE LABELS\n", file = codefile, append = TRUE)
     cat(paste(varnames, adQuote(varlabels),"\n"), ".\n",
         file = codefile, append = TRUE)
-    factors <- sapply(df,is.factor)
-    if (any(factors)) {
+    if (any(fav)) {
         cat("\nVALUE LABELS\n", file = codefile, append = TRUE)
-        for(v in which(factors)){
+        for(v in which(fav)){
             cat("/\n", file = codefile, append = TRUE)
             cat(varnames[v]," \n", file = codefile, append = TRUE, sep = "")
             levs <- levels(df[[v]])
@@ -71,6 +91,19 @@ writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL)
         }
         cat(".\n", file = codefile, append = TRUE)
     }
+
+    ord <- sapply(df, is.ordered)
+    if(any(ord)) 
+      cat("VARIABLE LEVEL", 
+        paste(strwrap(paste(varnames[ord], collapse = ", "), width=70), "\n"), 
+        "(ordinal).\n", file = codefile, append = TRUE)
+    
+    num <- sapply(df, is.numeric)
+    if(any(num)) 
+      cat("VARIABLE LEVEL", 
+        paste(strwrap(paste(varnames[num], collapse = ", "), width=70), "\n"), 
+        "(scale).\n", file = codefile, append = TRUE)
+    
     cat("\nEXECUTE.\n", file = codefile, append = TRUE)
 }
 
