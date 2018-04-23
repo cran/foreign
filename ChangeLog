@@ -1,3 +1,10 @@
+2017-11-28 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-70
+	* tests/spss.Rout.save: update for R-pre-3.5.0 chanages to str()
+	  (and correct line endings)
+	* tests/mval_bug.Rout.save: correct to CRLF lines endings.
+
 2017-06-21  Uwe Ligges <Uwe.Ligges@R-project.org>
 
 	* DESCRIPTION: Version is 0.8-69

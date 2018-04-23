@@ -1,7 +1,7 @@
 23230f6ef6d4252d57567773a3f09154 *BUGS
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-700c3ecacf72b4ef40bb0daab8796039 *ChangeLog
-b2c94eaad4d3993e6ada4bcf85fa760b *DESCRIPTION
+11f63077bf5e3dfa6c725694fef48cfe *ChangeLog
+0e84c3cdefc8349f9a3220f4e1e3aaa2 *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 ed8178a14789e97ce12174176eed1908 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -103,7 +103,7 @@ d9ebff4042010117916598a3d8b0745b *tests/keep/codefile.sps
 a175ed9be624fb4d92b3ca53bd88a9e5 *tests/minitab.R
 57c6e64dd8bc3b41be2e7b6e698f46c2 *tests/minitab.Rout.save
 6b10616d9a73a6b4c363d82bde67df4c *tests/mval_bug.R
-28f601f25f4e1baca36e8e94bbf232b6 *tests/mval_bug.Rout.save
+3658e0672ec125c8be2e5997443452ab *tests/mval_bug.Rout.save
 fd75debed7f0899ba5020e2a7312658b *tests/mval_bug.sav
 d3c1fe7fba4ac4890fede6da3c62bbea *tests/mySobj
 e220c5057046bcc051a300ed2e593ae9 *tests/octave.R
@@ -119,7 +119,7 @@ ee5f89b52abd011690b78c282ea43096 *tests/octave.m
 05a548c3dd3001dd1ae569bb7b487d13 *tests/sample100.sav
 2345db6c922977bc34b94c4d50a703c9 *tests/sas.R
 5356edbff8f515021b1e78ccfcc51dc7 *tests/spss.R
-a40a0dffe167e85cfb6643f894c64407 *tests/spss.Rout.save
+b7ab2d20a5ba9cc74efa5f0dc3a37998 *tests/spss.Rout.save
 8f44f68889e702b80b267d274adf9cd6 *tests/spss_long.sav
 09d18fba44288fd040d464b4706ccb55 *tests/stata.R
 971fda7f61666c454d876e858a6955c8 *tests/stata.Rout.save
