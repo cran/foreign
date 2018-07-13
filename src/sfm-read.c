@@ -678,7 +678,8 @@ read_long_var_names (struct file_handle * h, struct dictionary * dict
       /* now, p is key, val is long name */
       for (lp = dict->var; lp < end; ++lp) {
         if (!strcmp(lp[0]->name, p)) {
-          strncpy(lp[0]->name, val, sizeof(lp[0]->name));
+          strncpy(lp[0]->name, val, 64);
+	  lp[0]->name[64] = '\0';
           break;
         }
       }

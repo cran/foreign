@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 2.15.2 / foreign 0.8-38\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2012-09-23 17:34\n"
+"POT-Creation-Date: 2018-04-07 21:21\n"
 "PO-Revision-Date: 2012-10-11 13:35+0200\n"
 "Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
@@ -124,17 +124,29 @@ msgstr "Zurückkodierung von %s"
 msgid "missingness type %s is not handled"
 msgstr "'missingness'-Typ %s wird nicht verarbeitet"
 
-msgid "I cannot abbreviate the variable names to eight or fewer letters"
+msgid "Undeclared level(s)"
+msgstr ""
+
+msgid ","
+msgstr ""
+
+msgid "added in variable:"
+msgstr ""
+
+msgid "Duplicated levels in factor"
+msgstr ""
+
+msgid ":"
+msgstr ""
+
+#, fuzzy
+msgid "I cannot abbreviate the variable names to 'maxchars' or fewer chars"
 msgstr ""
 "Die Variablennamen können nicht auf acht oder weniger Zeichen abgekürzt "
 "werden"
 
 msgid "some variable names were abbreviated"
 msgstr "einige Variablennamen wurden abgekürzt"
-
-msgid "Cannot handle character variables longer than 255"
-msgstr ""
-"Zeichenvariablen, die länger als 255 sind, können nicht gehandhabt werden"
 
 msgid "Cannot uniquely abbreviate the variable names to %d or fewer characters"
 msgstr ""
@@ -154,3 +166,7 @@ msgid "data frame contains columns of unsupported class %s"
 msgid_plural "data frame contains columns of unsupported classes %s"
 msgstr[0] "Datenframe enthält Spalten der nicht unterstützen Klasse %s"
 msgstr[1] "Datenframe enthält Spalten der nicht unterstützen Klassen %s"
+
+#~ msgid "Cannot handle character variables longer than 255"
+#~ msgstr ""
+#~ "Zeichenvariablen, die länger als 255 sind, können nicht gehandhabt werden"

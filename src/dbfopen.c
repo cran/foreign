@@ -660,9 +660,11 @@ DBFAddField(DBFHandle psDBF, const char * pszFieldName,
 	pszFInfo[i] = '\0';
 
     if( (int) strlen(pszFieldName) < 10 )
-	strncpy( pszFInfo, pszFieldName, strlen(pszFieldName));
-    else
+	strcpy( pszFInfo, pszFieldName);
+    else {
 	strncpy( pszFInfo, pszFieldName, 10);
+	pszFInfo[10] = '\0';
+    }
 
     pszFInfo[11] = psDBF->pachFieldType[psDBF->nFields-1];
 
@@ -1507,7 +1509,7 @@ DBFGetFieldIndex(DBFHandle psDBF, const char *pszFieldName)
     for( i = 0; i < DBFGetFieldCount(psDBF); i++ )
     {
 	DBFGetFieldInfo( psDBF, i, name, NULL, NULL );
-	strncpy(name2,name,11);
+	strncpy(name2, name, 11); name2[11] = '\0';
 	str_to_upper(name2);
 
 	if(!strncmp(name1,name2,10))

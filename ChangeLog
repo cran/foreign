@@ -1,3 +1,10 @@
+2018-07-22 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-70.1 (released for R-devel only)
+	* BUGS: remove ancient file about one fixed bug.
+	* src/{dbfopen,pfm-read,sfm-read,stataread}.c:
+	  tweaks to placate gcc 8.
+
 2017-11-28 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-70

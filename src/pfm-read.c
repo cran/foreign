@@ -602,8 +602,10 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
       product = (char *) read_string (h);
       if (product == NULL)
 	return 0;
-      if (inf)
-	strncpy (inf->product, product, 61);
+      if (inf) { // placate gcc 8
+	strncpy (inf->product, product, 60);
+	inf->product[60] = '\0';
+      }
     }
   else if (inf)
     inf->product[0] = 0;
@@ -616,8 +618,10 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
       subproduct = (char *) read_string (h);
       if (subproduct == NULL)
 	return 0;
-      if (inf)
-	strncpy (inf->subproduct, subproduct, 61);
+      if (inf) {
+	strncpy (inf->subproduct, subproduct, 60);
+	inf->subproduct[60] = '\0';
+      }
     }
   else if (inf)
     inf->subproduct[0] = 0;

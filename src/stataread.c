@@ -760,7 +760,7 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 
     PROTECT(dlabel = getAttrib(df, install("datalabel")));
     if(!isNull(dlabel) && isString(dlabel) && LENGTH(dlabel) == 1)
-	strncpy(datalabel, CHAR(STRING_ELT(dlabel, 0)), 81);
+	strncpy(datalabel, CHAR(STRING_ELT(dlabel, 0)), 80);
     UNPROTECT(1);
     datalabel[80] = '\0';
     OutStringBinary(datalabel, fp, 81);

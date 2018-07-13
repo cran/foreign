@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foreign 0.8-10\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2012-09-23 17:34\n"
+"POT-Creation-Date: 2018-04-07 21:21\n"
 "PO-Revision-Date: 2012-10-03 15:02+0100\n"
 "Last-Translator: Philippe Grosjean <phgrosjean@sciviews.org>\n"
 "Language-Team: French <R-core@r-project.org>\n"
@@ -127,15 +127,27 @@ msgstr "réencodage depuis %s"
 msgid "missingness type %s is not handled"
 msgstr "type de valeur manquante %s non pris en compte"
 
-msgid "I cannot abbreviate the variable names to eight or fewer letters"
+msgid "Undeclared level(s)"
+msgstr ""
+
+msgid ","
+msgstr ","
+
+msgid "added in variable:"
+msgstr ""
+
+msgid "Duplicated levels in factor"
+msgstr ""
+
+msgid ":"
+msgstr ""
+
+#, fuzzy
+msgid "I cannot abbreviate the variable names to 'maxchars' or fewer chars"
 msgstr "Impossible d'abbréger les noms de variables à huit lettres au maximum"
 
 msgid "some variable names were abbreviated"
 msgstr "quelques noms de variables ont été abbrégées"
-
-msgid "Cannot handle character variables longer than 255"
-msgstr ""
-"Les chaînes de caractères plus longues que 255 ne sont pas prises en compte"
 
 msgid "Cannot uniquely abbreviate the variable names to %d or fewer characters"
 msgstr ""
@@ -160,6 +172,11 @@ msgstr[0] ""
 msgstr[1] ""
 "le tableau de données contient des colonnes de classes non supportées %s"
 
+#~ msgid "Cannot handle character variables longer than 255"
+#~ msgstr ""
+#~ "Les chaînes de caractères plus longues que 255 ne sont pas prises en "
+#~ "compte"
+
 #~ msgid "S mode"
 #~ msgstr "mode S"
 
@@ -174,9 +191,6 @@ msgstr[1] ""
 
 #~ msgid "changed to:"
 #~ msgstr "chang? en :"
-
-#~ msgid ","
-#~ msgstr ","
 
 #~ msgid "value labels ("
 #~ msgstr "les ?tiquettes de valeur ("

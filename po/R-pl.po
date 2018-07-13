@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: foreign 0.8-60\n"
 "Report-Msgid-Bugs-To: bugs@r-project.org\n"
-"POT-Creation-Date: 2014-03-20 18:21\n"
+"POT-Creation-Date: 2018-04-07 21:21\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Łukasz Daniel <lukasz.daniel@gmail.com>\n"
 "Language-Team: Łukasz Daniel <lukasz.daniel@gmail.com>\n"
@@ -201,20 +201,31 @@ msgstr "ponowne kodowanie z %s"
 msgid "missingness type %s is not handled"
 msgstr "typ braku danych %s nie jest obsługiwany"
 
+msgid "Undeclared level(s)"
+msgstr ""
+
+msgid ","
+msgstr ""
+
+msgid "added in variable:"
+msgstr ""
+
+msgid "Duplicated levels in factor"
+msgstr ""
+
+msgid ":"
+msgstr ""
+
 # foreign/R/writeForeignCode.R: 38
 # stop("I cannot abbreviate the variable names to eight or fewer letters")
-msgid "I cannot abbreviate the variable names to eight or fewer letters"
+#, fuzzy
+msgid "I cannot abbreviate the variable names to 'maxchars' or fewer chars"
 msgstr "Nie mogę skrócić nazw zmiennych do ośmiu lub mniej liter"
 
 # foreign/R/writeForeignCode.R: 40
 # warning("some variable names were abbreviated")
 msgid "some variable names were abbreviated"
 msgstr "niektóre nazwy zmiennych zostały skrócone"
-
-# foreign/R/writeForeignCode.R: 49
-# stop("Cannot handle character variables longer than 255")
-msgid "Cannot handle character variables longer than 255"
-msgstr "Nie można obsłużyć zmiennych tekstowych dłuższych niż 255 znaków"
 
 # foreign/R/writeForeignSAS.R: 28
 # stop(gettextf("Cannot uniquely abbreviate the variable names to %d or fewer characters", nmax), domain = "R-foreign")
@@ -246,6 +257,11 @@ msgid_plural "data frame contains columns of unsupported classes %s"
 msgstr[0] "ramka zawiera kolumny niewspieranej klasy %s"
 msgstr[1] "ramka zawiera kolumny niewspieranych klasach %s"
 msgstr[2] "ramka zawiera kolumny niewspieranych klasach %s"
+
+# foreign/R/writeForeignCode.R: 49
+# stop("Cannot handle character variables longer than 255")
+#~ msgid "Cannot handle character variables longer than 255"
+#~ msgstr "Nie można obsłużyć zmiennych tekstowych dłuższych niż 255 znaków"
 
 #~ msgid "Argument is missing"
 #~ msgstr "Brakuje argumentu"
