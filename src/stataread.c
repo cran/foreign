@@ -896,7 +896,7 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
     PROTECT(vlabels = getAttrib(df, install("var.labels")));
     if(!isNull(vlabels) && isString(vlabels) && LENGTH(vlabels) == nvar){
         for(i = 0; i < nvar; i++) {
-	    strncpy(datalabel,CHAR(STRING_ELT(vlabels,i)),81);
+	    strncpy(datalabel,CHAR(STRING_ELT(vlabels,i)),80);
 	    datalabel[80] = '\0';
 	    OutStringBinary(datalabel, fp, 81);
         }
@@ -904,7 +904,7 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
     else{
         PROTECT(orig_names = getAttrib(df,install("orig.names")));
         for(i = 0; i < nvar; i++) {
-	    strncpy(datalabel,CHAR(STRING_ELT(orig_names,i)),81);
+	    strncpy(datalabel,CHAR(STRING_ELT(orig_names,i)),80);
 	    datalabel[80] = '\0';
 	    OutStringBinary(datalabel, fp, 81);
         }

@@ -683,7 +683,7 @@ DBFAddField(DBFHandle psDBF, const char * pszFieldName,
 /*      Make the current record buffer appropriately larger.            */
 /* -------------------------------------------------------------------- */
     psDBF->pszCurrentRecord = (char *) SfRealloc(psDBF->pszCurrentRecord,
-					       psDBF->nRecordLength);
+					       psDBF->nRecordLength + 1);
 
     return( psDBF->nFields-1 );
 }
@@ -1099,8 +1099,7 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
 		nRetResult = FALSE;
 	    }
 
-	    strncpy((char *) (pabyRec+psDBF->panFieldOffset[iField]),
-		    szSField, strlen(szSField) );
+	    strcpy((char *) (pabyRec+psDBF->panFieldOffset[iField]), szSField);
 	}
 	else
 	{
@@ -1117,8 +1116,7 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
 		szSField[psDBF->panFieldSize[iField]] = '\0';
 		nRetResult = FALSE;
 	    }
-	    strncpy((char *) (pabyRec+psDBF->panFieldOffset[iField]),
-		    szSField, strlen(szSField) );
+	    strcpy((char *) (pabyRec+psDBF->panFieldOffset[iField]), szSField);
 	}
 	break;
 
@@ -1509,7 +1507,8 @@ DBFGetFieldIndex(DBFHandle psDBF, const char *pszFieldName)
     for( i = 0; i < DBFGetFieldCount(psDBF); i++ )
     {
 	DBFGetFieldInfo( psDBF, i, name, NULL, NULL );
-	strncpy(name2, name, 11); name2[11] = '\0';
+	strncpy(name2, name, 12); // this copied the terminator, but be sure
+	name2[11] = '\0';
 	str_to_upper(name2);
 
 	if(!strncmp(name1,name2,10))
