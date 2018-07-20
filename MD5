@@ -1,6 +1,6 @@
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-259770695fa184ca8e3f3bcb17a8c7fa *ChangeLog
-e5473b9925a114adeaa01926d4ac45cc *DESCRIPTION
+649d00666ed325508567b8126f92f3f8 *ChangeLog
+f1d3696a7a01e34ae88e39bb1402715c *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 ed8178a14789e97ce12174176eed1908 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -77,7 +77,7 @@ d6a1c9d84b8bd075568ca349cca3ada3 *src/pfm-read.c
 57d2ead77446dcc448a46d6dda1a002a *src/sfm.h
 415d9a842df63d8f5aa2f30dee9a3897 *src/sfmP.h
 7170823cb63ff57d1656d137fcbd9a88 *src/shapefil.h
-8d1be6f667a000264d5660d6a03ea577 *src/spss.c
+344193e3a519585840199f2fd760f6f9 *src/spss.c
 13a7dcb76f8265dc85e65aba528db775 *src/stataread.c
 24ca01dea57c87bcde95d4a2ccc113ef *src/swap_bytes.h
 755f0cbaa53ae02237c1748aba1b372e *src/var.h

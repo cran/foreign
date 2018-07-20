@@ -1,17 +1,22 @@
+2018-07-20 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-71
+	* src/spss.c: add comment.
+
 2018-07-18 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-70.1 (released for R-devel only)
 	* BUGS: remove ancient file about one fixed bug.
 	* src/{dbfopen,pfm-read,sfm-read,stataread}.c:
 	  tweaks to placate gcc 8.  In dbfopen.c there was a
-	  possibly truncation by one byte.
+	  possible truncation by one byte.
 
 2017-11-28 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-70
 	* tests/spss.Rout.save: update for R-pre-3.5.0 chanages to str()
 	  (and correct line endings)
-	* tests/mval_bug.Rout.save: correct to CRLF lines endings.
+	* tests/mval_bug.Rout.save: correct to CRLF line endings.
 
 2017-06-21  Uwe Ligges <Uwe.Ligges@R-project.org>
 
@@ -21,13 +26,14 @@
 2017-06-20  Uwe Ligges <Uwe.Ligges@R-project.org>
 
 	* R/spss.R: 
-	 - fix for R >= 3.4.0 not allowing duplicated factor labels, hence new arguments
-	   duplicated.value.labels and duplicated.value.labels.infix
+	 - fix for R >= 3.4.0 not allowing duplicated factor labels,
+	   hence new arguments
+	   'duplicated.value.labels' and 'duplicated.value.labels.infix'
 	   that control whether to make factor labels unique or to condence 
 	   all levels with identical factor labels into one level
-	 - new argument add.undeclared.levels: Many files observed in the wild
+	 - new argument 'add.undeclared.levels': Many files observed in the wild
 	   have variables with one or more value labels and further 
-       non-missing values that have no value label. 
+	   non-missing values that have no value label. 
 	   We cann now sepcify whether the other levels should be appended or sorted
 	   into the declared labels, or not to convert to factor at all.
 	   This fixes several issues, e.g. that values without labels were 

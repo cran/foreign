@@ -522,7 +522,7 @@ read_SPSS_SAVE(const char *filename)
     }
     for (i = 0; i < inf.ncases; i++) {
 	int j;
-	sfm_read_case(fh, case_vals, dict);
+	sfm_read_case(fh, case_vals, dict);  // should check return value
 	for (j = 0; j < dict->nvar; j++) {
 	    struct variable *v = dict->var[j];
 
