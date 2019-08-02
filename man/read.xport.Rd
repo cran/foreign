@@ -9,11 +9,13 @@
   data.frames.
 }
 \usage{
-read.xport(file)
+read.xport(file, ...)
 }
 \arguments{
  \item{file}{character variable with the name of the file to read.  The
    file must be in SAS XPORT format.}
+ \item{...}{passed to \code{\link{as.data.frame}} when creating the data
+   frames.} 
 }
 \value{
   If there is a more than one dataset in the XPORT format library, a named

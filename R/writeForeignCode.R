@@ -42,7 +42,7 @@ writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL, maxchars =
     varlabels <- names(df)
     if (is.null(varnames)) {
         varnames <- abbreviate(names(df), maxchars)
-        if (any(sapply(varnames, nchar) > maxchars))
+        if (any(vapply(varnames, nchar, 0L) > maxchars))
             stop("I cannot abbreviate the variable names to 'maxchars' or fewer chars")
         if (any(varnames != varlabels))
             warning("some variable names were abbreviated")
@@ -51,10 +51,10 @@ writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL, maxchars =
     varnames <- gsub("[^[:alnum:]_\\$@#]", "\\.", varnames)
 
     dl.varnames <- varnames
-    chv <- sapply(df, is.character)
-    fav <- sapply(df, is.factor)
+    chv <- vapply(df, is.character, NA)
+    fav <- vapply(df, is.factor, NA)
     if (any(chv)) {
-        lengths <- sapply(df[chv],function(v) max(c(nchar(v),8), na.rm=TRUE))                         
+        lengths <- vapply(df[chv],function(v) max(c(nchar(v), 8L), na.rm=TRUE), 0L)                         
         lengths <- paste0("(A", lengths, ")")
         dl.varnames[chv] <- paste(dl.varnames[chv], lengths)
     }
@@ -92,13 +92,13 @@ writeForeignSPSS <- function(df, datafile, codefile, varnames = NULL, maxchars =
         cat(".\n", file = codefile, append = TRUE)
     }
 
-    ord <- sapply(df, is.ordered)
+    ord <- vapply(df, is.ordered, NA)
     if(any(ord)) 
       cat("VARIABLE LEVEL", 
         paste(strwrap(paste(varnames[ord], collapse = ", "), width=70), "\n"), 
         "(ordinal).\n", file = codefile, append = TRUE)
     
-    num <- sapply(df, is.numeric)
+    num <- vapply(df, is.numeric, NA)
     if(any(num)) 
       cat("VARIABLE LEVEL", 
         paste(strwrap(paste(varnames[num], collapse = ", "), width=70), "\n"), 
@@ -113,7 +113,7 @@ writeForeignStata <- function(df, datafile, codefile)
     write.table(df, file = datafile, row.names = FALSE, col.names = FALSE,
                 sep = ",", quote = FALSE, na = ".")
     nms <- names(df)
-    factors <- sapply(df,is.factor) | sapply(df, is.character)
+    factors <- vapply(df, is.factor, NA) | vapply(df, is.character, NA)
     formats <- paste(nms, "fmt", sep = "_")
     nms <- ifelse(factors, paste(nms,formats, sep = ":"), nms)
 

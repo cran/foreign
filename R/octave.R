@@ -1,7 +1,7 @@
 ### This file is part of the 'foreign' package for R.
 
-# Copyright (c) 2004 Stephen Eglen
-# Enhancements Copyright (c) 2004-7 R Development Core Team
+# Enhancements Copyright (c) 2004-2018 R Development Core Team
+#              Copyright (c) 2004      Stephen Eglen
 
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -119,9 +119,10 @@ function(file)
             data <- gsub("\\(", "", data)
             data <- gsub("\\)", "", data)
             nums <- strsplit(data, ",")
-            stopifnot(all(sapply(nums, length) == 2))
-            array(complex(real = as.numeric(sapply(nums, "[", 1L)),
-                          imaginary = as.numeric(sapply(nums, "[", 2L))),
+            # note could replace with lengths if bumping R-version dependancy
+            stopifnot(lengths(nums) == 2L)
+            array(complex(real = as.numeric(vapply(nums, "[", "", 1L)),
+                          imaginary = as.numeric(vapply(nums, "[", "",2L))),
                   dim = dims)
         }
     }

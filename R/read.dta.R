@@ -156,13 +156,13 @@ write.dta <-
     attr(dataframe,"orig.names") <- oldn
 
     if (convert.dates) {
-        dates <- which(sapply(dataframe,
-                              function(x) inherits(x, "Date")))
+        dates <- which(vapply(dataframe,
+                              function(x) inherits(x, "Date"), NA))
         for(v in dates)
             dataframe[[v]] <- as.vector(julian(dataframe[[v]],
                                                as.Date("1960-1-1", tz="GMT")))
-        dates <- which(sapply(dataframe,
-                              function(x) inherits(x, "POSIXt")))
+        dates <- which(vapply(dataframe,
+                              function(x) inherits(x, "POSIXt"), NA))
         for(v in dates)
             dataframe[[v]] <- as.vector(round(julian(dataframe[[v]],
                                                      ISOdate(1960,1,1, tz=tz))))
@@ -171,7 +171,7 @@ write.dta <-
         ## dataframe[[v]] <- 1000*as.vector(as.POSIXct(dataframe[[v]], tz=tz) + 315619200)
     }
     convert.factors <- match.arg(convert.factors)
-    factors <- which(sapply(dataframe,is.factor))
+    factors <- which(vapply(dataframe, is.factor, NA))
     if(convert.factors == "string") {
         for(v in factors)
             dataframe[[v]] <- I(as.character(dataframe[[v]]))
@@ -191,10 +191,10 @@ write.dta <-
     }
     leveltable <- lapply(dataframe, shortlevels)
 
-    if (any(sapply(dataframe, function(x) {
+    if (any(vapply(dataframe, function(x) {
         d <- dim(x)
         !is.null(d) && d[1L] < length(x)
-        })))
+        }, NA)))
         stop("cannot handle multicolumn columns")
     invisible(.External(do_writeStata, file, dataframe, version, leveltable))
 }

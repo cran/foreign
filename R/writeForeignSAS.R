@@ -47,12 +47,12 @@ writeForeignSAS <- function(df, datafile, codefile, dataname = "rdata",
                           validvarname = c("V7", "V6"), libpath = NULL)
 {
     ## FIXME: re-write this to hold a connection open
-    factors <- sapply(df, is.factor)
-    strings <- sapply(df, is.character)
-    logicals <- sapply(df, is.logical)
-    dates <- sapply(df, FUN = function(x) inherits(x, "Date") || inherits(x, "dates") || inherits(x, "date"))
-    xdates <- sapply(df, FUN = function(x)  inherits(x, "dates") || inherits(x, "date"))
-    datetimes <- sapply(df, FUN = function(x) inherits(x, "POSIXt"))
+    factors <- vapply(df, is.factor, NA)
+    strings <- vapply(df, is.character, NA)
+    logicals <- vapply(df, is.logical, NA)
+    dates <- vapply(df, FUN = function(x) inherits(x, "Date") || inherits(x, "dates") || inherits(x, "date"), NA)
+    xdates <- vapply(df, FUN = function(x)  inherits(x, "dates") || inherits(x, "date"), NA)
+    datetimes <- vapply(df, FUN = function(x) inherits(x, "POSIXt"), NA)
 
     varlabels <- names(df)
     varnames <- make.SAS.names(names(df), validvarname = validvarname)
@@ -74,7 +74,7 @@ writeForeignSAS <- function(df, datafile, codefile, dataname = "rdata",
     ## https://kb.iu.edu/d/aydn
     write.table(dfn, file = datafile, row.names = FALSE, col.names = FALSE,
                 sep = ",", quote = TRUE, na = "", qmethod = "double")
-    lrecl <- max(sapply(readLines(datafile),nchar)) + 4L
+    lrecl <- max(vapply(readLines(datafile), nchar, 0L)) + 4L
 
     cat("* Written by R;\n", file = codefile)
     cat("* ", deparse(sys.call(-2L))[1L], ";\n\n",
@@ -89,9 +89,9 @@ writeForeignSAS <- function(df, datafile, codefile, dataname = "rdata",
             values <- fmt.values[[f]]
             for(i in 1L:length(values)){
                 cat("    ", i,"=", adQuote(values[i]), "\n",
-                    file=codefile, append=TRUE)
+                    file=codefile, append = TRUE)
             }
-            cat(";\n\n",file=codefile,append=TRUE)
+            cat(";\n\n",file=codefile,append = TRUE)
         }
     }
 
@@ -104,8 +104,8 @@ writeForeignSAS <- function(df, datafile, codefile, dataname = "rdata",
 
     if (any(strings)) {
         cat("LENGTH", file = codefile, append = TRUE)
-        lengths <- sapply(df[,strings, drop = FALSE],
-                          FUN = function(x) max(nchar(x)))
+        lengths <- vapply(df[,strings, drop = FALSE],
+                          FUN = function(x) max(nchar(x), 1L, na.rm = TRUE), 0L)
         names(lengths) <- varnames[strings]
         for(v in varnames[strings])
             cat("\n", v, "$", lengths[v], file = codefile, append = TRUE)

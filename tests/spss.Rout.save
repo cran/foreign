@@ -1,7 +1,7 @@
 
-R Under development (unstable) (2017-11-28 r73785) -- "Unsuffered Consequences"
-Copyright (C) 2017 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin17.2.0 (64-bit)
+R Under development (unstable) (2019-07-31 r76909) -- "Unsuffered Consequences"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -58,7 +58,7 @@ List of 11
   ..$ GRADE   : NULL
  - attr(*, "variable.labels")= Named chr [1:11] "YEAR OF ADMINISTRATION" "COUNTY DISTRICT NUMBER" "COUNTY DISTRICT CAMPUS NUMBER" "DISTRICT NAME" ...
   ..- attr(*, "names")= chr [1:11] "YEAR" "DISTRICT" "CAMPUS" "DNAME" ...
-> d.sample100 <- data.frame(sample100)
+> d.sample100 <- data.frame(sample100,stringsAsFactors=TRUE)
 > summary(d.sample100)
       YEAR           DISTRICT          CAMPUS                      DNAME   
  Min.   :  94.0   Min.   : 57905   Min.   : 57905126   DALLAS ISD     : 1  
@@ -440,22 +440,23 @@ List of 17
   .. ..$ type: chr "none"
  - attr(*, "codepage")= int 65001
 > 
-> x.sort <- read.spss(file=sav, to.data.frame = TRUE, reencode="UTF-8")
+> x.sort <- read.spss(file=sav, to.data.frame = TRUE, reencode="UTF-8",
++                     stringsAsFactors=TRUE)
 re-encoding from UTF-8
 Warning messages:
-1: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8") :
+1: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8",  :
   testdata.sav: Very long string record(s) found (record type 7, subtype 14), each will be imported in consecutive separate variables
-2: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8") :
+2: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8",  :
   Duplicated levels in factor factor_n_duplicated: A
-3: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8") :
+3: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8",  :
   Undeclared level(s) 2, 3, 4 added in variable: factor_n_undeclared
-4: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8") :
+4: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8",  :
   Undeclared level(s) 0, 3 added in variable: factor_n_undeclared2
-5: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8") :
+5: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8",  :
   Undeclared level(s) .. added in variable: factor_s_duplicated
-6: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8") :
+6: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8",  :
   Duplicated levels in factor factor_s_duplicated: A
-7: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8") :
+7: In read.spss(file = sav, to.data.frame = TRUE, reencode = "UTF-8",  :
   Undeclared level(s) perhaps added in variable: factor_s_undeclared
 > str(x.sort)
 'data.frame':	5 obs. of  17 variables:
@@ -652,4 +653,4 @@ A wonderful serenity has taken possession of my entire soul, like
 > 
 > proc.time()
    user  system elapsed 
-  0.368   0.060   0.415 
+  0.253   0.023   0.270 

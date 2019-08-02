@@ -167,7 +167,7 @@ read.spss <- function(file, use.value.labels = TRUE, to.data.frame = FALSE,
     } else use.missings <- FALSE
 
     if(reencode) names(vl) <- iconv(names(vl), cp, "", sub=sub)
-    has.vl <- which(!sapply(vl, is.null))
+    has.vl <- which(!vapply(vl, is.null, NA))
     for(v in has.vl) {
         nm <- names(vl)[[v]]
         vlv <- vl[[v]]
