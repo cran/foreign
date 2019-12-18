@@ -1,3 +1,11 @@
+2019-12-18 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-73
+
+2019-11-26 Brian Ripley
+
+	* src/R_systat.c: Correct logic as spotted by clang 10.x
+
 2019-08-02  Kurt Hornik  <Kurt.Hornik@wu.ac.at>
 
 	* DESCRIPTION (Date): Release 0.8-72 on 2019-08-02.

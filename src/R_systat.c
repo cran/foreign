@@ -439,7 +439,7 @@ static void getlab(struct SysFilev3 *u)
     /* read and throw away end of package
        byte=006, i.e. 3 shorts */
 
-    if (u->h.ntype != 1 || u->h.ntype != 2) {	/* i.e. version later than 2 */
+    if (u->h.ntype != 1 && u->h.ntype != 2) {	/* i.e. version later than 2 */
 	/* test changed to accommodate MYSTAT 9/9/91 */
 	len = 0;
 	do {

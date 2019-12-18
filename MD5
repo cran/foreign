@@ -1,6 +1,6 @@
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-6aa6bf6b654f3f685143a6b5c0164ab5 *ChangeLog
-d9bc0305ddaed753d885e89ce1a0b985 *DESCRIPTION
+2e283119131cce20bd3152df00e7accb *ChangeLog
+860f5567d2b998467878503649bba4cc *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 ed8178a14789e97ce12174176eed1908 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -55,7 +55,7 @@ c7a3d886df1df6ec6da6d14d6f02a5f3 *po/de.po
 5e7b50cdb3c03ccd7d11ab6ea6bf8c6e *po/foreign.pot
 e9126620db92a4c837e1e99e347a56c9 *po/fr.po
 2975259e4456f253eda00c886c572ee4 *po/pl.po
-0fb389f0bcc08d136be6ed07bb64e0ab *src/R_systat.c
+01b05ac357fbc772e75bb92e88f27471 *src/R_systat.c
 04b7f8e46c15c070c8c3c692fb47174f *src/Rdbfread.c
 3f68f084d2debe253f03024d851bc4ed *src/Rdbfwrite.c
 f737aa971c09e183051922a74f68015b *src/SASxport.c
