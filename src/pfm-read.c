@@ -880,13 +880,15 @@ parse_value (struct file_handle *h, union value *v, struct variable *vv)
       if (mv == NULL)
 	return 0;
 
-      strncpy ((char *) v->s, mv, 8);
+      // do it this way as strings might not be nul-terminated.
+      // strncpy ((char *) v->s, mv, 8);
+      /* Value labels are always padded with spaces. */
+      memset(v->s, ' ', 8);
       for (j = 0; j < 8; j++)
-	if (v->s[j])
-	  v->s[j] = spss2ascii[v->s[j]];
+	if (mv[j])
+	    v->s[j] = spss2ascii[(unsigned char)mv[j]];
 	else
-	  /* Value labels are always padded with spaces. */
-	  v->s[j] = ' ';
+	  break;
     }
   else
     {

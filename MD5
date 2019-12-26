@@ -1,6 +1,6 @@
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-2e283119131cce20bd3152df00e7accb *ChangeLog
-860f5567d2b998467878503649bba4cc *DESCRIPTION
+428c1cf31118855e740ab8596362eeb9 *ChangeLog
+04657307e8dae4f615be64d68bda62ac *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 ed8178a14789e97ce12174176eed1908 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -70,7 +70,7 @@ ebcdf2857b396887f0ea3be29826f97f *src/SASxport.h
 ba57918d9812b0751713e905c53c5d46 *src/format.h
 9f9207714c9f77a05ed271202aaafe1a *src/init.c
 7d9abe6ee46aa33f6d397e0c4dd640ad *src/minitab.c
-d6a1c9d84b8bd075568ca349cca3ada3 *src/pfm-read.c
+8e5669d01233d5a502cd1d1102603f52 *src/pfm-read.c
 0b155bb697ace4fd196dd0282a787752 *src/pfm.h
 913d1eacdc04e0139ed1309715e61306 *src/pspp-format-def.h
 2e40f2d9c2c915713dc8248f8d06a177 *src/sfm-read.c
@@ -78,7 +78,7 @@ d6a1c9d84b8bd075568ca349cca3ada3 *src/pfm-read.c
 415d9a842df63d8f5aa2f30dee9a3897 *src/sfmP.h
 7170823cb63ff57d1656d137fcbd9a88 *src/shapefil.h
 344193e3a519585840199f2fd760f6f9 *src/spss.c
-13a7dcb76f8265dc85e65aba528db775 *src/stataread.c
+2d66316dd4b295bb234f89a2a2abcc31 *src/stataread.c
 24ca01dea57c87bcde95d4a2ccc113ef *src/swap_bytes.h
 755f0cbaa53ae02237c1748aba1b372e *src/var.h
 67b90739aaf9a0327571426c1c634bf4 *tests/Alfalfa.xpt
