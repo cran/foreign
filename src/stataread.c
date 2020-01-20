@@ -95,7 +95,7 @@ static int InIntegerBinary(FILE * fp, int naok, int swapends)
 	error(_("a binary read error occurred"));
     if (swapends)
 	reverse_int(i);
-    return ((i == STATA_INT_NA) & !naok ? NA_INTEGER : i);
+    return (((i == STATA_INT_NA) & !naok) ? NA_INTEGER : i);
 }
 /* read a 1-byte signed integer */
 static int InByteBinary(FILE * fp, int naok)

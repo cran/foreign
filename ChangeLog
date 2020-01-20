@@ -1,6 +1,12 @@
 2019-12-25 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-74
+	* src/dbfopen.c: Disable long string fields, following shapelib
+	(patch thanks to Tomas Kalibera).
+
+2019-12-25 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-74
 	* src/stataread.c: pacify some clang 10 warnings
 	* src/pfm-read.c: strings may not be nul-terminated and gcc 10 warns.
 

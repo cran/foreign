@@ -443,8 +443,18 @@ DBFOpen( const char * pszFilename, const char * pszAccess )
 	}
 	else
 	{
+	    psDBF->panFieldSize[iField] = pabyFInfo[16];
+	    psDBF->panFieldDecimals[iField] = 0;
+/*
+** The following seemed to be used sometimes to handle files with long
+** string fields, but in other cases (such as bug 1202) the decimals field
+** just seems to indicate some sort of preferred formatting, not very
+** wide fields.  So I have disabled this code.  FrankW.
 	    psDBF->panFieldSize[iField] = pabyFInfo[16] + pabyFInfo[17]*256;
 	    psDBF->panFieldDecimals[iField] = 0;
+*/
+
+/* The above change has been back-ported from shapelib per PR#15248 */
 	}
 
 	psDBF->pachFieldType[iField] = (char) pabyFInfo[11];
