@@ -721,6 +721,7 @@ writeStataValueLabel(const char *labelName, const SEXP theselabels,
 
 }
 
+// workhorse of R's write.dta() :
 void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 {
     int i, j, k = 0, l, nvar, nobs, charlen;

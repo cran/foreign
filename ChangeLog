@@ -1,6 +1,21 @@
+2020-03-03 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-76
+
+	* src/sfm-read.c: avoid UBSAN warning.
+
+2020-01-27 Brian Ripley
+
+	* man/read.dta.Rd: memisc now supports Stata 13 and readstata13
+	now reads earlier versions.  'data(swiss)' is no longer needed.
+
+2020-01-27  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* man/write.dta.Rd: typo PR#16546
+
 2019-12-25 Brian Ripley
 
-	* DESCRIPTION: Version is 0.8-74
+	* DESCRIPTION: Version is 0.8-75
 	* src/dbfopen.c: Disable long string fields, following shapelib
 	(patch thanks to Tomas Kalibera).
 
@@ -66,30 +81,30 @@
 
 2017-06-20  Uwe Ligges <Uwe.Ligges@R-project.org>
 
-	* R/spss.R: 
+	* R/spss.R:
 	 - fix for R >= 3.4.0 not allowing duplicated factor labels,
 	   hence new arguments
 	   'duplicated.value.labels' and 'duplicated.value.labels.infix'
-	   that control whether to make factor labels unique or to condence 
+	   that control whether to make factor labels unique or to condence
 	   all levels with identical factor labels into one level
 	 - new argument 'add.undeclared.levels': Many files observed in the wild
-	   have variables with one or more value labels and further 
-	   non-missing values that have no value label. 
+	   have variables with one or more value labels and further
+	   non-missing values that have no value label.
 	   We cann now sepcify whether the other levels should be appended or sorted
 	   into the declared labels, or not to convert to factor at all.
-	   This fixes several issues, e.g. that values without labels were 
+	   This fixes several issues, e.g. that values without labels were
 	   regarded as NA values before.
 
 2017-06-19  Uwe Ligges <Uwe.Ligges@R-project.org>
-	
-	* R/spss.R: 
+
+	* R/spss.R:
 	 - allow to pass a "..." argument to as.data.frame,
-	   add argument "sub" for substituting invalid chars rather than returning NAs and 
+	   add argument "sub" for substituting invalid chars rather than returning NAs and
 	   allowing for back compatibility
 	 - now also auto-reencodes if R is ruinning in a latin-1 locale and sav file's encoding is not.
 	* src/sfm-read.c: Update for format type 7 subtypes:
 	 - more comments and restructured
-	 - information from 
+	 - information from
 	   https://www.gnu.org/software/pspp/pspp-dev/html_node/System-File-Format.html#System-File-Format
 	 - no longer warns for subtypes 12, 17, 18, 19, 20, 24 as these can be safely ignored
 	 - more informative warning messages for subtypes 14, 21, 22 (long strings)
@@ -101,12 +116,12 @@
 
 2017-06-09  Uwe Ligges <Uwe.Ligges@R-project.org>
 
-	* src/sfm-read.c: Do not evaluate the write field for the format 
-	  type any more as this produces errors and given 
+	* src/sfm-read.c: Do not evaluate the write field for the format
+	  type any more as this produces errors and given
 	  https://www.gnu.org/software/pspp/pspp-dev/html_node/Variable-Record.html#Variable-Record
 	  tells us on June 9, 2017:
-	  "A few system files have been observed in the wild with invalid write fields, 
-	  in particular with value 0. Readers should probably treat invalid print or 
+	  "A few system files have been observed in the wild with invalid write fields,
+	  in particular with value 0. Readers should probably treat invalid print or
 	  write fields as some default format. "
 
 2017-05-04  Uwe Ligges <Uwe.Ligges@R-project.org>
@@ -114,11 +129,11 @@
 	* several bugfixes for writeForeignSPSS:
 	  add/correct declaration of factors and ordered factors (nominal, ordered);
 	  add/correct declaration of numeric (scale) variables;
-	  calculate length of character variables correctly, even if 
-	  all entries are NA and there is no longer a 255 char limit 
-	  (since SPSS 13); 
+	  calculate length of character variables correctly, even if
+	  all entries are NA and there is no longer a 255 char limit
+	  (since SPSS 13);
 	  data files are typically encoded in the current locale and not always ASCII;
-	  variable name list must not exceed 251 chars for each line of code 
+	  variable name list must not exceed 251 chars for each line of code
 	  and had to be wrapped
 
 2017-04-29  Uwe Ligges <Uwe.Ligges@R-project.org>
@@ -126,10 +141,10 @@
 	* add maxchars = 32L argument to writeForeignSPSS
       in order to allow for longer variable names for SPSS versions > 12
 	* bugfix in writeForeignSPSS for declaration of character variables by prefixed stars
-	
+
 2017-04-27  Uwe Ligges <Uwe.Ligges@R-project.org>
 
-	* writeForeignCode.R: SET DECIMAL=DOT. in SPSS required if 
+	* writeForeignCode.R: SET DECIMAL=DOT. in SPSS required if
 	  it runs in a locale with DECIMAL=comma
 
 2017-04-22  Uwe Ligges <Uwe.Ligges@R-project.org>
@@ -214,7 +229,7 @@
 
 	* src/SASexport.c: 'exponent' needs to be signed for Raspbian
 	(PR#15720).
-	
+
 2014-01-26 Brian Ripley
 
 	* tests/spss.{R,Rout.save}: avoid partial match in all.equal().
@@ -243,7 +258,7 @@
 
 	* tests/sas.R: comment that URL was unresponsive.
 
-	* src/{file.handle.c,minitab.c,pfm-read.c,sfm-read.c,spss.c,stataread.c}: 
+	* src/{file.handle.c,minitab.c,pfm-read.c,sfm-read.c,spss.c,stataread.c}:
 	add casts or correct types.
 
 2014-01-21 Brian Ripley
@@ -256,7 +271,7 @@
 2013-12-05 Brian Ripley
 
 	* R/writeForeignCode.R: correction to write.foreign(package =
-	"SPSS") when writing data frames with character columns. (PR#15483)  
+	"SPSS") when writing data frames with character columns. (PR#15483)
 	Also layout/legibility.
 
 	* tests/writeForeignCode.{R,Rout.save}, tests/keep: regression
@@ -279,12 +294,12 @@
 2013-10-07 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-56
-	
+
 	* man/{read,write}.dta: Freeze Stata support.
-	
+
 	* man/read.{dbf,spss}.Rd: add comments on status to fend off
 	non-bug reports.
-	
+
 	* inst/COPYRIGHTS, man/read.epiinfo.Rd, src/stataread.c: update.
 
 2013-09-02 Brian Ripley
@@ -305,19 +320,19 @@
 
 2013-04-28, 2013-05-06, 2013-09-02  Brian Ripley
 
-	* src/stataread.c, man/{read,write}.dta.Rd: 
+	* src/stataread.c, man/{read,write}.dta.Rd:
 	allow write.dta() to write value labels, and read.dta() to read
 	all the labels (contributed by Brian Quistorff).
-	
-	* tests/stata.R, tests/stata.Rout.save, 
-	tests/MLLabelsWithNotesChar.dta, tests/OneVarTwoValLabels.dta: 
+
+	* tests/stata.R, tests/stata.Rout.save,
+	tests/MLLabelsWithNotesChar.dta, tests/OneVarTwoValLabels.dta:
 	regression tests for above.
-	
+
 2013-03-20  Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-53.
 
-	* src/avl.c: Free_fn had wrong number of arguments, 
+	* src/avl.c: Free_fn had wrong number of arguments,
 	reported by OS X's toolchain.
 
 2013-03-03,10  Brian Ripley
@@ -358,7 +373,7 @@
 2012-09-01  Brian Ripley
 
 	* po: add Polish translations.
-	
+
 2012-08-30  Brian Ripley
 
 	* src/init.c: force use of registered symbols in R >= 2.16.0
@@ -390,7 +405,7 @@
 
 	* src/var.h.in: this assumed values for sizes, ignoring those
 	computed by configure.  And we know sizeof(double) is always 8.
-	
+
 	* configure, configure.ac, src/Makevars.in, src/swap_bytes.h.in,
 	cleanup:  The header had always #undef-ed HAVE_GLIBC_SWAP, so
 	remove never-used code branches.  This means that 'long long' is
@@ -515,7 +530,7 @@
 
 2009-06-13 Brian Ripley
 
-	* src/spss.c: uninitialized codepage in an example from 
+	* src/spss.c: uninitialized codepage in an example from
 	multcomp's chfls1.Rnw
 
 2009-06-13 Brian Ripley
@@ -543,7 +558,7 @@
 2009-05-11 Brian Ripley
 
 	* man/read.dbf.Rd: update wotsit.org URL (thanks to Peter Konings).
-	
+
 2009-05-02 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-35
@@ -585,7 +600,7 @@
 
 	* DESCRIPTION: Version is 0.8-31.
 	* tests/{minitab,octave,spss}.Rout.save: update output
-	
+
 2009-01-04 Brian Ripley
 
 	* R/writeforeignSAS: fix typo (PR#13425)
@@ -600,9 +615,9 @@
 
 	* R/*R: make more use of integer constants.
 	* tests/stata.Rout.save: update for str() changes in R 2.8.0.
-	* R/spss.R, man/read.spss.Rd, src/sfm-read.c: assume 
+	* R/spss.R, man/read.spss.Rd, src/sfm-read.c: assume
 	codepage 65001 is UTF-8, others >= 2000 are unknown to iconv().
-	
+
 2008-08-21 Brian Ripley
 
 	* R/read.dta.R, man/write.dta.Rd: allow arrays in write.dta with

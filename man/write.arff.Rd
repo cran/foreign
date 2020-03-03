@@ -29,11 +29,13 @@ write.arff(x, file, eol = "\n", relation = deparse(substitute(x)))
 }
 \references{
   Attribute-Relation File Format
-  \url{http://www.cs.waikato.ac.nz/~ml/weka/arff.html}\cr
-  \url{http://sourceforge.net/projects/weka/files/documentation/}.
+  \url{https://waikato.github.io/weka-wiki/formats_and_processing/arff/}.
 }  
 \seealso{
-  \code{\link{read.arff}}
+  \code{\link{read.arff}};
+  functions \code{write.arff} and \code{read.arff} in package
+  \pkg{RWeka} which provide some support for logicals via conversion to
+  or from factors.
 }
 \examples{
 write.arff(iris, file = "")

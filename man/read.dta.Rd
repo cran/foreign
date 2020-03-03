@@ -87,11 +87,9 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
   Brian Quistorff.
 }
 \seealso{
-  A different approach is available in package \pkg{memisc}: see its
-  help for \code{Stata.file}, at the time of writing not for Stata 12 or
-  later.  Or \code{read_dta} in  package \pkg{haven}.
-  
-  Package \pkg{readstata13} for Stata 13 files.
+  Different approaches are available in package \pkg{memisc} (see its
+  help for \code{Stata.file}), function \code{read_dta} in package
+  \pkg{haven} and package \pkg{readstata13}.
 
   \code{\link{write.dta}},
   \code{\link{attributes}},
@@ -99,7 +97,6 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
   \code{\link{factor}}
 }
 \examples{
-data(swiss)
 write.dta(swiss,swissfile <- tempfile())
 read.dta(swissfile)
 }

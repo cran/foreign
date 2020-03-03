@@ -18,7 +18,7 @@ write.dta(dataframe, file, version = 7L,
     objects: see section \sQuote{Dates}.}
   \item{tz}{timezone for date conversion.}
   \item{convert.factors}{how to handle factors.}
-  } 
+  }
 \description{
   Writes the data frame to file in the Stata binary
   format.  Does not write array variables unless they can be
@@ -41,8 +41,8 @@ write.dta(dataframe, file, version = 7L,
   There are four options for handling factors.  The default is to use
   Stata \sQuote{value labels} for the factor levels.  With
   \code{convert.factors = "string"}, the factor levels are written as
-  strings (the name of the value label is taken from the 
-  \code{"val.labels"} attribute if it exists or the variable name 
+  strings (the name of the value label is taken from the
+  \code{"val.labels"} attribute if it exists or the variable name
   otherwise).  With \code{convert.factors = "numeric"} the numeric values
   of the levels are written, or \code{NA} if they cannot be coerced to
   numeric.  Finally, \code{convert.factors = "codes"} writes the
@@ -58,16 +58,16 @@ write.dta(dataframe, file, version = 7L,
   as the dataset label otherwise the dataset label is \code{"Written by R."}.
 
   If the \code{"expansion.table"} attribute exists expansion fields are
-  written. This attribute should contain a list where each element is 
-  string vector of length three. The first vector element contains the 
+  written.  This attribute should contain a \code{\link{list}} where each element is
+  \code{\link{character}} vector of length three.  The first vector element contains the
   name of a variable or "_dta" (meaning the dataset). The second element
   contains the characeristic name. The third contains the associated data.
 
-  If the \code{"val.labels"} attribute contains a string vector with a
-  string label for each variable then this is written as the variable
-  labels.  Otherwise the variable names are repeated as variable labels.
+  If the \code{"val.labels"} attribute contains a \code{\link{character}} vector with a
+  string label for each value then this is written as the value
+  labels.  Otherwise the variable names are used. % ../src/stataread.c, l. 881
 
-  If the \code{"var.labels"} attribute contains a string vector with a
+  If the \code{"var.labels"} attribute contains a \code{\link{character}} vector with a
   string label for each variable then this is written as the variable
   labels.  Otherwise the variable names are repeated as variable labels.
 
@@ -115,7 +115,7 @@ write.dta(dataframe, file, version = 7L,
   Stata 6.0 Users Manual, Stata 7.0 Programming manual, Stata online
   help (version 8 and later, also \url{http://www.stata.com/help.cgi?dta_114}
   and \url{http://www.stata.com/help.cgi?dta_113}) describe the file formats.
-} 
+}
 \author{
   Thomas Lumley and R-core members: support for value labels by
   Brian Quistorff.

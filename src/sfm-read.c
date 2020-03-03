@@ -689,7 +689,8 @@ read_long_var_names (struct file_handle * h, struct dictionary * dict
         , h->fn, p, val);
       }
     }
-    p = &endp[1]; /* put to next */
+    //p = &endp[1]; /* put to next */
+    if(endp) p = endp + 1;
   } while (endp);
 
   Free(data);

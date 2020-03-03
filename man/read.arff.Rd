@@ -20,11 +20,13 @@ read.arff(file)
 }
 \references{
   Attribute-Relation File Format
-  \url{http://www.cs.waikato.ac.nz/~ml/weka/arff.html}\cr
-  \url{http://sourceforge.net/projects/weka/files/documentation/}.
+  \url{https://waikato.github.io/weka-wiki/formats_and_processing/arff/}.
 }
 \seealso{
-  \code{\link{write.arff}}
+  \code{\link{write.arff}};
+  functions \code{write.arff} and \code{read.arff} in package
+  \pkg{RWeka} which provide some support for logicals via conversion to
+  or from factors.
 }
 \keyword{file}
 \keyword{connection}
