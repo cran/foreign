@@ -1,6 +1,6 @@
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-9abc37ec459f59a8ca6bcbf8be819ca1 *ChangeLog
-2c5b458f9f053caed8c41cc8c9db367d *DESCRIPTION
+a78127308f9c083d425fef65e9298e8c *ChangeLog
+a29fdaa7428729464a9a3e8df7f18143 *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 ed8178a14789e97ce12174176eed1908 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -118,10 +118,10 @@ ee5f89b52abd011690b78c282ea43096 *tests/octave.m
 05a548c3dd3001dd1ae569bb7b487d13 *tests/sample100.sav
 34582c6a90c8d9e708f4b17886079b1c *tests/sas.R
 b110719cb24b095250ac79988ef655a5 *tests/spss.R
-16bf4fda8f6e7ccf9aaa749fb9d86980 *tests/spss.Rout.save
+7c77445439cfdb69f1a6f49c57c48807 *tests/spss.Rout.save
 8f44f68889e702b80b267d274adf9cd6 *tests/spss_long.sav
 09d18fba44288fd040d464b4706ccb55 *tests/stata.R
-971fda7f61666c454d876e858a6955c8 *tests/stata.Rout.save
+8148d079c0233d40e1c2ce3a63d438bb *tests/stata.Rout.save
 a3ee1176251b594b3d33435335bbc674 *tests/stata7se.dta
 7528d02f1dc494b8518dde030e27f2cd *tests/stata8mac.dta
 21329582e511fbaf58110d5237422ec9 *tests/sun6.dta
