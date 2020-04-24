@@ -1,6 +1,16 @@
+2020-04-13 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-78
+
+	* po/R-de.po, po/de.po: updated from Detlef Steuer
+
+	* po/{R-,}foreign.pot: updated
+
 2020-03-23 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-77, depends on R (>= 4.0.0)
+
+	* tests/{spss,stata}.Rout.save: update for change to str() in R-devel.
 
 2020-03-03 Brian Ripley
 
