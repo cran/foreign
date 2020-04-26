@@ -142,9 +142,8 @@ msgstr ""
 msgid ":"
 msgstr ""
 
-#, fuzzy
 msgid "I cannot abbreviate the variable names to 'maxchars' or fewer chars"
-msgstr "Impossible d'abbréger les noms de variables à huit lettres au maximum"
+msgstr "Impossible d'abbréger les noms de variables à 'maxchars' lettres au maximum"
 
 msgid "some variable names were abbreviated"
 msgstr "quelques noms de variables ont été abbrégées"
