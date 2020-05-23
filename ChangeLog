@@ -1,3 +1,7 @@
+2020-05-13  Martin Maechler  <maechler@stat.math.ethz.ch>
+
+	* DESCRIPTION (Version, Contact, MailingList): Version is 0.8-80;  R-help (*not* R-core)
+
 2020-04-26 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-79
