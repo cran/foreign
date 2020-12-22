@@ -24,7 +24,7 @@ read.mtp(file)
   then. Later versions of Minitab appear to have added to the format.
 }
 \references{
-  \url{http://www.minitab.com/}
+  \url{https://www.minitab.com/}
 }
 \author{Douglas M. Bates}
 \examples{

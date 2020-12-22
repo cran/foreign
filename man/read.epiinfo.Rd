@@ -44,7 +44,7 @@ read.epiinfo(file, read.deleted = FALSE, guess.broken.dates = FALSE,
   A data frame.
 }
 \references{
-  \url{http://www.cdc.gov/epiinfo/},
+  \url{https://www.cdc.gov/epiinfo/},
   \url{http://www.epidata.dk}
 }
 

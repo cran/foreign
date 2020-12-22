@@ -26,7 +26,7 @@ read.dbf(file, as.is = FALSE)
   family of database languages, \sQuote{covering the dBase, Clipper,
     FoxPro, and their Windows equivalents Visual dBase, Visual Objects,
     and Visual FoxPro, plus some older products}
-  (\url{http://www.clicketyclick.dk/databases/xbase/format/}).
+  (\url{https://www.clicketyclick.dk/databases/xbase/format/}).
   Most of these follow the file structure used by Ashton-Tate's dBase
   II, III or 4 (later owned by Borland).
 

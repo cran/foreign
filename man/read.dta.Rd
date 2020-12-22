@@ -77,8 +77,8 @@ read.dta(file, convert.dates = TRUE, convert.factors = TRUE,
 \references{
   Stata Users Manual (versions 5 & 6), Programming manual (version 7),
   or online help (version 8 and later) describe the format of the files.
-  Or directly at \url{http://www.stata.com/help.cgi?dta_114} and
-  \url{http://www.stata.com/help.cgi?dta_113}, but note that these have
+  Or directly at \url{https://www.stata.com/help.cgi?dta_114} and
+  \url{https://www.stata.com/help.cgi?dta_113}, but note that these have
   been changed since first published.
 }
 

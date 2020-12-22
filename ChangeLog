@@ -1,3 +1,21 @@
+2020-12-22  Kurt Hornik  <Kurt.Hornik@wu.ac.at>
+
+	* DESCRIPTION: Version is 0.8-81.
+
+	* man/read.spss.Rd:
+	Improve URL.
+
+2020-08-03  Kurt Hornik  <Kurt.Hornik@wu.ac.at>
+
+	* man/read.dbf.Rd:
+	* man/read.dta.Rd:
+	* man/read.epiinfo.Rd:
+	* man/read.mtp.Rd:
+	* man/read.octave.Rd:
+	* man/write.dbf.Rd:
+	* man/write.dta.Rd:
+	Update URLs giving 301 moved permanently.
+
 2020-05-13  Martin Maechler  <maechler@stat.math.ethz.ch>
 
 	* DESCRIPTION (Version, Contact, MailingList): Version is 0.8-80;  R-help (*not* R-core)

@@ -35,6 +35,6 @@ read.octave(file)
 \value{
   A list with one named component for each variable in the file.
 }
-\references{\url{http://www.octave.org/}}
+\references{\url{https://www.gnu.org/software/octave/}}
 \author{Stephen Eglen \email{stephen@gnu.org} and Kurt Hornik}
 \keyword{file}

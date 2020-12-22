@@ -151,6 +151,8 @@ void dump_dictionary (struct dictionary * dict);
 #define bswap_int32(x) reverse_int(*x)
 
 /* Reverse the byte order of 64-bit floating point *X. */
+/* FIXME: it would be safer to read the floating point data as byte arrays and
+          reverse the bytes before interpreting them as "double" */
 #define bswap_flt64(x) reverse_double(*x)
 
 /* Closes a system file after we're done with it. */

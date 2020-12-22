@@ -51,7 +51,7 @@ write.dbf(dataframe, file, factor2char = TRUE, max_nchar = 254)
 \references{
   \url{http://shapelib.maptools.org/}
 
-  \url{http://www.clicketyclick.dk/databases/xbase/format/data_types.html}
+  \url{https://www.clicketyclick.dk/databases/xbase/format/data_types.html}
 }
 \note{
   Other applications have varying abilities to read the data types used

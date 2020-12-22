@@ -104,7 +104,7 @@ write.dta(dataframe, file, version = 7L,
   \code{315619200} should be added and then multiplied by \code{1000}
   before passing to \code{write.dta} and assigning format \code{\%tc}.
   Stata's comments on the first route are at
-  \url{http://www.stata.com/manuals13/ddatetime.pdf}, but at the time of
+  \url{https://www.stata.com/manuals13/ddatetime.pdf}, but at the time of
   writing were wrong: \R uses POSIX conventions and hence does not count
   leap seconds.
 }
@@ -113,8 +113,8 @@ write.dta(dataframe, file, version = 7L,
 }
 \references{
   Stata 6.0 Users Manual, Stata 7.0 Programming manual, Stata online
-  help (version 8 and later, also \url{http://www.stata.com/help.cgi?dta_114}
-  and \url{http://www.stata.com/help.cgi?dta_113}) describe the file formats.
+  help (version 8 and later, also \url{https://www.stata.com/help.cgi?dta_114}
+  and \url{https://www.stata.com/help.cgi?dta_113}) describe the file formats.
 }
 \author{
   Thomas Lumley and R-core members: support for value labels by

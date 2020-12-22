@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 1990-1992, 2004 Roger Bivand
- *  Patches (C) 2004 B. D. Ripley
+ *  Patches (C) 2004 B. D. Ripley, 2020 R Core Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -646,17 +646,17 @@ assumed to be little-endian.
 */
 static int getdb(FILE *fd, short type, double *x)
 {
-    float fx;
-    double dx;
+    unsigned char fx[sizeof(float)];
+    unsigned char dx[sizeof(double)];
 
     if (type == 1) {
-	if(fread(&fx, sizeof(float), 1, fd) != 1) return(1);
-	swapb(&fx, sizeof(float));
-	*x = (double) fx;	/* and cast it */
+	if(fread(fx, sizeof(float), 1, fd) != 1) return(1);
+	swapb(fx, sizeof(float));
+	*x = (double) (*(float *) fx);	/* and cast it */
     } else {
-	if(fread(&dx, sizeof(double), 1, fd) != 1) return(1);
-	swapb(&dx, sizeof(double));
-	*x = dx;
+	if(fread(dx, sizeof(double), 1, fd) != 1) return(1);
+	swapb(dx, sizeof(double));
+	*x = *(double *) dx;
     }
     return(0);
 }	/* getdb */

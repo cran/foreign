@@ -3,7 +3,7 @@
  *  Reverse bytes in 2, 4 and 8 byte objects
  *
  *  Copyright 2000 Saikat DebRoy
- *            2011 R Development Core Team
+ *            2011-2020 R Development Core Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -127,5 +127,27 @@ do {						\
 } while(0)
 
 #define reverse_double(x) swap_bytes_double(x, x)
+
+#define reverse_bytes_4(b) \
+do {                                            \
+    unsigned char __t;                          \
+    unsigned char *__b = (b);                   \
+    __t = __b[0]; __b[0] = __b[3]; __b[3] = __t;\
+    __t = __b[1]; __b[1] = __b[2]; __b[2] = __t;\
+} while(0)
+
+#define reverse_bytes_8(b) \
+do {                                            \
+    unsigned char __t;                          \
+    unsigned char *__b = (b);                   \
+    __t = __b[0]; __b[0] = __b[7]; __b[7] = __t;\
+    __t = __b[1]; __b[1] = __b[6]; __b[6] = __t;\
+    __t = __b[2]; __b[2] = __b[5]; __b[5] = __t;\
+    __t = __b[3]; __b[3] = __b[4]; __b[4] = __t;\
+} while(0)
+
+#define reverse_bytes_float(x) reverse_bytes_4(x)
+
+#define reverse_bytes_double(x) reverse_bytes_8(x)
 
 #endif /* SWAP_BYTES_H */

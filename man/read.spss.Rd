@@ -125,7 +125,7 @@ read.spss(file, use.value.labels = TRUE, to.data.frame = FALSE,
   the examples for \code{\link{sub}} for ways to remove trailing spaces
   in character data.
   
-  URL \url{http://msdn.microsoft.com/en-us/library/ms776446(VS.85).aspx}
+  URL \url{https://docs.microsoft.com/en-us/windows/win32/intl/code-page-identifiers}
   provides a list of translations from Windows codepage numbers to
   encoding names that \code{\link{iconv}} is likely to know about and so
   suitable values for \code{reencode}.  Automatic re-encoding is

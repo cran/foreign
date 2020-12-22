@@ -20,7 +20,7 @@
   (c) 1999, 2000, 2001, 2002 Thomas Lumley.
   2000 Saikat DebRoy
 
-  Patches by the R Core Team and Brian Quistorff, 2002, 2007-2015.
+  Patches by the R Core Team and Brian Quistorff, 2002, 2007-2020.
 
   Frozen 2013-10-07 at Stata version 10 aka 114 (11 is the same as 10,
   and 12 seems compatible despite being described separately as 115).
@@ -133,21 +133,27 @@ static int InShortIntBinary(FILE * fp, int naok,int swapends)
 
 static double InDoubleBinary(FILE * fp, int naok, int swapends)
 {
+    unsigned char b[sizeof(double)];
     double i;
-    if (fread(&i, sizeof(double), 1, fp) != 1)
+
+    if (fread(b, sizeof(double), 1, fp) != 1)
 	error(_("a binary read error occurred"));
     if (swapends)
-	reverse_double(i);
+	reverse_bytes_double(b);
+    i = *(double *) b;
     return (((i == STATA_DOUBLE_NA) & !naok) ? NA_REAL : i);
 }
 
 static double InFloatBinary(FILE * fp, int naok, int swapends)
 {
+    unsigned char b[sizeof(float)];
     float i;
-    if (fread(&i, sizeof(float), 1, fp) != 1)
+
+    if (fread(b, sizeof(float), 1, fp) != 1)
 	error(_("a binary read error occurred"));
     if (swapends)
-	reverse_float(i);
+	reverse_bytes_float(b);
+    i = *(float *) b;
     return (((i == STATA_FLOAT_NA) & !naok) ? NA_REAL :  (double) i);
 }
 
