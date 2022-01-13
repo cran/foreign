@@ -417,11 +417,11 @@ SEXP R_LoadStataData(FILE *fp)
 	    SET_STRING_ELT(tmp, 0, mkChar(datalabel));
 	    InStringBinary(fp, 33, datalabel);
 	    SET_STRING_ELT(tmp, 1, mkChar(datalabel));
-	    txt = Calloc((size_t) (charlen-66), char);
+	    txt = R_Calloc((size_t) (charlen-66), char);
 	    InStringBinary(fp, (charlen-66), txt);
 	    SET_STRING_ELT(tmp, 2, mkChar(txt));
 	    SET_VECTOR_ELT(labeltable, j, tmp);
-	    Free(txt);
+	    R_Free(txt);
 	    UNPROTECT(1);
 	    j++;
 	} else
@@ -528,21 +528,21 @@ SEXP R_LoadStataData(FILE *fp)
 	    RawByteBinary(fp, 1); RawByteBinary(fp, 1); RawByteBinary(fp, 1); /*padding*/
 	    nlabels = InIntegerBinary(fp, 1, swapends);
 	    totlen = InIntegerBinary(fp, 1, swapends);
-	    off =  Calloc((size_t) nlabels, int);
+	    off =  R_Calloc((size_t) nlabels, int);
 	    PROTECT(levels = allocVector(INTSXP, nlabels));
 	    PROTECT(labels = allocVector(STRSXP, nlabels));
 	    for(i = 0; i < nlabels; i++)
 		off[i] = InIntegerBinary(fp, 1, swapends);
 	    for(i = 0; i < nlabels; i++)
 		INTEGER(levels)[i] = InIntegerBinary(fp, 0, swapends);
-	    txt =  Calloc((size_t) totlen, char);
+	    txt =  R_Calloc((size_t) totlen, char);
 	    InStringBinary(fp, totlen, txt);
 	    for(i = 0; i < nlabels; i++)
 		SET_STRING_ELT(labels, i, mkChar(txt+off[i]));
 	    namesgets(levels, labels);
 	    SET_VECTOR_ELT(labeltable, j, levels);
-	    Free(off);
-	    Free(txt);
+	    R_Free(off);
+	    R_Free(txt);
 	    UNPROTECT(2);/* levels, labels */
 	}
 	namesgets(labeltable, tmp);

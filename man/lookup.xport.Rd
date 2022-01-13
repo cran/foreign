@@ -22,7 +22,7 @@ lookup.xport(file)
   SAS Technical Support document TS-140:
   \dQuote{The Record Layout of a Data Set in SAS Transport (XPORT) Format}
   available as
-  \url{https://support.sas.com/techsup/technote/ts140.pdf}.
+  \url{https://support.sas.com/content/dam/SAS/support/en/technical-papers/record-layout-of-a-sas-version-5-or-6-data-set-in-sas-transport-xport-format.pdf}
 } 
 \author{Saikat DebRoy}
 \seealso{

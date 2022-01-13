@@ -40,7 +40,7 @@ char *
 xstrdup(const char *s)
 {
     int len = (int) strlen(s);
-    char *c = Calloc(len + 1, char);
+    char *c = R_Calloc(len + 1, char);
     strcpy(c, s);
     return c;
 }
@@ -49,7 +49,7 @@ xstrdup(const char *s)
 struct dictionary *
 new_dictionary (int copy)
 {
-  struct dictionary *d = Calloc (1, struct dictionary);
+  struct dictionary *d = R_Calloc (1, struct dictionary);
 
   d->var = NULL;
   d->var_by_name = R_avl_create (cmp_variable, NULL);
@@ -144,8 +144,8 @@ create_variable (struct dictionary *dict, const char *name,
   {
     struct variable *new_var;
 
-    dict->var = Realloc (dict->var, dict->nvar + 1, struct variable *);
-    new_var = dict->var[dict->nvar] = Calloc (1, struct variable);
+    dict->var = R_Realloc (dict->var, dict->nvar + 1, struct variable *);
+    new_var = dict->var[dict->nvar] = R_Calloc (1, struct variable);
 
     new_var->index = dict->nvar;
     dict->nvar++;
@@ -192,7 +192,7 @@ void *avlFlatten(const avl_tree *tree){
   const avl_node *p = tree->root.link[0];
 
   n=R_avl_count(tree);
-  ans=Calloc(n, void * );
+  ans=R_Calloc(n, void * );
 
   for (;;)  /* from avl.c:avl_walk */
     {
@@ -253,7 +253,7 @@ static SEXP getSPSSvaluelabels(struct dictionary *dict)
 		SET_STRING_ELT(somevalues, j, mkChar((char *)tmp));
 	    }
 	}
-	Free(flattened_labels);
+	R_Free(flattened_labels);
 	namesgets(somevalues, somelabels);
 	SET_VECTOR_ELT(ans, i, somevalues);
 	UNPROTECT(2); /*somevalues, somelabels*/

@@ -163,7 +163,7 @@ sfm_close (struct file_handle * h)
 
   ext->opened--;
   if (!(ext->opened == 0)) error("assert failed : ext->opened == 0");
-  Free (ext->buf);
+  R_Free (ext->buf);
   if (EOF == fclose (ext->file))
     error(_("%s: Closing system file: %s"), h->fn, strerror (errno));
 }
@@ -224,12 +224,12 @@ free_value_label (struct value_label * v)
   if (!(v->ref_count >= 1)) error("assert failed : v->ref_count >= 1");
   if (--v->ref_count == 0)
     {
-      Free (v->s);
-      Free (v);
+      R_Free (v->s);
+      R_Free (v);
     }
 }
 
-/* Frees value label P.  PARAM is ignored.  Used as a callback with
+/* R_Frees value label P.  PARAM is ignored.  Used as a callback with
    R_avl_destroy(). */
 void
 free_val_lab (void *p, void *param)
@@ -244,7 +244,7 @@ free_dictionary (struct dictionary * d)
   int i;
 
   d->n_splits = 0;
-  Free (d->splits);
+  R_Free (d->splits);
   d->splits = NULL;
 
   if (d->var_by_name)
@@ -261,17 +261,17 @@ free_dictionary (struct dictionary * d)
 	}
       if (v->label)
 	{
-	  Free (v->label);
+	  R_Free (v->label);
 	  v->label = NULL;
 	}
-      Free (d->var[i]);
+      R_Free (d->var[i]);
     }
-  Free (d->var);
+  R_Free (d->var);
 
-  Free (d->label);
-  Free (d->documents);
+  R_Free (d->label);
+  R_Free (d->documents);
 
-  Free (d);
+  R_Free (d);
 }
 
 /* Reads the dictionary from file with handle H, and returns it in a
@@ -306,11 +306,11 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 #endif
 
   /* Open the physical disk file. */
-  ext = (struct sfm_fhuser_ext *) Calloc(1, struct sfm_fhuser_ext);
+  ext = (struct sfm_fhuser_ext *) R_Calloc(1, struct sfm_fhuser_ext);
   ext->file = fopen (R_ExpandFileName(h->norm_fn), "rb");
   if (ext->file == NULL)
     {
-      Free (ext);
+      R_Free (ext);
       error(_("An error occurred while opening '%s' for reading as a system file: %s"),
 	    h->fn, strerror (errno));
     }
@@ -497,7 +497,7 @@ sfm_read_dictionary (struct file_handle * h, struct sfm_read_info * inf)
 		void *x = bufread (h, NULL, data.size * data.count, 0);
 		if (x == NULL)
 		  goto lossage;
-		Free (x);
+		R_Free (x);
 	      }
 	  }
 	  break;
@@ -522,17 +522,17 @@ break_out_of_loop:
   warning ("Read system-file dictionary successfully");
   dump_dictionary (ext->dict);
 #endif
-  Free (var_by_index);
+  R_Free (var_by_index);
   return ext->dict;
 
 lossage:
   /* Come here on unsuccessful completion. */
 
-  Free (var_by_index);
+  R_Free (var_by_index);
   fclose (ext->file);
   if (ext && ext->dict)
     free_dictionary (ext->dict);
-  Free (ext);
+  R_Free (ext);
   h->class = NULL;
   h->ext = NULL;
   error(_("error reading system-file header"));
@@ -664,7 +664,7 @@ read_long_var_names (struct file_handle * h, struct dictionary * dict
     return 0;
   }
   size *= count;
-  data = Calloc (size +1, char);
+  data = R_Calloc (size +1, char);
   bufread(h, data, size, 0);
   /* parse */
   end = &dict->var[dict->nvar];
@@ -695,7 +695,7 @@ read_long_var_names (struct file_handle * h, struct dictionary * dict
     if(endp) p = endp + 1;
   } while (endp);
 
-  Free(data);
+  R_Free(data);
   return 1;
 }
 
@@ -710,7 +710,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
   int i;
 
   /* Create the dictionary. */
-  dict = ext->dict = Calloc (1, struct dictionary);
+  dict = ext->dict = R_Calloc (1, struct dictionary);
   dict->var = NULL;
   dict->var_by_name = NULL;
   dict->nvar = 0;
@@ -829,7 +829,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
       if (!isspace ((unsigned char) hdr.file_label[i])
 	  && hdr.file_label[i] != 0)
 	{
-	  dict->label = Calloc (i + 2, char);
+	  dict->label = R_Calloc (i + 2, char);
 	  memcpy (dict->label, hdr.file_label, i + 1);
 	  dict->label[i + 1] = 0;
 	  break;
@@ -895,8 +895,8 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
   int next_value = 0;		/* Index to next `value' structure. */
 
   /* Allocate variables. */
-  dict->var = Calloc (ext->case_size, struct variable *);
-  *var_by_index = Calloc (ext->case_size, struct variable *);
+  dict->var = R_Calloc (ext->case_size, struct variable *);
+  *var_by_index = R_Calloc (ext->case_size, struct variable *);
 
   /* Read in the entry for each variable and use the info to
      initialize the dictionary. */
@@ -951,7 +951,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 
       /* Construct internal variable structure, initialize critical bits. */
       vv = (*var_by_index)[i] = dict->var[dict->nvar++] =
-	  Calloc (1, struct variable);
+	  R_Calloc (1, struct variable);
       vv->index = dict->nvar - 1;
       vv->foo = -1;
       vv->label = NULL;
@@ -1120,7 +1120,7 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
   if (next_value != ext->case_size)
     lose ((_("%s: System file header indicates %d variable positions but %d were read from file"),
 	   h->fn, ext->case_size, next_value));
-  dict->var = Realloc (dict->var, dict->nvar, struct variable *);
+  dict->var = R_Realloc (dict->var, dict->nvar, struct variable *);
 
   /* Construct AVL tree of dictionary in order to speed up later
      processing and to check for duplicate varnames. */
@@ -1135,13 +1135,13 @@ read_variables (struct file_handle * h, struct variable *** var_by_index)
 lossage:
   for (i = 0; i < dict->nvar; i++)
     {
-      Free (dict->var[i]->label);
-      Free (dict->var[i]);
+      R_Free (dict->var[i]->label);
+      R_Free (dict->var[i]);
     }
-  Free (dict->var);
+  R_Free (dict->var);
   if (dict->var_by_name)
     R_avl_destroy (dict->var_by_name, NULL);
-  Free (dict);
+  R_Free (dict);
   ext->dict = NULL;
 
   return 0;
@@ -1204,10 +1204,10 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
     bswap_int32 (&n_labels);
 
   /* Allocate memory. */
-  raw_label = Calloc (n_labels, R_flt64);
-  cooked_label = Calloc (n_labels, struct value_label *);
+  raw_label = R_Calloc (n_labels, R_flt64);
+  cooked_label = R_Calloc (n_labels, struct value_label *);
   for (i = 0; i < n_labels; i++)
-      cooked_label[i] = NULL;  /* But Calloc just zeroed it */
+      cooked_label[i] = NULL;  /* But R_Calloc just zeroed it */
 
   /* Read each value/label tuple. */
   for (i = 0; i < n_labels; i++)
@@ -1223,8 +1223,8 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
       memcpy (&raw_label[i], &value, sizeof value);
 
       /* Read label. */
-      cooked_label[i] = Calloc (1, struct value_label);
-      cooked_label[i]->s = Calloc (label_len + 1, char);
+      cooked_label[i] = R_Calloc (1, struct value_label);
+      cooked_label[i]->s = R_Calloc (label_len + 1, char);
       assertive_bufread(h, cooked_label[i]->s, label_len, 0);
       cooked_label[i]->s[label_len] = 0;
 
@@ -1259,7 +1259,7 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
 	   h->fn, n_vars, ext->dict->nvar));
 
   /* Allocate storage. */
-  var = Calloc (n_vars, struct variable *);
+  var = R_Calloc (n_vars, struct variable *);
 
   /* Read the list of variables. */
   for (i = 0; i < n_vars; i++)
@@ -1343,9 +1343,9 @@ read_value_labels (struct file_handle * h, struct variable ** var_by_index)
 	}
     }
 
-  Free (cooked_label);
-  Free (raw_label);
-  Free (var);
+  R_Free (cooked_label);
+  R_Free (raw_label);
+  R_Free (var);
   return 1;
 
 lossage:
@@ -1353,11 +1353,11 @@ lossage:
     for (i = 0; i < n_labels; i++)
       if (cooked_label[i])
 	{
-	  Free (cooked_label[i]->s);
-	  Free (cooked_label[i]);
+	  R_Free (cooked_label[i]->s);
+	  R_Free (cooked_label[i]);
 	}
-  Free (raw_label);
-  Free (var);
+  R_Free (raw_label);
+  R_Free (var);
   return 0;
 }
 
@@ -1371,7 +1371,7 @@ bufread (struct file_handle * h, void *buf, size_t nbytes, size_t minalloc)
   struct sfm_fhuser_ext *ext = h->ext;
 
   if (buf == NULL)
-    buf = Calloc (max (nbytes, minalloc), char);
+    buf = R_Calloc (max (nbytes, minalloc), char);
   if ((nbytes != 0) && (1 != fread (buf, nbytes, 1, ext->file)))
     {
       if (ferror (ext->file))
@@ -1511,7 +1511,7 @@ buffer_input (struct file_handle * h)
   size_t amt;
 
   if (ext->buf == NULL)
-    ext->buf = Calloc (128, R_flt64);
+    ext->buf = R_Calloc (128, R_flt64);
   amt = fread (ext->buf, sizeof *ext->buf, 128, ext->file);
   if (ferror (ext->file))
     {
@@ -1644,7 +1644,7 @@ sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * d
      file.  (Cases in the data file have no particular relationship to
      cases in the active file.) */
   nbytes = sizeof *temp * ext->case_size;
-  temp = Calloc(ext->case_size, R_flt64);
+  temp = R_Calloc(ext->case_size, R_flt64);
 
   if (ext->compressed == 0)
     {
@@ -1682,11 +1682,11 @@ sfm_read_case (struct file_handle * h, union value * perm, struct dictionary * d
 	memcpy (perm[v->fv].c, &temp[v->get.fv], v->width);
     }
 
-  Free (temp);
+  R_Free (temp);
   return 1;
 
 lossage:
-  Free (temp);
+  R_Free (temp);
   return 0;
 }
 

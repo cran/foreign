@@ -218,14 +218,14 @@ init_xport_info(FILE *fp)
 
     struct SAS_XPORT_header *lib_head;
 
-    lib_head = Calloc(1, struct SAS_XPORT_header);
+    lib_head = R_Calloc(1, struct SAS_XPORT_header);
 
     if(!get_lib_header(fp, lib_head)) {
-	Free(lib_head);
+	R_Free(lib_head);
 	error(_("SAS transfer file has incorrect library header"));
     }
 
-    Free(lib_head);
+    R_Free(lib_head);
 
     n = GET_RECORD(record, fp, 80);
     if(n != 80 || strncmp(MEM_HEADER, record, 75) != 0 ||
@@ -245,9 +245,9 @@ init_mem_info(FILE *fp, char *name)
     char *tmp;
     struct SAS_XPORT_member  *mem_head;
 
-    mem_head = Calloc(1, struct SAS_XPORT_member);
+    mem_head = R_Calloc(1, struct SAS_XPORT_member);
     if(!get_mem_header(fp, mem_head)) {
-	Free(mem_head);
+	R_Free(mem_head);
 	error(_("SAS transfer file has incorrect member header"));
     }
 
@@ -255,7 +255,7 @@ init_mem_info(FILE *fp, char *name)
     record[80] = '\0';
     if(n != 80 || strncmp(NAM_HEADER, record, 54) != 0 ||
        (strrchr(record+58, ' ') - record) != 79) {
-	Free(mem_head);
+	R_Free(mem_head);
 	error(_("file not in SAS transfer format"));
     }
     record[58] = '\0';
@@ -270,7 +270,7 @@ init_mem_info(FILE *fp, char *name)
 	name[n] = '\0';
     } else name[0] = '\0';
 
-    Free(mem_head);
+    R_Free(mem_head);
 
     return length;
 }
@@ -285,11 +285,11 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
     int i, n, totwidth, nlength, restOfCard;
     struct SAS_XPORT_namestr *nam_head;
 
-    nam_head = Calloc(nvars, struct SAS_XPORT_namestr);
+    nam_head = R_Calloc(nvars, struct SAS_XPORT_namestr);
 
     for(i = 0; i < nvars; i++) {
 	if(!get_nam_header(fp, nam_head+i, namestr_length)) {
-	    Free(nam_head);
+	    R_Free(nam_head);
 	    error(_("SAS transfer file has incorrect library header"));
 	}
     }
@@ -299,7 +299,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
     if(i > 0) {
 	i = 80 - i;
 	if (fseek(fp, i, SEEK_CUR) != 0) {
-	    Free(nam_head);
+	    R_Free(nam_head);
 	    error(_("file not in SAS transfer format"));
 	}
 	(*headpad) += i;
@@ -307,7 +307,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 
     n = GET_RECORD(record, fp, 80);
     if(n != 80 || strncmp(OBS_HEADER, record, 80) != 0) {
-	Free(nam_head);
+	R_Free(nam_head);
 	error(_("file not in SAS transfer format"));
     }
 
@@ -345,14 +345,14 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	SET_STRING_ELT(nform, i, mkChar(tmpname));
     }
 
-    Free(nam_head);
+    R_Free(nam_head);
 
     totwidth = 0;
     for(i = 0; i < nvars; i++)
 	totwidth += nlng[i];
 
     nlength = 0;
-    tmp = Calloc(totwidth <= 80 ? 81 : (totwidth+1), char);
+    tmp = R_Calloc(totwidth <= 80 ? 81 : (totwidth+1), char);
     restOfCard = 0;
     *tailpad = 0;
     while(!feof(fp)) {
@@ -419,7 +419,7 @@ next_xport_info(FILE *fp, int namestr_length, int nvars, int *headpad,
 	nlength++;
     }
     *length = nlength;
-    Free(tmp);
+    R_Free(tmp);
 
     return (feof(fp)?-1:namestr_length);
 }
@@ -629,7 +629,7 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 	totalWidth = 0;
 	for(j = 0; j < nvar; j++)
 	    totalWidth += dataWidth[j];
-	record = Calloc(totalWidth + 1, char);
+	record = R_Calloc(totalWidth + 1, char);
 
 	dataHeadPad = asInteger(getListElement(dataInfo, "headpad"));
 	dataTailPad = asInteger(getListElement(dataInfo, "tailpad"));
@@ -662,7 +662,7 @@ xport_read(SEXP xportFile, SEXP xportInfo)
 
 	fseek(fp, dataTailPad, SEEK_CUR);
 
-	Free(record);
+	R_Free(record);
     }
     UNPROTECT(1);
     fclose(fp);
