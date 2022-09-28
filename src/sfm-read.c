@@ -68,7 +68,7 @@
 /*#define DEBUGGING 1*/
 
 static double
-second_lowest_double_val()
+second_lowest_double_val(void)
 {
   /* PORTME: Set the value for second_lowest_value, which is the
      "second lowest" possible value for a double.  This is the value

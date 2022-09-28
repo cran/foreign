@@ -1,6 +1,6 @@
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-fa57dd7ab190ebad40ed72af2c0eeaa2 *ChangeLog
-a8bdc913d339ed9316592548634b5937 *DESCRIPTION
+ce6bb5c1cb0b32de5efda7e87c2fcd84 *ChangeLog
+f2e01ad224efabd8e0919670da64f6cd *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 ed8178a14789e97ce12174176eed1908 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -40,8 +40,8 @@ e0cf52e5a67a11a725e01fc108617f15 *man/read.arff.Rd
 1a8489d7784739b76a58d48013c8c11b *man/read.dta.Rd
 0f6a02801c623c4c1c353dcc0a2da9cb *man/read.epiinfo.Rd
 aa309892794343bac77affd49e70cfbc *man/read.mtp.Rd
-ebfcb29446b22e1e8d46985edaf47320 *man/read.octave.Rd
-cdec2422ac89b66e9030a3ad6b8ec8b4 *man/read.spss.Rd
+f6bca533e85dd1ab0faf78be601ee5d1 *man/read.octave.Rd
+eddd0e3b31285ac7ecff0fc46b08325f *man/read.spss.Rd
 68b139470d8429706056879be85dbe90 *man/read.ssd.Rd
 146b4ae1fc1dee5b33cd2f1958b7b72c *man/read.systat.Rd
 541c6e3a1980cf062392550de4a07cd6 *man/read.xport.Rd
@@ -77,7 +77,7 @@ fedf234d49ac923d772d6ea45696a8a1 *src/minitab.c
 d778c09d0da3f837e9ffc512c7da5e99 *src/pfm-read.c
 0b155bb697ace4fd196dd0282a787752 *src/pfm.h
 913d1eacdc04e0139ed1309715e61306 *src/pspp-format-def.h
-c29da632fa229663747931bdeb2f8812 *src/sfm-read.c
+d5307b642a3985940e10061c03572d2f *src/sfm-read.c
 57d2ead77446dcc448a46d6dda1a002a *src/sfm.h
 415d9a842df63d8f5aa2f30dee9a3897 *src/sfmP.h
 7170823cb63ff57d1656d137fcbd9a88 *src/shapefil.h

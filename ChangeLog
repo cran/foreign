@@ -1,3 +1,9 @@
+2022-09-23 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-83
+	* src/sfm-read.c: use (void) for clang 15's sake
+	* man/read.{octave,spss}.Rd: update URLs.
+
 2022-01-12 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-82.
