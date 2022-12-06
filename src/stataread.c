@@ -553,7 +553,7 @@ SEXP R_LoadStataData(FILE *fp)
 
     PROTECT(row_names = allocVector(STRSXP, nobs));
     for (i = 0; i < nobs; i++) {
-	sprintf(datalabel, "%d", i+1);
+	snprintf(datalabel, 81, "%d", i+1);
 	SET_STRING_ELT(row_names,i,mkChar(datalabel));
     }
     setAttrib(df, R_RowNamesSymbol, row_names);
@@ -868,7 +868,7 @@ void R_SaveStataData(FILE *fp, SEXP df, int version, SEXP leveltable)
 	if (TYPEOF(VECTOR_ELT(df,i)) == STRSXP){
 	    /* string types are at most 244 characters
 	       so we can't get a buffer overflow in sprintf **/
-	    sprintf(strformat, "%%%ds", INTEGER(types)[i]);
+	    snprintf(strformat, 50, "%%%ds", INTEGER(types)[i]);
 	    OutStringBinary(strformat, fp, fmtlist_len);
 	} else {
 	    OutStringBinary(format9g, fp, fmtlist_len);

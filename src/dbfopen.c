@@ -545,8 +545,9 @@ DBFCreate( const char * pszFilename )
     if( pszBasename[i] == '.' )
 	pszBasename[i] = '\0';
 
-    pszFullname = (char *) malloc(strlen(pszBasename) + 5);
-    sprintf( pszFullname, "%s.dbf", pszBasename );
+    int sz = strlen(pszBasename) + 5;
+    pszFullname = (char *) malloc(sz);
+    snprintf( pszFullname, sz, "%s.dbf", pszBasename );
     free( pszBasename );
 
 /* -------------------------------------------------------------------- */
@@ -1101,8 +1102,8 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
 	    if( sizeof(szSField)-2 < nWidth )
 		nWidth = sizeof(szSField)-2;
 
-	    sprintf( szFormat, "%%%dd", nWidth );
-	    sprintf(szSField, szFormat, (int) *((double *) pValue) );
+	    snprintf( szFormat, 20, "%%%dd", nWidth );
+	    snprintf(szSField, 400, szFormat, (int) *((double *) pValue) );
 	    if( (int)strlen(szSField) > psDBF->panFieldSize[iField] )
 	    {
 		szSField[psDBF->panFieldSize[iField]] = '\0';
@@ -1118,9 +1119,9 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
 	    if( sizeof(szSField)-2 < nWidth )
 		nWidth = sizeof(szSField)-2;
 
-	    sprintf( szFormat, "%%%d.%df",
+	    snprintf( szFormat, 20, "%%%d.%df",
 		     nWidth, psDBF->panFieldDecimals[iField] );
-	    sprintf(szSField, szFormat, *((double *) pValue) );
+	    snprintf(szSField, 400, szFormat, *((double *) pValue) );
 	    if( (int) strlen(szSField) > psDBF->panFieldSize[iField] )
 	    {
 		szSField[psDBF->panFieldSize[iField]] = '\0';
