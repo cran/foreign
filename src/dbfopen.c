@@ -545,7 +545,7 @@ DBFCreate( const char * pszFilename )
     if( pszBasename[i] == '.' )
 	pszBasename[i] = '\0';
 
-    int sz = strlen(pszBasename) + 5;
+    size_t sz = strlen(pszBasename) + 5;
     pszFullname = (char *) malloc(sz);
     snprintf( pszFullname, sz, "%s.dbf", pszBasename );
     free( pszBasename );

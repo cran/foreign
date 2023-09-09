@@ -1,3 +1,8 @@
+2023-09-069 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-85
+	* src/dbfopen.c: avoid (correct) compiler warning.
+
 2022-12-06 Brian Ripley
 
 	* DESCRIPTION: Version is 0.8-84
