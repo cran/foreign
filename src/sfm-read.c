@@ -551,7 +551,7 @@ read_machine_int32_info (struct file_handle * h, int size, int count, int *encod
   int i;
 
   if (size != sizeof (R_int32) || count != 8)
-    lose ((_("%s: Bad size (%d) or count (%d) field on record type 7, subtype 3.	Expected size %d, count 8"),
+    lose ((_("%s: Bad size (%d or count (%u) field on record type 7, subtype 3.	Expected size %ld, count 8"),
 	h->fn, size, count, sizeof (R_int32)));
 
   assertive_bufread(h, data, sizeof data, 0);
@@ -618,7 +618,7 @@ read_machine_flt64_info (struct file_handle * h, int size, int count)
   int i;
 
   if (size != sizeof (R_flt64) || count != 3)
-    lose ((_("%s: Bad size (%d) or count (%d) field on record type 7, subtype 4.	Expected size %d, count 8"),
+    lose ((_("%s: Bad size (%d) or count (%u) field on record type 7, subtype 4.	Expected size %lu, count 8"),
 	   h->fn, size, count, sizeof (R_flt64)));
 
   assertive_bufread(h, data, sizeof data, 0);
@@ -658,7 +658,7 @@ read_long_var_names (struct file_handle * h, struct dictionary * dict
   char * endp;
   char * val;
   if ((1 != size)||(0 == count)) {
-    warning("%s: strange record info seen, size=%u, count=%u"
+    warning("%s: strange record info seen, size=%lu, count=%u"
       ", ignoring long variable names"
       , h->fn, size, count);
     return 0;
@@ -799,7 +799,7 @@ read_header (struct file_handle * h, struct sfm_read_info * inf)
   ext->case_size = hdr.case_size;
   if (hdr.case_size <= 0 || ext->case_size > (INT_MAX
 					      / (int) sizeof (union value) / 2))
-    lose ((_("%s: Number of elements per case (%d) is not between 1 and %d"),
+    lose ((_("%s: Number of elements per case (%d) is not between 1 and %ld"),
 	   h->fn, hdr.case_size, INT_MAX / sizeof (union value) / 2));
 
   ext->compressed = hdr.compressed;

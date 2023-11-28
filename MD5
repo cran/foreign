@@ -1,6 +1,6 @@
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
 ffa550ae005806ee471a93dcefe53527 *ChangeLog
-2316ebc88280148ade7175fb53dfabf0 *DESCRIPTION
+2edcc23e1a815c7786b252edda2895f9 *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 ed8178a14789e97ce12174176eed1908 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -59,7 +59,7 @@ d0de302738456048918ea237deb5283a *po/de.po
 08b6fb3a909ac65b7ede8ea3bd8ee47a *po/fr.po
 f7296d8e59240d87472b0fef5c1f1e02 *po/it.po
 336068b0e5aecec960c2bc388a34d868 *po/pl.po
-016329b964f1edd06f3f54acd2c7be51 *src/R_systat.c
+7a21223d74ceeac0097cf45e858c1a70 *src/R_systat.c
 6c232588647bb46b4556412a4146272a *src/Rdbfread.c
 3f68f084d2debe253f03024d851bc4ed *src/Rdbfwrite.c
 a0aa8a84315d3bbe0811178b811a7c77 *src/SASxport.c
@@ -74,10 +74,10 @@ fe649aacda9a1c2b4e962805b86d0c6d *src/file-handle.c
 ba57918d9812b0751713e905c53c5d46 *src/format.h
 9f9207714c9f77a05ed271202aaafe1a *src/init.c
 fedf234d49ac923d772d6ea45696a8a1 *src/minitab.c
-d778c09d0da3f837e9ffc512c7da5e99 *src/pfm-read.c
+433c545965a81352272b4b753e7b234e *src/pfm-read.c
 0b155bb697ace4fd196dd0282a787752 *src/pfm.h
 913d1eacdc04e0139ed1309715e61306 *src/pspp-format-def.h
-d5307b642a3985940e10061c03572d2f *src/sfm-read.c
+14c9218411bdbdeae9e3d5a68068ef64 *src/sfm-read.c
 57d2ead77446dcc448a46d6dda1a002a *src/sfm.h
 415d9a842df63d8f5aa2f30dee9a3897 *src/sfmP.h
 7170823cb63ff57d1656d137fcbd9a88 *src/shapefil.h

@@ -549,7 +549,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
     if (!date)
       return 0;
     if (strlen (date) != 8)
-      lose ((_("Bad date string length %d"), strlen (date)));
+      lose ((_("Bad date string length %lu"), strlen (date)));
     if (date[0] == ' ') /* the first field of date can be ' ' in some
 			   windows versions of SPSS */
 	date[0] = '0';
@@ -576,7 +576,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
     if (!time)
       return 0;
     if (strlen (time) != 6)
-      lose ((_("Bad time string length %d"), strlen (time)));
+      lose ((_("Bad time string length %lu"), strlen (time)));
     if (time[0] == ' ') /* the first field of date can be ' ' in some
 			   windows versions of SPSS */
 	time[0] = '0';
@@ -751,7 +751,7 @@ read_variables (struct file_handle *h)
 	 Weirdly enough, there is no # character in the SPSS portable
 	 character set, so we can't check for it. */
       if (strlen ((char *) name) > 8)
-	lose ((_("position %d: Variable name has %u characters"),
+	lose ((_("position %d: Variable name has %lu characters"),
 	       i, strlen ((char *) name)));
       if ((name[0] < 74 /* A */ || name[0] > 125 /* Z */)
 	  && name[0] != 152 /* @ */)
