@@ -9,11 +9,13 @@
   data.frames.
 }
 \usage{
-read.xport(file)
+read.xport(file, ...)
 }
 \arguments{
  \item{file}{character variable with the name of the file to read.  The
    file must be in SAS XPORT format.}
+ \item{...}{passed to \code{\link{as.data.frame}} when creating the data
+   frames.} 
 }
 \value{
   If there is a more than one dataset in the XPORT format library, a named
@@ -32,15 +34,15 @@ read.xport(file)
   SAS Technical Support document TS-140:
   ``The Record Layout of a Data Set in SAS Transport (XPORT) Format''
   available at
-  \url{http://ftp.sas.com/techsup/download/technote/ts140.html}.
+  \url{https://support.sas.com/content/dam/SAS/support/en/technical-papers/record-layout-of-a-sas-version-5-or-6-data-set-in-sas-transport-xport-format.pdf}
 }
 \author{Saikat DebRoy \email{saikat@stat.wisc.edu}}
 \seealso{
   \code{\link{lookup.xport}}
 }
 \examples{
-\dontrun{
-read.xport("transport")
+\dontrun{## no XPORT file is installed
+read.xport("test.xpt")
 }
 }
 \keyword{file}

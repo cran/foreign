@@ -22,15 +22,15 @@ lookup.xport(file)
   SAS Technical Support document TS-140:
   \dQuote{The Record Layout of a Data Set in SAS Transport (XPORT) Format}
   available as
-  \url{http://ftp.sas.com/techsup/download/technote/ts140.html}.
+  \url{https://support.sas.com/content/dam/SAS/support/en/technical-papers/record-layout-of-a-sas-version-5-or-6-data-set-in-sas-transport-xport-format.pdf}
 } 
 \author{Saikat DebRoy}
 \seealso{
   \code{\link{read.xport}}
 }
 \examples{
-\dontrun{
-lookup.xport("transport")
+\dontrun{## no XPORT file is installed.
+lookup.xport("test.xpt")
 }
 }
 \keyword{file}

@@ -17,6 +17,7 @@
  *  http://www.r-project.org/Licenses/
  */
 
+#include <stddef.h>
 #include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
@@ -63,8 +64,10 @@ static const R_ExternalMethodDef ExtEntries[] = {
 };
 
 
+#include <Rversion.h>
 void R_init_foreign(DllInfo *dll)
 {
     R_registerRoutines(dll, CEntries, CallEntries, NULL, ExtEntries);
     R_useDynamicSymbols(dll, FALSE);
+    R_forceSymbols(dll, TRUE);
 }

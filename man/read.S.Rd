@@ -47,7 +47,7 @@
 \author{
   Duncan Murdoch
 }
-\examples{
+\examples{## if you have an S-PLUS _Data file containing 'myobj'
 \dontrun{read.S(file.path("_Data", "myobj"))
 data.restore("dumpdata", print = TRUE)
 }}

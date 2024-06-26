@@ -39,9 +39,9 @@
 #endif
 #endif
 
-static void Free_fn(void *x)
+static void Free_fn(void *x, void *y)
 {
-    Free(x);
+    R_Free(x);
 }
 
 /* Creates an AVL tree in POOL (which can be NULL).  POOL is owned by
@@ -59,7 +59,7 @@ R_avl_create (MAYBE_POOL avl_comparison_func cmp, void *param)
     tree = pool_alloc (pool, sizeof *tree);
   else
 #endif
-    tree = Calloc (1, avl_tree);
+    tree = R_Calloc (1, avl_tree);
 
 #if PSPP
   tree->pool = pool;
@@ -129,7 +129,7 @@ R_avl_destroy (avl_tree *tree, avl_node_func free_func)
 #if PSPP
 	      if (tree->pool == NULL)
 #endif
-		Free (p);
+		R_Free (p);
 	    }
 	}
     }
@@ -138,14 +138,14 @@ R_avl_destroy (avl_tree *tree, avl_node_func free_func)
 #if PSPP
   if (tree->pool == NULL)
 #endif
-    Free (tree);
+    R_Free (tree);
 }
 
 /* avl_destroy() with FREE_FUNC hardcoded as free(). */
 void
 R_avl_free (avl_tree *tree)
 {
-  R_avl_destroy (tree, (avl_node_func) Free_fn);
+  R_avl_destroy (tree, Free_fn);
 }
 
 /* Return the number of nodes in TREE. */
@@ -156,7 +156,7 @@ R_avl_count (const avl_tree *tree)
   return tree->count;
 }
 
-/* Allocates room for a new avl_node in POOL, or using Calloc() if
+/* Allocates room for a new avl_node in POOL, or using R_Calloc() if
    POOL is NULL. */
 #if PSPP
 static inline avl_node *
@@ -165,13 +165,13 @@ new_node (struct pool *pool)
   if (pool != NULL)
     return pool_alloc (pool, sizeof (avl_node));
   else
-    return Calloc (1, avl_node);
+    return R_Calloc (1, avl_node);
 }
 #else
 static inline avl_node *
 new_node (void)
 {
-  return Calloc (1, avl_node);
+  return R_Calloc (1, avl_node);
 }
 
 #define new_node(POOL)				\

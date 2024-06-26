@@ -1,0 +1,169 @@
+# R Italian translation                                                                    
+# Copyright (C) The R Foundation
+# This file is distributed under the same license as the R package.
+# Daniele Medri <dmedri@gmail.com>, 2005-2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: R-foreign 0.8-70\n"
+"Report-Msgid-Bugs-To: bugs.r-project.org\n"
+"POT-Creation-Date: 2020-04-26 10:14\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Daniele Medri <dmedri@gmail.com>\n"
+"Language-Team: Italian https://github.com/dmedri/R-italian-lang\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.1\n"
+
+msgid "only one file"
+msgstr "solo un file"
+
+msgid "'file' must be character"
+msgstr "'file' dev'essere di tipo character"
+
+msgid "internal error - illegal S code value"
+msgstr "errore interno - valore del codice S illegale"
+
+msgid "not an S object"
+msgstr "non è un oggetto S"
+
+msgid "S mode %s (near byte offset %s) not supported"
+msgstr "Modalità S %s (byte offset vicino %s) non supportato"
+
+msgid "Argument 'file' must be a character string or connection."
+msgstr ""
+"L'argomento 'file' dev'essere una stringa di caratteri o una connessione."
+
+msgid "Invalid attribute specification."
+msgstr "Specificazione attributo non valido."
+
+msgid "Type 'relational' currently not implemented."
+msgstr "Il tipo 'relational' non è attualmente implementato."
+
+msgid "Missing data section."
+msgstr "Sezione dati mancante."
+
+msgid "Missing attribute section."
+msgstr "Sezione attributo mancante."
+
+msgid "Invalid type specification."
+msgstr "Specificazione tipo non valido."
+
+msgid "Field name: %s changed to: %s"
+msgstr "Nome campo: %s cambiato in: %s"
+
+msgid "cannot handle matrix/array columns"
+msgstr "non è possibile gestire le colonne della matrice/array"
+
+msgid "character column %d will be truncated to %d bytes"
+msgstr "la colonna di caratteri %d sarà troncata a %d byte"
+
+msgid "unknown column type in data frame"
+msgstr "tipo di colonna sconosciuto nel data frame"
+
+msgid "NA in precision"
+msgstr "NA in precisione"
+
+msgid "NA in scale"
+msgstr "NA in scala"
+
+msgid "cannot handle unknown type %s"
+msgstr "non è possibile gestire il tipo sconosciuto %s"
+
+msgid "'missing.type' only applicable to version >= 8 files"
+msgstr "'missing.type' applicabile unicamente alla versione >= 8 file"
+
+msgid "cannot read factor labels from Stata 5 files"
+msgstr "non è possibile leggere le etichette del fattore dai file Stata 5"
+
+msgid "value labels (%s) for %s are missing"
+msgstr "le etichette valore (%s) per %s sono mancanti"
+
+msgid "The object \"dataframe\" must have class data.frame"
+msgstr "L'oggetto \"dataframe\" dev'essere di classe data.frame"
+
+msgid "Version must be 6-12"
+msgstr "La versione dev'essere 6-12"
+
+msgid "Version must be 6-12: using 7"
+msgstr "La versione dev'essere 6-12: si utilizza la 7"
+
+msgid "cannot uniquely abbreviate variable names"
+msgstr "non è possibile abbreviare in maniera univoca i nomi delle variabili"
+
+msgid "abbreviating variable names"
+msgstr "abbreviazione dei nomi delle variabili"
+
+msgid "cannot handle multicolumn columns"
+msgstr "non è possibile gestire le colonne multiple"
+
+msgid "argument 'file' must be a character string or connection"
+msgstr ""
+"l'argomento 'file' dev'essere una stringa di caratteri o una connessione"
+
+msgid "file has zero or fewer variables: probably not an EpiInfo file"
+msgstr "il file ha zero o poche variabili: probabilmente non è un file Epilnfo"
+
+msgid "no records in file"
+msgstr "nessun record nel file"
+
+msgid "wrong number of records"
+msgstr "numero sbagliato di record"
+
+msgid "sectionname %s not found"
+msgstr "sectionname %s non trovato"
+
+msgid "SAS return code was %d"
+msgstr "Il codice restituito da SAS era %d"
+
+msgid "re-encoding from %s"
+msgstr "ri-codifica da %s"
+
+msgid "missingness type %s is not handled"
+msgstr "il tipo di mancanza %s non è gestito"
+
+msgid "Undeclared level(s)"
+msgstr "Livelli non dichiarati"
+
+msgid ","
+msgstr ","
+
+msgid "added in variable:"
+msgstr "aggiunto nella variabile:"
+
+msgid "Duplicated levels in factor"
+msgstr "Livelli duplicati nel fattore"
+
+msgid ":"
+msgstr ":"
+
+msgid "I cannot abbreviate the variable names to 'maxchars' or fewer chars"
+msgstr ""
+"Non è possibile abbreviare i nomi delle variabili a 'maxchars' o un numero "
+"di caratteri inferiore"
+
+msgid "some variable names were abbreviated"
+msgstr "alcuni nomi variabile erano abbreviati"
+
+msgid "Cannot uniquely abbreviate the variable names to %d or fewer characters"
+msgstr ""
+"Non è possibile abbreviare in maniera univoca i nomi delle variabili a %d "
+"caratteri o meno"
+
+msgid "Cannot uniquely abbreviate format names to conform to"
+msgstr ""
+"Non è possibile abbreviare univocamente i nomi dei formati a cui conformarsi"
+
+msgid "eight-character limit and not ending in a digit"
+msgstr "limite di otto caratteri e niente termine in una cifra"
+
+msgid "Some variable names were abbreviated or otherwise altered."
+msgstr "Alcuni nomi di variabili saranno abbreviati o alterati in altro modo."
+
+msgid "data frame contains columns of unsupported class %s"
+msgid_plural "data frame contains columns of unsupported classes %s"
+msgstr[0] "il data frame contiene colonne della classe %s non supportata"
+msgstr[1] "il data frame contiene colonne delle classi %s non supportate"

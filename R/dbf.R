@@ -25,7 +25,9 @@ read.dbf <- function(file, as.is = FALSE)
     if (!(identical(onames, inames))) {
         for (i in seq_along(onames))
             if (!(identical(onames[i], inames[i])))
-                message("Field name: ", onames[i], " changed to: ", inames[i])
+                message(gettextf("Field name: %s changed to: %s",
+                                 sQuote(onames[i]), sQuote(inames[i])),
+                        domain = NA)
     }
     data_types <- attr(df, "data_types")
     for(i in seq_along(onames))
@@ -46,14 +48,17 @@ write.dbf <- function(dataframe, file, factor2char = TRUE, max_nchar = 254)
                          "factor", "Date")
 
     if (!is.data.frame(dataframe)) dataframe <- as.data.frame(dataframe)
-    if (any(sapply(dataframe, function(x) !is.null(dim(x)))))
+    if (any(vapply(dataframe, function(x) !is.null(dim(x)), NA)))
         stop("cannot handle matrix/array columns")
-    cl <- sapply(dataframe, function(x) class(x[1L]))
+    cl <- vapply(dataframe, function(x) class(x[1L]), "")
     asis <- cl == "AsIs"
-    cl[asis & sapply(dataframe, mode) == "character"] <- "character"
+    cl[asis & vapply(dataframe, mode, '') == "character"] <- "character"
     if(length(cl0 <- setdiff(cl, allowed_classes)))
-        stop("data frame contains columns of unsupported class(es) ",
-             paste(cl0, collapse = ","))
+        stop(sprintf(ngettext(length(cl0),
+                              "data frame contains columns of unsupported class %s",
+                              "data frame contains columns of unsupported classes %s"),
+
+                     paste(dQuote(cl0), collapse = ",")), domain = NA)
     m <- ncol(dataframe)
     DataTypes <- c(logical="L", integer="N", numeric="F", character="C",
                    factor=if(factor2char) "C" else "N", Date="D")[cl]
@@ -92,13 +97,13 @@ write.dbf <- function(dataframe, file, factor2char = TRUE, max_nchar = 254)
             mf <- max(nchar(x[!is.na(x)], "b"))
             p <- max(nlen, mf)
             if(p > max_nchar)
-                warning(gettext("character column %d will be truncated to %d bytes", i, max_nchar), domain = NA)
+                warning(gettextf("character column %d will be truncated to %d bytes", i, max_nchar), domain = NA)
             precision[i] <- min(p, max_nchar)
             scale[i] <- 0L
         } else stop("unknown column type in data frame")
     }
-    if (any(is.na(precision))) stop("NA in precision") # added RSB 2005-04-17
-    if (any(is.na(scale))) stop("NA in scale") # added RSB 2005-04-17
+    if (anyNA(precision)) stop("NA in precision") # added RSB 2005-04-17
+    if (anyNA(scale)) stop("NA in scale") # added RSB 2005-04-17
     invisible( .Call(DoWritedbf, as.character(file),
                      dataframe, as.integer(precision), as.integer(scale),
                      as.character(DataTypes)))

@@ -36,7 +36,7 @@ read.dta <- function(file, convert.dates = TRUE,
 
 
     if(!missing.type) {
-        if (abs(attr(rval,"version")) >= 8L) {
+        if (abs(attr(rval, "version")) >= 8L) {
             for(v in which(types > 250L)) {
                 this.type <- types[v] - 250L
                 rval[[v]][rval[[v]] >= stata.na$min[this.type]] <- NA
@@ -60,12 +60,35 @@ read.dta <- function(file, convert.dates = TRUE,
             warning("'missing.type' only applicable to version >= 8 files")
     }
 
+    convert_dt_c <- function(x)
+        as.POSIXct((x+0.1)/1000, origin = "1960-01-01") # avoid rounding down
+
+    convert_dt_C <- function(x) {
+        ls <- .leap.seconds + seq_along(.leap.seconds) + 315619200
+        z <- (x+0.1)/1000 # avoid rounding down
+        z <- z - rowSums(outer(z, ls, ">="))
+        as.POSIXct(z, origin = "1960-01-01")
+    }
+
     if (convert.dates) {
-        ff <- attr(rval,"formats")
-        dates <- grep("%-*d", ff)
-        ## avoid as.Date in case strptime is screwed up
-        base <- structure(-3653, class="Date")
-        for(v in dates) rval[[v]] <- base+rval[[v]]
+        ff <- attr(rval, "formats")
+        ## dates <- grep("%-*d", ff)
+        ## Stata 12 introduced 'business dates'
+        ## 'Formats beginning with %t or %-t are Stata's date and time formats.'
+        ## but it seems some are earlier.
+        ## The dta_115 description suggests this is too inclusive:
+        ## 'Stata has an old *%d* format notation and some datasets
+        ##  still have them. Format *%d*... is equivalent to modern
+        ##  format *%td*... and *%-d*... is equivalent to *%-td*...'
+
+        dates <- if (attr(rval, "version") >= 8L) grep('^%(-|)(d|td)', ff)
+        else grep("%-*d", ff)
+        ## avoid as.Date in case strptime is messed up
+        base <- structure(-3653L, class = "Date") # Stata dates are integer vars
+        for(v in dates) rval[[v]] <- structure(base + rval[[v]], class = "Date")
+
+        for(v in grep("%tc", ff)) rval[[v]] <- convert_dt_c(rval[[v]])
+        for(v in grep("%tC", ff)) rval[[v]] <- convert_dt_C(rval[[v]])
     }
     if (convert.factors %in% c(TRUE, NA)) {
         if (attr(rval, "version") == 5L)
@@ -77,8 +100,9 @@ read.dta <- function(file, convert.dates = TRUE,
             for(v in factors) {
                 labels <- tt[[ll[v]]]
                 if (warn.missing.labels && is.null(labels)) {
-                    warning("value labels (", ll[v], ") for ", names(rval)[v],
-                            " are missing")
+                    warning(gettextf("value labels (%s) for %s are missing",
+                                     sQuote(ll[v]), sQuote(names(rval)[v])),
+                            domain = NA)
                     next
                 }
                 if(!is.na(convert.factors)) {
@@ -107,11 +131,14 @@ write.dta <-
              convert.factors = c("labels","string","numeric","codes"))
 {
 
-    if (version < 6L) stop("Version must be 6-11")
+    if(!is.data.frame(dataframe))
+        stop("The object \"dataframe\" must have class data.frame")
+    if (version < 6L) stop("Version must be 6-12")
     if (version == 9L) version <- 8L
     if (version == 11L) version <- 10L
-    if (version > 11L) {
-        warning("Version must be 6-11: using 7")
+    if (version == 12L) version <- 10L
+    if (version > 12L) {
+        warning("Version must be 6-12: using 7")
         version <- 7L
     }
 
@@ -129,19 +156,22 @@ write.dta <-
     attr(dataframe,"orig.names") <- oldn
 
     if (convert.dates) {
-        dates <- which(sapply(dataframe,
-                              function(x) inherits(x, "Date")))
+        dates <- which(vapply(dataframe,
+                              function(x) inherits(x, "Date"), NA))
         for(v in dates)
             dataframe[[v]] <- as.vector(julian(dataframe[[v]],
                                                as.Date("1960-1-1", tz="GMT")))
-        dates <- which(sapply(dataframe,
-                              function(x) inherits(x, "POSIXt")))
+        dates <- which(vapply(dataframe,
+                              function(x) inherits(x, "POSIXt"), NA))
         for(v in dates)
             dataframe[[v]] <- as.vector(round(julian(dataframe[[v]],
                                                      ISOdate(1960,1,1, tz=tz))))
+        ## It would be possible to write these as %tc format,
+        ## milliseconds since 01jan1960 00:00:00.000
+        ## dataframe[[v]] <- 1000*as.vector(as.POSIXct(dataframe[[v]], tz=tz) + 315619200)
     }
     convert.factors <- match.arg(convert.factors)
-    factors <- which(sapply(dataframe,is.factor))
+    factors <- which(vapply(dataframe, is.factor, NA))
     if(convert.factors == "string") {
         for(v in factors)
             dataframe[[v]] <- I(as.character(dataframe[[v]]))
@@ -156,14 +186,15 @@ write.dta <-
     shortlevels <- function(f) {
         ll <- levels(f)
         if (is.null(ll)) return(NULL)
-        abbreviate(ll, 80L)
+        ## avoid warning if non-ASCII strings are used (unwisely)
+        if (all(nchar(ll, "bytes") <= 80L)) ll else abbreviate(ll, 80L)
     }
-    leveltable <- lapply(dataframe,shortlevels)
+    leveltable <- lapply(dataframe, shortlevels)
 
-    if (any(sapply(dataframe, function(x) {
+    if (any(vapply(dataframe, function(x) {
         d <- dim(x)
         !is.null(d) && d[1L] < length(x)
-        })))
+        }, NA)))
         stop("cannot handle multicolumn columns")
     invisible(.External(do_writeStata, file, dataframe, version, leveltable))
 }

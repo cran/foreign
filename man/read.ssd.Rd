@@ -2,7 +2,7 @@
 % It is distributed under the GPL version 2 or later
 
 % Original copyright (c) 2002 VJ Carey
-% Changes copyright (c) 2002-7 R Development Core Team
+% Changes copyright (c) 2002-13 R Core Team
 
 \name{read.ssd}
 \alias{read.ssd}
@@ -18,9 +18,11 @@ read.ssd(libname, sectionnames,
 \arguments{
   \item{libname}{character string defining the SAS library (usually a
     directory reference)}
-  \item{sectionnames}{character vector giving member names. These are
+  \item{sectionnames}{character vector giving member names.  These are
     files in the \code{libname} directory. They will usually have a
-    \code{.ssd0x} or \code{.sas7bdat} extension, which should be omitted.}
+    \code{.ssd0x} or \code{.sas7bdat} extension, which should be
+    omitted.  Use of ASCII names of at most 8 characters is strongly
+    recommended.}
   \item{tmpXport}{character  string: location where temporary xport
     format archive should reside -- defaults to a randomly named file
     in the session temporary directory, which will be removed.}
@@ -47,6 +49,9 @@ read.ssd(libname, sectionnames,
   without access to SAS you will need another product to convert it to a 
   format such as \code{.csv}, for example \sQuote{Stat/Transfer} or 
   \sQuote{DBMS/Copy} or the \sQuote{SAS System Viewer} (Windows only).
+
+  SAS requires section names to be no more than 8 characters.  This is
+  worked by the use of symbolic links: these are barely supported on Windows.
 }
 \seealso{\code{\link{read.xport}}}
 \examples{
@@ -60,8 +65,8 @@ R> list.files("trialdata")
 [10] "form50.sas7bdat"   "form51.sas7bdat"   "form71.sas7bdat"  
 [13] "form72.sas7bdat"   "form8.sas7bdat"    "form9.sas7bdat"   
 [16] "form90.sas7bdat"   "form91.sas7bdat"  
-R> baseline <- read.ssd("trialdata","baseline")
-R> form90 <- read.ssd("trialdata","form90")
+R> baseline <- read.ssd("trialdata", "baseline")
+R> form90 <- read.ssd("trialdata", "form90")
 
 ## Or for a Windows example
 sashome <- "/Program Files/SAS/SAS 9.1"

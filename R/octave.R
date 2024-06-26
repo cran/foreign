@@ -1,7 +1,7 @@
 ### This file is part of the 'foreign' package for R.
 
-# Copyright (c) 2004 Stephen Eglen
-# Enhancements Copyright (c) 2004-7 R Development Core Team
+# Enhancements Copyright (c) 2004-2018 R Development Core Team
+#              Copyright (c) 2004      Stephen Eglen
 
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ function(file)
             ## After reading in ndims (3 here), we read in the size of
             ## each dimension (15 x 15 x 6) and then read in the
             ## corresponding number of elements.
-            ndims <- as.integer(gsub("# ndims: ", "", line))
+##            ndims <- as.integer(gsub("# ndims: ", "", line))
             dims <- scan(con, nlines = 1L, quiet = TRUE)
             data <- scan(con, n = prod(dims), quiet = TRUE)
             array(data, dim = dims)
@@ -113,15 +113,16 @@ function(file)
                    nrow = nr, ncol = nc, byrow = TRUE)
         }
         else {
-            ndims <- as.integer(gsub("# ndims: ", "", line))
+##            ndims <- as.integer(gsub("# ndims: ", "", line))
             dims <- scan(con, nlines = 1L, quiet = TRUE)
             data <- readLines(con, n = prod(dims))
             data <- gsub("\\(", "", data)
             data <- gsub("\\)", "", data)
             nums <- strsplit(data, ",")
-            stopifnot(all(sapply(nums, length) == 2))
-            array(complex(real = as.numeric(sapply(nums, "[", 1L)),
-                          imaginary = as.numeric(sapply(nums, "[", 2L))),
+            # note could replace with lengths if bumping R-version dependancy
+            stopifnot(lengths(nums) == 2L)
+            array(complex(real = as.numeric(vapply(nums, "[", "", 1L)),
+                          imaginary = as.numeric(vapply(nums, "[", "",2L))),
                   dim = dims)
         }
     }
@@ -166,7 +167,8 @@ function(file)
         ## warning, and try reading until the next variable.
         ## This only works for unknown atomic types, so let us hope we
         ## have code for all recursive ones ...
-        warning("cannot handle unknown type ", sQuote(type))
+        warning(gettextf("cannot handle unknown type %s", sQuote(type)),
+                domain = NA)
         skip_lines_to_next_item(con)
         NULL
     }

@@ -2,7 +2,8 @@
  *
  *  Reverse bytes in 2, 4 and 8 byte objects
  *
- *  Copyright 2000-2000 Saikat DebRoy <saikat@stat.wisc.edu>
+ *  Copyright 2000 Saikat DebRoy
+ *            2011-2020 R Development Core Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,51 +24,11 @@
 #ifndef SWAP_BYTES_H
 #define SWAP_BYTES_H
 
-#undef HAVE_GLIBC_BSWAP
-
-#ifdef HAVE_GLIBC_BSWAP  /* use gnu bswap macros */
-
-#include <byteswap.h>
-
-#define swap_bytes_16(from, to) do { (to) = bswap_16(from); } while (0)
-
-#define swap_bytes_32(from, to) do { (to) = bswap_32(from); } while (0)
-
-#if defined __GNUC__ && __GNUC__ >= 2
-
-#define swap_bytes_double(from, to)		\
-do {						\
-    union {					\
-	unsigned long long int u64;		\
-	double d;				\
-    } __from, __to;				\
-    __from.d = (from);				\
-    __to.u64 = bswap_64(__from.u64);		\
-    (to) = __to.d;				\
-} while (0)
-
-#else
-
-#define swap_bytes_double(from, to)		\
-do {						\
-    union {					\
-	unsigned int u32[2];			\
-	double d;				\
-    } __from, __to;				\
-    __from.d = (from);			\
-    swap_bytes_32(__from.u32[1], __to.u32[0]);	\
-    swap_bytes_32(__from.u32[0], __to.u32[1]);	\
-    (to) = __to.d;				\
-} while (0)
-
-#endif
-
-#else /* use reasonable portable definitions */
 
 #define swap_bytes_16(from, to)						\
 do {									\
     unsigned short __from16 = (from);					\
-    (to) = ((((__from16) >> 8) & 0xff) | (((__from16) & 0xff) << 8));	\
+    (to) = (unsigned short) ((((__from16) >> 8) & 0xff) | (((__from16) & 0xff) << 8)); \
 } while (0)
 
 #define swap_bytes_32(from, to)			\
@@ -90,7 +51,6 @@ do {						\
     swap_bytes_32(__from.u32[0], __to.u32[1]);	\
     (to) = __to.d;				\
 } while (0)
-#endif  /* HAVE_GLIBC_BSWAP */
 
 #define swap_bytes_ushort(from, to) swap_bytes_16(from, to)
 
@@ -167,5 +127,27 @@ do {						\
 } while(0)
 
 #define reverse_double(x) swap_bytes_double(x, x)
+
+#define reverse_bytes_4(b) \
+do {                                            \
+    unsigned char __t;                          \
+    unsigned char *__b = (b);                   \
+    __t = __b[0]; __b[0] = __b[3]; __b[3] = __t;\
+    __t = __b[1]; __b[1] = __b[2]; __b[2] = __t;\
+} while(0)
+
+#define reverse_bytes_8(b) \
+do {                                            \
+    unsigned char __t;                          \
+    unsigned char *__b = (b);                   \
+    __t = __b[0]; __b[0] = __b[7]; __b[7] = __t;\
+    __t = __b[1]; __b[1] = __b[6]; __b[6] = __t;\
+    __t = __b[2]; __b[2] = __b[5]; __b[5] = __t;\
+    __t = __b[3]; __b[3] = __b[4]; __b[4] = __t;\
+} while(0)
+
+#define reverse_bytes_float(x) reverse_bytes_4(x)
+
+#define reverse_bytes_double(x) reverse_bytes_8(x)
 
 #endif /* SWAP_BYTES_H */

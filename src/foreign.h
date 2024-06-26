@@ -26,6 +26,7 @@
 #ifndef FOREIGN_H
 #define FOREIGN_H
 
+#include <stddef.h>
 #include <R.h>
 #include <Rinternals.h>
 
@@ -73,5 +74,7 @@ typedef double R_flt64;
 #endif
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define min(a,b) ((a) <= (b) ? (a) : (b))
+
+Rboolean validString(SEXP x);
 
 #endif /* FOREIGN_H */

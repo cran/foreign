@@ -26,6 +26,7 @@
 #include <math.h>
 #include <float.h>
 #include <limits.h>
+#include <string.h>
 #include "foreign.h"
 #include "avl.h"
 #include "file-handle.h"
@@ -110,8 +111,8 @@ pfm_close (struct file_handle * h)
 {
   struct pfm_fhuser_ext *ext = h->ext;
 
-  Free (ext->vars);
-  Free (ext->trans);
+  R_Free (ext->vars);
+  R_Free (ext->trans);
   if (EOF == fclose (ext->file))
     error(_("%s: Closing portable file: %s"), h->fn, strerror (errno));
 }
@@ -234,11 +235,11 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
 #endif
 
   /* Open the physical disk file. */
-  ext = (struct pfm_fhuser_ext *) Calloc(1, struct pfm_fhuser_ext);
+  ext = (struct pfm_fhuser_ext *) R_Calloc(1, struct pfm_fhuser_ext);
   ext->file = fopen (R_ExpandFileName(h->norm_fn), "rb");
   if (ext->file == NULL)
     {
-      Free (ext);
+      R_Free (ext);
       error(_("an error occurred while opening \"%s\" for reading as a portable file: %s"),
 	    h->fn, strerror (errno));
       return NULL;
@@ -288,7 +289,7 @@ pfm_read_dictionary (struct file_handle *h, struct pfm_read_info *inf)
   fclose (ext->file);
   if (ext && ext->dict)
     free_dictionary (ext->dict);
-  Free (ext);
+  R_Free (ext);
   h->class = NULL;
   h->ext = NULL;
   error(_("error reading portable-file dictionary"));
@@ -420,7 +421,7 @@ read_int (struct file_handle *h)
     goto lossage;
   if (floor (f) != f || f >= INT_MAX || f <= INT_MIN)
     lose ((_("Bad integer format")));
-  return f;
+  return (int) f;
 
  lossage:
   return NA_INTEGER;
@@ -438,12 +439,12 @@ read_string (struct file_handle *h)
 
   if (h == NULL)
     {
-      Free (buf);
+      R_Free (buf);
       buf = NULL;
       return NULL;
     }
   else if (buf == NULL)
-    buf = Calloc (65536, unsigned char);
+    buf = R_Calloc (65536, unsigned char);
 
   n = read_int (h);
   if (n == NA_INTEGER)
@@ -456,7 +457,7 @@ read_string (struct file_handle *h)
 
     for (i = 0; i < n; i++)
       {
-	buf[i] = ext->cc;
+	  buf[i] = (unsigned char) ext->cc;
 	advance ();
       }
   }
@@ -503,9 +504,9 @@ read_header (struct file_handle *h)
       if (trans_temp[src[i]] == -1)
 	trans_temp[src[i]] = i;
 
-    ext->trans = Calloc (256, unsigned char);
+    ext->trans = R_Calloc (256, unsigned char);
     for (i = 0; i < 256; i++)
-      ext->trans[i] = trans_temp[i] == -1 ? 0 : trans_temp[i];
+	ext->trans[i] = trans_temp[i] == -1 ? 0 : (unsigned char) trans_temp[i];
 
     /* Translate the input buffer. */
     for (i = 0; i < 80; i++)
@@ -548,7 +549,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
     if (!date)
       return 0;
     if (strlen (date) != 8)
-      lose ((_("Bad date string length %d"), strlen (date)));
+      lose ((_("Bad date string length %lu"), (unsigned long)strlen (date)));
     if (date[0] == ' ') /* the first field of date can be ' ' in some
 			   windows versions of SPSS */
 	date[0] = '0';
@@ -575,7 +576,7 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
     if (!time)
       return 0;
     if (strlen (time) != 6)
-      lose ((_("Bad time string length %d"), strlen (time)));
+      lose ((_("Bad time string length %lu"), (unsigned long)strlen (time)));
     if (time[0] == ' ') /* the first field of date can be ' ' in some
 			   windows versions of SPSS */
 	time[0] = '0';
@@ -601,8 +602,10 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
       product = (char *) read_string (h);
       if (product == NULL)
 	return 0;
-      if (inf)
-	strncpy (inf->product, product, 61);
+      if (inf) { // placate gcc 8
+	strncpy (inf->product, product, 60);
+	inf->product[60] = '\0';
+      }
     }
   else if (inf)
     inf->product[0] = 0;
@@ -615,8 +618,10 @@ read_version_data (struct file_handle *h, struct pfm_read_info *inf)
       subproduct = (char *) read_string (h);
       if (subproduct == NULL)
 	return 0;
-      if (inf)
-	strncpy (inf->subproduct, subproduct, 61);
+      if (inf) {
+	strncpy (inf->subproduct, subproduct, 60);
+	inf->subproduct[60] = '\0';
+      }
     }
   else if (inf)
     inf->subproduct[0] = 0;
@@ -687,7 +692,7 @@ read_variables (struct file_handle *h)
   ext->nvars = read_int (h);
   if (ext->nvars <= 0 || ext->nvars == NA_INTEGER)
     lose ((_("Invalid number of variables %d"), ext->nvars));
-  ext->vars = Calloc (ext->nvars, int);
+  ext->vars = R_Calloc (ext->nvars, int);
 
   /* Purpose of this value is unknown.  It is typically 161. */
   {
@@ -746,8 +751,8 @@ read_variables (struct file_handle *h)
 	 Weirdly enough, there is no # character in the SPSS portable
 	 character set, so we can't check for it. */
       if (strlen ((char *) name) > 8)
-	lose ((_("position %d: Variable name has %u characters"),
-	       i, strlen ((char *) name)));
+	lose ((_("position %d: Variable name has %lu characters"),
+	       i, (unsigned long)strlen ((char *) name)));
       if ((name[0] < 74 /* A */ || name[0] > 125 /* Z */)
 	  && name[0] != 152 /* @ */)
 	lose ((_("position %d: Variable name begins with invalid character"),
@@ -773,7 +778,7 @@ read_variables (struct file_handle *h)
 	  else if ((c >= 64 /* 0 */ && c <= 99 /* Z */)
 		   || c == 127 /* . */ || c == 152 /* @ */
 		   || c == 136 /* $ */ || c == 146 /* _ */)
-	    name[j] = c;
+	      name[j] = (unsigned char) c;
 	  else
 	    lose ((_("position %d: character `\\%03o' is not valid in a variable name"),
 		   i, c));
@@ -875,13 +880,15 @@ parse_value (struct file_handle *h, union value *v, struct variable *vv)
       if (mv == NULL)
 	return 0;
 
-      strncpy ((char *) v->s, mv, 8);
+      // do it this way as strings might not be nul-terminated.
+      // strncpy ((char *) v->s, mv, 8);
+      /* Value labels are always padded with spaces. */
+      memset(v->s, ' ', 8);
       for (j = 0; j < 8; j++)
-	if (v->s[j])
-	  v->s[j] = spss2ascii[v->s[j]];
+	if (mv[j])
+	    v->s[j] = spss2ascii[(unsigned char)mv[j]];
 	else
-	  /* Value labels are always padded with spaces. */
-	  v->s[j] = ' ';
+	  break;
     }
   else
     {
@@ -912,7 +919,7 @@ read_value_label (struct file_handle *h)
   if (nv == NA_INTEGER)
     return 0;
 
-  v = Calloc (nv, struct variable *);
+  v = R_Calloc (nv, struct variable *);
   for (i = 0; i < nv; i++)
     {
       char *name = (char *) read_string (h);
@@ -950,7 +957,7 @@ read_value_label (struct file_handle *h)
       asciify (label);
 
       /* Create a label. */
-      vl = Calloc (1, struct value_label);
+      vl = R_Calloc (1, struct value_label);
       vl->v = val;
       vl->s = xstrdup (label);
       vl->ref_count = nv;
@@ -980,11 +987,11 @@ read_value_label (struct file_handle *h)
 	  free_value_label (old);
 	}
     }
-  Free (v);
+  R_Free (v);
   return 1;
 
  lossage:
-  Free (v);
+  R_Free (v);
   return 0;
 }
 
@@ -1023,7 +1030,7 @@ pfm_read_case (struct file_handle *h, union value *perm, struct dictionary *dict
   /* The first concern is to obtain a full case relative to the data
      file.  (Cases in the data file have no particular relationship to
      cases in the active file.) */
-  tp = temp = Calloc (ext->case_size, union value);
+  tp = temp = R_Calloc (ext->case_size, union value);
   for (tp = temp, i = 0; i < ext->nvars; i++)
     if (ext->vars[i] == 0)
       {
@@ -1058,14 +1065,14 @@ pfm_read_case (struct file_handle *h, union value *perm, struct dictionary *dict
 	memcpy (perm[v->fv].c, &temp[v->get.fv], v->width);
     }
 
-  Free (temp);
+  R_Free (temp);
   return 1;
 
  unexpected_eof:
   lose ((_("End of file midway through case")));
 
  lossage:
-  Free (temp);
+  R_Free (temp);
   return 0;
 }
 

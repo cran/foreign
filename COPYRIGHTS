@@ -8,7 +8,7 @@ src/Rdbfread.c
 src/Rdbfwrite.c
 
 Copyright 2000-2001 (c) Nicholas Lewin-Koh
-Changes for the foreign package (C) 2004-7 R Development Core Team
+Changes for the foreign package (C) 2004-7 R Core Team
 
 
 src/dbfopen.c
@@ -22,14 +22,14 @@ under the MIT or LGPL licence, and the latter is chosen here.
 man/read.dbf.Rd
 man/write.dbf.Rd
 Nicholas Lewin-Koh and Roger Bivand,
-Changes for the foreign package (C) 2004 R Development Core Team
+Changes for the foreign package (C) 2004 R Core Team
 
 
 R/R_systat.R
 man/read.systat.Rd
 
 Copyright 2004 by Roger Bivand
-Changes for the foreign package (C) 2004 R Development Core Team
+Changes for the foreign package (C) 2004 R Core Team
 
 
 src/R_systat.c
@@ -43,12 +43,14 @@ src/avl.h
 
 Copyright (C) 1998-9, 2000 Free Software Foundation, Inc.
 Written by Ben Pfaff <blp@gnu.org> (for libAVL:
-<http://www.stanford.edu/~blp/avl/index.html>)
-Modified for R foreign library by Saikat DebRoy <saikat@stat.wisc.edu>.
+then <http://www.stanford.edu/~blp/avl/index.html>, now
+<http://adtinfo.org/index.html>)
+Modified for R foreign package by Saikat DebRoy <saikat@stat.wisc.edu>.
 
 
-The following files are based on PSPP
-<http://www.stanford.edu/~blp/projects.html>
+The following files are based on an early version of PSPP
+(then <http://www.stanford.edu/~blp/projects.html>, now
+<http://benpfaff.org/projects.html>).
 
 src/file-handle.c
 src/file-handle.h
@@ -62,22 +64,22 @@ src/sfmP.h
 
 Copyright (C) 1997-9, 2000 Free Software Foundation, Inc.
 Written by Ben Pfaff <blp@gnu.org>.
-Modified for R foreign library by Saikat DebRoy <saikat@stat.wisc.edu>
+Modified for R foreign package by Saikat DebRoy <saikat@stat.wisc.edu>
 and others.
 
 
 src/minitab.c
 src/SASxport.c
 
-Copyright 1999-1999 Douglas M. Bates <bates@stat.wisc.edu>,
-                    Saikat DebRoy <saikat@stat.wisc.edu>
+Copyright 1999 Douglas M. Bates <bates@stat.wisc.edu>,
+               Saikat DebRoy <saikat@stat.wisc.edu>
 
 
 src/foreign.h
 src/spss.c
 
-Copyright 2000-2000 Saikat DebRoy <saikat@stat.wisc.edu>
-                    Thomas Lumley <tlumley@u.washington.edu>
+Copyright 2000 Saikat DebRoy <saikat@stat.wisc.edu>
+               Thomas Lumley <tlumley@u.washington.edu>
 
 
 src/stata.c
@@ -113,7 +115,7 @@ R/read.ssd.R
 man/read.ssd.Rd
 
 (c) 2002 VJ Carey
-(c) 2002-7 R Development Core Team
+(c) 2002-7 R Core Team
 
 
 man/read.systat.Rd
@@ -132,9 +134,9 @@ Patches (c) 2004 Rajarshi Guha
 R/octave.R
 man/read.octave.Rd
 (c) 2004 Stephen Eglen
-Enhancements (c) 2004-7 R Development Core Team
+Enhancements (c) 2004-7 R Core Team
 
 
 R/writeForeignSAS.R
-(c) 2004-5  R Development Core Team
+(c) 2004-5  R Core Team
 Enhancements (c) 2006 Stephen Weigand

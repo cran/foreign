@@ -20,6 +20,7 @@
 
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 #include <R.h>
 #include "avl.h"
 #include "file-handle.h"
@@ -70,16 +71,16 @@ fh_get_handle_by_filename (const char *filename)
   struct file_handle f, *fp;
   char *fn;
   char *name;
-  int len;
+  size_t len;
 
   /* Get filename. */
   len = strlen (filename);
-  fn = Calloc(len + 1, char);
+  fn = R_Calloc(len + 1, char);
   strcpy(fn, filename);
 
   /* Create handle name with invalid identifier character to prevent
      conflicts with handles created with FILE HANDLE. */
-  name = Calloc (len + 2, char);
+  name = R_Calloc (len + 2, char);
   name[0] = '*';
   strcpy (&name[1], fn);
 
@@ -87,7 +88,7 @@ fh_get_handle_by_filename (const char *filename)
   fp = R_avl_find (files, &f);
   if (!fp)
     {
-      fp = Calloc (1, struct file_handle);
+      fp = R_Calloc (1, struct file_handle);
       init_file_handle (fp);
       fp->name = name;
       fp->where.filename = fp->fn = fp->norm_fn = fn;
@@ -95,8 +96,8 @@ fh_get_handle_by_filename (const char *filename)
     }
   else
     {
-      Free (fn);
-      Free (name);
+      R_Free (fn);
+      R_Free (name);
     }
   return fp;
 }
@@ -128,7 +129,7 @@ fh_handle_name (struct file_handle *h)
 
   if (buf)
     {
-      Free (buf);
+      R_Free (buf);
       buf = NULL;
     }
   if (!h)
@@ -136,9 +137,9 @@ fh_handle_name (struct file_handle *h)
 
   if (h->name[0] == '*')
     {
-      int len = strlen (h->fn);
+      size_t len = strlen (h->fn);
 
-      buf = Calloc (len + 3, char);
+      buf = R_Calloc (len + 3, char);
       strcpy (&buf[1], h->fn);
       buf[0] = buf[len + 1] = '"';
       buf[len + 2] = 0;
@@ -164,6 +165,7 @@ fh_close_handle (struct file_handle *h)
   if (h->class)
     h->class->close (h);
   h->class = NULL;
+  if(h->ext) R_Free(h->ext);
   h->ext = NULL;
 }
 
@@ -187,7 +189,7 @@ fh_init_files (void)
   files = R_avl_create (cmp_file_handle, NULL);
 
   /* Insert inline file. */
-  inline_file = Calloc (1, struct file_handle);
+  inline_file = R_Calloc (1, struct file_handle);
   init_file_handle (inline_file);
   inline_file->name = "INLINE";
   inline_file->where.filename

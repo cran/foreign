@@ -1,0 +1,284 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: foreign 0.8-60\n"
+"Report-Msgid-Bugs-To: bugs@r-project.org\n"
+"POT-Creation-Date: 2018-04-07 21:21\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Łukasz Daniel <lukasz.daniel@gmail.com>\n"
+"Language-Team: Łukasz Daniel <lukasz.daniel@gmail.com>\n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"na-Revision-Date: 2012-05-29 07:55+0100\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
+"X-Generator: Poedit 1.5.4\n"
+
+# foreign/R/R_systat.R: 21
+# stop("only one file")
+msgid "only one file"
+msgstr "tylko jeden plik"
+
+# foreign/R/R_systat.R: 22
+# stop(gettextf("'%s' argument must be a character string", "file"))
+msgid "'file' must be character"
+msgstr "argument 'file' musi być łańcuchem tekstowym"
+
+# foreign/R/Sread.R: 125
+# stop("internal error - illegal S code value")
+msgid "internal error - illegal S code value"
+msgstr "błąd wewnętrzny - niedozwolona wartość kodu S"
+
+# foreign/R/Sread.R: 130
+# stop("not an S object")
+msgid "not an S object"
+msgstr "to nie jest obiekt S"
+
+# foreign/R/Sread.R: 208
+# stop(gettextf("S mode %s (near byte offset %s) not supported", sQuote(code), seek(dump)), domain = "R-foreign")
+msgid "S mode %s (near byte offset %s) not supported"
+msgstr "Tryb S %s (obok przesunięcia bajtu %s) nie jest wspierany"
+
+# foreign/R/arff.R: 32
+# stop(gettextf("'%s' argument must be a character string or connection", "file"))
+# foreign/R/arff.R: 108
+# stop(gettextf("'%s' argument must be a character string or connection", "file"))
+# foreign/R/read.epiinfo.R: 29
+# stop(gettextf("'%s' argument must be a character string or connection", "file"))
+msgid "Argument 'file' must be a character string or connection."
+msgstr "argument 'file' musi być łańcuchem tekstowym lub połączeniem"
+
+# foreign/R/arff.R: 51
+# stop("Invalid attribute specification.")
+msgid "Invalid attribute specification."
+msgstr "Niepoprawne określenie atrybutu."
+
+# foreign/R/arff.R: 61
+# stop("Type 'relational' currently not implemented.")
+msgid "Type 'relational' currently not implemented."
+msgstr "Typ 'relational' na chwilę obecną nie jest zaimplementowany."
+
+# foreign/R/arff.R: 76
+# stop("Missing data section.")
+msgid "Missing data section."
+msgstr "Brakuje sekcji z danymi."
+
+# foreign/R/arff.R: 78
+# stop("Missing attribute section.")
+msgid "Missing attribute section."
+msgstr "Brakuje sekcji z atrybutami."
+
+# foreign/R/arff.R: 81
+# stop("Invalid type specification.")
+msgid "Invalid type specification."
+msgstr "Błędne określenie typu."
+
+# foreign/R/dbf.R: 28
+# message(gettextf("Field name: %s changed to: %s", sQuote(onames[i]), sQuote(inames[i])), domain = "R-foreign")
+msgid "Field name: %s changed to: %s"
+msgstr "Nazwa pola: %s została zamieniona na: %s"
+
+# foreign/R/dbf.R: 50
+# stop("cannot handle matrix/array columns")
+msgid "cannot handle matrix/array columns"
+msgstr "nie można obsłużyć kolumn macierzy/tablicy"
+
+# foreign/R/dbf.R: 97
+# warning(gettext("character column %d will be truncated to %d bytes", i, max_nchar), domain = "R-foreign")
+msgid "character column %d will be truncated to %d bytes"
+msgstr "kolumna tekstowa %d zostanie przycięta do %d bajtów"
+
+# foreign/R/dbf.R: 100
+# stop("unknown column type in data frame")
+msgid "unknown column type in data frame"
+msgstr "nieznany typ kolumny w ramce danych"
+
+# foreign/R/dbf.R: 102
+# stop("NA in precision")
+msgid "NA in precision"
+msgstr "wartość NA w precyzji"
+
+# foreign/R/dbf.R: 103
+# stop("NA in scale")
+msgid "NA in scale"
+msgstr "wartość NA w skali"
+
+# foreign/R/octave.R: 169
+# warning(gettextf("cannot handle unknown type %s", sQuote(type)), domain = "R-foreign")
+msgid "cannot handle unknown type %s"
+msgstr "nie można obsłużyć nieznanego typu %s"
+
+# foreign/R/read.dta.R: 60
+# warning("'missing.type' only applicable to version >= 8 files")
+msgid "'missing.type' only applicable to version >= 8 files"
+msgstr "'missing.type' ma zastosowanie tylko dla plików w wersji>= 8"
+
+# foreign/R/read.dta.R: 72
+# warning("cannot read factor labels from Stata 5 files")
+msgid "cannot read factor labels from Stata 5 files"
+msgstr "nie można odczytać etykiet czynnika z plików Stata 5"
+
+# foreign/R/read.dta.R: 80
+# warning(gettextf("value labels (%s) for %s are missing", sQuote(ll[v]), sQuote(names(rval)[v])), domain = "R-foreign")
+msgid "value labels (%s) for %s are missing"
+msgstr "brakuje etykiet wartości (%s) dla %s"
+
+# foreign/R/read.dta.R: 110
+# stop("The object \"dataframe\" must have class data.frame")
+msgid "The object \"dataframe\" must have class data.frame"
+msgstr "Obiekt \"dataframe\" musi posiadać klasę \"data.frame\""
+
+# foreign/R/read.dta.R: 111
+# stop("Version must be 6-12")
+msgid "Version must be 6-12"
+msgstr "Wersja musi wynosić 6-12"
+
+# foreign/R/read.dta.R: 116
+# warning("Version must be 6-12: using 7")
+msgid "Version must be 6-12: using 7"
+msgstr "Wersja musi wynosić 6-12: używając 7"
+
+# foreign/R/read.dta.R: 127
+# stop("cannot uniquely abbreviate variable names")
+msgid "cannot uniquely abbreviate variable names"
+msgstr "nie można skrócić nazw zmiennych w unikalny sposób"
+
+# foreign/R/read.dta.R: 129
+# warning("abbreviating variable names")
+msgid "abbreviating variable names"
+msgstr "skracanie nazw zmiennych"
+
+# foreign/R/read.dta.R: 170
+# stop("cannot handle multicolumn columns")
+msgid "cannot handle multicolumn columns"
+msgstr "nie można obsłużyć kolumn zawierających wiele kolumn"
+
+# foreign/R/arff.R: 32
+# stop(gettextf("'%s' argument must be a character string or connection", "file"))
+# foreign/R/arff.R: 108
+# stop(gettextf("'%s' argument must be a character string or connection", "file"))
+# foreign/R/read.epiinfo.R: 29
+# stop(gettextf("'%s' argument must be a character string or connection", "file"))
+msgid "argument 'file' must be a character string or connection"
+msgstr "argument 'file' musi być łańcuchem tekstowym lub połączeniem"
+
+# foreign/R/read.epiinfo.R: 37
+# stop("file has zero or fewer variables: probably not an EpiInfo file")
+msgid "file has zero or fewer variables: probably not an EpiInfo file"
+msgstr ""
+"plik posiada zero lub mniej zmiennych: prawdopodobnie nie jest to plik "
+"EpiInfo"
+
+# foreign/R/read.epiinfo.R: 71
+# stop("no records in file")
+msgid "no records in file"
+msgstr "brak rekordów w pliku"
+
+# foreign/R/read.epiinfo.R: 73
+# warning("wrong number of records")
+msgid "wrong number of records"
+msgstr "nieprawidłowa liczba rekordów"
+
+# foreign/R/read.ssd.R: 61
+# stop(gettextf("sectionname %s not found", sn[i]), domain = "R-foreign")
+msgid "sectionname %s not found"
+msgstr "nie znaleziono nazwy sekcji %s"
+
+# foreign/R/read.ssd.R: 111
+# warning(gettextf("SAS return code was %d", sysret), domain = "R-foreign")
+msgid "SAS return code was %d"
+msgstr "kod zwrotny SAS wyniósł %d"
+
+# foreign/R/spss.R: 87
+# message(gettextf("re-encoding from %s", cp), domain = "R-foreign")
+msgid "re-encoding from %s"
+msgstr "ponowne kodowanie z %s"
+
+# foreign/R/spss.R: 153
+# warning(gettextf("missingness type %s is not handled", tp), domain = "R-foreign")
+msgid "missingness type %s is not handled"
+msgstr "typ braku danych %s nie jest obsługiwany"
+
+msgid "Undeclared level(s)"
+msgstr ""
+
+msgid ","
+msgstr ""
+
+msgid "added in variable:"
+msgstr ""
+
+msgid "Duplicated levels in factor"
+msgstr ""
+
+msgid ":"
+msgstr ""
+
+# foreign/R/writeForeignCode.R: 38
+# stop("I cannot abbreviate the variable names to eight or fewer letters")
+#, fuzzy
+msgid "I cannot abbreviate the variable names to 'maxchars' or fewer chars"
+msgstr "Nie mogę skrócić nazw zmiennych do ośmiu lub mniej liter"
+
+# foreign/R/writeForeignCode.R: 40
+# warning("some variable names were abbreviated")
+msgid "some variable names were abbreviated"
+msgstr "niektóre nazwy zmiennych zostały skrócone"
+
+# foreign/R/writeForeignSAS.R: 28
+# stop(gettextf("Cannot uniquely abbreviate the variable names to %d or fewer characters", nmax), domain = "R-foreign")
+msgid "Cannot uniquely abbreviate the variable names to %d or fewer characters"
+msgstr "Nie można jednoznacznie skrócić nazw zmiennych do %d lub mniej znaków"
+
+# foreign/R/read.dta.R: 127
+# stop("cannot uniquely abbreviate variable names")
+msgid "Cannot uniquely abbreviate format names to conform to"
+msgstr "Nie można jednoznacznie skrócić nazw formatów do"
+
+# foreign/R/writeForeignSAS.R: 40
+# stop("Cannot uniquely abbreviate format names to conform to eight-character limit and not ending in a digit")
+msgid "eight-character limit and not ending in a digit"
+msgstr "ośmiu znaków nie kończących się cyfrą"
+
+# foreign/R/writeForeignSAS.R: 59
+# message("Some variable names were abbreviated or otherwise altered.")
+msgid "Some variable names were abbreviated or otherwise altered."
+msgstr "Niektóre nazwy zmiennych zostały skrócone lub w inny sposób zmienione."
+
+# foreign/R/dbf.R: 55
+# stop(sprintf(ngettext(length(cl0),
+#                               "data frame contains columns of unsupported class %s",
+#                               "data frame contains columns of unsupported classes %s", domain = "R-foreign"),
+#                      paste(dQuote(cl0), collapse = ", ")), domain = NA)
+msgid "data frame contains columns of unsupported class %s"
+msgid_plural "data frame contains columns of unsupported classes %s"
+msgstr[0] "ramka zawiera kolumny niewspieranej klasy %s"
+msgstr[1] "ramka zawiera kolumny niewspieranych klasach %s"
+msgstr[2] "ramka zawiera kolumny niewspieranych klasach %s"
+
+# foreign/R/writeForeignCode.R: 49
+# stop("Cannot handle character variables longer than 255")
+#~ msgid "Cannot handle character variables longer than 255"
+#~ msgstr "Nie można obsłużyć zmiennych tekstowych dłuższych niż 255 znaków"
+
+#~ msgid "Argument is missing"
+#~ msgstr "Brakuje argumentu"
+
+#~ msgid "Unrecognized S mode %s is not supported"
+#~ msgstr "Nieznany tryb S %s nie jest wspierany"
+
+#~ msgid "Argument %s is missing"
+#~ msgstr "Brakuje argumentu %s"
+
+#~ msgid "SAS failed. SAS program at %s"
+#~ msgstr "SAS nie powiódł się. Program SAS w %s"
+
+#~ msgid "a log and other error products should be in the vicinity"
+#~ msgstr ""
+#~ "dziennik zdarzeń oraz inne produkty wystąpienia błędu powinny być w "
+#~ "pobliżu"
+
+#~ msgid "The log file will be %s in the current directory"
+#~ msgstr "Plik dziennika zdarzeń będzie %s w bieżącym katalogu"

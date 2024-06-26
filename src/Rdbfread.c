@@ -21,6 +21,7 @@
  *  http://www.r-project.org/Licenses/
  */
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 #include "shapefil.h"
@@ -208,7 +209,7 @@ SEXP Rdbfread(SEXP dbfnm)
     setAttrib(df, install("data_types"), DataTypes);
     PROTECT(row_names = allocVector(STRSXP, nrecs)); pc++;
     for (i = 0; i < nrecs; i++) {
-	sprintf(labelbuff, "%d", i+1);
+	snprintf(labelbuff, 81, "%d", i+1);
 	SET_STRING_ELT(row_names, i, mkChar(labelbuff));
     }
     setAttrib(df, R_RowNamesSymbol, row_names);

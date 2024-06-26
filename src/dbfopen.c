@@ -189,17 +189,22 @@
 #include "shapefil.h"
 #include <R_ext/Arith.h> /* for NA_INTEGER, NA_REAL */
 #include <R_ext/Error.h>
+#include <R_ext/Print.h>
 #include <math.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 
+// Nowadays require R (>= 4.0.0)
+# include <R_ext/Utils.h>
+/*
 #include <Rversion.h>
 #if R_VERSION >= R_Version(2,7,0)
 # include <R_ext/Utils.h>
 #else
 # define R_atof atof
 #endif
+*/
 
 #ifndef FALSE
 #  define FALSE		0
@@ -260,11 +265,11 @@ static void DBFWriteHeader(DBFHandle psDBF)
 
     /* record count preset at zero */
 
-    abyHeader[8] = psDBF->nHeaderLength % 256;
-    abyHeader[9] = psDBF->nHeaderLength / 256;
+    abyHeader[8] = (unsigned char) (psDBF->nHeaderLength % 256);
+    abyHeader[9] = (unsigned char) (psDBF->nHeaderLength / 256);
 
-    abyHeader[10] = psDBF->nRecordLength % 256;
-    abyHeader[11] = psDBF->nRecordLength / 256;
+    abyHeader[10] = (unsigned char) (psDBF->nRecordLength % 256);
+    abyHeader[11] = (unsigned char) (psDBF->nRecordLength / 256);
 
 /* -------------------------------------------------------------------- */
 /*      Write the initial 32 byte file header, and all the field        */
@@ -332,10 +337,10 @@ DBFUpdateHeader( DBFHandle psDBF )
     if(fread( abyFileHeader, 32, 1, psDBF->fp ) != 1)
 	error("binary read error");
 
-    abyFileHeader[4] = psDBF->nRecords % 256;
-    abyFileHeader[5] = (psDBF->nRecords/256) % 256;
-    abyFileHeader[6] = (psDBF->nRecords/(256*256)) % 256;
-    abyFileHeader[7] = (psDBF->nRecords/(256*256*256)) % 256;
+    abyFileHeader[4] = (unsigned char) (psDBF->nRecords % 256);
+    abyFileHeader[5] = (unsigned char) ((psDBF->nRecords/256) % 256);
+    abyFileHeader[6] = (unsigned char) ((psDBF->nRecords/(256*256)) % 256);
+    abyFileHeader[7] = (unsigned char) ((psDBF->nRecords/(256*256*256)) % 256);
 
     fseek( psDBF->fp, 0, 0 );
     if (fwrite( abyFileHeader, 32, 1, psDBF->fp ) != 1)
@@ -416,7 +421,7 @@ DBFOpen( const char * pszFilename, const char * pszAccess )
     psDBF->pszHeader = (char *) pabyBuf;
 
     fseek( psDBF->fp, 32, 0 );
-    if( fread( pabyBuf, nHeadLen-32, 1, psDBF->fp ) != 1 )
+    if( nHeadLen <= 32 || fread( pabyBuf, nHeadLen-32, 1, psDBF->fp ) != 1 )
     {
 	fclose( psDBF->fp );
 	free( pabyBuf );
@@ -442,8 +447,18 @@ DBFOpen( const char * pszFilename, const char * pszAccess )
 	}
 	else
 	{
+	    psDBF->panFieldSize[iField] = pabyFInfo[16];
+	    psDBF->panFieldDecimals[iField] = 0;
+/*
+** The following seemed to be used sometimes to handle files with long
+** string fields, but in other cases (such as bug 1202) the decimals field
+** just seems to indicate some sort of preferred formatting, not very
+** wide fields.  So I have disabled this code.  FrankW.
 	    psDBF->panFieldSize[iField] = pabyFInfo[16] + pabyFInfo[17]*256;
 	    psDBF->panFieldDecimals[iField] = 0;
+*/
+
+/* The above change has been back-ported from shapelib per PR#15248 */
 	}
 
 	psDBF->pachFieldType[iField] = (char) pabyFInfo[11];
@@ -518,7 +533,7 @@ DBFCreate( const char * pszFilename )
     DBFHandle	psDBF;
     FILE	*fp;
     char	*pszFullname, *pszBasename;
-    int		i;
+    size_t     	i;
 
 /* -------------------------------------------------------------------- */
 /*	Compute the base (layer) name.  If there is any extension	*/
@@ -534,8 +549,9 @@ DBFCreate( const char * pszFilename )
     if( pszBasename[i] == '.' )
 	pszBasename[i] = '\0';
 
-    pszFullname = (char *) malloc(strlen(pszBasename) + 5);
-    sprintf( pszFullname, "%s.dbf", pszBasename );
+    size_t sz = strlen(pszBasename) + 5;
+    pszFullname = (char *) malloc(sz);
+    snprintf( pszFullname, sz, "%s.dbf", pszBasename );
     free( pszBasename );
 
 /* -------------------------------------------------------------------- */
@@ -659,28 +675,30 @@ DBFAddField(DBFHandle psDBF, const char * pszFieldName,
 	pszFInfo[i] = '\0';
 
     if( (int) strlen(pszFieldName) < 10 )
-	strncpy( pszFInfo, pszFieldName, strlen(pszFieldName));
-    else
+	strcpy( pszFInfo, pszFieldName);
+    else {
 	strncpy( pszFInfo, pszFieldName, 10);
+	pszFInfo[10] = '\0';
+    }
 
     pszFInfo[11] = psDBF->pachFieldType[psDBF->nFields-1];
 
     if( eType == FTString )
     {
-	pszFInfo[16] = nWidth % 256;
-	pszFInfo[17] = nWidth / 256;
+	pszFInfo[16] = (char)(nWidth % 256);
+	pszFInfo[17] = (char)(nWidth / 256);
     }
     else
     {
-	pszFInfo[16] = nWidth;
-	pszFInfo[17] = nDecimals;
+	pszFInfo[16] = (char) nWidth;
+	pszFInfo[17] = (char) nDecimals;
     }
 
 /* -------------------------------------------------------------------- */
 /*      Make the current record buffer appropriately larger.            */
 /* -------------------------------------------------------------------- */
     psDBF->pszCurrentRecord = (char *) SfRealloc(psDBF->pszCurrentRecord,
-					       psDBF->nRecordLength);
+					       psDBF->nRecordLength + 1);
 
     return( psDBF->nFields-1 );
 }
@@ -721,16 +739,14 @@ static void *DBFReadAttribute(DBFHandle psDBF, int hEntity, int iField,
 
 	if( fseek( psDBF->fp, nRecordOffset, 0 ) != 0 )
 	{
-	    fprintf( stderr, "fseek(%d) failed on DBF file.\n",
-		     nRecordOffset );
+	    REprintf("fseek(%d) failed on DBF file", nRecordOffset);
 	    return NULL;
 	}
 
 	if( fread( psDBF->pszCurrentRecord, psDBF->nRecordLength,
 		   1, psDBF->fp ) != 1 )
 	{
-	    fprintf( stderr, "fread(%d) failed on DBF file.\n",
-		     psDBF->nRecordLength );
+	    REprintf("fread(%d) failed on DBF file", psDBF->nRecordLength );
 	    return NULL;
 	}
 
@@ -1090,16 +1106,15 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
 	    if( sizeof(szSField)-2 < nWidth )
 		nWidth = sizeof(szSField)-2;
 
-	    sprintf( szFormat, "%%%dd", nWidth );
-	    sprintf(szSField, szFormat, (int) *((double *) pValue) );
+	    snprintf( szFormat, 20, "%%%dd", nWidth );
+	    snprintf(szSField, 400, szFormat, (int) *((double *) pValue) );
 	    if( (int)strlen(szSField) > psDBF->panFieldSize[iField] )
 	    {
 		szSField[psDBF->panFieldSize[iField]] = '\0';
 		nRetResult = FALSE;
 	    }
 
-	    strncpy((char *) (pabyRec+psDBF->panFieldOffset[iField]),
-		    szSField, strlen(szSField) );
+	    strcpy((char *) (pabyRec+psDBF->panFieldOffset[iField]), szSField);
 	}
 	else
 	{
@@ -1108,16 +1123,15 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
 	    if( sizeof(szSField)-2 < nWidth )
 		nWidth = sizeof(szSField)-2;
 
-	    sprintf( szFormat, "%%%d.%df",
+	    snprintf( szFormat, 20, "%%%d.%df",
 		     nWidth, psDBF->panFieldDecimals[iField] );
-	    sprintf(szSField, szFormat, *((double *) pValue) );
+	    snprintf(szSField, 400, szFormat, *((double *) pValue) );
 	    if( (int) strlen(szSField) > psDBF->panFieldSize[iField] )
 	    {
 		szSField[psDBF->panFieldSize[iField]] = '\0';
 		nRetResult = FALSE;
 	    }
-	    strncpy((char *) (pabyRec+psDBF->panFieldOffset[iField]),
-		    szSField, strlen(szSField) );
+	    strcpy((char *) (pabyRec+psDBF->panFieldOffset[iField]), szSField);
 	}
 	break;
 
@@ -1137,7 +1151,7 @@ static int DBFWriteAttribute(DBFHandle psDBF, int hEntity, int iField,
 	{
 	    memset( pabyRec+psDBF->panFieldOffset[iField], ' ',
 		    psDBF->panFieldSize[iField] );
-	    j = strlen((char *) pValue);
+	    j = (int) strlen((char *) pValue);
 	}
 
 	strncpy((char *) (pabyRec+psDBF->panFieldOffset[iField]),
@@ -1214,7 +1228,7 @@ int DBFWriteAttributeDirectly(DBFHandle psDBF, int hEntity, int iField,
     {
 	memset( pabyRec+psDBF->panFieldOffset[iField], ' ',
 		psDBF->panFieldSize[iField] );
-	j = strlen((char *) pValue);
+	j = (int) strlen((char *) pValue);
     }
 
     strncpy((char *) (pabyRec+psDBF->panFieldOffset[iField]),
@@ -1476,14 +1490,14 @@ DBFGetNativeFieldType( DBFHandle psDBF, int iField )
 /* FIXME: this is incorrect in a MBCS */
 static void str_to_upper (char *string)
 {
-    int len;
+    size_t len;
     short i = -1;
 
     len = strlen (string);
 
     while (++i < len)
 	if (isalpha((int)string[i]) && islower((int)string[i]))
-	    string[i] = toupper ((int)string[i]);
+	    string[i] = (char)toupper ((int)string[i]);
 }
 
 /************************************************************************/
@@ -1508,7 +1522,8 @@ DBFGetFieldIndex(DBFHandle psDBF, const char *pszFieldName)
     for( i = 0; i < DBFGetFieldCount(psDBF); i++ )
     {
 	DBFGetFieldInfo( psDBF, i, name, NULL, NULL );
-	strncpy(name2,name,11);
+	strncpy(name2, name, 12); // this copied the terminator, but be sure
+	name2[11] = '\0';
 	str_to_upper(name2);
 
 	if(!strncmp(name1,name2,10))

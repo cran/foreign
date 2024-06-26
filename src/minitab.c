@@ -23,6 +23,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <stddef.h>
+#include <string.h>
 #include <R.h>
 #include <Rinternals.h>
 #include "foreign.h"
@@ -50,7 +52,7 @@ static				/* trim white space from end of string */
 char *strtrim(char *str)
 {
     int i;
-    for (i = strlen(str) - 1; i >= 0 && isspace((int)str[i]); i--)
+    for (i = (int) strlen(str) - 1; i >= 0 && isspace((int)str[i]); i--)
 	str[i] = '\0';
     return str;
 }
@@ -72,7 +74,7 @@ SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
 	case 0:			/* numeric data */
 	    SET_VECTOR_ELT(ans, i, allocVector(REALSXP, mtb[i]->len));
 	    Memcpy(REAL(VECTOR_ELT(ans, i)), mtb[i]->dat.ndat, mtb[i]->len);
-	    Free(mtb[i]->dat.ndat);
+	    R_Free(mtb[i]->dat.ndat);
 	    break;
 	default:
 	    if (mtb[i]->type == 4) {
@@ -84,15 +86,15 @@ SEXP MTB2SEXP(MTB mtb[], int len) /* Create a list from a vector of
 		    REAL(aMatrix)[j] = mtb[i]->dat.ndat[j];
 		}
 		SET_VECTOR_ELT(ans, i, aMatrix);
-		Free(mtb[i]->dat.ndat);
+		R_Free(mtb[i]->dat.ndat);
 		UNPROTECT(1);
 	    } else {
 		error(_("non-numeric data types are not yet implemented"));
 	    }
 	}
-	Free(mtb[i]);
+	R_Free(mtb[i]);
     }
-    Free(mtb);
+    R_Free(mtb);
     setAttrib(ans, R_NamesSymbol, names);
     UNPROTECT(2);
     return(ans);
@@ -124,13 +126,13 @@ read_mtp(SEXP fname)
     if(pres != buf) error(_("file read error"));
     UNPROTECT(1);
 
-    mtb = Calloc(nMTB, MTB);
+    mtb = R_Calloc(nMTB, MTB);
     for (i = 0; !feof(f); i++) {
 	if (i >= nMTB) {
 	    nMTB *= 2;
-	    mtb = Realloc(mtb, nMTB, MTB);
+	    mtb = R_Realloc(mtb, nMTB, MTB);
 	}
-	thisRec = mtb[i] = Calloc(1, MTBDATC);
+	thisRec = mtb[i] = R_Calloc(1, MTBDATC);
 	if (sscanf(buf, "%%%7d%7d%7d%7d%c%8c", &(thisRec->type),
 		   &(thisRec->cnum), &(thisRec->len),
 		   &(thisRec->dtype), blank, thisRec->name) != 6)
@@ -139,7 +141,7 @@ read_mtp(SEXP fname)
 	strtrim(thisRec->name);	/* trim trailing white space on name */
 	switch (thisRec->dtype) {
 	case 0:		/* numeric data */
-	    thisRec->dat.ndat = Calloc(thisRec->len, double);
+	    thisRec->dat.ndat = R_Calloc(thisRec->len, double);
 	    for (j = 0; j < thisRec->len; j++) {
 		res = fscanf(f, "%lg", thisRec->dat.ndat + j);
 		if(res == EOF) error(_("file read error"));
@@ -147,7 +149,7 @@ read_mtp(SEXP fname)
 	    break;
 	default:
 	    if (thisRec->type == 4) { /* we have a matrix so dtype is number of columns */
-		thisRec->dat.ndat = Calloc(thisRec->len, double);
+		thisRec->dat.ndat = R_Calloc(thisRec->len, double);
 		for (j = 0; j < thisRec->len; j++) {
 		    res = fscanf(f, "%lg", thisRec->dat.ndat + j);
 		    if(res == EOF) error(_("file read error"));

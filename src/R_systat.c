@@ -1,6 +1,6 @@
 /*
  *  Copyright (C) 1990-1992, 2004 Roger Bivand
- *  Patches (C) 2004 B. D. Ripley
+ *  Patches (C) 2004 B. D. Ripley, 2020 R Core Team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -128,9 +128,10 @@ SEXP readSystat(SEXP file)
     init_use(use);
     getuse(CHAR(STRING_ELT(file, 0)), use);
     if (!(getmtype(use) == 1)) {
-	sprintf(msg, _("not a rectangular data file (%s mtype is %d)"),
+	snprintf(msg, 256,
+		 _("not a rectangular data file (%s mtype is %d)"),
 		CHAR(STRING_ELT(file, 0)), getmtype(use));
-	error(msg);
+	error("%s", msg);
     }
 
     if ((getnd(use) + getnk(use)) != getnv(use))
@@ -247,9 +248,9 @@ static void getuse(const char *fname, struct SysFilev3 *u)
 	u->ithstr[i] = -1;
 	u->ithdb[i] = -1;
 	if(strrchr(u->h.lab[i], '$') == NULL)
-	    u->ithdb[i] = j++;
+	    u->ithdb[i] = (short) j++;
 	else
-	    u->ithstr[i] = k++;
+	    u->ithstr[i] = (short) k++;
     }
 
     if (u->h.nd != j || u->h.nk != k)
@@ -316,23 +317,23 @@ static void getuse(const char *fname, struct SysFilev3 *u)
 	}	/* if there were string variables */
     }	/* k == 0201 */
     else {
-	sprintf(tmp, _("getuse: byte counter %o octal"), k);
-	error(tmp);
+	snprintf(tmp, ERRMES, _("getuse: byte counter %o octal"), k);
+	error("%s", tmp);
     }
     if(fseek(u->h.fd, 0L, SEEK_END) != 0)
 	error(_("getuse: File access error"));
     /* seek to end of file */
-    end = ftell(u->h.fd);			/* and find value (int) */
+    end = (int) ftell(u->h.fd);			/* and find value (int) */
 
     i = 0;
     if(fseek(u->h.fd, -1L, SEEK_CUR) != 0)
-	error(_("getuse: File access error"));
+	error("%s", _("getuse: File access error"));
     do {
 	end--;
 	i++;
 	if(getoctal(&k, u->h.fd) != 1) {
-	    sprintf(tmp, "Getuse: failure reading byte %d", end);
-	    error(tmp);
+	    snprintf(tmp, ERRMES, "Getuse: failure reading byte %d", end);
+	    error("%s", tmp);
 	}
 	if(fseek(u->h.fd, -2L, SEEK_CUR) != 0)
 	    error(_("getuse: File access error"));
@@ -343,8 +344,8 @@ static void getuse(const char *fname, struct SysFilev3 *u)
        but not more than a VAX block - normally just does loop once */
 
     if (k != 0202) {
-	sprintf(tmp, "Getuse: last byte = %o octal", k);
-	error(tmp);
+	snprintf(tmp, ERRMES, "Getuse: last byte = %o octal", k);
+	error("%s", tmp);
     }
     /* seek back one byte and check k == 0202 */
 
@@ -405,7 +406,7 @@ description on failure,
 static void getlab(struct SysFilev3 *u)
 {
 
-    char mes[ERRMES], tmp1[ERRMES], combuf[MYBUFSIZ];
+    char mes[ERRMES], tmp1[ERRMES];
     char label[LABELSIZ+1], tmp[LABELSIZ+1];
     char var[30];
     int i, j, o, len, isDollar;
@@ -418,12 +419,12 @@ static void getlab(struct SysFilev3 *u)
     /* move to file beginning */
 
     if(getoctal(&o, u->h.fd) != 1 || o != 0113) {
-	sprintf(tmp1, _("getlab: byte 0 = %o octal"), o);
-	error(tmp1); }	/* read and throw away zeroth byte=0113 */
+	snprintf(tmp1, ERRMES, _("getlab: byte 0 = %o octal"), o);
+	error("%s", tmp1); }	/* read and throw away zeroth byte=0113 */
 
     if(getoctal(&o, u->h.fd) != 1 || o != 006) {
-	sprintf(tmp1, _("getlab: byte 1 = %o octal"), o);
-	error(tmp1); }
+	snprintf(tmp1, ERRMES, _("getlab: byte 1 = %o octal"), o);
+	error("%s", tmp1); }
     /* read and throw away front of package
        byte=006, i.e. 3 shorts */
 /*	fread((short *) &u->h.nv, sizeof(short), 1, u->h.fd); */
@@ -434,33 +435,30 @@ static void getlab(struct SysFilev3 *u)
     if(getshort(&u->h.ntype, u->h.fd) != 1)
 	error(_("getlab: File access error"));
     if(getoctal(&o, u->h.fd) != 1 || o != 006) {
-	sprintf(tmp1, _("getlab: byte 9 = %o octal"), o);
-	error(tmp1);}
+	snprintf(tmp1, ERRMES, _("getlab: byte 9 = %o octal"), o);
+	error("%s", tmp1);}
     /* read and throw away end of package
        byte=006, i.e. 3 shorts */
 
-    if (u->h.ntype != 1 || u->h.ntype != 2) {	/* i.e. version later than 2 */
+    if (u->h.ntype != 1 && u->h.ntype != 2) {	/* i.e. version later than 2 */
 	/* test changed to accommodate MYSTAT 9/9/91 */
 	len = 0;
 	do {
 	    isDollar = 0;
 	    if(getoctal(&o, u->h.fd) != 1 || o != 0110) {
-		sprintf(tmp1, _("getlab: comment begin byte = %o"), o);
-		error(tmp1); }
+		snprintf(tmp1, ERRMES, _("getlab: comment begin byte = %o"), o);
+		error("%s", tmp1); }
 	    /* read and throw away
 	       front of package byte=0110, i.e. 72 chars */
 	    for (j = 0; j < 72; j++, len++) {
 		if(getoctal(&o, u->h.fd) != 1) {
-		    sprintf(tmp1, _("getlab: comment = %c"), o);
-		    error(tmp1); }
-		if(len < MYBUFSIZ) combuf[len] = o;
+		    snprintf(tmp1, ERRMES, _("getlab: comment = %c"), o);
+		    error("%s", tmp1); }
 		if (j == 0) isDollar = (o == '$');
 	    }
-	    /* read the comment into combuf */
-
 	    if(getoctal(&o, u->h.fd) != 1 || o != 0110) {
-		sprintf(tmp1, _("getlab: comment end byte = %o"), o);
-		error(tmp1); }
+		snprintf(tmp1, ERRMES, _("getlab: comment end byte = %o"), o);
+		error("%s", tmp1); }
 	    /* read and throw away
 	       end of package byte=0110, i.e. 72 chars */
 	} while (len >= 72 && !isDollar);
@@ -472,12 +470,13 @@ static void getlab(struct SysFilev3 *u)
 	    strncpy(u->h.comment, combuf, (len - 72));
 	}
 	else u->h.comment = NULL; */
+
 	/* If comment on record(s) before the one beginning
 	   with a $, allocate space and squirrel away */
 
 	if(getoctal(&o, u->h.fd) != 1 || o != 006) {
-	    sprintf(tmp1, _("getlab: byte nv0 = %o octal"), o);
-	    error(tmp1); }
+	    snprintf(tmp1, ERRMES, _("getlab: byte nv0 = %o octal"), o);
+	    error("%s", tmp1); }
 	/* read and throw away front of package
 	   byte=006, i.e. 3 shorts */
 	if(getshort(&u->h.nv, u->h.fd) != 1)
@@ -487,8 +486,8 @@ static void getlab(struct SysFilev3 *u)
 	if(getshort(&u->h.ntype, u->h.fd) != 1)
 	    error(_("getlab: File access error"));
 	if(getoctal(&o, u->h.fd) != 1 || o != 006) {
-	    sprintf(tmp1, _("getlab: byte nv$ = %o octal"), o);
-	    error(tmp1); }
+	    snprintf(tmp1, ERRMES, _("getlab: byte nv$ = %o octal"), o);
+	    error("%s", tmp1); }
 	/* read and throw away end of package
 	   byte=006, i.e. 3 shorts */
 
@@ -502,9 +501,9 @@ static void getlab(struct SysFilev3 *u)
 				   memory on the go */
 
 	if(getoctal(&o, u->h.fd) != 1 || o != 014) {
-	    sprintf(tmp1, _("getlab: byte lab[%d]0 = %o, nv=%d"),
+	    snprintf(tmp1, ERRMES, _("getlab: byte lab[%d]0 = %o, nv=%d"),
 		    j, o, u->h.nv);
-	    error(tmp1); }
+	    error("%s", tmp1); }
 	/* read and throw away front of package
 	   byte=014, i.e. LABELSIZ chars */
 	if(fread(label, 1, LABELSIZ, u->h.fd) != LABELSIZ)
@@ -515,8 +514,9 @@ static void getlab(struct SysFilev3 *u)
 	if(label[8] == '$') u->h.nk++;
 	else if (strrchr(label, '$') != NULL) {
 	    u->h.nk++;
-	    sprintf(mes, _("$ not in variable label column 9: %s"), label);
-	    warning(mes);
+	    snprintf(mes, ERRMES,
+		     _("$ not in variable label column 9: %s"), label);
+	    warning("%s", mes);
 	} else u->h.nd++;	/* if the ninth char in label is '$',
 				   it is a string variable, else a real
 				   variable */
@@ -527,23 +527,24 @@ static void getlab(struct SysFilev3 *u)
 	   until a blank is encountered */
 	tmp[o] = '\0';	/* terminate the string */
 
-	len=strlen(tmp);
-	sprintf(var, "u->h.lab[%d]", j);
+	len = (int)strlen(tmp);
+	snprintf(var, 30, "u->h.lab[%d]", j);
 	u->h.lab[j] = (char *) R_alloc(len+1, sizeof(char));
 	strcpy(u->h.lab[j], tmp);
 
 	/* allocate memory for the label,
 	   move it and point lab[j] at it */
 	if(getoctal(&o, u->h.fd) != 1 || o != 014) {
-	    sprintf(tmp1, _("getlab: byte lab[%d]$ = %o octal"), j, o);
-	    error(tmp1); }
+	    snprintf(tmp1, ERRMES,
+		     _("getlab: byte lab[%d]$ = %o octal"), j, o);
+	    error("%s", tmp1); }
 	/* read and throw away end of package
 	   byte=014, i.e. LABELSIZ chars */
     }	/* j */
 
-    u->pos = ftell(u->h.fd);	/* find current position, should
-				   be at packet boundary of first
-				   data record */
+    u->pos = (int) ftell(u->h.fd);  /* find current position, should
+				       be at packet boundary of first
+				       data record */
 }	/* getlab */
 
 
@@ -648,17 +649,17 @@ assumed to be little-endian.
 */
 static int getdb(FILE *fd, short type, double *x)
 {
-    float fx;
-    double dx;
+    unsigned char fx[sizeof(float)];
+    unsigned char dx[sizeof(double)];
 
     if (type == 1) {
-	if(fread(&fx, sizeof(float), 1, fd) != 1) return(1);
-	swapb(&fx, sizeof(float));
-	*x = (double) fx;	/* and cast it */
+	if(fread(fx, sizeof(float), 1, fd) != 1) return(1);
+	swapb(fx, sizeof(float));
+	*x = (double) (*(float *) fx);	/* and cast it */
     } else {
-	if(fread(&dx, sizeof(double), 1, fd) != 1) return(1);
-	swapb(&dx, sizeof(double));
-	*x = dx;
+	if(fread(dx, sizeof(double), 1, fd) != 1) return(1);
+	swapb(dx, sizeof(double));
+	*x = *(double *) dx;
     }
     return(0);
 }	/* getdb */
@@ -746,13 +747,13 @@ at by o, returns 1 on success, otherwise != 1
 static int getoctal(int *o, FILE *fp)
 {
     char c;
-    int n;
+    size_t n;
     *o = 000;
-    if ((n = fread((char *)&c, sizeof(char), 1, fp)) != 1)
-	return(n);
+    if ((n = fread(&c, sizeof(char), 1, fp)) != 1)
+	return (int) n;
     else {
 	*o = c & 0377;
-	return(n);
+	return (int) n;
     }
 }	/* getoctal */
 
