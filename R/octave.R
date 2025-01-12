@@ -1,6 +1,6 @@
 ### This file is part of the 'foreign' package for R.
 
-# Enhancements Copyright (c) 2004-2018 R Development Core Team
+# Enhancements Copyright (c) 2004-2025 R Development Core Team
 #              Copyright (c) 2004      Stephen Eglen
 
 #  This program is free software; you can redistribute it and/or modify
@@ -158,7 +158,7 @@ function(file)
         d <- readLines(con, n = 1L) # Skip over "# base, limit, increment".
         d <- as.numeric(scan(con, nlines = 1L, quiet = TRUE))
         stopifnot(length(d) == 3L)
-        seq.int(from = d[1L], to = d[2L], by = d[3L])
+        as.numeric(seq.int(from = d[1L], to = d[2L], by = d[3L]))
     }
 
     read_octave_unknown <- function(con, type) {

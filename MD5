@@ -1,6 +1,6 @@
 f87d40597e85fd95afb45eb64c651832 *COPYRIGHTS
-7152c966159331de7a530b44def3a662 *ChangeLog
-341f7fa929e38d0b5122c65465d128aa *DESCRIPTION
+3f48ecf37fbb2fd293a6d2356d557708 *ChangeLog
+336c2467d9a30a98ec30d016238b66a9 *DESCRIPTION
 2e82d3849af11b642299fc69ccef26f3 *GPL-2
 ed8178a14789e97ce12174176eed1908 *NAMESPACE
 a6c68bd0f84690aab0887b99db7077e0 *R/R_systat.R
@@ -8,12 +8,12 @@ ea95d085c2d57992edec696c52bc43c9 *R/Sread.R
 fe9264456fd8aa175971d74b69e4d48a *R/arff.R
 10e59a4b27f2403f689194966883f31b *R/dbf.R
 b7e7d712506f5c522860a934f332cd43 *R/minitab.R
-09282ecf93e305abef7dca5be7155250 *R/octave.R
+cc70d1eba865bb091c031e4be66fd26d *R/octave.R
 64f1e4df457b9941596cc871eaa9f3f1 *R/read.dta.R
 fa87d427ceeef77e124a5a688fa34bc1 *R/read.epiinfo.R
 1086e6cc7c1c3bbb16f5681d88801b7d *R/read.ssd.R
 89dd9b2f65c59b73891a7b8c9b9b7752 *R/spss.R
-6dbcb06c926835e544ab99088dc27b82 *R/writeForeignCode.R
+ec0510889288505bfff18929aa5adebb *R/writeForeignCode.R
 f7d40d0f31f7c6ee49c01e8b2b8588b7 *R/writeForeignSAS.R
 f1301fddaba605563a68c718aab7b2b4 *R/xport.R
 0337f989613243d0134c33eb5584953b *R/zzz.R
@@ -101,7 +101,7 @@ c82c97b941d8c3dfbf780a18479c3c59 *tests/download.R
 269d75f02a2d06d3a7e2b7a2bc621ac9 *tests/dumpdata
 57ccf646d2c4ad366eb179b7e914312b *tests/electric.por
 859e5cbbd74fd94775c2c7f111ae2d71 *tests/ex1-51.mtp
-d9ebff4042010117916598a3d8b0745b *tests/keep/codefile.sps
+0a20eafa6d4eabcf4450d366eb7de49d *tests/keep/codefile.sps
 85becb8dd1c037ccdd4072bcfbf5e6d9 *tests/keep/datafile.dat
 a175ed9be624fb4d92b3ca53bd88a9e5 *tests/minitab.R
 57c6e64dd8bc3b41be2e7b6e698f46c2 *tests/minitab.Rout.save

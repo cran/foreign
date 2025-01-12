@@ -1,3 +1,6 @@
+2025-01-10 Uwe Ligges
+    * writeForeignSPSS handles its own UTF8 correctly, including on Windows
+
 2024-06-25 Tomas Kalibera
 
 	* DESCRIPTION: Version is 0.8-87
