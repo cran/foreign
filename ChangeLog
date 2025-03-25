@@ -1,5 +1,20 @@
+2025-03-25 Brian Ripley
+
+	* DESCRIPTION: Version is 0.8-89
+
+2025-03-15  Sebastian Meyer  <Sebastian.Meyer@R-project.org>
+
+	* tests/spss.R: do not change the locale (unnecessarily);
+	 tests added below change gave platform-dependent output.
+
 2025-01-10 Uwe Ligges
-    * writeForeignSPSS handles its own UTF8 correctly, including on Windows
+
+	* R/writeForeignCode.R:
+	writeForeignSPSS handles its own UTF-8 correctly, including on Windows
+
+2024-12-31 Kurt Hornik
+
+	* DESCRIPTION: Version is 0.8-88, ass ROR ID.
 
 2024-06-25 Tomas Kalibera
 
